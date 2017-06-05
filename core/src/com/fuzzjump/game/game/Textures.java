@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import com.fuzzjump.game.VectorGraphicsLoader;
 import com.fuzzjump.game.model.character.UnlockableDefinition;
-import com.thoughtworks.xstream.XStream;
 
 import java.util.ArrayList;
 import java.util.HashMap;

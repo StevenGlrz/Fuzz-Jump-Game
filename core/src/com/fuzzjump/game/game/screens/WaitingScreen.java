@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.fuzzjump.game.FuzzJump;
-import com.fuzzjump.game.common.Lobby;
 import com.fuzzjump.game.game.ScreenHandler;
 import com.fuzzjump.game.game.StageIds;
 import com.fuzzjump.game.game.StageScreen;
@@ -24,7 +23,7 @@ import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.net.requests.GetAppearanceRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
-import com.kerpowgames.server.common.packets.PacketHandler;
+import com.kerpowgames.fuzzjump.common.Lobby;
 
 import org.json.JSONArray;
 import org.json.JSONException;
