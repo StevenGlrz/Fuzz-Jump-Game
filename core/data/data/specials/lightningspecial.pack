@@ -1,0 +1,110 @@
+
+lightningspecial.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+lightning-bolt-V10010
+  rotate: false
+  xy: 0, 0
+  size: 130, 1275
+  orig: 512, 1280
+  offset: 212, 5
+  index: -1
+lightning-bolt-V10011
+  rotate: false
+  xy: 0, 0
+  size: 130, 1275
+  orig: 512, 1280
+  offset: 212, 5
+  index: -1
+lightning-bolt-V10009
+  rotate: false
+  xy: 130, 11
+  size: 130, 1264
+  orig: 512, 1280
+  offset: 212, 16
+  index: -1
+lightning-bolt-V10008
+  rotate: false
+  xy: 260, 116
+  size: 130, 1159
+  orig: 512, 1280
+  offset: 212, 121
+  index: -1
+lightning-bolt-V10007
+  rotate: false
+  xy: 390, 252
+  size: 130, 1023
+  orig: 512, 1280
+  offset: 212, 257
+  index: -1
+lightning-bolt-V10006
+  rotate: false
+  xy: 520, 379
+  size: 130, 896
+  orig: 512, 1280
+  offset: 212, 384
+  index: -1
+lightning-bolt-V10005
+  rotate: false
+  xy: 650, 577
+  size: 68, 698
+  orig: 512, 1280
+  offset: 236, 582
+  index: -1
+lightning-bolt-V10004
+  rotate: false
+  xy: 718, 776
+  size: 60, 499
+  orig: 512, 1280
+  offset: 243, 781
+  index: -1
+lightning-bolt-V10003
+  rotate: false
+  xy: 778, 949
+  size: 30, 326
+  orig: 512, 1280
+  offset: 246, 954
+  index: -1
+lightning-strike0004
+  rotate: false
+  xy: 390, 124
+  size: 127, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+lightning-bolt-V10002
+  rotate: false
+  xy: 650, 389
+  size: 20, 188
+  orig: 512, 1280
+  offset: 251, 1092
+  index: -1
+lightning-strike0003
+  rotate: false
+  xy: 260, 23
+  size: 94, 93
+  orig: 128, 128
+  offset: 16, 19
+  index: -1
+lightning-strike0002
+  rotate: false
+  xy: 520, 315
+  size: 61, 64
+  orig: 128, 128
+  offset: 32, 32
+  index: -1
+lightning-bolt-V10001
+  rotate: false
+  xy: 718, 713
+  size: 16, 63
+  orig: 512, 1280
+  offset: 252, 1217
+  index: -1
+lightning-strike0001
+  rotate: false
+  xy: 808, 1241
+  size: 31, 34
+  orig: 128, 128
+  offset: 47, 46
+  index: -1

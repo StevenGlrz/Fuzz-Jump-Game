@@ -1,0 +1,369 @@
+
+jetpackspecial.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+item-jetpack-frame1
+  rotate: false
+  xy: 1, 175
+  size: 164, 313
+  orig: 164, 313
+  offset: 0, 0
+  index: -1
+item-jetpack-frame2
+  rotate: false
+  xy: 167, 175
+  size: 164, 313
+  orig: 164, 313
+  offset: 0, 0
+  index: -1
+item-jetpack-noflame
+  rotate: false
+  xy: 333, 175
+  size: 164, 313
+  orig: 164, 313
+  offset: 0, 0
+  index: -1
+item-jetpack-straps
+  rotate: false
+  xy: 1, 67
+  size: 95, 106
+  orig: 95, 106
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0001
+  rotate: false
+  xy: 499, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0002
+  rotate: false
+  xy: 1, 1
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0003
+  rotate: false
+  xy: 98, 109
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0004
+  rotate: false
+  xy: 499, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0005
+  rotate: false
+  xy: 565, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0006
+  rotate: false
+  xy: 164, 109
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0007
+  rotate: false
+  xy: 499, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0008
+  rotate: false
+  xy: 565, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0009
+  rotate: false
+  xy: 631, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0010
+  rotate: false
+  xy: 230, 109
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0011
+  rotate: false
+  xy: 499, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0012
+  rotate: false
+  xy: 565, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0013
+  rotate: false
+  xy: 631, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0014
+  rotate: false
+  xy: 697, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0015
+  rotate: false
+  xy: 296, 109
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0016
+  rotate: false
+  xy: 565, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0017
+  rotate: false
+  xy: 631, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0018
+  rotate: false
+  xy: 697, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0019
+  rotate: false
+  xy: 763, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0020
+  rotate: false
+  xy: 362, 109
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0021
+  rotate: false
+  xy: 631, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0022
+  rotate: false
+  xy: 697, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0023
+  rotate: false
+  xy: 763, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0024
+  rotate: false
+  xy: 829, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0025
+  rotate: false
+  xy: 428, 109
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0026
+  rotate: false
+  xy: 697, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0027
+  rotate: false
+  xy: 763, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0028
+  rotate: false
+  xy: 829, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0029
+  rotate: false
+  xy: 895, 424
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0030
+  rotate: false
+  xy: 763, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0031
+  rotate: false
+  xy: 829, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0032
+  rotate: false
+  xy: 895, 358
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0033
+  rotate: false
+  xy: 829, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0034
+  rotate: false
+  xy: 895, 292
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0035
+  rotate: false
+  xy: 895, 226
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0036
+  rotate: false
+  xy: 499, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0037
+  rotate: false
+  xy: 565, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0038
+  rotate: false
+  xy: 631, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0039
+  rotate: false
+  xy: 697, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0040
+  rotate: false
+  xy: 763, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0041
+  rotate: false
+  xy: 829, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0042
+  rotate: false
+  xy: 895, 160
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0043
+  rotate: false
+  xy: 494, 94
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0044
+  rotate: false
+  xy: 560, 94
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0045
+  rotate: false
+  xy: 626, 94
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0046
+  rotate: false
+  xy: 692, 94
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0047
+  rotate: false
+  xy: 758, 94
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+jetpack-exhaust-sprite0048
+  rotate: false
+  xy: 824, 94
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1

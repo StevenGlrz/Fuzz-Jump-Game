@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg9264" sodipodi:docname="ui-mapselect-green.svg" inkscape:version="0.48.4 r9939" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="251.874px"
+	 height="253.383px" viewBox="2 1 251.874 253.383" enable-background="new 2 1 251.874 253.383" xml:space="preserve">
+<sodipodi:namedview  inkscape:window-maximized="1" inkscape:window-y="-8" inkscape:window-x="1272" inkscape:window-height="988" inkscape:window-width="1680" inkscape:current-layer="layer1" inkscape:document-units="px" inkscape:pageshadow="2" inkscape:pageopacity="0.0" showgrid="false" inkscape:cy="-91.48982" inkscape:cx="893.67667" inkscape:zoom="0.79369974" borderopacity="1.0" bordercolor="#666666" pagecolor="#ffffff" id="base">
+	</sodipodi:namedview>
+<g>
+	<g id="layer1_1_" transform="translate(0,-796.36218)" inkscape:groupmode="layer" inkscape:label="Layer 1">
+		<g id="g9173" transform="matrix(0.77918752,0,0,0.77918752,-602.92753,182.61744)">
+			<g id="g9079">
+				<path id="rect3218-8-3-82" inkscape:connector-curvature="0" fill="#333333" d="M790.202,790.956
+					c-7.633,0-13.781,6.148-13.781,13.781v295.626c0,7.633,6.148,13.781,13.781,13.781h295.625c7.634,0,13.781-6.149,13.781-13.781
+					V804.737c0-7.633-6.147-13.781-13.781-13.781H790.202L790.202,790.956z M804.202,806.268h267.624
+					c6.911,0,12.469,5.56,12.469,12.469v267.626c0,6.908-5.558,12.468-12.469,12.468H804.202c-6.91,0-12.469-5.56-12.469-12.468
+					V818.737C791.733,811.828,797.292,806.268,804.202,806.268L804.202,806.268z"/>
+				<path id="rect3218-8-3" inkscape:connector-curvature="0" fill="#999999" d="M790.202,788.956
+					c-7.633,0-13.781,6.147-13.781,13.78v295.626c0,7.633,6.148,13.781,13.781,13.781h295.625c7.634,0,13.781-6.149,13.781-13.781
+					V802.736c0-7.633-6.147-13.781-13.781-13.781L790.202,788.956L790.202,788.956z M804.202,804.268h267.624
+					c6.911,0,12.469,5.56,12.469,12.469v267.626c0,6.908-5.558,12.468-12.469,12.468H859.724c-3.606,0,2.5-53.065-4.679-58.399
+					c-12.213-9.074-63.341-0.948-63.341-4.251l0.029-217.443C791.733,809.828,797.292,804.268,804.202,804.268L804.202,804.268z"/>
+				<path id="path8827" inkscape:connector-curvature="0" fill="#B3B3B3" d="M892.191,790.384c0,0,88.202,0,127.776,0
+					c39.572,0,61.036-1.341,67.408,0.336c6.372,1.676,10.397,5.365,10.397,16.768s0,188.477,0,188.477s-2.013-100.611-3.69-138.506
+					c-1.677-37.898,1.341-50.977-5.365-56.008C1082.009,796.421,995.821,793.738,892.191,790.384L892.191,790.384z"/>
+				<path id="path8827-7" sodipodi:nodetypes="cscscscc" inkscape:connector-curvature="0" fill="#808080" d="M982.606,1111.961
+					c0,0-88.201,0-127.775,0c-39.573,0-61.037,0.539-67.409-1.138c-6.372-1.677-10.798-6.84-10.798-18.243
+					c0-37.915-0.268-187.003-0.268-187.003s2.682,100.61,4.358,138.508c1.678,37.897-1.341,50.974,5.366,56.005
+					C792.788,1105.12,878.978,1108.607,982.606,1111.961L982.606,1111.961z"/>
+				<path id="path4072-2-5-4" sodipodi:nodetypes="csssssscc" inkscape:connector-curvature="0" fill="#666666" d="
+					M776.482,1084.842c0,0-0.115,4.93-0.115,8.029c0,6.587-0.352,10.894,3.433,14.679c4.282,4.281,7.927,4.587,12.164,4.587
+					c1.495,0,9.004-0.065,12.445-0.065c12.578,0-5.219-0.737-8.774-1.196c-3.556-0.459-11.184-1.757-13.478-3.707
+					C779.863,1105.218,776.94,1099.062,776.482,1084.842L776.482,1084.842z"/>
+			</g>
+		</g>
+	</g>
+	<path fill="#808080" d="M59.646,234.933c0,2.322-1.889,4.205-4.218,4.205H20.365c-2.33,0-4.218-1.883-4.218-4.205v-32.842
+		c0-2.322,1.889-4.203,4.218-4.203h35.063c2.33,0,4.218,1.881,4.218,4.203V234.933z"/>
+</g>
+</svg>

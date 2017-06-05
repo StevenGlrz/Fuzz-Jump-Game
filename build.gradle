@@ -6,7 +6,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.2.0'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.1'
         classpath 'org.multi-os-engine:moe-gradle:1.3.6'
     }
@@ -37,17 +37,46 @@ allprojects {
 project(":desktop") {
     apply plugin: "java"
 
+    task copyFiles(type: Copy) {
+        println 'copying desktop game assets'
+        from '../core/data'
+        into 'data'
+    }
+
+    tasks.copyFiles.execute()
+
 
     dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        compile "org.apache.xmlgraphics:batik-transcoder:1.8"
+        compile "org.apache.xmlgraphics:batik-anim:1.8"
+        compile "org.apache.xmlgraphics:batik-awt-util:1.8"
+        compile "org.apache.xmlgraphics:batik-bridge:1.8"
+        compile "org.apache.xmlgraphics:batik-dom:1.8"
+        compile "org.apache.xmlgraphics:batik-gvt:1.8"
+        compile "org.apache.xmlgraphics:batik-svggen:1.8"
+        compile "org.apache.xmlgraphics:batik-util:1.8"
+        compile "org.apache.xmlgraphics:batik-xml:1.8"
+        compile "xml-apis:xml-apis:1.3.04"
+        compile "xml-apis:xml-apis-ext:1.3.04"
+        compile "org.apache.xmlgraphics:xmlgraphics-commons:2.1"
+        compile "org.apache.xmlgraphics:batik-codec:1.8"
     }
 }
 
 project(":android") {
     apply plugin: "android"
+
+    task copyFiles(type: Copy) {
+        println 'copying android game assets'
+        from '../core/data'
+        into 'assets/data'
+    }
+
+    tasks.copyFiles.execute()
 
     configurations { natives }
 
@@ -90,6 +119,7 @@ project(":core") {
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile fileTree(dir: 'libs', include: ['*.jar'])
     }
 }
 

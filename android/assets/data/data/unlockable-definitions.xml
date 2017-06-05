@@ -1,0 +1,2101 @@
+<definitions>
+
+    <!--these are the colors we are replacing -->
+    <base>
+        <colors>
+            <color>
+                <c id="0">ff00ff</c>
+                <c id="1">dc00dc</c>
+                <c id="2">c800c8</c>
+                <c id="3">b400b4</c>
+            </color>
+        </colors>
+    </base>
+
+    <entries>
+        <entry name="Blue" allowedtag="*,Blue,Boy" category="0" cost="100" id="0" />
+        <entry name="Zoey" allowedtag="*,Girl,Zoey" category="0" cost="200" id="1" />
+        <entry name="Chunk" allowedtag="*,Chunk,Boy" category="0" cost="750" id="2" />
+        <entry name="Fuzzbeard" allowedtag="*,Boy" category="0" cost="1000" id="3" />
+        <entry name="Yung Fuzz" allowedtag="YF" category="0" cost="1500" id="4" />
+        <entry name="Mattie" allowedtag="*,Girl" category="0" cost="500" id="5" />
+
+
+        <entry name="Blue" allowedtag="*" category="1" cost="100" id="32" />
+
+        <entry name="Green" allowedtag="*" category="1" cost="100" id="33" />
+
+        <entry name="Orange" allowedtag="*" category="1" cost="100" id="34" />
+        <entry name="Purple" allowedtag="*" category="1" cost="100" id="35" />
+        <entry name="Red" allowedtag="*" category="1" cost="100" id="36" />
+        <entry name="Hearts" allowedtag="*" category="1" cost="500" id="37" />
+        <entry name="Ocean" allowedtag="*" category="1" cost="500" id="38" />
+        <entry name="Admiral" allowedtag="*" category="1" cost="1000" id="39" />
+
+        <entry name="Big Bandage" allowedtag="Blue" category="4" cost="100" id="73">
+
+            <bounds>
+
+                <bound fuzzle="0">
+                    <x>.6967</x>
+                    <y>.6266</y>
+                    <w>0.2653875341568488</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+        </entry>
+
+        <entry name="Butterfly Bandage" allowedtag="Blue" category="4" cost="100" id="74">
+
+            <bounds>
+
+                <bound fuzzle="0">
+                    <x>0.6881151975407267</x>
+                    <y>0.6210839143637884</y>
+                    <w>0.1848823452083607</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+        </entry>
+
+        <entry name="Serrated Bandage" allowedtag="Blue" category="4" cost="100" id="75">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.6881151975407267</x>
+                    <y>0.6210839143637884</y>
+                    <w>0.1848823452083607</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+        </entry>
+
+        <entry name="Bib" allowedtag="Chunk" category="4" cost="100" id="76">
+
+            <bounds>
+                <bound fuzzle="2">
+                    <x>0.5225884805732387</x>
+                    <y>0.7833202358890988</y>
+                    <w>0.650178631068649</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+        </entry>
+
+        <entry name="Lollipop" allowedtag="Chunk" category="4" cost="100" id="77">
+
+            <bounds>
+                <bound fuzzle="2">
+                    <x>0.2452761444027245</x>
+                    <y>0.6770447728930801</y>
+                    <w>0.238808991265801</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+        </entry>
+
+        <entry name="PB &amp; J" allowedtag="Chunk" category="4" cost="100" id="78">
+
+            <bounds>
+                <bound fuzzle="2">
+                    <x>0.6867813009199753</x>
+                    <y>0.7794275266376647</y>
+                    <w>0.2968453652069185</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+        </entry>
+
+        <entry name="Butterfly" allowedtag="Girl" category="2" cost="100" id="79">
+
+            <bounds>
+                <bound fuzzle="1">
+                    <x>0.1811383346760817</x>
+                    <y>0.1385351165072476</y>
+                    <w>0.385334818255059</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.2175045668175934</x>
+                    <y>0.1428709490367889</y>
+                    <w>0.3253674962635129</w>
+                    <h>asp</h>
+                </bound>
+
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Heart" allowedtag="Girl" category="2" cost="100" id="80">
+
+            <bounds>
+                <bound fuzzle="1">
+                    <x>0.2015496895881712</x>
+                    <y>0.1470345147585514</y>
+                    <w>0.2862992275247619</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.2357998483396392</x>
+                    <y>0.1417219680862487</y>
+                    <w>0.2417422134009336</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Panda Bow" allowedtag="Girl" category="2" cost="1000" id="81">
+
+            <bounds>
+                <bound fuzzle="1">
+                    <x>0.2175926145330294</x>
+                    <y>0.1463847865961966</y>
+                    <w>0.3840333824623594</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.236624176422216</x>
+                    <y>0.1619977235143784</y>
+                    <w>0.3242670582891991</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Skull Bow" allowedtag="Girl" category="2" cost="1000" id="82">
+
+            <bounds>
+                <bound fuzzle="1">
+                    <x>0.2175902449658545</x>
+                    <y>0.1858441297943658</y>
+                    <w>0.3840333824623594</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.2362680346778018</x>
+                    <y>0.1614200115971909</y>
+                    <w>0.3242670582891991</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Wing" allowedtag="Girl" category="2" cost="250" id="83">
+
+            <bounds>
+                <bound fuzzle="1">
+                    <x>0.1829021510930813</x>
+                    <y>0.1695412923853231</y>
+                    <w>0.3605522568047309</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.2180087674894608</x>
+                    <y>0.1516934046345811</y>
+                    <w>0.2985068057086721</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Eye Makeup" allowedtag="Zoey" category="3" cost="250" id="84">
+
+            <bounds>
+                <bound fuzzle="1">
+                    <x>0.517096508189263</x>
+                    <y>0.3950390534374758</y>
+                    <w>0.8039387132241432</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Bullseye" allowedtag="Fuzzbeard" category="3" cost="250" id="85">
+            <bounds>
+                <bound fuzzle="3">
+                    <x>0.3190419632610807</x>
+                    <y>0.5171436763909391</y>
+                    <w>0.3337058318420018</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+
+        <entry name="Rainbow" allowedtag="Fuzzbeard" category="3" cost="500" id="86">
+            <bounds>
+                <bound fuzzle="3">
+                    <x>0.2978978243947066</x>
+                    <y>0.5253528455975277</y>
+                    <w>0.3984503527032558</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Steampunk" allowedtag="Fuzzbeard" category="3" cost="750" id="87">
+            <bounds>
+                <bound fuzzle="3">
+                    <x>0.2996232214366539</x>
+                    <y>0.5185030213565838</y>
+                    <w>0.3984503527032558</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Cybervisor" allowedtag="*" category="3" cost="1500" id="88">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4817021500352912</x>
+                    <y>0.3565058721455469</y>
+                    <w>0.7587818556517554</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4907040998639856</x>
+                    <y>0.4370008047540908</y>
+                    <w>0.8983754093466094</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5013596295234984</x>
+                    <y>0.368985992177596</y>
+                    <w>0.7674122983687325</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4683873168089396</x>
+                    <y>0.442097661477029</y>
+                    <w>0.7589591838781836</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5274023004120817</x>
+                    <y>0.3873020912468488</y>
+                    <w>0.9763562468867455</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4868817789480213</x>
+                    <y>0.437265640100509</y>
+                    <w>0.7565631121186232</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Eyeglasses" allowedtag="*" category="3" cost="100" id="89">
+
+            <!--colors-->
+            <colors>
+                <!--green -->
+                <color>
+                    <c id="0">23661d</c>
+                    <c id="1">165016</c>
+                </color>
+
+                <!--red -->
+                <color>
+                    <c id="0">d40000</c>
+                    <c id="1">aa0000</c>
+                </color>
+
+                <!--black -->
+                <color>
+                    <c id="0">000000</c>
+                    <c id="1">000000</c>
+                </color>
+
+                <!--white -->
+                <color>
+                    <c id="0">ffffff</c>
+                    <c id="1">ffffff</c>
+                </color>
+            </colors>
+
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.506692176079667</x>
+                    <y>0.3921140252996988</y>
+                    <w>0.721992565597078</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5131512224712924</x>
+                    <y>0.4583207464637945</y>
+                    <w>0.8467894430042605</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5399193980968883</x>
+                    <y>0.383721113510422</y>
+                    <w>0.7281396182036423</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5111193588187499</x>
+                    <y>0.4900214523905609</y>
+                    <w>0.8008105044587776</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5457846533532582</x>
+                    <y>0.477857275142774</y>
+                    <w>0.8597931666893085</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5209053203174864</x>
+                    <y>0.4988338380259004</y>
+                    <w>0.7349805222478546</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Monocle" allowedtag="*" category="3" cost="1000" id="90">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.3339252272184897</x>
+                    <y>0.4788718221641819</y>
+                    <w>0.3135210675123064</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.2848578483178283</x>
+                    <y>0.5375363471341659</y>
+                    <w>0.3673408939039937</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.3909460897375524</x>
+                    <y>0.447962099394518</y>
+                    <w>0.2507449407153435</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.2994553169293116</x>
+                    <y>0.5646290435632208</y>
+                    <w>0.3267556750358608</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.3223463750396232</x>
+                    <y>0.5392226896314522</y>
+                    <w>0.240595141058733</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.3448232396493805</x>
+                    <y>0.6111676653136611</y>
+                    <w>0.3101694474400812</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Sunglasses" allowedtag="*" category="3" cost="250" id="91">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5016197558153038</x>
+                    <y>0.3791913667069917</y>
+                    <w>0.696206688049846</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5020733909301587</x>
+                    <y>0.4713804795174375</y>
+                    <w>0.8239679252347079</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5325058663455122</x>
+                    <y>0.4043782044498085</y>
+                    <w>0.6967996104466037</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5103710465337894</x>
+                    <y>0.4810964083175803</y>
+                    <w>0.7961200108334754</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5366854594031608</x>
+                    <y>0.4770673409454265</y>
+                    <w>0.9429198931304623</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5025140005722277</x>
+                    <y>0.5064278504391899</y>
+                    <w>0.6918213448952683</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Bandana" allowedtag="*" category="4" cost="250" id="92">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4584615882440976</x>
+                    <y>0.7465177694941178</y>
+                    <w>1.025474357781652</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4741667338050396</x>
+                    <y>0.7450766208061558</y>
+                    <w>1.036074632595127</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4824630836036895</x>
+                    <y>0.7690093050907463</y>
+                    <w>1.028656740345885</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4694967449418704</x>
+                    <y>0.7830292474671311</y>
+                    <w>0.9798197873129466</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4705429515917221</x>
+                    <y>0.8094368789662067</y>
+                    <w>1.074061495267853</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4942026926716833</x>
+                    <y>0.7932543006249597</y>
+                    <w>1.017082798953984</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Beard" allowedtag="*" category="4" cost="100" id="93">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5267727491515963</x>
+                    <y>0.7858358359477548</y>
+                    <w>0.5900521378964442</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.7823055600532636</y>
+                    <w>0.4875572848294132</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5208853923488026</x>
+                    <y>0.7334798439121927</y>
+                    <w>0.4123094063919621</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5567443400106329</x>
+                    <y>0.8287207153628852</y>
+                    <w>0.4127875134164569</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4910876013222841</x>
+                    <y>0.8584468155068996</y>
+                    <w>0.5823370918806322</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.528542359859224</x>
+                    <y>0.7903764791787471</y>
+                    <w>0.4116758469871009</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Goatee" allowedtag="*" category="4" cost="100" id="94">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5628304122898204</x>
+                    <y>0.7697244403498219</y>
+                    <w>0.3579859158917441</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5063552393996408</x>
+                    <y>0.7823055600532636</y>
+                    <w>0.310849877018298</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.522384291219218</x>
+                    <y>0.7242478760844748</y>
+                    <w>0.2628743990878359</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5555105275300679</x>
+                    <y>0.8388882988891485</y>
+                    <w>0.3534100370143744</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4791411945840692</x>
+                    <y>0.7600565426583365</y>
+                    <w>0.3671121450889825</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5202410559402642</x>
+                    <y>0.7918476043210274</y>
+                    <w>0.2624704632443713</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Mustache" allowedtag="*" category="4" cost="100" id="95">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5295919977025349</x>
+                    <y>0.6867233602937395</y>
+                    <w>0.325997354679265</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5063552393996408</x>
+                    <y>0.6761553537897151</y>
+                    <w>0.3885629386702811</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5080605891794731</x>
+                    <y>0.6444476468614687</y>
+                    <w>0.3285934998286686</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5489261819020774</x>
+                    <y>0.7624880525052569</y>
+                    <w>0.3178361135909962</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4878951003034008</x>
+                    <y>0.6394687409053629</y>
+                    <w>0.4640985146945614</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5224499350741595</x>
+                    <y>0.6971135880420076</y>
+                    <w>0.3280885792545433</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Mustache" allowedtag="*" category="4" cost="250" id="96">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5694558486261725</x>
+                    <y>0.7047801985245942</y>
+                    <w>0.2134701026174114</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.6967720419245464</y>
+                    <w>0.2600103314108063</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5149499131319973</x>
+                    <y>0.6559164924327947</y>
+                    <w>0.2198792464626588</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5685949584215225</x>
+                    <y>0.7716382404791742</y>
+                    <w>0.2398732082133793</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5081482361997917</x>
+                    <y>0.668594257291773</y>
+                    <w>0.3105528007969932</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5369116908529595</x>
+                    <y>0.6996821510641496</y>
+                    <w>0.2195413774682324</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Gas Mask" allowedtag="*" category="4" cost="1000" id="97">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4996137184553592</x>
+                    <y>0.5665397283983193</y>
+                    <w>0.9275226611764801</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5101418436355192</x>
+                    <y>0.5809937867184158</y>
+                    <w>0.8107456150743814</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.502165187472572</x>
+                    <y>0.5935637422344515</y>
+                    <w>1.032676662711181</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5014956214703434</x>
+                    <y>0.547532975085491</y>
+                    <w>0.9200850628441885</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5081510664311914</x>
+                    <y>0.5644627880519618</y>
+                    <w>0.8284087306978219</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.505907351125748</x>
+                    <y>0.53838455425982</y>
+                    <w>0.9176072076686521</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Hockey Mask" allowedtag="*" category="4" cost="1000" id="98">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5213324488631997</x>
+                    <y>0.5391000427102923</y>
+                    <w>0.8909877077527313</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.5374428153343113</y>
+                    <w>0.8543934561412655</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4940374684640094</x>
+                    <y>0.548450943349493</y>
+                    <w>0.7445720022523561</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4951078833595811</x>
+                    <y>0.4910052060868082</y>
+                    <w>0.8758383404720587</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5156313680206494</x>
+                    <y>0.5355942837488992</y>
+                    <w>0.8508213331521985</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5209073211138033</x>
+                    <y>0.5573266327341451</y>
+                    <w>0.8414669038277234</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Face Wrap" allowedtag="*" category="4" cost="500" id="99">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.506692176079667</x>
+                    <y>0.709100422854255</y>
+                    <w>0.8828535487341695</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5028482467406295</x>
+                    <y>0.7670708159433144</y>
+                    <w>0.9662357172984782</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5104872824041697</x>
+                    <y>0.7313047022240036</y>
+                    <w>1.056330765645371</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5036583041598539</x>
+                    <y>0.8284539226424414</y>
+                    <w>0.9067478508591548</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5133615224380745</x>
+                    <y>1.286579697288232</y>
+                    <w>1.028438165104379</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5238484916996965</x>
+                    <y>0.7945042200889118</y>
+                    <w>0.9418468550483092</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Red Nose" allowedtag="*" category="4" cost="500" id="100">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5050519963272917</x>
+                    <y>0.5279260463462575</y>
+                    <w>0.1686290847756533</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.5785722744090616</y>
+                    <w>0.197576383721867</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5219334192327962</x>
+                    <y>0.5447266324258234</y>
+                    <w>0.1670831387904207</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5373062763940576</x>
+                    <y>0.6283171555404516</y>
+                    <w>0.1672768855764312</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5172842231580854</x>
+                    <y>0.5853147831082588</y>
+                    <w>0.2359846941085903</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5366775976838782</x>
+                    <y>0.5922857204217941</y>
+                    <w>0.1668263969059686</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Pipe" allowedtag="*" category="4" cost="750" id="101">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5184100570725926</x>
+                    <y>0.8674415640464312</y>
+                    <w>0.159032718653556</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4191732975683271</x>
+                    <y>0.8686607490254742</y>
+                    <w>0.1863326809063206</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4407624345484166</x>
+                    <y>0.8222801159174887</y>
+                    <w>0.15757474956566</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4693161870178853</x>
+                    <y>0.9306769185021559</y>
+                    <w>0.1577574705841049</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.3975626047185618</x>
+                    <y>0.9790157193125683</y>
+                    <w>0.2225552461169225</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4396229699420369</x>
+                    <y>0.8854927732319653</y>
+                    <w>0.1573326183821161</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Surgical Mask" allowedtag="*" category="4" cost="500" id="102">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5066901536632029</x>
+                    <y>0.7371885894199227</y>
+                    <w>0.8186013776700953</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5129450681730938</x>
+                    <y>0.7505890654944163</y>
+                    <w>0.7919452909145194</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4997164516174281</x>
+                    <y>0.7242456243850046</y>
+                    <w>0.7997026248765112</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5130433038087691</x>
+                    <y>0.7474819991079204</y>
+                    <w>0.7519435054317842</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5031811800932844</x>
+                    <y>0.7734665260659387</y>
+                    <w>0.9472161843952362</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5220237654586525</x>
+                    <y>0.7918476043210274</y>
+                    <w>0.7987939199801521</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Beanie" allowedtag="*" category="2" cost="150" id="103">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5181269187676203</x>
+                    <y>0.16062647725062</y>
+                    <w>0.849176269774177</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5063552393996408</x>
+                    <y>0.2277840745690457</y>
+                    <w>0.9167515769619017</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4922139417633704</x>
+                    <y>0.1793703797941496</y>
+                    <w>0.7752633593369577</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5103710465337894</x>
+                    <y>0.133219345383488</y>
+                    <w>0.8263173205204081</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5129964225875108</x>
+                    <y>0.1751877511064748</y>
+                    <w>0.9547502603812888</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5202410559402642</x>
+                    <y>0.2220668771342053</y>
+                    <w>0.8881174707533598</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Soda Guzzler" allowedtag="*" category="2" cost="1000" id="104">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5140173685125936</x>
+                    <y>0.0699621421335915</y>
+                    <w>1.014650384865853</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5265559910334728</x>
+                    <y>0.0880202807697606</y>
+                    <w>1.188827858791415</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5143367272304637</x>
+                    <y>0.1034678423540167</y>
+                    <w>1.005348343696709</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4936493765736125</x>
+                    <y>0.1174380323272658</y>
+                    <w>1.006514128657552</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5240173436580175</x>
+                    <y>0.0942213856730882</y>
+                    <w>0.5636575646424852</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5362474264757373</x>
+                    <y>0.1442046259905934</y>
+                    <w>1.003803513798492</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+
+        </entry>
+
+        <entry name="Beret" allowedtag="*" category="2" cost="300" id="105">
+
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.2015496895881712</x>
+                    <y>0.1470345147585514</y>
+                    <w>0.2862992275247619</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5034974645751386</x>
+                    <y>0.1866049290226538</y>
+                    <w>0.9898227572152979</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5403590544112313</x>
+                    <y>0.192529311497853</y>
+                    <w>0.809086773820569</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.555691085454053</x>
+                    <y>0.1279305877105414</y>
+                    <w>0.8100249771794846</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5410015622877326</x>
+                    <y>0.1117586807720945</y>
+                    <w>0.9414510030340081</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.540084953811617</x>
+                    <y>0.1632454953503855</y>
+                    <w>0.8438578554264597</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+        </entry>
+
+        <entry name="Bowler" allowedtag="*" category="2" cost="500" id="106">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5115985584215444</x>
+                    <y>0.0370819254962556</y>
+                    <w>0.7287211451730986</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.514620368044662</x>
+                    <y>0.0809514948367654</y>
+                    <w>0.8538152762704555</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5042552296140736</x>
+                    <y>0.0855004019068867</y>
+                    <w>0.7220404261842403</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5054498400056174</x>
+                    <y>0.0367069518489412</y>
+                    <w>0.7228776920684916</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5081482361997917</x>
+                    <y>0.0110779767101697</y>
+                    <w>1.019797468641036</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5202410559402642</x>
+                    <y>0.072884049567253</y>
+                    <w>0.7209309305103431</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+
+        <entry name="Cheese" allowedtag="*" category="2" cost="250" id="107">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4978299471340336</x>
+                    <y>0.1573751282985874</y>
+                    <w>0.8757043065336186</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5099830811300099</x>
+                    <y>0.1934865668900484</y>
+                    <w>0.897065026278749</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5161542423046171</x>
+                    <y>0.1995726274405608</y>
+                    <w>0.7935326922267666</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5091793642354877</x>
+                    <y>0.1607739852594465</y>
+                    <w>0.776768213780582</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5486856405379704</x>
+                    <y>0.026562954731857</y>
+                    <w>0.7748862246977313</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.510679250341636</x>
+                    <y>0.1883834804458476</y>
+                    <w>0.8423332486329559</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Chef Hat" allowedtag="*" category="2" cost="300" id="108">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.7052835950693187</x>
+                    <y>-0.1188128774885454</y>
+                    <w>0.6967873719549807</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.606212116185719</x>
+                    <y>-0.0673310922663857</y>
+                    <w>0.816394716762951</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5936260728248432</x>
+                    <y>-0.0246583608978877</y>
+                    <w>0.6903952243639198</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.6094752786109077</x>
+                    <y>0.1121790106412353</y>
+                    <w>0.6911957950065703</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.6225943033102386</x>
+                    <y>0.0013795501532624</y>
+                    <w>0.8958503147217316</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5787163290989814</x>
+                    <y>0.0712561475849924</y>
+                    <w>0.6893343550733192</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Circlet" allowedtag="*" category="2" cost="1000" id="109">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.511832219312172</x>
+                    <y>0.1838260780117579</y>
+                    <w>0.6545165889716961</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.2625818347909935</y>
+                    <w>0.7668679238129541</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.497824793149952</x>
+                    <y>0.2664742857524565</y>
+                    <w>0.648512222638583</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5174910473362691</x>
+                    <y>0.1796754529428007</y>
+                    <w>0.6492642264597607</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5385732237467735</x>
+                    <y>0.2632899814422157</y>
+                    <w>0.915947787891138</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5026560571107301</x>
+                    <y>0.2184781908382192</y>
+                    <w>0.6475157112530787</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Cowboy Hat" allowedtag="*" category="2" cost="1500" id="110">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5002790934720441</x>
+                    <y>0.0912323149202033</y>
+                    <w>1.008344490330827</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.1493894260629158</y>
+                    <w>1.181439478311146</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4993216881448722</x>
+                    <y>0.0758845238443715</y>
+                    <w>0.9991002599026517</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5237624258960187</x>
+                    <y>0.06898961364457</y>
+                    <w>1.000258799691045</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5409760902051352</x>
+                    <y>0.0</y>
+                    <w>1.062992460263551</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5202430567365812</x>
+                    <y>0.0973841891630694</y>
+                    <w>0.9975650308822912</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Fez" allowedtag="*" category="2" cost="500" id="111">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5066901536632029</x>
+                    <y>0.0500213556236848</y>
+                    <w>0.5405352931897148</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5035046230693768</x>
+                    <y>0.0653494155261956</y>
+                    <w>0.4265782651760368</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4997164516174281</x>
+                    <y>0.0917117194202324</y>
+                    <w>0.5281474371434354</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5174910473362691</x>
+                    <y>0.0</y>
+                    <w>0.5766317922380155</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5472054295159172</x>
+                    <y>0.0</y>
+                    <w>0.4657513698319975</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5082882987428997</x>
+                    <y>0.0516010566329489</y>
+                    <w>0.5873597691881369</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Head Mirror" allowedtag="*" category="2" cost="100" id="112">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5134874953990025</x>
+                    <y>0.1162457876694715</y>
+                    <w>0.704929437889568</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5087437857511836</x>
+                    <y>0.1773334847785476</y>
+                    <w>0.7453757458283374</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5145411225309749</x>
+                    <y>0.1902370814372147</y>
+                    <w>0.6303370718970489</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5266032039000512</x>
+                    <y>0.0981606168093286</y>
+                    <w>0.6310680001203719</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5445138794547842</x>
+                    <y>0.1234376122065621</y>
+                    <w>0.8902747588642847</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5449428872691331</x>
+                    <y>0.1713635289822391</y>
+                    <w>0.6293684886584861</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Mohawk" allowedtag="*" category="2" cost="100" id="113">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5484004708185528</x>
+                    <y>0.0</y>
+                    <w>0.2064341157388494</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5379086949722047</x>
+                    <y>0.0</y>
+                    <w>0.2418687531693261</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5216689076674288</x>
+                    <y>0.0</y>
+                    <w>0.2058581296226903</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5311392201903883</x>
+                    <y>0.0</y>
+                    <w>0.2060968392332307</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5643056876330209</x>
+                    <y>0.0</y>
+                    <w>0.2347790155323099</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5099689676491244</x>
+                    <y>0.0</y>
+                    <w>0.2042272824584185</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Nurse Hat" allowedtag="*" category="2" cost="250" id="114">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.545253590800432</x>
+                    <y>0.0</y>
+                    <w>0.5400013752431956</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5035046230693768</x>
+                    <y>0.0611878943717964</y>
+                    <w>0.6327017587094267</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4940374684640094</x>
+                    <y>0.0810746911231252</y>
+                    <w>0.535050788224426</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4998565567603896</x>
+                    <y>0.0</y>
+                    <w>0.5356712240824147</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5084793732735588</x>
+                    <y>0.0</y>
+                    <w>0.7556972558076348</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5065295987803146</x>
+                    <y>0.0268904494985289</y>
+                    <w>0.5342286229919508</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Octopus" allowedtag="*" category="2" cost="500" id="115">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.3185144137621396</x>
+                    <y>0.1512726996258936</y>
+                    <w>0.5478625080391054</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.2984403361025938</x>
+                    <y>0.1925029785568077</y>
+                    <w>0.6248250928608887</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.3147326930283168</x>
+                    <y>0.1380899734074293</y>
+                    <w>0.5180959976594734</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.2374296576421141</x>
+                    <y>0.1627832883753531</y>
+                    <w>0.5186967730286586</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.2891279491011185</x>
+                    <y>0.2237479165013096</y>
+                    <w>0.5850512837929629</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.2624804672259559</x>
+                    <y>0.1819298584713184</y>
+                    <w>0.517299885354371</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Pirate Hat" allowedtag="*" category="2" cost="750" id="116">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5018201748176792</x>
+                    <y>0.0</y>
+                    <w>0.9637320055495108</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5071893349509732</x>
+                    <y>0.064387577303518</y>
+                    <w>1.129168700564436</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4824751068566608</x>
+                    <y>0.0537503180525502</y>
+                    <w>0.9548967703538644</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5001013130573472</x>
+                    <y>0.0477878549733438</y>
+                    <w>0.9560040525222939</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.503356654440067</x>
+                    <y>0.0808643165179398</y>
+                    <w>1.135664311914142</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4949970088095062</x>
+                    <y>0.0771170242467195</y>
+                    <w>0.953429464927041</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Safari Hat" allowedtag="*" category="2" cost="750" id="117">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5119201226393344</x>
+                    <y>0.0</y>
+                    <w>0.7307678306347556</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5027155497210993</x>
+                    <y>0.0</y>
+                    <w>0.8562133009805362</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5065636941845529</x>
+                    <y>0.0663903990317274</y>
+                    <w>0.7240683481853905</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5300317982566129</x>
+                    <y>0.0</y>
+                    <w>0.7249079656137465</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5424506407643889</x>
+                    <y>0.0</y>
+                    <w>0.757519924829054</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5147908867729356</x>
+                    <y>0.0</y>
+                    <w>0.7229557363830805</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Santa Hat" allowedtag="*" category="2" cost="750" id="118">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.2760699594303257</x>
+                    <y>0.0686349718978616</y>
+                    <w>0.745402036168896</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.3169823749922988</x>
+                    <y>0.1326853411504842</y>
+                    <w>0.8733596515755401</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.3147326930283168</x>
+                    <y>0.1274642036076729</y>
+                    <w>0.7385683912687137</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.2837307279493635</x>
+                    <y>0.1174401563263312</y>
+                    <w>0.7394248227021496</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.2775353212878685</x>
+                    <y>0.0</y>
+                    <w>1.043135556763121</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.2678225933921701</x>
+                    <y>0.1356441810020832</y>
+                    <w>0.7374334985324159</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Sherlock Hat" allowedtag="*" category="2" cost="1000" id="119">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.44964183004421</x>
+                    <y>0.1266214817117212</y>
+                    <w>0.8196105634856752</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.3763453345149687</x>
+                    <y>0.1445343180494501</y>
+                    <w>0.738890178998801</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.3679456068035581</x>
+                    <y>0.1174644062606252</y>
+                    <w>0.5607124178160563</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4813614067468478</x>
+                    <y>0.1155880291412672</y>
+                    <w>0.8130382883108806</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4705457818231219</x>
+                    <y>0.0725492197037558</y>
+                    <w>0.8125735860163927</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4355713574002453</x>
+                    <y>0.1441681163155295</y>
+                    <w>0.8108487177896803</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Sombrero" allowedtag="*" category="2" cost="500" id="120">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4678698696350347</x>
+                    <y>0.1653044841334618</y>
+                    <w>1.008568978558341</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4585416597553636</x>
+                    <y>0.1493894260629158</y>
+                    <w>1.181702502760572</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4638490841287049</x>
+                    <y>0.1487765390928804</y>
+                    <w>1.01075880753377</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.4875665807344695</x>
+                    <y>0.1274505639217519</y>
+                    <w>1.000481487797294</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4705429515917221</x>
+                    <y>0.1188416314219949</y>
+                    <w>1.114842299506408</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4690726909309905</x>
+                    <y>0.1686424843760067</y>
+                    <w>0.997326936120576</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Sunhat" allowedtag="*" category="2" cost="750" id="121">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.506692176079667</x>
+                    <y>0.2572255304685386</y>
+                    <w>0.9898858952630962</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5260536380309658</x>
+                    <y>0.2595585694227279</y>
+                    <w>1.159812233717365</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.488757256534137</x>
+                    <y>0.3215201673463046</y>
+                    <w>0.9808108882578908</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5074058841821228</x>
+                    <y>0.2883647331195174</y>
+                    <w>1.047167748342378</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4991565910428837</x>
+                    <y>0.2781437680239172</y>
+                    <w>1.16451852103428</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5073699332334269</x>
+                    <y>0.2934798015591779</y>
+                    <w>0.9980772347394263</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Tophat" allowedtag="*" category="2" cost="2000" id="122">
+
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5115985584215444</x>
+                    <y>0.0370819254962556</y>
+                    <w>0.7287211451730986</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.514620368044662</x>
+                    <y>0.0809514948367654</y>
+                    <w>0.8538152762704555</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5042552296140736</x>
+                    <y>0.0855004019068867</y>
+                    <w>0.7220404261842403</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5054498400056174</x>
+                    <y>0.0367069518489412</y>
+                    <w>0.7228776920684916</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5081482361997917</x>
+                    <y>0.0110779767101697</y>
+                    <w>1.019797468641036</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5202410559402642</x>
+                    <y>0.072884049567253</y>
+                    <w>0.7209309305103431</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+
+            <!--colors-->
+            <colors>
+                <!--green -->
+                <color>
+                    <c id="0">23661d</c>
+                    <c id="1">165016</c>
+                </color>
+
+                <!--red -->
+                <color>
+                    <c id="0">d40000</c>
+                    <c id="1">aa0000</c>
+                </color>
+            </colors>
+
+            <bounds>
+
+            </bounds>
+
+        </entry>
+        <entry name="Afro" allowedtag="*" category="2" cost="250" id="123">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5188974594404378</x>
+                    <y>0.0</y>
+                    <w>0.9601361490763624</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4630201841645064</x>
+                    <y>0.0</y>
+                    <w>0.9050600217054411</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4824630836036895</x>
+                    <y>0.0</y>
+                    <w>0.7653762376436027</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5123431403035379</x>
+                    <y>0.0</y>
+                    <w>0.7653563590111905</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5151304170628991</x>
+                    <y>0.0</y>
+                    <w>0.8934332971063714</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5079401601837531</x>
+                    <y>0.0</y>
+                    <w>0.8302844532123785</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Bob Wig" allowedtag="*" category="2" cost="100" id="124">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5133297469148037</x>
+                    <y>0.3710764111726547</y>
+                    <w>0.997977583535912</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5091845294231945</x>
+                    <y>0.3979786897250061</y>
+                    <w>0.9880667466008237</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4993216881448722</x>
+                    <y>0.3291466734517877</y>
+                    <w>0.8155773265495468</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5174910473362691</x>
+                    <y>0.3217518744291753</y>
+                    <w>0.9660551102907986</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5075369062174523</x>
+                    <y>0.3500051024457723</y>
+                    <w>1.104647806004619</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5169197340541536</x>
+                    <y>0.3834138693812684</y>
+                    <w>0.9994437786238923</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Curly Wig" allowedtag="*" category="2" cost="100" id="125">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5066941984961311</x>
+                    <y>0.2320376387245946</y>
+                    <w>1.026117486217232</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5118361002241632</x>
+                    <y>0.2803637585157725</y>
+                    <w>1.155144142137465</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4993216881448722</x>
+                    <y>0.2585941739527909</y>
+                    <w>0.9768632535323315</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5053254556579832</x>
+                    <y>0.2221639302478707</y>
+                    <w>0.9779960076636808</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5081538966625911</x>
+                    <y>0.2420562478503585</y>
+                    <w>1.150044717656116</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5060674148311028</x>
+                    <y>0.2654468139939437</y>
+                    <w>0.975362194153273</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Pigtails" allowedtag="*" category="2" cost="100" id="126">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5066901536632029</x>
+                    <y>0.1136764617094403</y>
+                    <w>1.012803918634141</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4886781007265162</x>
+                    <y>0.1222211212906999</y>
+                    <w>1.186664423455146</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4922139417633704</x>
+                    <y>0.1363651716132751</y>
+                    <w>1.003518805369585</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5083287357936022</x>
+                    <y>0.1199507232216818</y>
+                    <w>1.004682468828681</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4959725807181995</x>
+                    <y>0.1306868647927462</y>
+                    <w>1.227850609065797</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.476683720120608</x>
+                    <y>0.1291712303760497</y>
+                    <w>1.001976786761131</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Spikey Wig" allowedtag="*" category="2" cost="100" id="127">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.5021781425318227</x>
+                    <y>0.0732201995084962</y>
+                    <w>0.9264002200389113</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5386764420137721</x>
+                    <y>0.0949948162236491</y>
+                    <w>1.085428445501808</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5060747485637222</x>
+                    <y>0.1117023073164471</y>
+                    <w>0.9179072325878249</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5174910473362691</x>
+                    <y>0.0387077589685861</y>
+                    <w>0.918971622312947</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5357741248924512</x>
+                    <y>0.018232739559829</y>
+                    <w>1.023117330072907</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5082882987428997</x>
+                    <y>0.1275325902540644</y>
+                    <w>0.9164967657127537</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Wavy Wig" allowedtag="*" category="2" cost="100" id="128">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4584615882440976</x>
+                    <y>0.3442114137106747</y>
+                    <w>1.098560443960862</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.4133583246053448</x>
+                    <y>0.3725455604399322</y>
+                    <w>1.162792327527665</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.4383918498375859</x>
+                    <y>0.3373473629221655</y>
+                    <w>0.9641707061456858</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.474261467935922</x>
+                    <y>0.3507444616724369</y>
+                    <w>1.03550370645294</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.4705429515917221</x>
+                    <y>0.4082183393239826</y>
+                    <w>1.202469093873115</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.4472600094837745</x>
+                    <y>0.3887829392436054</y>
+                    <w>1.0967425035164</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Head Wrap" allowedtag="*" category="2" cost="500" id="129">
+            <bounds>
+                <bound fuzzle="0">
+                    <x>0.4970310926307189</x>
+                    <y>0.1584194061256845</y>
+                    <w>0.8201990866767248</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="1">
+                    <x>0.5086608501139773</x>
+                    <y>0.8201990866767248</y>
+                    <w>0.9125787296156052</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="2">
+                    <x>0.5040768846950001</x>
+                    <y>0.1771389456192061</y>
+                    <w>0.7717345345898969</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="3">
+                    <x>0.5224162662627519</x>
+                    <y>0.1602982094687878</y>
+                    <w>0.8950316477916763</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="4">
+                    <x>0.5138483222388262</x>
+                    <y>0.1640795376806171</y>
+                    <w>1.007633134085043</w>
+                    <h>asp</h>
+                </bound>
+                <bound fuzzle="5">
+                    <x>0.5042867061090314</x>
+                    <y>0.1801795416961966</y>
+                    <w>0.8505785302550415</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+
+        <entry name="Bronze Grill" allowedtag="YF" category="4" cost="100" id="130">
+
+            <bounds>
+                <bound fuzzle="4">
+                    <x>0.4642513471901463</x>
+                    <y>0.7171015084341539</y>
+                    <w>0.3721556174432822</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+
+
+        <entry name="Silver Grill" allowedtag="YF" category="4" cost="500" id="131">
+            <bounds>
+                <bound fuzzle="4">
+                    <x>0.4560804691391568</x>
+                    <y>0.7153251013874873</y>
+                    <w>0.3716574967169316</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Gold Grill" allowedtag="YF" category="4" cost="1000" id="132">
+            <bounds>
+                <bound fuzzle="4">
+                    <x>0.4705429515917221</x>
+                    <y>0.7153251013874873</y>
+                    <w>0.3716574967169316</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+        <entry name="Platinum Grill" allowedtag="YF" category="4" cost="10000" id="133">
+            <bounds>
+                <bound fuzzle="4">
+                    <x>0.4612286600552461</x>
+                    <y>0.7250764421968486</y>
+                    <w>0.3716574967169316</w>
+                    <h>asp</h>
+                </bound>
+            </bounds>
+        </entry>
+    </entries>
+</definitions>

@@ -1,0 +1,23 @@
+<map width="1280" height="25600" clouds="on" snow="off" difficulty="easy">
+	
+	<ground name="bg-desert-temple1" y="-200" height="210" real-height="1280"/>
+	
+    <background>
+        <layer parallaxY="1">bg-desert-sky</layer>
+        <layer parallaxY=".1" height="1280" yOffset=".5">bg-desert-dunes1</layer>
+        <layer parallaxY=".2" height="1280" yOffset=".6">bg-desert-dunes2</layer>
+        <layer parallaxY=".3" height="1280" yOffset=".7">bg-desert-dunes3</layer>
+        <layer parallaxY=".4" height="1280" yOffset=".75">bg-desert-pyramid</layer>
+        <layer parallaxY=".75" height="1280" yOffset=".9">bg-desert-sphinxcliff</layer>
+        <layer parallaxY="1" height="497" yOffset=".5" layerOffset="1080">bg-desert-temple2</layer>
+    </background>
+
+    <platforms physicsY="56" physicsHeight="62">
+        <platform name="platform-desert-cyan"/>
+        <platform name="platform-desert-green"/>
+        <platform name="platform-desert-orange"/>
+        <platform name="platform-desert-red"/>
+        <platform name="platform-desert-indigo"/>
+    </platforms>
+
+</map>

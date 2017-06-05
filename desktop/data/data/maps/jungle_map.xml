@@ -1,0 +1,25 @@
+<map width="1280" yOffset="0" height="25600" clouds="on" snow="off" difficulty="easy">
+    
+	<ground name="bg-jungle-ground" y="-233" height="256" real-height="512"/>
+    
+    <background>
+        <layer parallaxY=".75">bg-jungle-sky</layer>
+        <layer parallaxY=".35" height="1280" yOffset=".8">bg-jungle-hills</layer>
+        <layer parallaxY=".4" height="1280" yOffset=".75">bg-jungle-hills2</layer>
+        <layer parallaxY=".65" height="1028" yOffset=".55" layerOffset="1280">bg-jungle-BigTrees1B</layer>
+        <layer parallaxY=".65" height="1280" yOffset=".55">bg-jungle-BigTrees1A</layer>
+        <layer parallaxY=".75" height="979" yOffset=".4" layerOffset="1280">bg-jungle-BigTrees2B</layer>
+        <layer parallaxY=".75" height="1280" yOffset=".4">bg-jungle-BigTrees2A</layer>
+        <layer parallaxY=".95" height="648" yOffset=".25" layerOffset="1792">bg-jungle-BigTrees3B</layer>
+        <layer parallaxY=".95" height="1280" yOffset=".25" layerOffset="512">bg-jungle-BigTrees3A</layer>
+    </background>
+
+    <platforms physicsY="94" physicsHeight="104">
+        <platform name="platform-jungle-multi"/>
+        <platform name="platform-jungle-orange"/>
+        <platform name="platform-jungle-purple"/>
+        <platform name="platform-jungle-red"/>
+        <platform name="platform-jungle-yellow"/>
+    </platforms>
+
+</map>

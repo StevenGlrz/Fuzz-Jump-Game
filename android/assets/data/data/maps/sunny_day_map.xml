@@ -1,0 +1,23 @@
+<map width="1280" height="25600" clouds="on" snow="off" difficulty="easy">
+	
+	<ground name="ground" y="-233" height="235" real-height="275"/>
+	
+    <background>
+        <layer parallaxY=".75">bg-sky</layer>
+        <layer parallaxY=".2" height="1280" yOffset=".7">bg-grass-mountains</layer>
+        <layer parallaxY=".35" height="1280" yOffset=".75">bg-grass-forest1</layer>
+        <layer parallaxY=".4" height="1280" yOffset=".7">bg-grass-forest2</layer>
+        <layer parallaxY=".5" height="1280" yOffset=".65">bg-grass-hill1</layer>
+        <layer parallaxY=".75" height="1280" yOffset=".6">bg-grass-hill2</layer>
+        <layer parallaxY=".85" height="1013" yOffset=".4">bg-grass-vineyard</layer>
+    </background>
+
+    <platforms physicsY="56" physicsHeight="62">
+        <platform name="platform-grass-blue"/>
+        <platform name="platform-grass-green"/>
+        <platform name="platform-grass-purple"/>
+        <platform name="platform-grass-red"/>
+        <platform name="platform-grass-yellow"/>
+    </platforms>
+
+</map>

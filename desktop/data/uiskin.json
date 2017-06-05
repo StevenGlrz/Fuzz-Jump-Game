@@ -1,0 +1,25 @@
+{
+com.badlogic.gdx.graphics.Color: {
+	green: { a: 1, b: 0, g: 1, r: 0 },
+    money_green: { a: 1, b: 0.1647058823529412, g: 0.4235294117647059, r: 0.1294117647058824 },
+	white: { a: 1, b: 1, g: 1, r: 1 },
+	red: { a: 1, b: 0, g: 0, r: 1 },
+	black: { a: 1, b: 0, g: 0, r: 0 },
+	fuzzyellow: { a: 1, b: .73, g: .96, r: .98 },
+  	fuzzgreen: { a: 1, b: .098, g: .7137, r: .6745 }
+},
+
+com.badlogic.gdx.scenes.scene2d.ui.Skin$TintedDrawable: {
+	dialogDim: { name: white, color: { r: 0, g: 0, b: 0, a: 0.45 } }
+},
+
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+  default: { font: default-font, fontColor: white },
+  small: { font: small-font, fontColor: white },
+  profile: { font: profile-font, fontColor: white },
+  ingame: { font: ingame-font, fontColor: white },
+  large: { font: large-font, fontColor: white },
+  big: { font: big-font, fontColor: white }
+}
+
+}

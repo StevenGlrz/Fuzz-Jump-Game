@@ -1,0 +1,12 @@
+
+balloonsspecial.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+item-balloons
+  rotate: false
+  xy: 0, 0
+  size: 166, 191
+  orig: 166, 191
+  offset: 0, 0
+  index: -1

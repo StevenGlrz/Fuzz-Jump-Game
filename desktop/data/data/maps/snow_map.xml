@@ -1,0 +1,23 @@
+<map width="1280" yOffset="0" height="25600" clouds="on" snow="on" difficulty="easy">
+    
+	<ground name="bg-snow-ground" y="-233" height="240" real-height="487"/>
+    
+    <background>
+        <layer parallaxY=".75">bg-snow</layer>
+        <layer parallaxY=".05" height="1175" yOffset=".15">bg-snow-mountains</layer>
+        <layer parallaxY=".25" height="1280" yOffset=".35">bg-snow-forest1</layer>
+        <layer parallaxY=".655" height="596" yOffset=".375" layerOffset="1280">bg-snow-forestLarge2B</layer>
+        <layer parallaxY=".65" height="1280" yOffset=".375">bg-snow-forestLarge2A</layer>
+        <layer parallaxY=".95" height="1280" yOffset=".25" layerOffset="1767">bg-snow-forestLarge1B</layer>
+        <layer parallaxY=".95" height="1280" yOffset=".25" layerOffset="487">bg-snow-forestLarge1A</layer>
+    </background>
+
+    <platforms physicsY="36" physicsHeight="56">
+        <platform name="platform-snow-multi"/>
+        <platform name="platform-snow-green"/>
+        <platform name="platform-snow-purple"/>
+        <platform name="platform-snow-red"/>
+        <platform name="platform-snow-yellow"/>
+    </platforms>
+
+</map>

@@ -1,0 +1,87 @@
+
+bombspecial.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+explosion0001
+  rotate: false
+  xy: 1, 656
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0002
+  rotate: false
+  xy: 1, 398
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0003
+  rotate: false
+  xy: 259, 656
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0004
+  rotate: false
+  xy: 1, 140
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0005
+  rotate: false
+  xy: 259, 398
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0006
+  rotate: false
+  xy: 517, 656
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0007
+  rotate: false
+  xy: 259, 140
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0008
+  rotate: false
+  xy: 517, 398
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+explosion0009
+  rotate: false
+  xy: 517, 140
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+bomb
+  rotate: false
+  xy: 1, 1
+  size: 99, 137
+  orig: 99, 137
+  offset: 0, 0
+  index: -1
+
+bombspecial2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+explosion0010
+  rotate: false
+  xy: 1, 1
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1

@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.facebook.login.LoginManager;
 import com.fuzzjump.game.game.ScreenHandler;
 import com.fuzzjump.game.game.Textures;
 import com.fuzzjump.game.game.UnlockableColorizer;
@@ -31,13 +30,9 @@ import com.fuzzjump.game.game.screens.WaitingScreen;
 import com.fuzzjump.game.model.character.UnlockableDefinitions;
 import com.fuzzjump.game.model.map.GameMapParser;
 import com.fuzzjump.game.model.profile.LocalProfile;
-import com.fuzzjump.game.util.SecurePreferences;
 
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -49,7 +44,7 @@ public class FuzzJump extends Game {
 
     public static FuzzJump Game;
 
-    private final Runnable createdCallback;
+    private final VectorGraphicsLoader vectorGraphicsLoader;
 
     private SpriteBatch batch;
     private OrthographicCamera camera;
@@ -59,7 +54,6 @@ public class FuzzJump extends Game {
     private Stage uiStage;
     private UnlockableDefinitions unlockableDefinitions;
 
-    private final SecurePreferences preferences;
     private final GameMapParser mapParser = new GameMapParser();
 
     private LocalProfile profile;
@@ -70,9 +64,9 @@ public class FuzzJump extends Game {
     private UnlockableColorizer colorizer;
     private ExecutorService workerService;
 
-    public FuzzJump(SecurePreferences preferences) {
-        this.preferences = preferences;
-        this.workerService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
+    public FuzzJump(ExecutorService workerService, VectorGraphicsLoader vectorGraphicsLoader) {
+        this.workerService = workerService;
+        this.vectorGraphicsLoader = vectorGraphicsLoader;
     }
 
     @Override
@@ -172,16 +166,15 @@ public class FuzzJump extends Game {
         unlockableDefinitions.init();
 
         profile = new LocalProfile();
-        if (preferences.containsKey("data")) {
-            try {
-                profile.load(new JSONObject(preferences.getString("data")));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
 
-        if (createdCallback != null)
-            createdCallback.run();
+        //TODO load data.
+//        if (preferences.containsKey("data")) {
+//            try {
+//                profile.load(new JSONObject(preferences.getString("data")));
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public void onPause() {
@@ -218,20 +211,12 @@ public class FuzzJump extends Game {
         return uiStage;
     }
 
-    public SecurePreferences getPreferences() {
-        return preferences;
-    }
-
     public LocalProfile getProfile() {
         return profile;
     }
 
     public GameMapParser getMapParser() {
         return mapParser;
-    }
-
-    public FuzzJumpApplication getContext() {
-        return context;
     }
 
     public boolean isChristmasTime() {
@@ -243,11 +228,12 @@ public class FuzzJump extends Game {
     }
 
     public boolean playingSound() {
-        return preferences.containsKey("sound") && preferences.getString("sound").equals("1");
+        //return preferences.containsKey("sound") && preferences.getString("sound").equals("1"); TODO playing sound
+        return false;
     }
 
     public void toggleSound() {
-        preferences.put("sound", playingSound() ? "0" : "1");
+        //preferences.put("sound", playingSound() ? "0" : "1"); TODO preferences stuff
     }
 
     public UnlockableDefinitions getUnlockableDefinitions() {
