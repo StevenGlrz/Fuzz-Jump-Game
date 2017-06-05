@@ -63,7 +63,6 @@ public class FuzzJump extends Game {
     private final GameMapParser mapParser = new GameMapParser();
 
     private LocalProfile profile;
-    private FuzzJumpApplication context;
     private SnowActor snow;
     private ScreenHandler screenHandler;
     private boolean christmasTime;
@@ -71,10 +70,8 @@ public class FuzzJump extends Game {
     private UnlockableColorizer colorizer;
     private ExecutorService workerService;
 
-    public FuzzJump(FuzzJumpApplication context, SecurePreferences preferences, Runnable createdCallback) {
-        this.context = context;
+    public FuzzJump(SecurePreferences preferences) {
         this.preferences = preferences;
-        this.createdCallback = createdCallback;
         this.workerService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() * 2);
     }
 
@@ -185,10 +182,6 @@ public class FuzzJump extends Game {
 
         if (createdCallback != null)
             createdCallback.run();
-    }
-
-    public void loginWithFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(context, Arrays.asList("public_profile", "email", "user_friends"));
     }
 
     public void onPause() {
