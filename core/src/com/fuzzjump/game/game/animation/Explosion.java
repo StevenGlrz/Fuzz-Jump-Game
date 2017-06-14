@@ -26,7 +26,7 @@ public class Explosion extends AnimationActor {
     private void push(World world) {
         Vector2 position = new Vector2(getX() + SIZE / 2, getY() + SIZE / 2);
         for (int i = 0; i < world.getScreen().getPlayers().size(); i++) {
-            Player player = world.getScreen().getPlayers().valueAt(i);
+            Player player = world.getScreen().getPlayers().get(i);
             if (player.getSpecials().getCurrentSpecial() == SpecialType.SHIELD) {
                 player.getSpecials().playShieldAnim();
             } else {

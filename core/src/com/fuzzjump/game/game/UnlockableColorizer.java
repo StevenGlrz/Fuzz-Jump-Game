@@ -1,12 +1,12 @@
 package com.fuzzjump.game.game;
 
-import android.util.SparseArray;
-
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fuzzjump.game.VectorGraphicsLoader;
 import com.fuzzjump.game.model.character.Unlockable;
 import com.fuzzjump.game.model.character.UnlockableDefinition;
 import com.steveadoo.customizetextures.CColorGroup;
+
+import java.util.Map;
 
 /**
  * Created by stephen on 8/21/2015.
@@ -22,10 +22,10 @@ public class UnlockableColorizer {
     /**
      * colorize the definitions with the default colors
      */
-    public TextureRegion[] colorize(SparseArray<UnlockableDefinition> definitions) {
+    public TextureRegion[] colorize(Map<Integer, UnlockableDefinition> definitions) {
         TextureRegion[] regions = new TextureRegion[definitions.size()];
         for(int i = 0; i < regions.length; i++) {
-            regions[i] = colorize(definitions.valueAt(i), 0);
+            regions[i] = colorize(definitions.get(i), 0);
         }
         return regions;
     }

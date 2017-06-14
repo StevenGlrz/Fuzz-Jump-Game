@@ -1,13 +1,10 @@
 package com.fuzzjump.game.game.screens;
 
-import android.util.SparseArray;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -28,7 +25,6 @@ import com.fuzzjump.game.game.ui.GameUI;
 import com.fuzzjump.game.model.World;
 import com.fuzzjump.game.model.map.GameMap;
 import com.fuzzjump.game.model.map.GameMapGround;
-import com.fuzzjump.game.model.map.GameMapParser;
 import com.fuzzjump.game.model.map.builder.GameMapBuilder;
 import com.fuzzjump.game.model.profile.PlayerProfile;
 import com.fuzzjump.game.model.profile.Profile;
@@ -37,13 +33,13 @@ import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.net.requests.GetAppearanceRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.kerpowgames.fuzzjump.common.Game;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class GameScreen extends StageScreen<GameScreenAttachment> implements GameSessionWatcher {
@@ -63,7 +59,7 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
     private Random random;
 
     private Platform[] winnerPlatforms = new Platform[4];
-    private SparseArray<Player> players = new SparseArray<Player>(4);
+    private Map<Integer, Player> players = new HashMap<>(4);
 
     private String mapName;
     private boolean gameStarted;
@@ -78,7 +74,7 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
 
     private WebRequestCallback getAppearanceCallback = new WebRequestCallback() {
         @Override
-        public void onResponse(JSONObject response) {
+        public void onResponse(JsonObject response) {
             updateAppearances(response);
         }
     };
@@ -213,9 +209,9 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
     }
 
     public void downloadAppearances() {
-        ArrayList<Long> ids = new ArrayList<Long>();
+        ArrayList<Long> ids = new ArrayList<>();
         for (int i = 0; i < players.size(); i++) {
-            PlayerProfile profile = players.valueAt(i).getProfile();
+            PlayerProfile profile = players.get(i).getProfile();
             if (profile.getAppearance().loaded())
                 continue;
             ids.add(profile.getProfileId());
@@ -229,30 +225,31 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
         getAppearanceRequest.connect(getAppearanceCallback);
     }
 
-    public void updateAppearances(JSONObject response) {
+    public void updateAppearances(JsonObject response) {
         synchronized (getAppearanceCallback) {
             try {
-                if (response.has(WebRequest.RESPONSE_KEY) && response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
-                    JSONArray payload = response.getJSONArray(WebRequest.PAYLOAD_KEY);
-                    for (int i = 0; i < payload.length(); i++) {
-                        JSONObject appearance = payload.getJSONObject(i);
-                        long profileId = appearance.getLong("ProfileId");
+                if (response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
+                    JsonArray payload = response.getAsJsonArray(WebRequest.PAYLOAD_KEY);
+                    for (int i = 0; i < payload.size(); i++) {
+                        JsonObject appearance = payload.get(i).getAsJsonObject();
+                        long profileId = appearance.get("ProfileId").getAsLong();
                         PlayerProfile profile = getProfile(profileId);
                         if (profile == null)
                             continue;
-                        profile.setName(appearance.getString("DisplayName"));
+                        profile.setName(appearance.get("DisplayName").getAsString());
                         profile.getAppearance().load(appearance);
                     }
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                // ...
             }
         }
     }
 
     public PlayerProfile getProfile(long profileId) {
-        for(int i = 0; i < players.size(); i++) {
-            PlayerProfile profile = players.valueAt(i).getProfile();
+        for (int i = 0; i < players.size(); i++) {
+            PlayerProfile profile = players.get(i).getProfile();
             if (profile.getProfileId() == profileId)
                 return profile;
         }
@@ -262,7 +259,7 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
     public void playerFinished(Player player) {
         int place = 0;
         for (int i = 0; i < getPlayers().size(); i++) {
-            if (getPlayers().valueAt(i).isFinished()) {
+            if (getPlayers().get(i).isFinished()) {
                 place++;
             }
         }
@@ -330,8 +327,8 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
     }
 
     public void removePlayers() {
-        for(int i = 0, n = players.size(); i < n; i++) {
-            Player player = players.valueAt(i);
+        for (int i = 0, n = players.size(); i < n; i++) {
+            Player player = players.get(i);
             worldStage.removeGameActor(player);
             world.getPhysicsActors().remove(player);
         }
@@ -394,7 +391,7 @@ public class GameScreen extends StageScreen<GameScreenAttachment> implements Gam
         return world;
     }
 
-    public SparseArray<Player> getPlayers() {
+    public Map<Integer, Player> getPlayers() {
         return players;
     }
 

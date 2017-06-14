@@ -1,12 +1,8 @@
 package com.fuzzjump.game.model.profile;
 
-import com.badlogic.gdx.utils.Json;
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.player.Friends;
 import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Steveadoo on 9/30/2015.

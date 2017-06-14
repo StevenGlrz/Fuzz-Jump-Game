@@ -3,10 +3,9 @@ package com.fuzzjump.game.net.requests;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.fuzzjump.game.FuzzJump;
+import com.fuzzjump.game.model.profile.FacebookProfile;
 import com.fuzzjump.game.model.profile.Profile;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 /**
  * Kerpow Games, LLC
@@ -15,36 +14,28 @@ import org.json.JSONObject;
 public class RegisterWebRequest extends WebRequest {
 
     public RegisterWebRequest(String email, String username, String password) {
-        try {
-            JSONObject kerpowMap = new JSONObject();
-            kerpowMap.put("type", "Kerpow");
-            kerpowMap.put("Password", password);
+        JsonObject kerpowMap = new JsonObject();
+        kerpowMap.addProperty("type", "Kerpow");
+        kerpowMap.addProperty("Password", password);
 
-            parameters.put("Email", email);
-            parameters.put("Username", username);
-            parameters.put("GameCode", "FuzzJump");
-            parameters.put("RegistrationMethod", kerpowMap);
-        } catch (JSONException e) {
-
-        }
+        parameters.addProperty("Email", email);
+        parameters.addProperty("Username", username);
+        parameters.addProperty("GameCode", "FuzzJump");
+        parameters.add("RegistrationMethod", kerpowMap);
     }
 
     public RegisterWebRequest(FacebookProfile facebookProfile) {
         Profile profile = FuzzJump.Game.getProfile();
 
-        try {
-            JSONObject facebookMap = new JSONObject();
-            facebookMap.put("type", "Facebook");
-            facebookMap.put("Token", facebookProfile.getAuthToken());
-            facebookMap.put("Id", String.valueOf(facebookProfile.getId()));
+        JsonObject facebookMap = new JsonObject();
+        facebookMap.addProperty("type", "Facebook");
+        facebookMap.addProperty("Token", facebookProfile.getAuthToken());
+        facebookMap.addProperty("Id", String.valueOf(facebookProfile.getId()));
 
-            parameters.put("Email", facebookProfile.getEmail());
-            parameters.put("Username", facebookProfile.getName());
-            parameters.put("GameCode", "FuzzJump");
-            parameters.put("RegistrationMethod", facebookMap);
-        } catch (JSONException e) {
-
-        }
+        parameters.addProperty("Email", facebookProfile.getEmail());
+        parameters.addProperty("Username", facebookProfile.getName());
+        parameters.addProperty("GameCode", "FuzzJump");
+        parameters.add("RegistrationMethod", facebookMap);
     }
 
 

@@ -2,14 +2,10 @@ package com.fuzzjump.game.net.requests;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
-import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.model.character.Unlockable;
 import com.fuzzjump.game.model.profile.LocalProfile;
-import com.fuzzjump.game.model.profile.Profile;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -20,26 +16,22 @@ public class GameSaveWebRequest extends AuthenticatedRequest {
 
     public GameSaveWebRequest(LocalProfile profile, long[] equips, List<Unlockable> diffs) {
         super(profile);
-        try {
-            JSONArray equipsArray = new JSONArray();
-            for (int i = 0; i < equips.length; i++) {
-                JSONObject obj = new JSONObject();
-                obj.put("Slot", i);
-                obj.put("UnlockableId", equips[i]);
-                equipsArray.put(obj);
-            }
-            parameters.put("ItemSlots", equipsArray);
-
-            JSONArray unlockablesArray = new JSONArray();
-            for (Unlockable unlockable : diffs) {
-                JSONObject obj = new JSONObject();
-                obj.put("ColorIndex", unlockable.getColorIndex());
-                obj.put("UnlockableId", unlockable.getId());
-            }
-            parameters.put("Unlockables", unlockablesArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
+        JsonArray equipsArray = new JsonArray();
+        for (int i = 0; i < equips.length; i++) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("Slot", i);
+            obj.addProperty("UnlockableId", equips[i]);
+            equipsArray.add(obj);
         }
+        parameters.add("ItemSlots", equipsArray);
+
+        JsonArray unlockablesArray = new JsonArray();
+        for (Unlockable unlockable : diffs) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("ColorIndex", unlockable.getColorIndex());
+            obj.addProperty("UnlockableId", unlockable.getId());
+        }
+        parameters.add("Unlockables", unlockablesArray);
     }
 
     @Override

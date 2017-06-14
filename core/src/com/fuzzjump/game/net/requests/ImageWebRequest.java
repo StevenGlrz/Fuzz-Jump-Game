@@ -1,18 +1,9 @@
 package com.fuzzjump.game.net.requests;
 
-import android.opengl.GLES20;
-import android.opengl.GLUtils;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.net.HttpParametersUtils;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Steven on 12/12/2014.

@@ -1,7 +1,5 @@
 package com.fuzzjump.game.game.ui;
 
-import android.widget.ImageButton;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -36,19 +33,18 @@ import com.fuzzjump.game.game.ui.components.CategoryFrame;
 import com.fuzzjump.game.game.ui.components.Fuzzle;
 import com.fuzzjump.game.model.character.Unlockable;
 import com.fuzzjump.game.model.character.UnlockableDefinition;
-
 import com.fuzzjump.game.net.requests.GameSaveWebRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
 import com.fuzzjump.game.util.ColorDrawable;
+import com.google.gson.JsonObject;
 import com.steveadoo.customizetextures.CColorGroup;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.List;
 
-import static com.fuzzjump.game.util.Styles.*;
+import static com.fuzzjump.game.util.Styles.createCFrameStyle;
+import static com.fuzzjump.game.util.Styles.createDefaultTBStyle;
+import static com.fuzzjump.game.util.Styles.createDialogStyle;
 
 public class CharacterSelectionUI extends StageUI implements Appearance.AppearanceChangeListener {
 
@@ -415,15 +411,15 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             WebRequest saveRequest = new GameSaveWebRequest(game.getProfile(), appearance.getEquips(), appearance.getDiffs());
             saveRequest.connect(new WebRequestCallback() {
                 @Override
-                public void onResponse(JSONObject response) {
+                public void onResponse(JsonObject response) {
                     ((MenuUI) parent).showMain();
                     try {
-                        if (response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
+                        if (response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
                             dialog.hide();
                             messageLabel.setText("Loading...");
                             return;
                         }
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                     //weirdest flow control ever

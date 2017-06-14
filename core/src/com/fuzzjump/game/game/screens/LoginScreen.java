@@ -1,7 +1,5 @@
 package com.fuzzjump.game.game.screens;
 
-import android.util.Log;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -22,9 +20,6 @@ import com.fuzzjump.game.net.requests.RegisterWebRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
 import com.google.gson.JsonObject;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LoginScreen extends StageScreen {
 
@@ -92,7 +87,7 @@ public class LoginScreen extends StageScreen {
 
     private WebRequestCallback loginCallback = new WebRequestCallback() {
         @Override
-        public void onResponse(JSONObject response) {
+        public void onResponse(JsonObject response) {
             login(response);
         }
     };

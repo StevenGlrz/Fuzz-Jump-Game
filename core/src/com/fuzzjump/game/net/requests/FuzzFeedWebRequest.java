@@ -2,12 +2,7 @@ package com.fuzzjump.game.net.requests;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
-import com.badlogic.gdx.net.HttpParametersUtils;
 import com.fuzzjump.game.game.ui.components.FuzzFeed;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by Steven on 12/10/2014.

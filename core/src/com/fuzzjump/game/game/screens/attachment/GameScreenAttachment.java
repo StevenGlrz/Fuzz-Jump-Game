@@ -1,10 +1,5 @@
 package com.fuzzjump.game.game.screens.attachment;
 
-import android.util.SparseArray;
-
-import com.fuzzjump.game.game.ui.WaitingUI;
-import com.fuzzjump.game.net.GameSession;
-
 public class GameScreenAttachment implements ScreenAttachment {
 
     private final int mapId;

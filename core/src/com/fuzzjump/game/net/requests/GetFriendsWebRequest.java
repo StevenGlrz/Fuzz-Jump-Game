@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.fuzzjump.game.model.profile.LocalProfile;
 
-import org.json.JSONException;
-
 public class GetFriendsWebRequest extends AuthenticatedRequest {
 
     public GetFriendsWebRequest(LocalProfile profile) {

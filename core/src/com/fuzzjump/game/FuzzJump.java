@@ -243,4 +243,8 @@ public class FuzzJump extends Game {
     public ExecutorService getWorkerService() {
         return workerService;
     }
+
+    public void loginWithFacebook() {
+        // TODO - Filler
+    }
 }

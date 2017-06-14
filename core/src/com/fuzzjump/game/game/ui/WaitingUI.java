@@ -34,6 +34,7 @@ import com.fuzzjump.game.model.profile.PlayerProfile;
 import com.fuzzjump.game.model.profile.Profile;
 
 import java.util.List;
+import java.util.Map;
 
 import static com.fuzzjump.game.util.Styles.*;
 
@@ -162,9 +163,9 @@ public class WaitingUI extends StageUI {
         add(dropdownTable).expand().fill();
     }
 
-    public void setPlayers(SparseArray<PlayerProfile> players) {
+    public void setPlayers(Map<Integer, PlayerProfile> players) {
         for(int i = 0; i < 4; i++) {
-            PlayerProfile profile = players.valueAt(i);
+            PlayerProfile profile = players.get(i);
             playerSlots[i].setPlayer(profile);
             if (profile != null) {
                 if (profile == game.getProfile()) {

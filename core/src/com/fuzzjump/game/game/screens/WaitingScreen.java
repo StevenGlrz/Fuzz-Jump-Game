@@ -1,7 +1,5 @@
 package com.fuzzjump.game.game.screens;
 
-import android.util.SparseArray;
-
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -15,7 +13,6 @@ import com.fuzzjump.game.game.StageUI;
 import com.fuzzjump.game.game.Textures;
 import com.fuzzjump.game.game.screens.attachment.GameScreenAttachment;
 import com.fuzzjump.game.game.screens.attachment.MenuScreenAttachment;
-import com.fuzzjump.game.game.screens.attachment.ScreenAttachment;
 import com.fuzzjump.game.game.screens.attachment.WaitingScreenAttachment;
 import com.fuzzjump.game.model.profile.PlayerProfile;
 import com.fuzzjump.game.net.GameSession;
@@ -23,13 +20,13 @@ import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.net.requests.GetAppearanceRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.kerpowgames.fuzzjump.common.Lobby;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WaitingScreen extends StageScreen<WaitingScreenAttachment> implements GameSessionWatcher {
 
@@ -41,7 +38,7 @@ public class WaitingScreen extends StageScreen<WaitingScreenAttachment> implemen
 
     private WebRequestCallback getAppearanceCallback = new WebRequestCallback() {
         @Override
-        public void onResponse(JSONObject response) {
+        public void onResponse(JsonObject response) {
             updateAppearances(response);
         }
     };
@@ -49,7 +46,7 @@ public class WaitingScreen extends StageScreen<WaitingScreenAttachment> implemen
     private Lobby.ReadySet.Builder readySetBuilder = Lobby.ReadySet.newBuilder();
     private Lobby.MapSlotSet.Builder mapSlotSetBuilder = Lobby.MapSlotSet.newBuilder();
 
-    private SparseArray<PlayerProfile> players = new SparseArray<>();
+    private Map<Integer, PlayerProfile> players = new HashMap<>();
     private PlayerProfile[] newPlayers;
 
     private Dialog progressDialog;
@@ -219,23 +216,22 @@ public class WaitingScreen extends StageScreen<WaitingScreenAttachment> implemen
         getAppearanceRequest.connect(getAppearanceCallback);
     }
 
-    public void updateAppearances(JSONObject response) {
+    public void updateAppearances(JsonObject response) {
         synchronized (getAppearanceCallback) {
             try {
-                if (response.has(WebRequest.RESPONSE_KEY) && response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
-                    JSONArray payload = response.getJSONArray(WebRequest.PAYLOAD_KEY);
-                    for (int i = 0; i < payload.length(); i++) {
-                        JSONObject appearance = payload.getJSONObject(i);
-                        System.out.println(appearance.toString());
-                        long profileId = appearance.getLong("ProfileId");
+                if (response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
+                    JsonArray payload = response.getAsJsonArray(WebRequest.PAYLOAD_KEY);
+                    for (int i = 0; i < payload.size(); i++) {
+                        JsonObject appearance = payload.get(i).getAsJsonObject();
+                        long profileId = appearance.get("ProfileId").getAsLong();
                         PlayerProfile profile = getProfile(profileId);
                         if (profile == null)
                             continue;
-                        profile.setName(appearance.getString("DisplayName"));
+                        profile.setName(appearance.get("DisplayName").getAsString());
                         profile.getAppearance().load(appearance);
                     }
                 }
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 getAppearanceRequest = null;
@@ -245,7 +241,7 @@ public class WaitingScreen extends StageScreen<WaitingScreenAttachment> implemen
 
     public PlayerProfile getProfile(long profileId) {
         for(int i = 0; i < players.size(); i++) {
-            PlayerProfile profile = players.valueAt(i);
+            PlayerProfile profile = players.get(i);
             if (profile.getProfileId() == profileId)
                 return profile;
         }

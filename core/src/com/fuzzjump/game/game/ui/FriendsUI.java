@@ -34,7 +34,6 @@ import com.fuzzjump.game.game.ui.components.Fuzzle;
 import com.fuzzjump.game.model.character.Unlockable;
 import com.fuzzjump.game.model.character.UnlockableDefinition;
 import com.fuzzjump.game.model.profile.FriendProfile;
-import com.fuzzjump.game.model.profile.PlayerProfile;
 import com.fuzzjump.game.model.profile.Profile;
 import com.fuzzjump.game.net.requests.FriendWebRequest;
 import com.fuzzjump.game.net.requests.GetAppearanceRequest;
@@ -42,18 +41,17 @@ import com.fuzzjump.game.net.requests.GetFriendsWebRequest;
 import com.fuzzjump.game.net.requests.SearchUsersRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.fuzzjump.game.util.Styles.*;
+import static com.fuzzjump.game.util.Styles.createCloseBtnStyle;
+import static com.fuzzjump.game.util.Styles.createDefaultTBStyle;
+import static com.fuzzjump.game.util.Styles.createETxtFieldStyle;
+import static com.fuzzjump.game.util.Styles.createSmallTBStyle;
 
 public class FriendsUI extends StageUI implements WebRequestCallback {
 
@@ -229,16 +227,16 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         friendsListSwitcher.setDisplayedChild(1);
         getFriendsRequest.connect(new WebRequestCallback() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JsonObject response) {
                 try {
-                    if (response != null && response.has(WebRequest.RESPONSE_KEY) && response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
-                        game.getProfile().getFriends().load(response.getJSONObject(WebRequest.PAYLOAD_KEY));
+                    if (response != null && response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
+                        game.getProfile().getFriends().load(response.getAsJsonObject(WebRequest.PAYLOAD_KEY));
                         game.getProfile().save();
                         refresh(null);
                         searchField.setDisabled(false);
                         return;
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 refresh(null);
@@ -307,7 +305,7 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
 
     private WebRequestCallback getAppearanceCallback = new WebRequestCallback() {
         @Override
-        public void onResponse(JSONObject response) {
+        public void onResponse(JsonObject response) {
             updateAppearances(response);
         }
     };
@@ -322,7 +320,7 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         SnapshotArray<Actor> friends = friendsList.getChildren();
         long[] ids = new long[5];
         int idCounter = 0;
-        for(int i = appearanceCounter; i < friends.size; i++) {
+        for (int i = appearanceCounter; i < friends.size; i++) {
             if (friends.get(i) instanceof FriendWidget) {
                 FriendWidget widget = (FriendWidget) friends.get(i);
                 if (widget.profile.getAppearance().loaded())
@@ -341,24 +339,20 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         getAppearanceRequest.connect(getAppearanceCallback);
     }
 
-    public void updateAppearances(JSONObject response) {
-        try {
-            if (response.has(WebRequest.RESPONSE_KEY) && response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
-                JSONArray payload = response.getJSONArray(WebRequest.PAYLOAD_KEY);
-                for (int i = 0; i < payload.length(); i++) {
-                    JSONObject appearance = payload.getJSONObject(i);
-                    long userId = appearance.getLong("UserId");
-                    if (!profileMap.containsKey(userId))
-                        continue;
-                    FriendProfile profile = profileMap.get(userId);
-                    profile.setName(appearance.getString("DisplayName"));
-                    profile.getAppearance().load(appearance);
-                }
-                if (downloadMore)
-                    downloadAppearances();
+    public void updateAppearances(JsonObject response) {
+        if (response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
+            JsonArray payload = response.getAsJsonArray(WebRequest.PAYLOAD_KEY);
+            for (int i = 0; i < payload.size(); i++) {
+                JsonObject appearance = payload.get(i).getAsJsonObject();
+                long userId = appearance.get("UserId").getAsLong();
+                if (!profileMap.containsKey(userId))
+                    continue;
+                FriendProfile profile = profileMap.get(userId);
+                profile.setName(appearance.get("DisplayName").getAsString());
+                profile.getAppearance().load(appearance);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if (downloadMore)
+                downloadAppearances();
         }
     }
 
@@ -374,11 +368,11 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         WebRequest request = new FriendWebRequest(game.getProfile(), widget.profile.getUserId(), newStatus);
         request.connect(new WebRequestCallback() {
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JsonObject response) {
                 try {
-                    if (response != null && response.has(WebRequest.RESPONSE_KEY) && response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
+                    if (response != null && response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
                         List<FriendProfile> list = currentList;
-                        int status = response.getJSONObject(WebRequest.PAYLOAD_KEY).getInt("Status");
+                        int status = response.getAsJsonObject(WebRequest.PAYLOAD_KEY).get("Status").getAsInt();
                         widget.profile.setStatus(status);
                         if (!game.getProfile().getFriends().contains(widget.profile.getUserId()) && status >= FriendProfile.STATUS_SENT) {
                             list.remove(widget.profile);
@@ -393,7 +387,8 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
                         dialog.hide();
                         return;
                     }
-                } catch (JSONException e) {
+                } catch (Exception e) {
+                    // Read error maybe
                     e.printStackTrace();
                 }
                 progressImage.setVisible(false);
@@ -422,9 +417,10 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         final Dialog dialog = parent.actor(Dialog.class, StageIds.MenuUI.PROGRESS_DIALOG);
         if (dialog.isVisible()) {
             final TextButton closeButton = parent.actor(StageIds.MenuUI.CLOSE_BUTTON);
-            if (closeButton.isVisible()) {for(EventListener listener : closeButton.getListeners())
-                if (listener instanceof ClickListener)
-                    ((ClickListener)listener).clicked(new InputEvent(), 0, 0);
+            if (closeButton.isVisible()) {
+                for (EventListener listener : closeButton.getListeners())
+                    if (listener instanceof ClickListener)
+                        ((ClickListener) listener).clicked(new InputEvent(), 0, 0);
             }
         }
         ((MenuUI) parent).showMain();
@@ -432,36 +428,36 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
 
 
     @Override
-    public void onResponse(JSONObject response) {
+    public void onResponse(JsonObject response) {
         LinkedList<FriendProfile> profiles = new LinkedList<>();
         try {
             if (!response.has(WebRequest.RESPONSE_KEY))
                 return;
-            if (response.getInt(WebRequest.RESPONSE_KEY) != WebRequest.SUCCESS)
+            if (response.get(WebRequest.RESPONSE_KEY).getAsInt() != WebRequest.SUCCESS)
                 return;
-            JSONArray results = response.getJSONArray(WebRequest.PAYLOAD_KEY);
+            JsonArray results = response.getAsJsonArray(WebRequest.PAYLOAD_KEY);
             SnapshotArray<Actor> inList = friendsList.getChildren();
-            for (int i = 0; i < results.length(); i++) {
-                JSONObject result = results.getJSONObject(i);
+            for (int i = 0; i < results.size(); i++) {
+                JsonObject result = results.get(i).getAsJsonObject();
                 FriendProfile profile = null;
-                for(Actor actor : inList) {
+                for (Actor actor : inList) {
                     if (actor instanceof FriendWidget) {
                         FriendWidget friendWidget = (FriendWidget) actor;
-                        if (friendWidget.profile.getUserId() == result.getLong("UserId")) {
+                        if (friendWidget.profile.getUserId() == result.get("UserId").getAsLong()) {
                             profile = friendWidget.profile;
                             break;
                         }
                     }
                 }
                 if (profile == null) {
-                    profile = new FriendProfile(result.getString("DisplayName"), result.getLong("UserId"));
+                    profile = new FriendProfile(result.get("DisplayName").getAsString(), result.get("UserId").getAsLong());
                 }
                 if (profile.getUserId() == game.getProfile().getUserId() || game.getProfile().getFriends().contains(profile.getUserId()))
                     continue;
                 profile.setStatus(-1);
                 profiles.add(profile);
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         refresh(profiles);

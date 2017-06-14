@@ -1,7 +1,5 @@
 package com.fuzzjump.game.model.character;
 
-import android.util.SparseArray;
-
 import com.badlogic.gdx.Gdx;
 import com.steveadoo.customizetextures.CColorGroup;
 
@@ -12,7 +10,9 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,14 +27,14 @@ public class UnlockableDefinitions {
     private static final String DEFINITIONS_PATH = "data/unlockable-definitions.xml";
     public static final int FUZZLE_COUNT = 6;
 
-    private SparseArray<UnlockableDefinition> definitions = new SparseArray();
-    private SparseArray<UnlockableDefinition>[] definitionsCategories = new SparseArray[5];
+    private Map<Integer, UnlockableDefinition> definitions = new HashMap<>();
+    private Map<Integer, UnlockableDefinition>[] definitionsCategories = new HashMap[5];
 
     private CColorGroup replaceGroup;
 
     public void init() {
         for (int i = 0; i < definitionsCategories.length; i++) {
-            definitionsCategories[i] = new SparseArray();
+            definitionsCategories[i] = new HashMap<>();
         }
         try {
 
@@ -127,7 +127,7 @@ public class UnlockableDefinitions {
         UnlockableDefinition fuzzDef = definitionsCategories[0].get(fuzz);
         System.out.println(fuzzDef);
         for(int i = 0; i < definitionsCategories[category].size(); i++) {
-            UnlockableDefinition check = definitionsCategories[category].valueAt(i);
+            UnlockableDefinition check = definitionsCategories[category].get(i);
             if (check.validFuzzle(fuzzDef.getAllowedTags()))
                 defs.add(check);
         }
@@ -138,7 +138,7 @@ public class UnlockableDefinitions {
         return definitions.get(definitionId);
     }
 
-    public SparseArray<UnlockableDefinition> getDefinitions() {
+    public Map<Integer, UnlockableDefinition> getDefinitions() {
         return definitions;
     }
 }

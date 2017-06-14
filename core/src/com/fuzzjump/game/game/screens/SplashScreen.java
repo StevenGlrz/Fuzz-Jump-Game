@@ -1,10 +1,8 @@
 package com.fuzzjump.game.game.screens;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.ScreenHandler;
-import com.fuzzjump.game.game.StageIds;
 import com.fuzzjump.game.game.StageScreen;
 import com.fuzzjump.game.game.StageUI;
 import com.fuzzjump.game.game.Textures;
@@ -15,6 +13,7 @@ import com.fuzzjump.game.game.ui.SplashUI;
 import com.fuzzjump.game.net.requests.AuthenticationWebRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -44,11 +43,11 @@ public class SplashScreen extends StageScreen<ScreenAttachment> {
             AuthenticationWebRequest request = new AuthenticationWebRequest(game.getProfile().getProfileId(), game.getProfile().getSessionKey());
             request.connect(new WebRequestCallback() {
                 @Override
-                public void onResponse(JSONObject response) {
+                public void onResponse(JsonObject response) {
                     System.out.println(response.toString());
                     try {
-                        if (response.getInt(WebRequest.RESPONSE_KEY) == WebRequest.SUCCESS) {
-                            game.getProfile().load(response.getJSONObject(WebRequest.PAYLOAD_KEY));
+                        if (response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
+                            game.getProfile().load(response.getAsJsonObject(WebRequest.PAYLOAD_KEY));
                             game.getProfile().save();
                             if (PASS_THROUGH) {
                                 screenHandler.showScreen(GameScreen.class, new GameScreenAttachment(0, 120302303223L));

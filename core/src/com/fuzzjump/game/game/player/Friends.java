@@ -1,15 +1,10 @@
 package com.fuzzjump.game.game.player;
 
 import com.fuzzjump.game.model.profile.FriendProfile;
-import com.fuzzjump.game.model.profile.Profile;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -23,33 +18,33 @@ public class Friends implements Storable {
     }
 
     @Override
-    public void load(JSONObject data) throws JSONException {
+    public void load(JsonObject data) {
         friends.clear();
         if (!data.has("Friends"))
             return;
-        JSONArray friendsData = data.getJSONArray("Friends");
-        for (int i = 0, n = friendsData.length(); i < n; i++) {
-            JSONObject friendObject = friendsData.getJSONObject(i);
-            int status = friendObject.getInt("Status");
+        JsonArray friendsData = data.getAsJsonArray("Friends");
+        for (int i = 0, n = friendsData.size(); i < n; i++) {
+            JsonObject friendObject = friendsData.get(i).getAsJsonObject();
+            int status = friendObject.get("Status").getAsInt();
             FriendProfile friend = new FriendProfile();
-            friend.setName(friendObject.getString("Username"));
-            friend.setUserId(friendObject.getLong("UserId"));
+            friend.setName(friendObject.get("Username").getAsString());
+            friend.setUserId(friendObject.get("UserId").getAsLong());
             friends.add(friend);
             friend.setStatus(status);
         }
     }
 
     @Override
-    public void save(JSONObject data) throws JSONException {
-        JSONArray friendsData = new JSONArray();
+    public void save(JsonObject data) {
+        JsonArray friendsData = new JsonArray();
         for (FriendProfile friend : friends) {
-            JSONObject friendJson = new JSONObject();
-            friendJson.put("Status", friend.getStatus());
-            friendJson.put("Username", friend.getName());
-            friendJson.put("UserId", friend.getUserId());
-            friendsData.put(friendJson);
+            JsonObject friendJson = new JsonObject();
+            friendJson.addProperty("Status", friend.getStatus());
+            friendJson.addProperty("Username", friend.getName());
+            friendJson.addProperty("UserId", friend.getUserId());
+            friendsData.add(friendJson);
         }
-        data.put("Friends", friendsData);
+        data.add("Friends", friendsData);
     }
 
     public List<FriendProfile> getFriends() {

@@ -20,9 +20,7 @@ import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.net.requests.PurchaseUnlockableRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
-
-import org.json.JSONObject;
-
+import com.google.gson.JsonObject;
 
 import static com.fuzzjump.game.game.StageIds.MenuUI.*;
 
@@ -148,11 +146,11 @@ public class MenuScreen extends StageScreen<MenuScreenAttachment> {
                 PurchaseUnlockableRequest request = new PurchaseUnlockableRequest(game.getProfile(), buyEntry.getUnlockableDefinition().getId());
                 request.connect(new WebRequestCallback() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JsonObject response) {
                         try {
                             progressDialog.hide();
-                            if (response.getInt("Response") == 1) {
-                                Unlockable unlockable = game.getProfile().getAppearance().createUnlockable(response.getJSONObject("Payload"));
+                            if (response.get("Response").getAsInt() == 1) {
+                                Unlockable unlockable = game.getProfile().getAppearance().createUnlockable(response.getAsJsonObject("Payload"));
                                 if (unlockable != null) {
                                     buyEntry.setSelected(true);
                                     buyEntry.setUnlockable(unlockable);
