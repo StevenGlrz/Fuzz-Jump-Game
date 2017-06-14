@@ -1,9 +1,7 @@
 package com.fuzzjump.game.model.profile;
 
 import com.fuzzjump.game.game.player.Appearance;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.util.LinkedList;
 
@@ -26,15 +24,15 @@ public class Profile {
         this.appearance = new Appearance();
     }
 
-    public void load(JSONObject data) throws JSONException {
-        this.name = data.getString("Username");
-        this.coins = data.getInt("Coins");
-        this.userId = data.getLong("Id");
+    public void load(JsonObject data) {
+        this.name = data.get("Username").getAsString();
+        this.coins = data.get("Coins").getAsInt();
+        this.userId = data.get("Id").getAsLong();
 
         if (data.has("GameProfile")) {
-            JSONObject profileData = data.getJSONObject("GameProfile");
-            this.ranking = profileData.getInt("Experience");
-            this.profileId = profileData.getInt("ProfileId");
+            JsonObject profileData = data.get("GameProfile").getAsJsonObject();
+            this.ranking = profileData.get("Experience").getAsInt();
+            this.profileId = profileData.get("ProfileId").getAsInt();
             this.appearance.load(profileData);
         }
     }

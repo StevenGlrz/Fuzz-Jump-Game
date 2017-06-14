@@ -1,18 +1,16 @@
 package com.fuzzjump.game.game.player;
 
-import android.util.SparseArray;
-
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.model.character.Unlockable;
 import com.fuzzjump.game.model.character.UnlockableDefinition;
-import com.fuzzjump.game.model.character.UnlockableDefinitions;
+import com.fuzzjump.game.util.Utils;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Steven on 6/8/2015.
@@ -23,9 +21,10 @@ public class Appearance implements Storable {
 
     private LinkedList<AppearanceChangeListener> changeListeners = new LinkedList<>();
     private long[] equips = new long[5];
-    private SparseArray<Unlockable> unlockables = new SparseArray<Unlockable>();
 
-    private SparseArray<Integer> colorIndexSnapshot = new SparseArray<>();
+    private Map<Integer, Unlockable> unlockables = new HashMap<>();
+    private Map<Integer, Integer> colorIndexSnapshot = new HashMap<>();
+
     private long[] equipSnapshot;
 
     public Appearance() {
@@ -33,21 +32,22 @@ public class Appearance implements Storable {
     }
 
     @Override
-    public void load(JSONObject data) throws JSONException {
-        JSONArray itemsArray = data.getJSONArray("ItemSlots");
-        JSONArray unlocksArray = data.getJSONArray("Unlockables");
+    public void load(JsonObject data) {
+        JsonArray itemsArray = data.get("ItemSlots").getAsJsonArray();
+        JsonArray unlocksArray = data.get("Unlockables").getAsJsonArray();
         equipSnapshot = null;
         colorIndexSnapshot = null;
-        for (int i = 0; i < itemsArray.length(); i++) {
-            JSONObject itemObj = itemsArray.getJSONObject(i);
-            if (!itemObj.has("UnlockableId") || itemObj.getString("UnlockableId").equalsIgnoreCase("null"))
-                equips[itemObj.getInt("Slot")] = -1;
+        for (int i = 0; i < itemsArray.size(); i++) {
+            JsonObject itemObj = itemsArray.get(i).getAsJsonObject();
+            int slot = itemObj.get("Slot").getAsInt();
+            if (!itemObj.has("UnlockableId") || itemObj.get("UnlockableId").getAsString().equalsIgnoreCase("null"))
+                equips[slot] = -1;
             else
-                equips[itemObj.getInt("Slot")] = itemObj.getLong("UnlockableId");
+                equips[slot] = itemObj.get("UnlockableId").getAsLong();
         }
         unlockables.clear();
-        for (int i = 0; i < unlocksArray.length(); i++) {
-            createUnlockable(unlocksArray.getJSONObject(i));
+        for (int i = 0; i < unlocksArray.size(); i++) {
+            createUnlockable(unlocksArray.get(i).getAsJsonObject());
         }
         raiseEvent();
     }
@@ -56,8 +56,8 @@ public class Appearance implements Storable {
         equipSnapshot = equips.clone();
         colorIndexSnapshot.clear();
         for (int i = 0; i < unlockables.size(); i++) {
-            Unlockable u = unlockables.valueAt(i);
-            colorIndexSnapshot.append(u.getId(), u.getColorIndex());
+            Unlockable u = unlockables.get(i);
+            colorIndexSnapshot.put(u.getId(), u.getColorIndex());
         }
     }
 
@@ -70,8 +70,8 @@ public class Appearance implements Storable {
         }
         if (colorIndexSnapshot.size() > 0) {
             for (int i = 0; i < unlockables.size(); i++) {
-                Unlockable u = unlockables.valueAt(i);
-                if (colorIndexSnapshot.get(u.getId(), u.getColorIndex()) != u.getColorIndex()) {
+                Unlockable u = unlockables.get(i);
+                if (Utils.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
                     return true;
                 }
             }
@@ -87,8 +87,8 @@ public class Appearance implements Storable {
         }
         if (colorIndexSnapshot.size() > 0) {
             for (int i = 0; i < unlockables.size(); i++) {
-                Unlockable u = unlockables.valueAt(i);
-                u.setColorIndex(colorIndexSnapshot.get(u.getId(), u.getColorIndex()));
+                Unlockable u = unlockables.get(i);
+                u.setColorIndex(Utils.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()));
             }
         }
         raiseEvent();
@@ -98,8 +98,8 @@ public class Appearance implements Storable {
         List<Unlockable> diffs = new LinkedList<>();
         if (colorIndexSnapshot.size() > 0) {
             for (int i = 0; i < unlockables.size(); i++) {
-                Unlockable u = unlockables.valueAt(i);
-                if (colorIndexSnapshot.get(u.getId(), u.getColorIndex()) != u.getColorIndex()) {
+                Unlockable u = unlockables.get(i);
+                if (Utils.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
                     diffs.add(u);
                 }
             }
@@ -107,43 +107,45 @@ public class Appearance implements Storable {
         return diffs;
     }
 
-    public Unlockable createUnlockable(JSONObject unlockObj) {
-        try {
-            int unlockableId = (int) unlockObj.getLong("UnlockableId");
-            int colorIndex = unlockObj.getInt("ColorIndex");
-            int definitionId = unlockObj.getInt("UnlockableDefinitionId");
-            UnlockableDefinition definition = FuzzJump.Game.getUnlockableDefinitions().getDefinition(definitionId);
-            Unlockable unlockable = new Unlockable(definition, unlockableId, colorIndex);
-            unlockables.append(unlockable.getId(), unlockable);
-            return unlockable;
-        } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public Unlockable createUnlockable(JsonObject unlockObj) {
+        int unlockableId = unlockObj.get("UnlockableId").getAsInt(); // was interpreted as long before, so need to test
+        int colorIndex = unlockObj.get("ColorIndex").getAsInt();
+        int definitionId = unlockObj.get("UnlockableDefinitionId").getAsInt();
+        UnlockableDefinition definition = FuzzJump.Game.getUnlockableDefinitions().getDefinition(definitionId);
+        Unlockable unlockable = new Unlockable(definition, unlockableId, colorIndex);
+        unlockables.put(unlockable.getId(), unlockable);
+        return unlockable;
     }
 
     @Override
-    public void save(JSONObject data) throws JSONException {
-        JSONArray itemsArray = new JSONArray();
-        JSONArray unlocksArray = new JSONArray();
-        for(int i = 0; i < equips.length; i++) {
-            JSONObject equipObject = new JSONObject();
-            equipObject.put("Slot", i);
+    public void save(JsonObject data) {
+        JsonArray itemsArray = new JsonArray();
+        JsonArray unlocksArray = new JsonArray();
+        for (int i = 0; i < equips.length; i++) {
+            JsonObject equipObject = new JsonObject();
+            equipObject.addProperty("Slot", i);
+
             Unlockable unlockable = getEquip(i);
-            equipObject.put("UnlockableId", unlockable == null ? "null" : unlockable.getId());
-            itemsArray.put(equipObject);
+
+            if (unlockable == null) {
+                equipObject.addProperty("UnlockableId", "null");
+            } else {
+                equipObject.addProperty("UnlockableId", unlockable.getId());
+            }
+
+            itemsArray.add(equipObject);
         }
         for (int i = 0; i < unlockables.size(); i++) {
-            Unlockable unlockable = unlockables.valueAt(i);
-            JSONObject unlocksObject = new JSONObject();
-            unlocksObject.put("ColorIndex", unlockable.getColorIndex());
-            unlocksObject.put("UnlockableId", unlockable.getId());
-            unlocksObject.put("UnlockableDefinitionId", unlockable.getDefinition().getId());
-            unlocksArray.put(unlocksObject);
-        }
-        data.put("ItemSlots", itemsArray);
-        data.put("Unlockables", unlocksArray);
+            Unlockable unlockable = unlockables.get(i);
 
+            JsonObject unlocksObject = new JsonObject();
+            unlocksObject.addProperty("ColorIndex", unlockable.getColorIndex());
+            unlocksObject.addProperty("UnlockableId", unlockable.getId());
+            unlocksObject.addProperty("UnlockableDefinitionId", unlockable.getDefinition().getId());
+            unlocksArray.add(unlocksObject);
+        }
+        data.add("ItemSlots", itemsArray);
+        data.add("Unlockables", unlocksArray);
     }
 
     public void setEquip(int index, long id) {
@@ -167,12 +169,12 @@ public class Appearance implements Storable {
     }
 
     public long getItemId(UnlockableDefinition def) {
-        for(int i = 0; i < unlockables.size(); i++) {
-            Unlockable unlockable = unlockables.valueAt(i);
+        for (int i = 0; i < unlockables.size(); i++) {
+            Unlockable unlockable = unlockables.get(i);
             if (unlockable == null)
                 continue;
             if (unlockable.getDefinition().getId() == def.getId()) {
-                return unlockables.keyAt(i);
+                return unlockables.get(i).getId(); // TODO - Check if this is valid
             }
 
         }

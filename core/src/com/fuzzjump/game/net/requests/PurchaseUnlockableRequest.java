@@ -3,10 +3,6 @@ package com.fuzzjump.game.net.requests;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
 import com.fuzzjump.game.model.profile.LocalProfile;
-import com.fuzzjump.game.model.profile.Profile;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by stephen on 8/22/2015.
@@ -15,12 +11,7 @@ public class PurchaseUnlockableRequest extends AuthenticatedRequest {
 
     public PurchaseUnlockableRequest(LocalProfile profile, int unlockableDefinitionId) {
         super(profile);
-        try {
-            parameters.put("UnlockableDefinitionId", unlockableDefinitionId);
-        } catch (JSONException e) {
-            //welp
-            e.printStackTrace();
-        }
+        parameters.addProperty("UnlockableDefinitionId", unlockableDefinitionId);
     }
 
     @Override

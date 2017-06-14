@@ -1,12 +1,11 @@
 package com.fuzzjump.game.net.requests;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 /**
  * Created by Steven on 12/10/2014.
  */
 public interface WebRequestCallback {
 
-    public void onResponse(JSONObject response);
+    void onResponse(JsonObject response);
 }

@@ -1,7 +1,9 @@
 package com.fuzzjump.game.model.profile;
 
+import com.badlogic.gdx.utils.Json;
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.player.Friends;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,33 +22,33 @@ public class LocalProfile extends PlayerProfile {
     }
 
     @Override
-    public void load(JSONObject data) throws JSONException {
+    public void load(JsonObject data) {
         super.load(data);
-        JSONObject profileData = data.getJSONObject("GameProfile");
-        this.sessionKey = profileData.getString("SessionKey");
+        JsonObject profileData = data.get("GameProfile").getAsJsonObject();
+        this.sessionKey = profileData.get("SessionKey").getAsString();
         friends.load(data);
     }
 
     public void save() {
-        JSONObject save = new JSONObject();
-        try {
-            save.put("Username", name);
-            save.put("Coins", coins);
-            save.put("Id", getUserId());
+        JsonObject save = new JsonObject();
 
-            friends.save(save);
+        // general
+        save.addProperty("Username", name);
+        save.addProperty("Coins", coins);
+        save.addProperty("Id", getUserId());
 
-            JSONObject profileData = new JSONObject();
-            appearance.save(profileData);
-            profileData.put("Experience", ranking);
-            profileData.put("SessionKey", sessionKey);
-            profileData.put("ProfileId", userId);
+        friends.save(save);
 
-            save.put("GameProfile", profileData);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        // profile
+        JsonObject profileData = new JsonObject();
+        appearance.save(profileData);
+        profileData.addProperty("Experience", ranking);
+        profileData.addProperty("SessionKey", sessionKey);
+        profileData.addProperty("ProfileId", userId);
+
+        save.add("GameProfile", profileData);
         raiseEvent();
+
         FuzzJump.Game.getPreferences().put("data", save.toString());
     }
 

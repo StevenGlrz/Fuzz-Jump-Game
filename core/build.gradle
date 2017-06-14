@@ -10,4 +10,5 @@ dependencies {
     compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/protobuf-java-2.6.1.jar')
     compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/xpp3_min-1.1.4c.jar')
     compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/xstream-1.4.7.jar')
+    compile 'com.google.code.gson:gson:2.7'
 }

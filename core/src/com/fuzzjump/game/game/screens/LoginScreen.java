@@ -21,6 +21,7 @@ import com.fuzzjump.game.net.requests.AuthenticationWebRequest;
 import com.fuzzjump.game.net.requests.RegisterWebRequest;
 import com.fuzzjump.game.net.requests.WebRequest;
 import com.fuzzjump.game.net.requests.WebRequestCallback;
+import com.google.gson.JsonObject;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,16 +48,16 @@ public class LoginScreen extends StageScreen {
 
     private WebRequestCallback registerCallback = new WebRequestCallback() {
         @Override
-        public void onResponse(JSONObject response) {
+        public void onResponse(JsonObject response) {
             try {
                 register(response);
-            } catch (JSONException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                // Growing up is realizing that I still need to do shit like this because of fucking Java
             }
         }
     };
 
-    private void register(JSONObject response) throws JSONException {
+    private void register(JsonObject response) {
         StageUI ui = ui();
         Dialog loginDialog = ui.actor(Dialog.class, StageIds.LoginScreen.LOGIN_WAITING_MESSAGE_DIALOG);
         TextField emailField = ui.actor(TextField.class, StageIds.LoginScreen.REGISTER_EMAIL_FIELD);
@@ -68,17 +69,17 @@ public class LoginScreen extends StageScreen {
         }
         if (response.has("Message")) {
             // Error occurred
-            ui.actor(Label.class, StageIds.LoginScreen.LOGIN_DIALOG_MESSAGE).setText(response.getString("Message"));
+            ui.actor(Label.class, StageIds.LoginScreen.LOGIN_DIALOG_MESSAGE).setText(response.get("Message").getAsString());
             ui.actor(Button.class, StageIds.LoginScreen.LOGIN_DIALOG_OK).setVisible(true);
             return;
         }
-        switch (response.getInt(WebRequest.RESPONSE_KEY)) {
+        switch (response.get(WebRequest.RESPONSE_KEY).getAsInt()) {
             case -1:
                 emailField.setMessageText("E-mail is already in use");
                 loginDialog.hide();
                 break;
             case 1: // Success
-                game.getProfile().load(response.getJSONObject(WebRequest.PAYLOAD_KEY));
+                game.getProfile().load(response.get(WebRequest.PAYLOAD_KEY).getAsJsonObject());
                 game.getProfile().save();
                 screenHandler.showScreen(MenuScreen.class, new MenuScreenAttachment(false, false));
                 break;
@@ -96,7 +97,7 @@ public class LoginScreen extends StageScreen {
         }
     };
 
-    private void login(JSONObject response) {
+    private void login(JsonObject response) {
         if (response == null) {
             showError("Connection Error");
             return;
@@ -106,8 +107,7 @@ public class LoginScreen extends StageScreen {
             Dialog loginDialog = ui.actor(Dialog.class, StageIds.LoginScreen.LOGIN_WAITING_MESSAGE_DIALOG);
             TextField userField = ui.actor(TextField.class, StageIds.LoginScreen.LOGIN_USER_FIELD);
             TextField passwordField = ui.actor(TextField.class, StageIds.LoginScreen.LOGIN_PWD_FIELD);
-            Log.i("steveadoo", response.toString());
-            switch (response.getInt(WebRequest.RESPONSE_KEY)) {
+            switch (response.get(WebRequest.RESPONSE_KEY).getAsInt()) {
                 case -1:
                     showError("Invalid password");
                     break;
@@ -115,15 +115,15 @@ public class LoginScreen extends StageScreen {
                     showError("Invalid email");
                     break;
                 case 1:
-                    game.getProfile().load(response.getJSONObject(WebRequest.PAYLOAD_KEY));
+                    game.getProfile().load(response.get(WebRequest.PAYLOAD_KEY).getAsJsonObject());
                     game.getProfile().save();
                     screenHandler.showScreen(MenuScreen.class, new MenuScreenAttachment(false, false));
                     break;
                 default:
-                    showError("Unknown response: " + response.getInt(WebRequest.RESPONSE_KEY));
+                    showError("Unknown response: " + response.get(WebRequest.RESPONSE_KEY).getAsInt());
                     break;
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             showError("Invalid response");
         }
     }

@@ -2,12 +2,9 @@ package com.fuzzjump.game.net.requests;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Net;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Steven on 12/12/2014.
@@ -21,7 +18,7 @@ public abstract class WebRequest implements Net.HttpResponseListener {
     public static final String RESPONSE_KEY = "Response";
 
     protected WebRequestCallback callback;
-    protected JSONObject parameters = new JSONObject();
+    protected JsonObject parameters = new JsonObject();
 
 
     public void cancel() {
@@ -32,18 +29,15 @@ public abstract class WebRequest implements Net.HttpResponseListener {
     public void handleHttpResponse(Net.HttpResponse httpResponse) {
         if (callback == null)
             return;
-        try {
-            String result = httpResponse.getResultAsString();
-            final JSONObject response = new JSONObject(result);
-            Gdx.app.postRunnable(new Runnable() {
-                public void run() {
-                    callback.onResponse(response);
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-            callback.onResponse(null);
-        }
+        String result = httpResponse.getResultAsString();
+
+        JsonParser parser = new JsonParser();
+        final JsonObject response = parser.parse(result).getAsJsonObject();
+        Gdx.app.postRunnable(new Runnable() {
+            public void run() {
+                callback.onResponse(response);
+            }
+        });
     }
 
     @Override

@@ -5,6 +5,10 @@ package com.fuzzjump.game.util;
  */
 public class Utils {
 
+    public static <T> T fallback(T value, T fallback) {
+        return value == null ? fallback : value;
+    }
+
     public static int[] stringToIntArray(String string) {
         String[] split = string.split(",");
         int[] arr = new int[split.length];
