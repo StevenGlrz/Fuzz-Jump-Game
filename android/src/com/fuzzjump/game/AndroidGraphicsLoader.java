@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.caverock.androidsvg.SVG;
+import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 
 import java.io.ByteArrayOutputStream;
 import java.util.concurrent.Callable;

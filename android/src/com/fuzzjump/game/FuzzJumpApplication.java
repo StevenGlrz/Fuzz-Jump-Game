@@ -18,11 +18,10 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.fuzzjump.game.game.StageScreen;
-import com.fuzzjump.game.game.screens.SplashScreen;
-import com.fuzzjump.game.net.GameSession;
+import com.fuzzjump.game.platform.PlatformModule;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +32,7 @@ import java.util.concurrent.Executors;
 
 public class FuzzJumpApplication extends AndroidApplication {
 
-    private FuzzJump game;
+    private FuzzJump fuzzJump;
     private View gameView;
     private RelativeLayout layout;
     private ImageView splashScreen;
@@ -43,22 +42,9 @@ public class FuzzJumpApplication extends AndroidApplication {
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            String ip = "fj-matchmakingserver-462470304.us-west-2.elb.amazonaws.com";
-            int port = 6893;
-            if (extras.containsKey("ip"))
-                ip = extras.getString("ip");
-            if (extras.containsKey("port"))
-                port = Integer.parseInt(extras.getString("port"));
-            GameSession.MATCHMAKING_IP = ip;
-            GameSession.MATCHMAKING_PORT = port;
-            if (extras.containsKey("passthrough")) {
-                SplashScreen.PASS_THROUGH = extras.getBoolean("passthrough", true);
-            }
-        }
+
         try {
-            PackageInfo info = getPackageManager().getPackageInfo("com.fuzzjump.game", PackageManager.GET_SIGNATURES);
+            PackageInfo info = getPackageManager().getPackageInfo("com.fuzzjump.fuzzJump", PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
@@ -81,11 +67,13 @@ public class FuzzJumpApplication extends AndroidApplication {
         config.numSamples = 2;
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
-        try {
-            game = new FuzzJump(executor, new AndroidGraphicsLoader(executor, getCachePath()));
+            fuzzJump = new FuzzJump(
+                    new FuzzJumpParams(),
+                    new PlatformModule(new AndroidGraphicsLoader(executor, Gdx.files.getExternalStoragePath()))
+            );
             layout = new RelativeLayout(this);
 
-            gameView = initializeForView(game, config);
+            gameView = initializeForView(fuzzJump, config);
             layout.addView(gameView);
             setContentView(layout);
 
@@ -93,22 +81,19 @@ public class FuzzJumpApplication extends AndroidApplication {
                 private boolean keyboardOpen = false;
                 @Override
                 public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                    if (game != null && game.getStage() != null) {
+                    if (fuzzJump != null && fuzzJump.getStage() != null) {
                         if (!keyboardOpen) {
                             keyboardOpen = true;
                         } else if (keyboardOpen) {
                             keyboardOpen = false;
                             closeKeyboard();
                         }
-                        if (keyboardOpen && game.getStage().getKeyboardFocus() == null) {
+                        if (keyboardOpen && fuzzJump.getStage().getKeyboardFocus() == null) {
                             keyboardOpen = false;
                         }
                     }
                 }
             });*/
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private String getCachePath() throws IOException {
@@ -130,7 +115,7 @@ public class FuzzJumpApplication extends AndroidApplication {
     public void onPause() {
         super.onPause();
         closeKeyboard();
-        game.onPause();
+        //fuzzJump.onPause();
 
     }
 
@@ -140,13 +125,13 @@ public class FuzzJumpApplication extends AndroidApplication {
     }
 
     private void closeKeyboard() {
-        if (game != null)
-            ((StageScreen) game.getScreen()).closeKeyboard();
+        //if (fuzzJump != null)
+            //((StageScreen) fuzzJump.getScreen()).closeKeyboard();
     }
 
     @Override
     public void onBackPressed() {
-        ((StageScreen) game.getScreen()).backPressed();
+        //((StageScreen) fuzzJump.getScreen()).backPressed();
     }
 
     public void openURL(String link) {

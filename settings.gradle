@@ -1,1 +1,2 @@
+include ':libgdx-screens'
 include 'desktop', 'android', 'ios', 'core', 'ios-moe'

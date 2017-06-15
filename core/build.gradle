@@ -1,14 +1,33 @@
 apply plugin: "java"
-sourceCompatibility = 1.7
+apply plugin: "net.ltgt.apt"
+apply plugin: 'me.tatarka.retrolambda'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.10"
+    }
+}
+
+sourceCompatibility = 1.8
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 sourceSets.main.java.srcDirs = ["src/"]
 eclipse.project {
     name = appName + "-core"
 }
+
 dependencies {
-    compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/fj-common.jar')
-    compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/protobuf-java-2.6.1.jar')
-    compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/xpp3_min-1.1.4c.jar')
-    compile files('C:/Users/Steveadoo/Dropbox/Kerpow Games/fuzzjump/Fuzz-Jump-Game/libs/xstream-1.4.7.jar')
-    compile 'com.google.code.gson:gson:2.7'
+    compile project(':libgdx-screens')
+    compile 'com.google.dagger:dagger:2.8'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
+    apt 'com.google.dagger:dagger-compiler:2.8'
 }
