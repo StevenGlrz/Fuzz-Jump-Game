@@ -2,6 +2,7 @@ package com.fuzzjump.game;
 
 import com.badlogic.gdx.Game;
 import com.fuzzjump.game.di.FuzzJumpModule;
+import com.fuzzjump.game.di.FuzzJumpComponent;
 import com.fuzzjump.game.game.FuzzJumpGame;
 import com.fuzzjump.game.game.di.FuzzJumpGameComponent;
 import com.fuzzjump.game.game.di.FuzzJumpGameModule;
@@ -9,11 +10,11 @@ import com.fuzzjump.game.platform.PlatformModule;
 
 public class FuzzJump extends Game {
 
-    private final com.fuzzjump.game.di.FuzzJumpModule fuzzJumpModule;
+    private final FuzzJumpModule fuzzJumpModule;
     private final PlatformModule platformModule;
 
     private FuzzJumpGame game;
-    private com.fuzzjump.game.di.FuzzJumpComponent component;
+    private FuzzJumpComponent component;
     private FuzzJumpGameComponent gameComponent;
 
     public FuzzJump(FuzzJumpParams gameParams,
@@ -37,7 +38,7 @@ public class FuzzJump extends Game {
         return game;
     }
 
-    public com.fuzzjump.game.di.FuzzJumpComponent getComponent() {
+    public FuzzJumpComponent getComponent() {
         return component;
     }
 
