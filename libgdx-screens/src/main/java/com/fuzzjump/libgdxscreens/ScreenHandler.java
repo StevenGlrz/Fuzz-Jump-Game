@@ -70,7 +70,7 @@ public class ScreenHandler {
                     //pass the loaded textures to the new getUI
                     currentScreen.getUI().getTextures().getTextures().putAll(currentScreen.getUI().getTextures().getTextures());
                 }
-                show.init();
+                show.init(stage, this);
                 if (currentScreen != null) {
                     Map<String, StageUITextures.TextureReferenceCounter> newTextures = show.getUI().getTextures().getTextures();
                     for (Map.Entry<String, Integer> entry : referenceCounts.entrySet()) {

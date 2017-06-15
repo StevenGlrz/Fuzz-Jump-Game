@@ -10,22 +10,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 
 public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
-    private final Textures textures;
-    private final Stage stage;
-
     protected ScreenHandler screenHandler;
+
     private StageUI ui;
+
+    private Stage stage;
     private boolean cleared;
 
-    public StageScreen(Stage stage, Textures textures, ScreenHandler handler, TUI ui) {
-        this.stage = stage;
-        this.textures = textures;
-        this.screenHandler = handler;
+    public StageScreen(TUI ui) {
         this.ui = ui;
     }
 
     //init -> add -> showScreen.
-    public final void init() {
+    public final void init(Stage stage, ScreenHandler handler) {
+        this.stage = stage;
+        this.screenHandler = handler;
+        this.ui = ui;
         if (this.ui != null) {
             this.ui.stageScreen = this;
 

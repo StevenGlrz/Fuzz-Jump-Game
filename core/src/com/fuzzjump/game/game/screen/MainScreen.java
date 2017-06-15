@@ -16,13 +16,10 @@ public class MainScreen extends StageScreen<MainUI> {
 
     private final IUserService userService;
 
+    //We can get rid of the UI from the constructor, I dont feel like doing that rn tho
     @Inject
-    public MainScreen(Stage stage,
-                      Textures textures,
-                      ScreenHandler handler,
-                      MainUI ui,
-                      IUserService userService) {
-        super(stage, textures, handler, ui);
+    public MainScreen(MainUI ui, IUserService userService) {
+        super(ui);
         this.userService = userService;
     }
 
