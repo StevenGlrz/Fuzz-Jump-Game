@@ -1,21 +1,16 @@
-package com.fuzzjump.game.game;
+package com.fuzzjump.game.game.di;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.fuzzjump.game.FuzzJump;
-import com.fuzzjump.game.FuzzJumpModule;
 import com.fuzzjump.libgdxscreens.ScreenHandler;
 import com.fuzzjump.libgdxscreens.ScreenResolver;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 
-import javax.inject.Singleton;
-
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 

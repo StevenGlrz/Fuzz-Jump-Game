@@ -1,5 +1,7 @@
-package com.fuzzjump.game;
+package com.fuzzjump.game.di;
 
+import com.fuzzjump.game.FuzzJump;
+import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.FuzzJumpGame;
 
 import javax.inject.Singleton;

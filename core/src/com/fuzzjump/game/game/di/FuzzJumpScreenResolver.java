@@ -1,11 +1,11 @@
-package com.fuzzjump.game.game;
+package com.fuzzjump.game.game.di;
 
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.libgdxscreens.ScreenResolver;
 import com.fuzzjump.libgdxscreens.StageScreen;
 
-class FuzzJumpScreenResolver implements ScreenResolver {
+public class FuzzJumpScreenResolver implements ScreenResolver {
 
     private final FuzzJump fuzzJump;
 

@@ -1,7 +1,7 @@
-package com.fuzzjump.game;
+package com.fuzzjump.game.di;
 
-import com.fuzzjump.game.game.FuzzJumpGameComponent;
-import com.fuzzjump.game.game.FuzzJumpGameModule;
+import com.fuzzjump.game.game.di.FuzzJumpGameComponent;
+import com.fuzzjump.game.game.di.FuzzJumpGameModule;
 import com.fuzzjump.game.platform.PlatformModule;
 import com.fuzzjump.game.service.ServiceModule;
 

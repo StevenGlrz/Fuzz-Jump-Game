@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game;
+package com.fuzzjump.game.game.di;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

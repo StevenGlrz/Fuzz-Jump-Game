@@ -1,11 +1,8 @@
-package com.fuzzjump.game.game;
+package com.fuzzjump.game.game.di;
 
-import com.fuzzjump.game.FuzzJumpComponent;
+import com.fuzzjump.game.game.FuzzJumpGame;
 import com.fuzzjump.game.game.screen.MainScreen;
 
-import javax.inject.Singleton;
-
-import dagger.Component;
 import dagger.Subcomponent;
 
 @FuzzJumpScope
