@@ -48,6 +48,8 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
         Gdx.gl.glClearColor(1, 1, 1, 1);
 
         screenHandler.addScreen(MainScreen.class, 0);
+
+        screenHandler.showScreen(MainScreen.class);
     }
 
     @Override

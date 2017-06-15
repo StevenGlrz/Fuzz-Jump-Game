@@ -29,6 +29,7 @@ public class FuzzJump extends Game {
                 .build();
         gameComponent = component.gameComponent(new FuzzJumpGameModule());
         game = gameComponent.provideGame();
+        game.create();
     }
 
     public FuzzJumpGame getFuzzJumpGame() {

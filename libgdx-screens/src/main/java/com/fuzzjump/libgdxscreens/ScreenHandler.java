@@ -127,6 +127,9 @@ public class ScreenHandler {
     }
 
     private void checkCache() {
+        if (currentScreen == null) {
+            return;
+        }
         boolean shittyPhone = false; //TODO add actual logic for this later
         boolean addToCache = true;
         ScreenInfo current = screens.get(currentScreen.getClass().getName());
