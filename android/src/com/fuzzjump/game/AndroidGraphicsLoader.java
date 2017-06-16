@@ -25,7 +25,7 @@ public class AndroidGraphicsLoader extends VectorGraphicsLoader {
         super(workerService, cacheLocation);
     }
 
-    public TextureRegion load(VectorGraphicsLoader.VectorDetails vectorDetails, final String svgMarkup, float targetWidth, float targetHeight, boolean cache) {
+    public TextureRegion load(VectorDetail vectorDetail, final String svgMarkup, float targetWidth, float targetHeight, boolean cache) {
         Future<SVG> future = workerService.submit(new Callable<SVG>() {
             public SVG call() {
                 SVG svg;
@@ -68,7 +68,7 @@ public class AndroidGraphicsLoader extends VectorGraphicsLoader {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] png = stream.toByteArray();
         if (cache)
-            cache(png, vectorDetails);
+            cache(png, vectorDetail);
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {

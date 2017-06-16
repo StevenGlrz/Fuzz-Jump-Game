@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
-
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -39,11 +38,19 @@ public class RetrofitModule {
         return gsonBuilder.create();
     }
 
+
     @Provides
     @Singleton
-    OkHttpClient okHttpClient(Cache cache) {
+    TokenInterceptor authenticator() {
+        return new TokenInterceptor();
+    }
+
+    @Provides
+    @Singleton
+    OkHttpClient okHttpClient(Cache cache, TokenInterceptor authenticator) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .cache(cache)
+                .addInterceptor(authenticator)
                 //TODO interceptor
                 .build();
         return client;

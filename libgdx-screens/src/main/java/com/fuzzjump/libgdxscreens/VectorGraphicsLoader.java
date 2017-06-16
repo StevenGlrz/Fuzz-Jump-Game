@@ -26,9 +26,9 @@ public abstract class VectorGraphicsLoader {
         this.cacheService = Executors.newSingleThreadExecutor();
     }
 
-    public TextureRegion load(final VectorDetails vectorDetails, final boolean cache) {
+    public TextureRegion load(final VectorDetail vectorDetail, final boolean cache) {
         if (cache) {
-            FileHandle file = Gdx.files.absolute(cacheLocation + "/pngcache/" + vectorDetails.atlas + ".png");
+            FileHandle file = Gdx.files.absolute(cacheLocation + "/pngcache/" + vectorDetail.atlas + ".png");
             try {
                 if (file.exists())
                     return new TextureRegion(new Texture(file));
@@ -38,16 +38,16 @@ public abstract class VectorGraphicsLoader {
             }
         }
 
-        final String name = vectorDetails.filename;
-        float targetWidth = getValue(vectorDetails.width);
-        float targetHeight = getValue(vectorDetails.height);
+        final String name = vectorDetail.filename;
+        float targetWidth = getValue(vectorDetail.width);
+        float targetHeight = getValue(vectorDetail.height);
         Future<FileHandle> future = workerService.submit(new Callable<FileHandle>() {
             public FileHandle call() {
                 return Gdx.files.internal(name);
             }
         });
 
-        switch(vectorDetails.type) {
+        switch(vectorDetail.type) {
             case "svg":
                 String svgMarkup = null;
                 try {
@@ -57,7 +57,7 @@ public abstract class VectorGraphicsLoader {
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 }
-                return new TextureRegion(load(vectorDetails, svgMarkup, targetWidth, targetHeight, cache));
+                return new TextureRegion(load(vectorDetail, svgMarkup, targetWidth, targetHeight, cache));
             case "png":
             case "jpg":
                 Texture texture = null;
@@ -84,10 +84,10 @@ public abstract class VectorGraphicsLoader {
         return size;
     }
 
-    protected void cache(final byte[] data, final VectorDetails vectorDetails) {
+    protected void cache(final byte[] data, final VectorDetail vectorDetail) {
         cacheService.submit(new Runnable() {
             public void run() {
-                FileHandle file = Gdx.files.absolute(cacheLocation + "/pngcache/" + vectorDetails.getAtlasName() + ".png");
+                FileHandle file = Gdx.files.absolute(cacheLocation + "/pngcache/" + vectorDetail.getAtlasName() + ".png");
                 Pixmap pixmap = new Pixmap(data, 0, data.length);
                 try {
                     PixmapIO.writePNG(file, pixmap);
@@ -115,9 +115,9 @@ public abstract class VectorGraphicsLoader {
         }
     }
 
-    public abstract TextureRegion load(VectorDetails vectorDetails, String svgMarkup, float targetWidth, float targetHeight, boolean cache);
+    public abstract TextureRegion load(VectorDetail vectorDetail, String svgMarkup, float targetWidth, float targetHeight, boolean cache);
 
-    public static class VectorDetails {
+    public static class VectorDetail {
 
         protected String filename;
         protected String atlas;
@@ -125,10 +125,10 @@ public abstract class VectorGraphicsLoader {
         protected String height;
         protected String type;
 
-        public VectorDetails() {
+        public VectorDetail() {
         }
 
-        public VectorDetails(String filename, String atlas, String width, String height) {
+        public VectorDetail(String filename, String atlas, String width, String height) {
             this.filename = filename;
             this.atlas = atlas;
             this.width = width;

@@ -1,5 +1,6 @@
 package com.fuzzjump.game.service.user;
 
+import com.fuzzjump.game.service.TokenInterceptor;
 import com.fuzzjump.game.service.user.model.LoginResponse;
 
 import javax.inject.Inject;
@@ -14,10 +15,12 @@ import retrofit2.http.POST;
 public class UserService implements IUserService {
 
     private final UserRestService restService;
+    private final TokenInterceptor tokenInterceptor;
 
     @Inject
-    public UserService(Retrofit retrofit) {
+    public UserService(Retrofit retrofit, TokenInterceptor tokenInterceptor) {
         this.restService = retrofit.create(UserRestService.class);
+        this.tokenInterceptor = tokenInterceptor;
     }
 
     @Override
@@ -25,6 +28,7 @@ public class UserService implements IUserService {
         return restService.login(username, password)
                 .doOnNext(response -> {
                    if (response.isSuccess()) {
+
                        //TODO set the token
                    }
                 });

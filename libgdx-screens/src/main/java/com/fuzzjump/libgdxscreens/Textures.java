@@ -11,15 +11,19 @@ public class Textures {
 
 	private final VectorGraphicsLoader vectorGraphicsLoader;
 
-	private HashMap<String, VectorGraphicsLoader.VectorDetails> details;
+	private HashMap<String, VectorGraphicsLoader.VectorDetail> details;
 
 	public Textures(VectorGraphicsLoader graphicsLoader) {
 		this.vectorGraphicsLoader = graphicsLoader;
 		details = new HashMap<>();
 	}
 
-	public void add(ArrayList<VectorGraphicsLoader.VectorDetails> vectorDetails) {
-		for (VectorGraphicsLoader.VectorDetails info: vectorDetails) {
+	public void add(VectorGraphicsLoader.VectorDetail detail) {
+		details.put(detail.getAtlasName(), detail);
+	}
+
+	public void add(ArrayList<VectorGraphicsLoader.VectorDetail> vectorDetails) {
+		for (VectorGraphicsLoader.VectorDetail info: vectorDetails) {
 			details.put(info.getAtlasName(), info);
 		}
 	}

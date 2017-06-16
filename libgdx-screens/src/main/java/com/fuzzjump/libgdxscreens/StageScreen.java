@@ -25,7 +25,6 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
     public final void init(Stage stage, ScreenHandler handler) {
         this.stage = stage;
         this.screenHandler = handler;
-        this.ui = ui;
         if (this.ui != null) {
             this.ui.stageScreen = this;
 
@@ -79,8 +78,8 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     }
 
-    public StageUI getUI() {
-        return ui;
+    public TUI getUI() {
+        return (TUI) ui;
     }
 
     public Stage getStage() {
