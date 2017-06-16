@@ -1,10 +1,10 @@
 package com.fuzzjump.server.game;
 
+import com.steveadoo.server.base.ServerBootstrapper;
+import com.steveadoo.server.base.ServerInfo;
+
 import java.net.InetSocketAddress;
 
-/**
- * Created by Steveadoo on 12/13/2015.
- */
 public class Main {
 
     /*private static final ServerInfo SERVER_INFO = new ServerInfo("https://management.core.windows.net",
