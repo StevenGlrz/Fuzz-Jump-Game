@@ -1,6 +1,7 @@
 package com.fuzzjump.game;
 
 import com.badlogic.gdx.Game;
+import com.fuzzjump.game.di.DaggerFuzzJumpComponent;
 import com.fuzzjump.game.di.FuzzJumpModule;
 import com.fuzzjump.game.game.FuzzJumpGame;
 import com.fuzzjump.game.game.di.FuzzJumpGameComponent;

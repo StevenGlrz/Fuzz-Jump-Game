@@ -1,0 +1,97 @@
+package com.fuzzjump.server.common.messages.lobby;
+
+option java_package = "com.fuzzjump.server.common.messages.lobby";
+
+message LobbyState {
+
+  repeated MapSlot mapSlots = 1;
+  repeated Player players = 2;
+  required TimeState time = 3;
+
+}
+
+message Player {
+
+  optional int64 profileId = 1;
+  required int32 playerIndex = 2;
+  required bool ready = 3;
+
+}
+
+message TimeState {
+
+  required int32 time = 1;
+
+}
+
+
+message MapSlot {
+
+  required int32 mapId = 1;
+  required int32 votes = 2;
+
+}
+
+message MapSlotSet {
+
+  required int32 mapId = 1;
+
+}
+
+message ReadySet {
+
+  required bool ready = 1;
+
+}
+
+message Loaded {
+
+  optional string gameId = 1;
+  optional bool private = 2;
+
+}
+
+message GameFound {
+
+  required bool found = 1;
+  optional string gameName = 2;
+  optional string gameId = 3;
+  
+}
+
+message GameServerFound {
+  
+  required bool found = 1;
+
+}
+
+message GameServerSetup {
+
+  required int32 playerCount = 1; 
+  required int32 mapId = 2;
+
+}
+
+message GameServerSetupResponse {
+
+  required string gameId = 1; 
+  repeated string keys = 2; 
+  required string seed = 3;
+  required int32 mapId = 4;
+
+}
+
+message GameServerSetupData {
+
+  required string gameId = 1;
+  required string key = 2;
+  required string seed = 3;
+  required int32 mapId = 4;
+  required string ip = 5;
+  required int32 port = 6;
+}
+
+message FindingGame {
+  
+  required bool finding = 1;
+}

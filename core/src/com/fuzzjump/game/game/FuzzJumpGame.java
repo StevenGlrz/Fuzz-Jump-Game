@@ -1,6 +1,5 @@
 package com.fuzzjump.game.game;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fuzzjump.game.FuzzJump;
-import com.fuzzjump.game.game.screen.MainScreen;
+import com.fuzzjump.game.game.screen.SplashScreen;
 import com.fuzzjump.libgdxscreens.ScreenHandler;
 import com.fuzzjump.libgdxscreens.Textures;
 
@@ -47,9 +46,9 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
 
         Gdx.gl.glClearColor(1, 1, 1, 1);
 
-        screenHandler.addScreen(MainScreen.class, 0);
+        screenHandler.addScreen(SplashScreen.class, 0);
 
-        screenHandler.showScreen(MainScreen.class);
+        screenHandler.showScreen(SplashScreen.class);
     }
 
     @Override
