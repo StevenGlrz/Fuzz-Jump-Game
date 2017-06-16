@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.unlockable.UnlockableDefinitions;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
 import com.fuzzjump.game.service.user.IUserService;
 import com.fuzzjump.libgdxscreens.StageScreen;
@@ -38,15 +40,17 @@ public class SplashScreen extends StageScreen<SplashUI> {
     private final IUserService userService;
     private final Textures textures;
     private final Skin skin;
+    private final UnlockableDefinitions definitions;
 
     private final Queue<Runnable> load = new LinkedList<>();
 
     @Inject
-    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin) {
+    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableDefinitions definitions) {
         super(ui);
         this.userService = userService;
         this.textures = textures;
         this.skin = skin;
+        this.definitions = definitions;
     }
 
     @Override
@@ -86,12 +90,9 @@ public class SplashScreen extends StageScreen<SplashUI> {
         // Load textures
         load.add(this::loadTextures);
 
+        load.add(definitions::init);
+
         getUI().drawSplash();
-    }
-
-    @Override
-    public void onPreRender(float delta) {
-
     }
 
     @Override
@@ -110,6 +111,11 @@ public class SplashScreen extends StageScreen<SplashUI> {
 
     @Override
     public void showing() {
+
+    }
+
+    @Override
+    public void clicked(int id, Actor actor) {
 
     }
 

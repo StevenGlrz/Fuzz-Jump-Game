@@ -1,8 +1,16 @@
 package com.fuzzjump.game.game.screen;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.service.user.IUserService;
 import com.fuzzjump.libgdxscreens.StageScreen;
+import com.fuzzjump.libgdxscreens.StageUI;
 
 import javax.inject.Inject;
 
@@ -23,18 +31,67 @@ public class MainScreen extends StageScreen<MainUI> {
     }
 
     @Override
-    public void onPreRender(float delta) {
-
-    }
-
-    @Override
-    public void onPostRender(float delta) {
-
-    }
-
-    @Override
     public void showing() {
 
+    }
+
+    @Override
+    public void clicked(int id, Actor actor) {
+        StageUI ui = getUI();
+        Dialog waitingDialog = ui.actor(Dialog.class, Assets.MainScreen.LOGIN_WAITING_MESSAGE_DIALOG);
+        switch (id) {
+            case Assets.MainScreen.START_BUTTON: {
+
+                TextField userField = ui.actor(TextField.class, Assets.MainScreen.LOGIN_USER_FIELD);
+
+                if (userField.getText().isEmpty()) {
+                    userField.setMessageText("Please enter your email");
+                } else {
+                    ui.actor(Label.class, Assets.MainScreen.LOGIN_DIALOG_MESSAGE).setText("Attempting to login");
+                    ui.actor(Button.class, Assets.MainScreen.LOGIN_DIALOG_OK).setVisible(false);
+                    waitingDialog.setName("Logging in...");
+                    waitingDialog.show(getStage());
+
+                    Gdx.app.postRunnable(() -> {
+                        screenHandler.showScreen(MenuScreen.class);
+                    });
+                }
+                Gdx.input.setOnscreenKeyboardVisible(false);
+            }
+            break;
+            case Assets.MainScreen.REGISTER_BUTTON: {
+
+                TextField emailField = ui.actor(TextField.class, Assets.MainScreen.REGISTER_EMAIL_FIELD);
+                TextField userField = ui.actor(TextField.class, Assets.MainScreen.REGISTER_USER_FIELD);
+                TextField passwordField = ui.actor(TextField.class, Assets.MainScreen.REGISTER_PWD_FIELD);
+                TextField reenterPasswordField = ui.actor(TextField.class, Assets.MainScreen.REGISTER_PWD_FIELD_2);
+
+                if (emailField.getText().isEmpty())
+                    emailField.setMessageText("Please enter an email");
+                else if (userField.getText().isEmpty())
+                    userField.setMessageText("Please enter a username");
+                else if (passwordField.getText().isEmpty())
+                    passwordField.setMessageText("Please enter a password");
+                else if (reenterPasswordField.getText().isEmpty())
+                    reenterPasswordField.setMessageText("Please enter a password");
+                else if (!passwordField.getText().equals(reenterPasswordField.getText()))
+                    reenterPasswordField.setMessageText("Must match password");
+                else {
+                    ui.actor(Label.class, Assets.MainScreen.LOGIN_DIALOG_MESSAGE).setText("Attempting to register");
+                    ui.actor(Button.class, Assets.MainScreen.LOGIN_DIALOG_OK).setVisible(false);
+                    waitingDialog.setName("Registering...");
+                    waitingDialog.show(getStage());
+
+                }
+                Gdx.input.setOnscreenKeyboardVisible(false);
+            }
+            break;
+            case Assets.MainScreen.REGISTER_GMAIL:
+                break;
+            case Assets.MainScreen.REGISTER_FACEBOOK:
+
+                break;
+        }
     }
 
 }

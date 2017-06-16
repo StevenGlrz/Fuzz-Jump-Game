@@ -21,6 +21,7 @@ public class Assets {
 
     public static final String SVG_DIR = "data/svg/";
     public static final String MAP_DIR = "data/maps/";
+    public static final String UNLOCKABLES_DIR = SVG_DIR + "unlockables/";
     public static final String SUNNY_DAY_DIR = MAP_DIR + "sunny_day_map/";
 
     public static final String SVG_RES = "data/svgs.xml";
@@ -51,12 +52,11 @@ public class Assets {
     // Loaded resources
     public static BitmapFont DEBUG_FONT = null;
 
-    public static class MainScreen {
+    public class MainScreen {
 
         //LOGIN
         public static final int LOGIN_USER_FIELD = 0;
-        public static final int LOGIN_PWD_FIELD = 1;
-        public static final int LOGIN_BUTTON = 2;
+        public static final int START_BUTTON = 2;
         public static final int LOGIN_WAITING_MESSAGE_DIALOG = 3;
         public static final int LOGIN_DIALOG_OK = 4;
         public static final int LOGIN_DIALOG_MESSAGE = 5;
@@ -70,6 +70,36 @@ public class Assets {
         public static final int REGISTER_FACEBOOK = 11;
         public static final int REGISTER_GMAIL = 12;
         public static final int REGISTER_BUTTON = 13;
+    }
+
+    public class MenuUI {
+        public static final int PUBLIC_GAME = 0;
+        public static final int CONNECTING_DIALOG = 1;
+        public static final int CONNECTING_LABEL = 2;
+        public static final int OK_BUTTON = 3;
+        public static final int FB_BUTTON = 4;
+        public static final int TWITTER_BUTTON = 5;
+        public static final int GOOGLE_BUTTON = 6;
+        public static final int WWW_BUTTON = 7;
+        public static final int SOUND_TOGGLE = 8;
+        public static final int LOGOUT_BUTTON = 9;
+        public static final int CREDITS_BUTTON = 10;
+        public static final int LEADERBOARD_BUTTON = 11;
+        public static final int STORE_BUTTON = 12;
+        public static final int STORE_DIALOG = 13;
+        public static final int PROFILE_PANEL = 14;
+        public static final int SELECT_UNLOCKABLE_BUTTON = 15;
+        public static final int SELECT_BUY_BUTTON = 16;
+        public static final int COLOR_SELECTED = 17;
+        public static final int BUYING_DIALOG = 18;
+        public static final int CONFIRM_LABEL = 19;
+        public static final int CONFIRM_PURCHASE_BUTTON = 20;
+        public static final int PROGRESS_DIALOG = 21;
+        public static final int PREVIEW_TABLE = 22;
+        public static final int PROGRESS_LABEL = 23;
+        public static final int SELECTED_UNLOCK = 24;
+        public static final int CLOSE_BUTTON = 25;
+        public static final int PROGRESS_IMAGE = 26;
     }
 
 
@@ -384,7 +414,6 @@ public class Assets {
     }
 
     public static TextField.TextFieldStyle createETxtFieldStyle(StageUI ui) {
-        System.out.println(ui.getSkin().getFont(PROFILE_FONT) + ", " + ui.getSkin().getColor(WHITE) + ", " + ui.getSkin().getDrawable(INPUT_CURSOR) + ", " + ui.getSkin().getDrawable(INPUT_SELECTION) + ", " + ui.getTextures().getTextureRegionDrawable(INPUT));
         TextField.TextFieldStyle style = new TextField.TextFieldStyle(ui.getSkin().getFont(PROFILE_FONT),
                 ui.getSkin().getColor(WHITE),
                 ui.getSkin().getDrawable(INPUT_CURSOR),

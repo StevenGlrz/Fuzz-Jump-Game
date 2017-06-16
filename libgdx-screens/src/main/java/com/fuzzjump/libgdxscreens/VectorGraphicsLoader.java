@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.fuzzjump.libgdxscreens.graphics.CColorGroup;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -24,6 +25,64 @@ public abstract class VectorGraphicsLoader {
         this.cacheLocation = cacheLocation;
         this.workerService = workerService;
         this.cacheService = Executors.newSingleThreadExecutor();
+    }
+
+    public TextureRegion load(final VectorDetail vectorDetails, CColorGroup replaceGroup, CColorGroup baseGroup, final boolean cache) {
+        if (cache) {
+            if (Gdx.files.isLocalStorageAvailable()) {
+                FileHandle file = Gdx.files.local("pngcache/" + vectorDetails.atlas + ".png");
+                try {
+                    if (file.exists())
+                        return new TextureRegion(new Texture(file));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    file.delete();
+                }
+            }
+        }
+
+        final String name = vectorDetails.filename;
+        float targetWidth = getValue(vectorDetails.width);
+        float targetHeight = getValue(vectorDetails.height);
+
+        String svgString = Gdx.files.internal(name).readString();
+
+        if (replaceGroup != null) {
+            for (int i = 0; i < replaceGroup.colors.length; i++) {
+                svgString = svgString.replaceAll(baseGroup.colors[replaceGroup.colors[i].index].colorString, replaceGroup.colors[i].colorString);
+                svgString = svgString.replaceAll(baseGroup.colors[replaceGroup.colors[i].index].colorString.toUpperCase(), replaceGroup.colors[i].colorString);
+            }
+        }
+
+        Future<FileHandle> future = workerService.submit(new Callable<FileHandle>() {
+            public FileHandle call() {
+                return Gdx.files.internal(name);
+            }
+        });
+
+        switch(vectorDetails.type) {
+            case "svg":
+                TextureRegion region = null;
+                try {
+                    String svgMarkup = future.get().readString();
+                    region = load(vectorDetails, svgMarkup, targetWidth, targetHeight, cache);
+                } catch (Exception e) {
+                    System.out.println("Failed to load " + vectorDetails.filename);
+                    e.printStackTrace();
+                }
+                return new TextureRegion(region);
+            case "png":
+            case "jpg":
+                Texture texture = null;
+                try {
+                    texture = new Texture(future.get());
+                } catch (InterruptedException | ExecutionException e) {
+                    e.printStackTrace();
+                }
+                return new TextureRegion(texture);
+            default:
+                throw new RuntimeException("Error loading TextureRegion, invalid file type");
+        }
     }
 
     public TextureRegion load(final VectorDetail vectorDetail, final boolean cache) {

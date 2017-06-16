@@ -1,6 +1,5 @@
 package com.fuzzjump.libgdxscreens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -91,11 +90,17 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     public abstract void initialize();
 
-    public abstract void onPreRender(float delta);
+    public void onPreRender(float delta) {
 
-    public abstract void onPostRender(float delta);
+    }
+
+    public void onPostRender(float delta) {
+
+    }
 
     public abstract void showing();
+
+    public abstract void clicked(int id, Actor actor);
 
     public void backPressed() {
         if (ui != null)

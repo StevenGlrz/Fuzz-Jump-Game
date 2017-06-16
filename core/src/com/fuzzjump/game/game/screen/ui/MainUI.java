@@ -2,7 +2,6 @@ package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -12,12 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.game.game.FuzzJumpGame;
-import com.fuzzjump.game.game.screen.ui.components.ActorSwitcher;
-import com.fuzzjump.game.game.screen.ui.components.FJDragDownBarTable;
+import com.fuzzjump.game.game.graphics.ActorSwitcher;
+import com.fuzzjump.game.game.graphics.FJDragDownBarTable;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -39,7 +36,6 @@ public class MainUI extends StageUI {
     @Inject
     public MainUI(Textures textures, Skin skin) {
         super(textures, skin);
-        System.out.println(textures + " - " + skin);
     }
 
     @Override
@@ -48,7 +44,7 @@ public class MainUI extends StageUI {
 
         setFillParent(true);
 
-        Label messageLabel = new Label("Message", skin, "default");
+        Label messageLabel = new Label("Message", getSkin(), "default");
         Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
         progressImage.setOrigin(Align.center);
         progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
@@ -87,7 +83,6 @@ public class MainUI extends StageUI {
 
         setupWelcomeTable();
         setupLoginTable();
-        setupRegisterTable();
 
         contentTable.add(switcher).fill().center().expand();
     }
@@ -102,112 +97,25 @@ public class MainUI extends StageUI {
 
         // TODO Locale's
         TextButton facebookButton = new TextButton("Login with Facebook", createFbTBStyle(this));
-        facebookButton.getLabel().setAlignment(Align.right);
+        facebookButton.getLabel().setAlignment(Align.center);
         facebookButton.getLabelCell().padRight(Value.percentWidth(.15f, facebookButton));
-        TextButton gplusButton = new TextButton("Login with Google+", createGPlusTBStyle(this));
-        gplusButton.getLabel().setAlignment(Align.right);
-        gplusButton.getLabelCell().padRight(Value.percentWidth(.15f, gplusButton));
-        TextButton kerpowButton = new TextButton("Login with email", createEmailTBStyle(this));
-        kerpowButton.getLabel().setAlignment(Align.right);
+
+        TextButton kerpowButton = new TextButton("Register Name", createEmailTBStyle(this));
+        kerpowButton.getLabel().setAlignment(Align.center);
         kerpowButton.getLabelCell().padRight(Value.percentWidth(.175f, kerpowButton));
-        TextButton registerButton = new TextButton("Register account", createPlusTBStyle(this));
-        registerButton.getLabel().setAlignment(Align.right);
-        registerButton.getLabelCell().padRight(Value.percentWidth(.175f, registerButton));
 
         register(Assets.MainScreen.REGISTER_FACEBOOK, facebookButton);
-        register(Assets.MainScreen.REGISTER_GMAIL, gplusButton);
 
         // Register click actions
-        Helper.addClickAction(kerpowButton, (e, x, y) -> showLoginTable());
-        Helper.addClickAction(registerButton, (e, x, y) -> showRegistertable());
+        Helper.addClickAction(kerpowButton, (e, x, y) -> showRegistration());
 
         Value topBottomPadding = Value.percentHeight(.045f, welcomeTable);
 
         welcomeTable.add(facebookButton).padTop(topBottomPadding).row();
-        welcomeTable.add(gplusButton).row();
         welcomeTable.add(kerpowButton).row();
 
-        Label orLabel = new Label("or", getSkin(), "default");
-        orLabel.setAlignment(Align.center);
-        welcomeTable.add(orLabel).height(Value.percentHeight(.05f, welcomeTable)).expand().row();
 
-        welcomeTable.add(registerButton).padBottom(topBottomPadding).row();
-
-        switcher.addWidget(welcomeTable, Value.percentWidth(.975f, switcher), Value.percentWidth(1.14642315f, switcher));
-    }
-
-    private void setupRegisterTable() {
-        register(Assets.MainScreen.REGISTER_EMAIL_FIELD, new TextField("", editTextStyle));
-        register(Assets.MainScreen.REGISTER_USER_FIELD, new TextField("", editTextStyle));
-        register(Assets.MainScreen.REGISTER_PWD_FIELD, new TextField("", editTextStyle));
-        register(Assets.MainScreen.REGISTER_PWD_FIELD_2, new TextField("", editTextStyle));
-
-        Label emailLabel = new Label("Email:", skin);
-        final TextField registerEmailField = actor(TextField.class, Assets.MainScreen.REGISTER_EMAIL_FIELD);
-        Label usernameLabel = new Label("Username:", skin);
-        final TextField registerUserField = actor(TextField.class, Assets.MainScreen.REGISTER_USER_FIELD);
-        Label passwordLabel = new Label("Password:", skin);
-        final TextField passwordField = actor(TextField.class, Assets.MainScreen.REGISTER_PWD_FIELD);
-        Label reEnterPassword = new Label("Reenter Password:", skin);
-        final TextField reEnterPasswordField = actor(TextField.class, Assets.MainScreen.REGISTER_PWD_FIELD_2);
-
-        passwordField.setPasswordMode(true);
-        reEnterPasswordField.setPasswordMode(true);
-        reEnterPasswordField.setPasswordCharacter('*');
-        passwordField.setPasswordCharacter('*');
-
-        Table registerTable = new Table();
-        registerTable.setBackground(textures.getTextureRegionDrawable("ui-panel-welcome"));
-
-        Value padTop = Value.percentHeight(.01f, registerTable);
-        Value padBottom = Value.percentHeight(.025f, registerTable);
-        Value padSides = Value.percentHeight(.025f, registerTable);
-        registerTable.defaults().padTop(padTop).padLeft(padSides).padRight(padSides).center();
-
-        registerTable.add(emailLabel).padTop(padBottom).left().colspan(2).row();
-        registerTable.add(registerEmailField).colspan(2).size(Value.percentWidth(.95f, registerTable), Value.percentWidth(0.132558402f, registerTable)).row();
-
-        registerTable.add(usernameLabel).left().colspan(2).row();
-        registerTable.add(registerUserField).colspan(2).size(Value.percentWidth(.95f, registerTable), Value.percentWidth(0.132558402f, registerTable)).row();
-
-        registerTable.add(passwordLabel).colspan(2).left().row();
-        registerTable.add(passwordField).colspan(2).size(Value.percentWidth(.95f, registerTable), Value.percentWidth(0.132558402f, registerTable)).row();
-
-        registerTable.add(reEnterPassword).colspan(2).left().row();
-        registerTable.add(reEnterPasswordField).colspan(2).size(Value.percentWidth(.95f, registerTable), Value.percentWidth(0.132558402f, registerTable)).row();
-
-
-        TextButton backBtn = new TextButton("Cancel", createXTBStyle(this));
-        backBtn.getLabel().setAlignment(Align.right);
-        backBtn.getLabelCell().padRight(Value.percentWidth(.15f, backBtn));
-        TextButton registerBtn = new TextButton("Register", createPlayTBStyle(this));
-        registerBtn.getLabel().setAlignment(Align.right);
-        registerBtn.getLabelCell().padRight(Value.percentWidth(.075f, registerBtn));
-
-        registerTable.add(new Actor()).colspan(2).center().expand().row();
-
-        Value buttonPad = Value.percentWidth(.025f, registerTable);
-
-        padBottom = Value.percentHeight(.04f, registerTable);
-
-        registerTable.add(backBtn).padBottom(padBottom).padLeft(buttonPad).left().size(Value.percentWidth(.45f, registerTable), Value.percentWidth(0.15957446808510638297872340425532f, registerTable));
-        registerTable.add(registerBtn).padBottom(padBottom).padRight(buttonPad).right().size(Value.percentWidth(.45f, registerTable), Value.percentWidth(0.15957446808510638297872340425532f, registerTable));
-
-        //Label label = new Label("Kerpow Games", skin, "small");
-        //label.setAlignment(Align.bottom, Align.center);
-        //registerTable.add(label).colspan(2).center().padBottom(10f).expand();
-
-
-        Helper.addClickAction(backBtn, (e, x, y) -> {
-            if (e.getType() == InputEvent.Type.touchUp) {
-                showWelcomeTable();
-                Gdx.input.setOnscreenKeyboardVisible(false);
-            }
-        });
-
-        switcher.addWidget(registerTable, Value.percentWidth(.975f, switcher), Value.percentWidth(1.14642315f, switcher));
-
-        register(Assets.MainScreen.REGISTER_BUTTON, registerBtn);
+        switcher.addWidget(welcomeTable, Value.percentWidth(.975f, switcher), Value.percentWidth(0.64642315f, switcher));
     }
 
     private void showWelcomeTable() {
@@ -215,28 +123,17 @@ public class MainUI extends StageUI {
         mainTable.setTitle("Welcome!");
     }
 
-    private void showLoginTable() {
+    private void showRegistration() {
         switcher.setDisplayedChild(1);
-        mainTable.setTitle("Login");
-    }
-
-    private void showRegistertable() {
-        switcher.setDisplayedChild(2);
-        mainTable.setTitle("Register");
+        mainTable.setTitle("Enter Username");
     }
 
     private void setupLoginTable() {
         register(Assets.MainScreen.LOGIN_USER_FIELD, new TextField("", editTextStyle));
-        register(Assets.MainScreen.LOGIN_PWD_FIELD, new TextField("", editTextStyle));
 
-        Label usernameLabel = new Label("Email:", skin);
+        Label usernameLabel = new Label("Enter name:", getSkin());
         usernameLabel.setAlignment(Align.left);
         final TextField loginUserField = actor(TextField.class, Assets.MainScreen.LOGIN_USER_FIELD);
-        Label passwordLabel = new Label("Password:", skin);
-        passwordLabel.setAlignment(Align.left);
-        final TextField loginPassField = actor(TextField.class, Assets.MainScreen.LOGIN_PWD_FIELD);
-        loginPassField.setPasswordMode(true);
-        loginPassField.setPasswordCharacter('*');
 
         Table loginTable = new Table();
         loginTable.setBackground(textures.getTextureRegionDrawable("ui-panel-login"));
@@ -248,25 +145,23 @@ public class MainUI extends StageUI {
 
         loginTable.add(usernameLabel).colspan(2).left().row();
         loginTable.add(loginUserField).padTop(0).colspan(2).row();
-        loginTable.add(passwordLabel).colspan(2).left().row();
-        loginTable.add(loginPassField).padTop(0).colspan(2).row();
 
         TextButton cancelBtn = new TextButton("Cancel", createXTBStyle(this));
-        TextButton loginBtn = new TextButton("Login", createPlayTBStyle(this));
+        TextButton startBtn = new TextButton("Start", createPlayTBStyle(this));
 
         loginTable.add(new Actor()).colspan(2).center().expand().row();
 
         loginTable.add(cancelBtn).padBottom(padBottom).left().size(Value.percentWidth(.45f, loginTable), Value.percentWidth(0.15957446808510638297872340425532f, loginTable));
-        loginTable.add(loginBtn).padBottom(padBottom).right().size(Value.percentWidth(.45f, loginTable), Value.percentWidth(0.15957446808510638297872340425532f, loginTable));
+        loginTable.add(startBtn).padBottom(padBottom).right().size(Value.percentWidth(.45f, loginTable), Value.percentWidth(0.15957446808510638297872340425532f, loginTable));
 
         loginUserField.getStyle().background.setLeftWidth(Gdx.graphics.getWidth() / 40);
         loginUserField.getStyle().background.setRightWidth(Gdx.graphics.getWidth() / 35);
 
         Helper.addClickAction(cancelBtn, (e, x, y) -> showWelcomeTable());
 
-        switcher.addWidget(loginTable, Value.percentWidth(.9f, switcher), Value.percentWidth(0.7036379999999998f, switcher));
+        switcher.addWidget(loginTable, Value.percentWidth(.9f, switcher), Value.percentWidth(0.4836379999999998f, switcher));
 
-        register(Assets.MainScreen.LOGIN_BUTTON, loginBtn);
+        register(Assets.MainScreen.START_BUTTON, startBtn);
     }
 
 
