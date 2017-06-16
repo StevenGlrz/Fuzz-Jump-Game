@@ -3,6 +3,7 @@ package com.fuzzjump.libgdxscreens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.ArrayList;
@@ -13,13 +14,15 @@ public abstract class StageUI extends Table {
 
     protected StageScreen stageScreen;
     protected StageUITextures textures;
+    protected Skin skin;
 
     private ArrayList<AfterRenderRunnable> nextRenderList = new ArrayList<>();
 
     private Map<Integer, Actor> actors = new HashMap<Integer, Actor>();
 
-    public StageUI(Textures textures) {
+    public StageUI(Textures textures, Skin skin) {
         this.textures = new StageUITextures(textures);
+        this.skin = skin;
     }
 
     public void register(int id, Actor actor) {
@@ -33,9 +36,7 @@ public abstract class StageUI extends Table {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if (nextRenderList.isEmpty())
-            return;
-        else {
+        if (!nextRenderList.isEmpty()) {
             for (int i = 0; i < nextRenderList.size();) {
                 AfterRenderRunnable afr = nextRenderList.get(i);
                 if (afr.renderCount++ > 5) {

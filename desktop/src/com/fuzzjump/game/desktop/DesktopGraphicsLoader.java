@@ -36,7 +36,7 @@ public class DesktopGraphicsLoader extends VectorGraphicsLoader {
     }
 
     @Override
-    public TextureRegion load(VectorDetails vectorDetails, String svgMarkup, float targetWidth, float targetHeight, boolean cache) {
+    public TextureRegion load(VectorDetail vectorDetail, String svgMarkup, float targetWidth, float targetHeight, boolean cache) {
 
         ByteArrayInputStream is = new ByteArrayInputStream(svgMarkup.getBytes());
         SVGDocument document = null;
@@ -91,7 +91,7 @@ public class DesktopGraphicsLoader extends VectorGraphicsLoader {
         }
         Pixmap pixmap = new Pixmap(pngData, 0, pngData.length);
         if (cache && Gdx.files.isLocalStorageAvailable())
-            cache(pngData, vectorDetails);
+            cache(pngData, vectorDetail);
         return new TextureRegion(new Texture(pixmap));
     }
 }
