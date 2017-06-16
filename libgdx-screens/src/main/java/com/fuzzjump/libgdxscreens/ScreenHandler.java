@@ -53,7 +53,7 @@ public class ScreenHandler {
 
     public <T extends StageScreen> T showScreen(Class<T> clazz) {
         StageScreen show = cached(clazz.getName());
-        boolean fromCache = false;
+        boolean fromCache = true;
         final LinkedList<Texture> removedTextures = new LinkedList<>();
         if (show == null) {
             fromCache = false;
@@ -85,7 +85,6 @@ public class ScreenHandler {
                 e.printStackTrace();
             }
         } else {
-            fromCache = true;
             show.initCache();
         }
         final boolean fFromCache = fromCache;
@@ -94,7 +93,7 @@ public class ScreenHandler {
         Gdx.app.postRunnable(new Runnable() {
             @Override
             public void run() {
-                for(Texture texture : removedTextures) {
+                for (Texture texture : removedTextures) {
                     texture.dispose();
                 }
                 if (!fFromCache) {
@@ -130,30 +129,23 @@ public class ScreenHandler {
         if (currentScreen == null) {
             return;
         }
-        boolean shittyPhone = false; //TODO add actual logic for this later
         boolean addToCache = true;
         ScreenInfo current = screens.get(currentScreen.getClass().getName());
         Map<String, StageUITextures.TextureReferenceCounter> disposing = new HashMap<>();
         Map<String, StageUITextures.TextureReferenceCounter> loadedTextures = new HashMap<>();
         loadedTextures.putAll(currentScreen.getUI().getTextures().getTextures());
-        if (shittyPhone) {
-            for (StageScreen screen : cachedScreens) {
+
+        for (StageScreen screen : new ArrayList<>(cachedScreens)) {
+            if (screen.getClass().getName().equals(current.type.getName())) {
+                addToCache = false;
+                continue;
+            }
+            if (remove(current, screens.get(screen.getClass().getName()))) {
+                disposing.putAll(screen.getUI().getTextures().getTextures());
                 screen.dispose();
                 cachedScreens.remove(screen);
-            }
-        } else {
-            for (StageScreen screen : new ArrayList<>(cachedScreens)) {
-                if (screen.getClass().getName().equals(current.type.getName())) {
-                    addToCache = false;
-                    continue;
-                }
-                if (remove(current, screens.get(screen.getClass().getName()))) {
-                    disposing.putAll(screen.getUI().getTextures().getTextures());
-                    screen.dispose();
-                    cachedScreens.remove(screen);
-                } else {
-                    loadedTextures.putAll(screen.getUI().getTextures().getTextures());
-                }
+            } else {
+                loadedTextures.putAll(screen.getUI().getTextures().getTextures());
             }
         }
         for (Map.Entry<String, StageUITextures.TextureReferenceCounter> entry : disposing.entrySet()) {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,9 +19,10 @@ public abstract class StageUI extends Table {
 
     private ArrayList<AfterRenderRunnable> nextRenderList = new ArrayList<>();
 
-    private Map<Integer, Actor> actors = new HashMap<Integer, Actor>();
+    private Map<Integer, Actor> actors = new HashMap<>();
 
     public StageUI(Textures textures, Skin skin) {
+        super(skin);
         this.textures = new StageUITextures(textures);
         this.skin = skin;
     }
@@ -68,7 +70,7 @@ public abstract class StageUI extends Table {
     public abstract void init();
     public abstract void backPressed();
 
-    public java.util.Collection<Actor> getActors() {
+    public Collection<Actor> getActors() {
         return actors.values();
     }
 

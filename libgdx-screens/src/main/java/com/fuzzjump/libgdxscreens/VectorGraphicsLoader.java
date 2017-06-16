@@ -52,9 +52,7 @@ public abstract class VectorGraphicsLoader {
                 String svgMarkup = null;
                 try {
                     svgMarkup = future.get().readString();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
                 return new TextureRegion(load(vectorDetail, svgMarkup, targetWidth, targetHeight, cache));
@@ -63,9 +61,7 @@ public abstract class VectorGraphicsLoader {
                 Texture texture = null;
                 try {
                     texture = new Texture(future.get());
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
+                } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
                 }
                 return new TextureRegion(texture);
@@ -124,9 +120,6 @@ public abstract class VectorGraphicsLoader {
         protected String width;
         protected String height;
         protected String type;
-
-        public VectorDetail() {
-        }
 
         public VectorDetail(String filename, String atlas, String width, String height) {
             this.filename = filename;
