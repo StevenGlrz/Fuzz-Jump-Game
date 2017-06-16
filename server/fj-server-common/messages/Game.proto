@@ -1,0 +1,15 @@
+package com.fuzzjump.server.common.messages.game;
+
+option java_package = "com.fuzzjump.server.common.messages.game";
+
+message Loaded {
+
+  optional string gameId = 1;
+
+}
+
+message LoadedResponse {
+
+  optional bool found = 1;
+
+}

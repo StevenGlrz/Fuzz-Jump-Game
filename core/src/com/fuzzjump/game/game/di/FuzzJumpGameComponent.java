@@ -1,7 +1,6 @@
 package com.fuzzjump.game.game.di;
 
 import com.fuzzjump.game.game.FuzzJumpGame;
-import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
 
 import dagger.Subcomponent;
@@ -15,7 +14,6 @@ import dagger.Subcomponent;
 public interface FuzzJumpGameComponent {
 
     FuzzJumpGame provideGame();
-    MainScreen provideMainScreen();
     SplashScreen provideSplashScreen();
 
 }

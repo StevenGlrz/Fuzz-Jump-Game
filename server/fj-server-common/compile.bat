@@ -1,0 +1,1 @@
+protoc --proto_path="messages" --java_out="src/main/java" "messages/Lobby.proto" "messages/Game.proto"

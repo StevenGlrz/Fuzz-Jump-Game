@@ -1,0 +1,22 @@
+package com.steveadoo.server.common;
+
+option java_package = "com.steveadoo.server.common";
+
+message JoinPacket {
+
+  optional int64 profileId = 1;
+  optional string sessionKey = 2;
+  required int32 version = 3;
+  optional string serverSessionKey = 4;
+
+}
+
+message JoinResponsePacket {
+
+  optional string serverIp = 1;
+  optional int32 serverPort = 2;
+  required int32 status = 3;
+  optional string serverSessionKey = 4;
+  required bool redirect = 5;
+
+}
