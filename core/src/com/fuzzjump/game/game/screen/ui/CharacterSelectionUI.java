@@ -34,6 +34,7 @@ import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.component.CategoryFrame;
 import com.fuzzjump.game.game.screen.component.ColorDrawable;
+import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
@@ -75,7 +76,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     private Dialog buyingDialog;
 
     public CharacterSelectionUI(MenuUI parent, Stage stage, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
-        super(parent.getTextures(), parent.getSkin());
+        super(parent.getTextures(), parent.getGameSkin());
         this.parent = parent;
         this.stage = stage;
         this.stageScreen = parent.getStageScreen();
@@ -87,26 +88,13 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     @Override
     public void init() {
 
-        buyingDialog = new Dialog("", createDialogStyle(this)) {
-
-            @Override
-            public float getPrefWidth() {
-                return Gdx.graphics.getWidth() * 0.75f;
-            }
-
-            @Override
-            public float getPrefHeight() {
-                return Gdx.graphics.getWidth() * 0.8352089253422888f;
-            }
-
-
-        };
+        buyingDialog = new FuzzDialog("", createDialogStyle(this), 0.75f, 0.8352089253422888f);
 
         parent.register(Assets.MenuUI.BUYING_DIALOG, buyingDialog);
 
         buyingDialog.setModal(true);
 
-        buyingUnlockableLabel = new Label("Item name", getSkin(), "default");
+        buyingUnlockableLabel = new Label("Item name", getGameSkin(), "default");
         unlockableImage = new Image();
         unlockableImage.setScaling(Scaling.fit);
 
@@ -116,7 +104,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Table costTable = new Table();
 
         costTable.add(new Image(textures.getTextureRegionDrawable("kerpow-coin"))).size(Value.percentHeight(1f, costTable)).left();
-        costTable.add(costLabel = new Label("cost", getSkin(), "default")).padLeft(Value.percentWidth(.01f, buyingDialog)).expand().right();
+        costTable.add(costLabel = new Label("cost", getGameSkin(), "default")).padLeft(Value.percentWidth(.01f, buyingDialog)).expand().right();
 
         Value padBottom = Value.percentHeight(.035f, buyingDialog);
 
@@ -187,7 +175,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Value height = Value.percentWidth(0.160335f, topTable);
 
         for (int i = 0; i < Appearance.Equipment.COUNT; i++) {
-            CategoryFrame frame = new CategoryFrame(Appearance.TITLES[i], getSkin(), createCFrameStyle(parent));
+            CategoryFrame frame = new CategoryFrame(Appearance.TITLES[i], getGameSkin(), createCFrameStyle(parent));
             frame.init();
             if (i == 0) {
                 frame.setChecked(true);
@@ -213,7 +201,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         holder.add(scrollPane).fill().expand();
         midTable.add(holder).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padLeft(padOutside).padRight(padInside);
 
-        Fuzzle fuzzle = new Fuzzle(this, definitions, colorizer, profile);
+        Fuzzle fuzzle = new Fuzzle(this, colorizer, profile);
         midTable.add(fuzzle).size(Value.percentWidth(.6f, midTable)).center().expand();
 
         midTable.add(new Actor()).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padRight(padOutside).padLeft(padInside);
@@ -443,7 +431,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
                 System.out.println(definition.getName() + ", " + unlockable.getColorIndex());
             }
             this.accessoryImg = new TextureRegionDrawable(colorizer.getColored(textures, definition, unlockable == null ? 0 : unlockable.getColorIndex(), true));
-            this.font = getSkin().getFont(Assets.PROFILE_FONT);
+            this.font = getGameSkin().getFont(Assets.PROFILE_FONT);
             this.unlockableDefinition = definition;
             this.unlocked = unlockable != null;
             this.unlockable = unlockable;

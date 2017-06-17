@@ -6,6 +6,8 @@ import com.fuzzjump.libgdxscreens.StageScreen;
 
 import javax.inject.Inject;
 
+import static com.fuzzjump.game.game.Assets.MenuUI.PUBLIC_GAME;
+
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
@@ -28,6 +30,10 @@ public class MenuScreen extends StageScreen<MenuUI> {
 
     @Override
     public void clicked(int id, Actor actor) {
-
+        switch (id) {
+            case PUBLIC_GAME:
+                screenHandler.showScreen(WaitingScreen.class);
+                break;
+        }
     }
 }

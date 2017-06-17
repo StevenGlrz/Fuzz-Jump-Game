@@ -10,6 +10,7 @@ import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
+import com.fuzzjump.game.game.screen.WaitingScreen;
 import com.fuzzjump.libgdxscreens.ScreenHandler;
 import com.fuzzjump.libgdxscreens.Textures;
 
@@ -55,6 +56,7 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
         screenHandler.addScreen(SplashScreen.class, 0);
         screenHandler.addScreen(MainScreen.class, 0);
         screenHandler.addScreen(MenuScreen.class, 2);
+        screenHandler.addScreen(WaitingScreen.class, 0);
 
         screenHandler.showScreen(SplashScreen.class);
     }

@@ -10,7 +10,6 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.libgdxscreens.StageUI;
 
 /**
@@ -18,11 +17,7 @@ import com.fuzzjump.libgdxscreens.StageUI;
  */
 public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener {
 
-    private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
-
-    private Unlockable defaultFuzzleUnlockable;
-    private Unlockable defaultFrameUnlockable;
 
     private TextureRegionDrawable questionMark;
     private Profile profile;
@@ -47,14 +42,10 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
 
     private boolean drawFrame = true;
 
-    public Fuzzle(StageUI ui, UnlockableRepository definitions, UnlockableColorizer colorizer) {
+    public Fuzzle(StageUI ui, UnlockableColorizer colorizer) {
         super();
         this.ui = ui;
-        this.definitions = definitions;
         this.colorizer = colorizer;
-
-        this.defaultFuzzleUnlockable = new Unlockable(definitions.getDefinition(0), 0, -1);;
-        this.defaultFrameUnlockable = new Unlockable(definitions.getDefinition(32), 1, -1);
 
         this.fuzzleBounds = new Rectangle();
         this.headBounds = new Rectangle();
@@ -68,13 +59,13 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
         this.faceDrawable = new TextureRegionDrawable();
     }
 
-    public Fuzzle(StageUI ui, UnlockableRepository definitions, UnlockableColorizer colorizer, Profile profile) {
-        this(ui, definitions, colorizer);
+    public Fuzzle(StageUI ui, UnlockableColorizer colorizer, Profile profile) {
+        this(ui, colorizer);
         setProfile(profile);
     }
 
-    public Fuzzle(StageUI ui, UnlockableRepository definitions, UnlockableColorizer colorizer, Profile profile, boolean drawFrame) {
-        this(ui, definitions, colorizer, profile);
+    public Fuzzle(StageUI ui, UnlockableColorizer colorizer, Profile profile, boolean drawFrame) {
+        this(ui, colorizer, profile);
         this.drawFrame = drawFrame;
     }
 
@@ -179,9 +170,6 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
     }
 
     public void setFuzzle(Unlockable fuzzle) {
-        if (fuzzle == null) {
-            fuzzle = defaultFuzzleUnlockable;
-        }
         this.fuzzle = fuzzle;
         if (fuzzle != null) {
             fuzzleDrawable.setRegion(colorizer.getColored(ui.getTextures(), fuzzle, false));
@@ -194,9 +182,6 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
     }
 
     public void setFrame(Unlockable frame) {
-        if (frame == null) {
-            frame = defaultFrameUnlockable;
-        }
         this.frame = frame;
         if (ui != null && frame != null)
             frameDrawable.setRegion(colorizer.getColored(ui.getTextures(), frame, false));

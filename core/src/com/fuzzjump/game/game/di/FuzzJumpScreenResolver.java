@@ -4,6 +4,7 @@ import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
+import com.fuzzjump.game.game.screen.WaitingScreen;
 import com.fuzzjump.libgdxscreens.ScreenResolver;
 import com.fuzzjump.libgdxscreens.StageScreen;
 
@@ -23,6 +24,8 @@ public class FuzzJumpScreenResolver implements ScreenResolver {
             return (T) fuzzJump.getGameComponent().provideMainScreen();
         } else if (screenClazz == MenuScreen.class) {
             return (T) fuzzJump.getGameComponent().provideMenuScreen();
+        } else if (screenClazz == WaitingScreen.class) {
+            return (T) fuzzJump.getGameComponent().provideWaitingScreen();
         }
         return null;
     }

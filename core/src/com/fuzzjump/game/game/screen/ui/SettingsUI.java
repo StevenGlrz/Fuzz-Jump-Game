@@ -25,14 +25,14 @@ public class SettingsUI extends StageUI {
 
 
     public SettingsUI(MenuUI parent) {
-        super(parent.getTextures(), parent.getSkin());
+        super(parent.getTextures(), parent.getGameSkin());
         this.stageScreen = parent.getStageScreen();
         this.parent = parent;
     }
 
     @Override
     public void init() {
-        Label soundLabel = new Label("Sound", getSkin(), "default");
+        Label soundLabel = new Label("Sound", getGameSkin(), "default");
         CheckBox soundCheckbox = new CheckBox("", createCheckBoxStyle(this));
         //soundCheckbox.setChecked(game.playingSound());
         TextButton logoutButton = new TextButton("Logout", createDefaultTBStyle(this));

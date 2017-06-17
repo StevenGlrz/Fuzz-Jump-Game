@@ -1,38 +1,24 @@
 package com.fuzzjump.game.game.player;
 
-import com.google.gson.JsonObject;
-
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
 public class Profile {
 
-    protected int playerIndex;
-    protected long userId = -1;
-    protected long profileId = -1;
-    protected int coins;
-    protected int ranking = 1;
+    private int playerIndex;
+    private long userId = -1;
+    private long profileId = -1;
+    private int coins;
+    private int ranking = 1;
     protected String name;
+    private boolean ready;
 
     private long currentSeed;
 
-    protected Appearance appearance;
+    private Appearance appearance;
 
     public Profile() {
         this.appearance = new Appearance();
-    }
-
-    public void load(JsonObject data) {
-        this.name = data.get("Username").getAsString();
-        this.coins = data.get("Coins").getAsInt();
-        this.userId = data.get("Id").getAsLong();
-
-        if (data.has("GameProfile")) {
-            JsonObject profileData = data.get("GameProfile").getAsJsonObject();
-            this.ranking = profileData.get("Experience").getAsInt();
-            this.profileId = profileData.get("ProfileId").getAsInt();
-            this.appearance.load(profileData);
-        }
     }
 
     public long getUserId() {
@@ -98,5 +84,13 @@ public class Profile {
 
     public boolean valid() {
         return userId != -1;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public boolean isReady() {
+        return ready;
     }
 }

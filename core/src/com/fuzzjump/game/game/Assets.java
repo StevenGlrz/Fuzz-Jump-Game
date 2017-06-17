@@ -102,6 +102,19 @@ public class Assets {
         public static final int PROGRESS_IMAGE = 26;
     }
 
+    public class WaitingUI {
+
+        public static final int PROGRESS_DIALOG = 1;
+        public static final int PROGRESS_LABEL = 2;
+        public static final int CLOSE_BUTTON = 3;
+        public static final int PROGRESS_IMAGE = 4;
+        public static final int TIME_LABEL = 5;
+        public static final int READY_BUTTON = 6;
+        public static final int CANCEL_BUTTON = 7;
+        public static final int MAP_BUTTON = 8;
+
+    }
+
 
     private static final String BUTTON_UP = "ui-button";
     private static final String BUTTON_DOWN = "ui-button-p";
@@ -173,7 +186,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -182,7 +195,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(FB_SQ_BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(FB_SQ_BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -191,7 +204,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(GPLUS_SQ_BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(GPLUS_SQ_BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -201,7 +214,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(EMAIL_SQ_BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(EMAIL_SQ_BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -211,7 +224,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(PLUS_SQ_BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(PLUS_SQ_BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -221,7 +234,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(X_SQ_BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(X_SQ_BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -230,7 +243,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(PLAY_SQ_BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(PLAY_SQ_BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(DEFAULT_FONT));
+                ui.getGameSkin().getFont(DEFAULT_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -239,7 +252,7 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(BUTTON_DOWN),
                 null,
-                ui.getSkin().getFont(PROFILE_FONT));
+                ui.getGameSkin().getFont(PROFILE_FONT));
         style.fontColor = Color.WHITE;
         return style;
     }
@@ -248,9 +261,9 @@ public class Assets {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle(ui.getTextures().getTextureRegionDrawable(BUTTON_UP),
                 ui.getTextures().getTextureRegionDrawable(BUTTON_DOWN),
                 ui.getTextures().getTextureRegionDrawable(BUTTON_DOWN),
-                ui.getSkin().getFont(PROFILE_FONT));
-        style.fontColor = ui.getSkin().getColor(WHITE);
-        style.downFontColor = ui.getSkin().getColor(RED);
+                ui.getGameSkin().getFont(PROFILE_FONT));
+        style.fontColor = ui.getGameSkin().getColor(WHITE);
+        style.downFontColor = ui.getGameSkin().getColor(RED);
         return style;
     }
 
@@ -403,47 +416,47 @@ public class Assets {
 
     public static CheckBox.CheckBoxStyle createCheckBoxStyle(StageUI ui) {
         CheckBox.CheckBoxStyle style = new CheckBox.CheckBoxStyle(ui.getTextures().getTextureRegionDrawable(CHECKBOX_OFF),
-                ui.getTextures().getTextureRegionDrawable(CHECKBOX_ON), ui.getSkin().getFont(DEFAULT_FONT), ui.getSkin().getColor(FUZZ_YELLOW));
+                ui.getTextures().getTextureRegionDrawable(CHECKBOX_ON), ui.getGameSkin().getFont(DEFAULT_FONT), ui.getGameSkin().getColor(FUZZ_YELLOW));
         return style;
     }
 
     public static CheckBox.CheckBoxStyle createCFrameStyle(StageUI ui) {
         CheckBox.CheckBoxStyle style = new CheckBox.CheckBoxStyle(ui.getTextures().getTextureRegionDrawable("ui-frame-itemslot"),
-                ui.getTextures().getTextureRegionDrawable("ui-frame-itemslot-s"), ui.getSkin().getFont(DEFAULT_FONT), ui.getSkin().getColor(FUZZ_YELLOW));
+                ui.getTextures().getTextureRegionDrawable("ui-frame-itemslot-s"), ui.getGameSkin().getFont(DEFAULT_FONT), ui.getGameSkin().getColor(FUZZ_YELLOW));
         return style;
     }
 
     public static TextField.TextFieldStyle createETxtFieldStyle(StageUI ui) {
-        TextField.TextFieldStyle style = new TextField.TextFieldStyle(ui.getSkin().getFont(PROFILE_FONT),
-                ui.getSkin().getColor(WHITE),
-                ui.getSkin().getDrawable(INPUT_CURSOR),
-                ui.getSkin().getDrawable(INPUT_SELECTION),
+        TextField.TextFieldStyle style = new TextField.TextFieldStyle(ui.getGameSkin().getFont(PROFILE_FONT),
+                ui.getGameSkin().getColor(WHITE),
+                ui.getGameSkin().getDrawable(INPUT_CURSOR),
+                ui.getGameSkin().getDrawable(INPUT_SELECTION),
                 ui.getTextures().getTextureRegionDrawable(INPUT));
         return style;
     }
 
     public static com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle createTxtFieldStyle(StageUI ui) {
-        com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle style = new com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle(ui.getSkin().getFont(DEFAULT_FONT),
-                ui.getSkin().getColor(WHITE),
-                ui.getSkin().getDrawable(INPUT_CURSOR),
-                ui.getSkin().getDrawable(INPUT_SELECTION),
+        com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle style = new com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
+                ui.getGameSkin().getColor(WHITE),
+                ui.getGameSkin().getDrawable(INPUT_CURSOR),
+                ui.getGameSkin().getDrawable(INPUT_SELECTION),
                 ui.getTextures().getTextureRegionDrawable(INPUT));
         return style;
     }
 
     public static Window.WindowStyle createWindowStyle(StageUI ui) {
-        Window.WindowStyle style = new Window.WindowStyle(ui.getSkin().getFont(DEFAULT_FONT),
-                ui.getSkin().getColor(FUZZ_YELLOW),
+        Window.WindowStyle style = new Window.WindowStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
+                ui.getGameSkin().getColor(FUZZ_YELLOW),
                 ui.getTextures().getTextureRegionDrawable(PANEL));
-        style.stageBackground = ui.getSkin().getDrawable("dialogDim");
+        style.stageBackground = ui.getGameSkin().getDrawable("dialogDim");
         return style;
     }
 
     public static Window.WindowStyle createDialogStyle(StageUI ui) {
-        Window.WindowStyle style = new Window.WindowStyle(ui.getSkin().getFont(DEFAULT_FONT),
-                ui.getSkin().getColor(FUZZ_YELLOW),
+        Window.WindowStyle style = new Window.WindowStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
+                ui.getGameSkin().getColor(FUZZ_YELLOW),
                 ui.getTextures().getTextureRegionDrawable("ui-panel-login"));
-        style.stageBackground = ui.getSkin().getDrawable("dialogDim");
+        style.stageBackground = ui.getGameSkin().getDrawable("dialogDim");
         return style;
     }
 

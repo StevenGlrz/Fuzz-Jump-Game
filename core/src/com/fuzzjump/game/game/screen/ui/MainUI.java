@@ -44,7 +44,7 @@ public class MainUI extends StageUI {
 
         setFillParent(true);
 
-        Label messageLabel = new Label("Message", getSkin(), "default");
+        Label messageLabel = new Label("Message", getGameSkin(), "default");
         Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
         progressImage.setOrigin(Align.center);
         progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
@@ -131,7 +131,7 @@ public class MainUI extends StageUI {
     private void setupLoginTable() {
         register(Assets.MainScreen.LOGIN_USER_FIELD, new TextField("", editTextStyle));
 
-        Label usernameLabel = new Label("Enter name:", getSkin());
+        Label usernameLabel = new Label("Enter name:", getGameSkin());
         usernameLabel.setAlignment(Align.left);
         final TextField loginUserField = actor(TextField.class, Assets.MainScreen.LOGIN_USER_FIELD);
 

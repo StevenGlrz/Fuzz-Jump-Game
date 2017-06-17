@@ -67,7 +67,7 @@ public class MenuUI extends StageUI {
         dropdownTable = new FJDragDownBarTable(this); //, getGame().getProfile());
         uiSwitcher = new ActorSwitcher();
 
-        Label messageLabel = new Label("Loading", getSkin(), "default");
+        Label messageLabel = new Label("Loading", getGameSkin(), "default");
         final Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
         final TextButton progressCloseButton = new TextButton("Close", createDefaultTBStyle(this));
         progressImage.setOrigin(Align.center);
@@ -131,7 +131,7 @@ public class MenuUI extends StageUI {
 
 
         Table pictureTable = new Table();
-        Fuzzle fuzzle = new Fuzzle(this, definitions, colorizer);
+        Fuzzle fuzzle = new Fuzzle(this, colorizer);
         TextButton profileButton = new TextButton("Customize", createDefaultTBStyle(this));
         pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
         pictureTable.add(profileButton).padBottom(Value.percentHeight(.0416f, pictureTable)).size(Value.percentWidth(.95f, pictureTable), Value.percentWidth(0.25f, pictureTable));

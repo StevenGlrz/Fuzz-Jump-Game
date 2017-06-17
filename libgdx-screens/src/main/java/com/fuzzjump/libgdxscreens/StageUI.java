@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +15,6 @@ public abstract class StageUI extends Table {
 
     protected StageScreen stageScreen;
     protected StageUITextures textures;
-
-    private ArrayList<AfterRenderRunnable> nextRenderList = new ArrayList<>();
 
     private Map<Integer, Actor> actors = new HashMap<>();
 
@@ -50,21 +47,6 @@ public abstract class StageUI extends Table {
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if (!nextRenderList.isEmpty()) {
-            for (int i = 0; i < nextRenderList.size();) {
-                AfterRenderRunnable afr = nextRenderList.get(i);
-                if (afr.renderCount++ > 5) {
-                    afr.runnable.run();
-                    nextRenderList.remove(i);
-                } else {
-                    i++;
-                }
-            }
-        }
-    }
-
-    public void submitForAfterDraw(Runnable runnable) {
-        nextRenderList.add(new AfterRenderRunnable(runnable));
     }
 
     public <T extends Actor> T actor(Class<T> type, int id) {
@@ -90,22 +72,19 @@ public abstract class StageUI extends Table {
         return stageScreen;
     }
 
+    /**
+     * This method exist to avoid confusion with inner classes that have a parent class with getSkin()
+     * but are inside a class that inherits StageUI
+     * @return The game skin.
+     */
+    public Skin getGameSkin() {
+        return super.getSkin();
+    }
+
     public boolean remove() {
         boolean rem = super.remove();
         if (rem)
             textures.clearHardRefs();
         return rem;
-    }
-
-    private static class AfterRenderRunnable {
-
-        private final Runnable runnable;
-
-        public int renderCount = 0;
-
-        public AfterRenderRunnable(Runnable runnable) {
-            this.runnable = runnable;
-        }
-
     }
 }
