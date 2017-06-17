@@ -1,1 +1,0 @@
-protoc --proto_path="messages" --java_out="src/main/java" "messages/Join.proto"

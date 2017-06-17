@@ -18,19 +18,7 @@ public class Main {
             6895);*/
 
     public static void main(String[] args) {
-        try {
-            ServerInfo serverInfo;
-            if (args.length > 0 && args[0].equals("local")) {
-                serverInfo = new ServerInfo("https://kerpowgamesapi.azurewebsites.net/api/user/validkey", 6896);
-                serverInfo.setIp("10.0.0.5");
-            } else {
-                serverInfo = new ServerInfo("https://kerpowgamesapi.azurewebsites.net/api/user/validkey", 6894, 6895);
-            }
-            ServerBootstrapper.bootstrap(new GameServer(serverInfo));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error starting server");
-        }
+        //TODO
     }
 
 }

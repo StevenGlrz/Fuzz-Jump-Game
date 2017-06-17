@@ -1,38 +1,42 @@
 package com.steveadoo.server.common.packets;
 
-import com.google.protobuf.GeneratedMessage;
-import com.google.protobuf.InvalidProtocolBufferException;
-
-public class MessageHandler {
+/**
+ * Handles encoding/decoding messages
+ * @param <T> The class type to encode from and decode to
+ */
+public class MessageHandler<T> {
 
     public final int opcode;
-    public final Class<? extends GeneratedMessage> messageType;
-    public final Decoder decoder;
+    public final Class<T> messageType;
+    public final Decoder<T> decoder;
+    public final Encoder<T> encoder;
 
-    public static MessageHandler create(int opcode, final GeneratedMessage message) {
-        Decoder decoder = new Decoder() {
-            @Override
-            public GeneratedMessage decode(byte[] data) {
-                try {
-                    return message.getParserForType().parseFrom(data);
-                } catch (InvalidProtocolBufferException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-            }
-        };
-        return new MessageHandler(opcode, message.getClass(), decoder);
-    }
-
-    private MessageHandler(int opcode, Class<? extends GeneratedMessage> messageType, Decoder decoder) {
+    public MessageHandler(Class<T> messageType, int opcode, Decoder<T> decoder, Encoder<T> encoder) {
         this.opcode = opcode;
         this.messageType = messageType;
         this.decoder = decoder;
+        this.encoder = encoder;
     }
 
-    protected interface Decoder<T extends GeneratedMessage> {
+    public interface Decoder<T> {
 
+        /**
+         * Decode the body of the message(so dont look for the id)
+         * @param data the message to decode
+         * @return the decoded message
+         */
         T decode(byte[] data);
+
+    }
+
+    public interface Encoder<T> {
+
+        /**
+         * Encode the body of the message(so dont add the id)
+         * @param message the message to encode
+         * @return the encoded message
+         */
+        byte[] encode(T message);
 
     }
 }

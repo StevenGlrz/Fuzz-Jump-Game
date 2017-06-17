@@ -1,10 +1,10 @@
 package com.fuzzjump.server.game.game;
 
-import com.steveadoo.server.base.Session;
+import com.fuzzjump.server.base.FuzzJumpSession;
 
 import java.util.UUID;
 
-public class GameSession extends Session<GamePlayer> {
+public class GameSession extends FuzzJumpSession<GamePlayer> {
 
     public final int mapId;
     public final String seed;

@@ -1281,13 +1281,13 @@ public final class Lobby {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int64 profileId = 1;</code>
+     * <code>optional int32 profileId = 1;</code>
      */
     boolean hasProfileId();
     /**
-     * <code>optional int64 profileId = 1;</code>
+     * <code>optional int32 profileId = 1;</code>
      */
-    long getProfileId();
+    int getProfileId();
 
     /**
      * <code>required int32 playerIndex = 2;</code>
@@ -1361,7 +1361,7 @@ public final class Lobby {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              profileId_ = input.readInt64();
+              profileId_ = input.readInt32();
               break;
             }
             case 16: {
@@ -1415,17 +1415,17 @@ public final class Lobby {
 
     private int bitField0_;
     public static final int PROFILEID_FIELD_NUMBER = 1;
-    private long profileId_;
+    private int profileId_;
     /**
-     * <code>optional int64 profileId = 1;</code>
+     * <code>optional int32 profileId = 1;</code>
      */
     public boolean hasProfileId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int64 profileId = 1;</code>
+     * <code>optional int32 profileId = 1;</code>
      */
-    public long getProfileId() {
+    public int getProfileId() {
       return profileId_;
     }
 
@@ -1460,7 +1460,7 @@ public final class Lobby {
     }
 
     private void initFields() {
-      profileId_ = 0L;
+      profileId_ = 0;
       playerIndex_ = 0;
       ready_ = false;
     }
@@ -1486,7 +1486,7 @@ public final class Lobby {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt64(1, profileId_);
+        output.writeInt32(1, profileId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, playerIndex_);
@@ -1505,7 +1505,7 @@ public final class Lobby {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt64Size(1, profileId_);
+          .computeInt32Size(1, profileId_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1632,7 +1632,7 @@ public final class Lobby {
 
       public Builder clear() {
         super.clear();
-        profileId_ = 0L;
+        profileId_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
         playerIndex_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1738,34 +1738,34 @@ public final class Lobby {
       }
       private int bitField0_;
 
-      private long profileId_ ;
+      private int profileId_ ;
       /**
-       * <code>optional int64 profileId = 1;</code>
+       * <code>optional int32 profileId = 1;</code>
        */
       public boolean hasProfileId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int64 profileId = 1;</code>
+       * <code>optional int32 profileId = 1;</code>
        */
-      public long getProfileId() {
+      public int getProfileId() {
         return profileId_;
       }
       /**
-       * <code>optional int64 profileId = 1;</code>
+       * <code>optional int32 profileId = 1;</code>
        */
-      public Builder setProfileId(long value) {
+      public Builder setProfileId(int value) {
         bitField0_ |= 0x00000001;
         profileId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int64 profileId = 1;</code>
+       * <code>optional int32 profileId = 1;</code>
        */
       public Builder clearProfileId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        profileId_ = 0L;
+        profileId_ = 0;
         onChanged();
         return this;
       }
@@ -8275,7 +8275,7 @@ public final class Lobby {
       ".com.fuzzjump.server.common.messages.lob" +
       "by.Player\022B\n\004time\030\003 \002(\01324.com.fuzzjump.s" +
       "erver.common.messages.lobby.TimeState\"?\n" +
-      "\006Player\022\021\n\tprofileId\030\001 \001(\003\022\023\n\013playerInde" +
+      "\006Player\022\021\n\tprofileId\030\001 \001(\005\022\023\n\013playerInde" +
       "x\030\002 \002(\005\022\r\n\005ready\030\003 \002(\010\"\031\n\tTimeState\022\014\n\004t" +
       "ime\030\001 \002(\005\"\'\n\007MapSlot\022\r\n\005mapId\030\001 \002(\005\022\r\n\005v",
       "otes\030\002 \002(\005\"\033\n\nMapSlotSet\022\r\n\005mapId\030\001 \002(\005\"" +

@@ -1,144 +1,135 @@
 package com.steveadoo.server.base;
 
+import com.steveadoo.server.base.validation.Validator;
 import com.steveadoo.server.common.packets.Packet;
-import com.steveadoo.server.common.packets.PacketHandler;
-import com.steveadoo.server.common.packets.Packets;
-import io.netty.channel.Channel;
-import io.netty.util.Attribute;
+import com.steveadoo.server.common.packets.PacketProcessor;
 
-import javax.crypto.NoSuchPaddingException;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.util.HashMap;
+import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
+
+import java.util.LinkedList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-public abstract class Server implements PacketHandler.PacketSenderTransformer<Channel, Packet> {
+public abstract class Server<TInfo extends ServerInfo> implements PacketProcessor.ProcessPipeline {
 
-    public static String MACHINE_NAME = findMachineName();
+    public static final AttributeKey<Player> PLAYER_ATTRIBUTE_KEY = AttributeKey.newInstance("Channel.player");
+    public static final AttributeKey<Boolean> VALIDATED_ATTR_KEY = AttributeKey.newInstance("Channel.validated");
 
-    //tells the server to automatically send and receive the join packet for validation etc,
-    //after the packet has been received, validated, and sent back, we tell the implementing server that the channel joined
-    protected final ConnectionValidator validator;
-    private final ScheduledExecutorService scheduledExecutor;
+    protected final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
 
-    private ServerStateListener stateListener;
+    private final LinkedList<Validator> validators;
+    private final PacketProcessor packetProcessor;
+    private final TInfo serverInfo;
 
-    private final PacketHandler packetHandler;
-    private final ServerInfo serverInfo;
-
-    private ServerState serverState = ServerState.ACCEPT_CONNECTIONS;
-
-    private final HashMap<Channel, Player> players;
-
-    public Server(ServerInfo serverInfo, PacketHandler packetHandler, boolean validate) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
-        this.scheduledExecutor = Executors.newSingleThreadScheduledExecutor();
-        this.players = new HashMap<>();
+    public Server(TInfo serverInfo, PacketProcessor packetProcessor) {
         this.serverInfo = serverInfo;
-        this.packetHandler = packetHandler;
-        if (serverInfo.getAuthUri() != null && validate) {
-            validator = new ConnectionValidator(this, this::connected);
-            packetHandler.setPacketTransformer(this);
-        } else {
-            validator = null;
-        }
+        this.packetProcessor = packetProcessor;
+        this.packetProcessor.setProcessPipeline(this);
+        this.validators = new LinkedList<>();
     }
 
-    protected final void raiseServerStateChanged(ServerState state) {
-        if (stateListener == null)
-            return;
-        stateListener.stateChanged(serverState = state);
+    public void addValidator(Validator validator) {
+        validators.add(validator);
+    }
+
+    public Object transformSender(Object sender, Packet packet) {
+        return ((Channel) sender).attr(PLAYER_ATTRIBUTE_KEY).get();
+    }
+
+    public final boolean checkMessage(Object sender, Packet packet, Object message) {
+        Player player = (Player) sender;
+        if (serverInfo.validate) {
+            Boolean validated = player.channel.attr(VALIDATED_ATTR_KEY).get();
+            System.out.println(validated);
+            if (validated == null || !validated) {
+                //trigger validators
+                System.out.println("Trying validate");
+                tryValidate(player, packet, message);
+                return false;
+            }
+        }
+        return true;
     }
 
     public final void onConnect(Channel channel) {
-        System.out.println("Channel connected");
-        if (validator != null)
-            return;
-        Player player = createPlayer(channel, -1);
-        players.put(channel, player);
-        connected(player);
+        Player player = createPlayer(channel);
+        channel.attr(PLAYER_ATTRIBUTE_KEY).set(player);
+        if (serverInfo.validate) {
+            System.out.println("Validating");
+            executorService.schedule(() -> {
+                System.out.println("Checking if validated");
+                Boolean validated = player.channel.attr(VALIDATED_ATTR_KEY).get();
+                if (validated == null || !validated) {
+                    player.channel.attr(Server.PLAYER_ATTRIBUTE_KEY).remove();
+                    player.channel.close();
+                }
+            }, serverInfo.validationTimeout, TimeUnit.MILLISECONDS);
+            System.out.println("Submitted");
+        } else {
+            connected(player);
+        }
     }
 
     public final void onDisconnect(Channel channel) {
-        //servers will need to check if the channel is actually active
-        System.out.println("Channel disconnected");
-        if (!players.containsKey(channel))
+        Player player = channel.attr(PLAYER_ATTRIBUTE_KEY).get();
+        if (player == null) {
             return;
-        disconnected(players.get(channel));
-        players.remove(channel);
-    }
-
-    @Override
-    public Object checkAndGet(Channel channel, Packet packet) {
-        //the join and response packets need the channel
-        if (packet.opcode == Packets.JOIN_PACKET_RESPONSE || packet.opcode == Packets.JOIN_PACKET)
-            return channel;
-        //master key, so a server is connecting to a server
-        Attribute<Boolean> attribute = channel.attr(ConnectionValidator.MASTER_KEY_ATTRIB);
-        if (attribute != null
-                && attribute.get() != null
-                && attribute.get() == true) {
-            return channel;
         }
-        //everything else gets a player
-        if (!players.containsKey(channel))
-            return null;
-        return players.get(channel);
+        disconnected(player);
     }
 
-    public final void addPlayer(Player player) {
-        players.put(player.channel, player);
+    private void tryValidate(Player player, Packet packet, Object message) {
+        for (Validator validator : validators) {
+            if (!validator.matches(message.getClass(), message)) {
+                continue;
+            }
+            validator.validate(player, message).thenAccept(validated -> {
+                if (!validated) {
+                    return;
+                }
+                onValidated(player);
+            });
+            return;
+        }
     }
 
-    public final void setServerStateListener(ServerStateListener stateListener) {
-        this.stateListener = stateListener;
+    private void onValidated(Player player) {
+        player.channel.attr(VALIDATED_ATTR_KEY).set(true);
+        connected(player);
     }
 
-    protected final ServerState getState() {
-        return serverState;
+    public final PacketProcessor getPacketProcessor() {
+        return packetProcessor;
     }
 
-    public PacketHandler getPacketHandler() {
-        return packetHandler;
-    }
-
-    public ServerInfo getServerInfo() {
+    public final TInfo getServerInfo() {
         return serverInfo;
     }
 
-    public ScheduledExecutorService getScheduledExecutor() {
-        return scheduledExecutor;
+    /**
+     * Called when a player connects
+     * TODO move this out into some sort of PlayerHandler?
+     * @param player the player that connected
+     */
+    protected void connected(Player player) {
     }
 
-    public abstract Player createPlayer(Channel channel, long profileId);
-    public abstract void connected(Player player);
-    public abstract void disconnected(Player player);
-
-    public static String findMachineName() {
-        try {
-            return InetAddress.getLocalHost().getHostName();
-        } catch (UnknownHostException e) {
-            SecureRandom random = new SecureRandom();
-            return new BigInteger(130, random).toString(16);
-        }
+    /**
+     * Called when a player disconnects
+     * TODO move this out into some sort of PlayerHandler?
+     * @param player the player that disconnected
+     */
+    protected void disconnected(Player player) {
     }
 
-    public interface ServerStateListener {
-
-        void stateChanged(ServerState state);
-
-    }
-
-    public enum ServerState {
-
-        ACCEPT_CONNECTIONS,
-        REFUSE_CONNECTIONS
-
-    }
+    /**
+     * Creates a Player object to attach to this channel
+     * TODO move this out into some sort of PlayerHandler?
+     * @param channel the netty channel
+     * @return the created player
+     */
+    protected abstract Player createPlayer(Channel channel);
 
 }

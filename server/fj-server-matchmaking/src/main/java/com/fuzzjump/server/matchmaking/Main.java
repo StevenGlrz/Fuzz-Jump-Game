@@ -21,20 +21,7 @@ public class Main {
             6895);*/
 
     public static void main(String[] args) {
-        try {
-            InetSocketAddress gameserverAddress = new InetSocketAddress("10.0.0.5", 6896);
-            ServerInfo serverInfo;
-            if (args.length > 0 && args[0].equals("local")) {
-                serverInfo = new ServerInfo("https://kerpowgamesapi.azurewebsites.net/api/user/validkey", 6895);
-                serverInfo.setIp("10.0.0.5");
-            } else {
-                serverInfo = new ServerInfo("https://kerpowgamesapi.azurewebsites.net/api/user/validkey", 6894, 6895);
-            }
-            ServerBootstrapper.bootstrap(new MatchmakingServer(serverInfo, gameserverAddress));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("Error starting server");
-        }
+        //TODO.
     }
 
 }

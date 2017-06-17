@@ -1,7 +1,9 @@
 package com.fuzzjump.server.common;
 
+import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
-import com.steveadoo.server.common.Join;
+import com.google.protobuf.GeneratedMessage;
+import com.google.protobuf.InvalidProtocolBufferException;
 import com.steveadoo.server.common.packets.MessageHandler;
 import com.steveadoo.server.common.packets.Packets;
 
@@ -13,18 +15,40 @@ public class FuzzJumpMessageHandlers {
 
     public static final List<MessageHandler> handlers;
 
+    private static final MessageHandler.Encoder<? extends GeneratedMessage> ENCODER = new MessageHandler.Encoder<GeneratedMessage>() {
+        @Override
+        public byte[] encode(GeneratedMessage message) {
+            return message.toByteArray();
+        }
+    };
+
     static {
         List tempHandlerList = new LinkedList<>();
-        tempHandlerList.add(MessageHandler.create(Packets.JOIN_PACKET, Join.JoinPacket.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(Packets.JOIN_PACKET_RESPONSE, Join.JoinResponsePacket.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.LOBBY_STATE, Lobby.LobbyState.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.LOBBY_STATE, Lobby.LobbyState.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.TIME_STATE_UPDATE, Lobby.TimeState.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.MAP_SLOT_VOTES_UPDATE, Lobby.MapSlot.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.MAP_SLOT_UPDATE, Lobby.MapSlotSet.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.READY_UPDATE, Lobby.ReadySet.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.LOBBY_LOADED, Lobby.Loaded.getDefaultInstance()));
-        tempHandlerList.add(MessageHandler.create(FuzzJumpPackets.GAME_FOUND, Lobby.GameFound.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(Packets.JOIN_PACKET, Join.JoinPacket.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(Packets.JOIN_PACKET_RESPONSE, Join.JoinResponsePacket.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_STATE, Lobby.LobbyState.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_STATE, Lobby.LobbyState.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.TIME_STATE_UPDATE, Lobby.TimeState.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.MAP_SLOT_VOTES_UPDATE, Lobby.MapSlot.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.MAP_SLOT_UPDATE, Lobby.MapSlotSet.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.READY_UPDATE, Lobby.ReadySet.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_LOADED, Lobby.Loaded.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_FOUND, Lobby.GameFound.getDefaultInstance()));
         handlers = Collections.unmodifiableList(tempHandlerList);
+    }
+
+    public static MessageHandler createProtoMessageHandler(int opcode, final GeneratedMessage message) {
+        MessageHandler.Decoder decoder = new MessageHandler.Decoder() {
+            @Override
+            public GeneratedMessage decode(byte[] data) {
+                try {
+                    return message.getParserForType().parseFrom(data);
+                } catch (InvalidProtocolBufferException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+        };
+        return new MessageHandler(message.getClass(), opcode, decoder, ENCODER);
     }
 }

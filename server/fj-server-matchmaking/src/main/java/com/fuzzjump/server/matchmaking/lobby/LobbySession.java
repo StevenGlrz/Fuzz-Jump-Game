@@ -1,6 +1,6 @@
 package com.fuzzjump.server.matchmaking.lobby;
 
-import com.steveadoo.server.base.Session;
+import com.fuzzjump.server.base.FuzzJumpSession;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.fuzzjump.server.common.Maps;
 
@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 
 
-public class LobbySession extends Session<LobbyPlayer> {
+public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
 
     private LobbySessionListener listener;
 
@@ -54,18 +54,18 @@ public class LobbySession extends Session<LobbyPlayer> {
         if (update) {
             stateBuilder.clearPlayers();
             for (LobbyPlayer player : players) {
-                player.synced = false;
+                player.setSynced(false);
                 playerBuilder.clear();
-                playerBuilder.setPlayerIndex(player.index);
-                playerBuilder.setProfileId(player.profileId);
-                playerBuilder.setReady(player.ready);
+                playerBuilder.setPlayerIndex(player.getIndex());
+                playerBuilder.setProfileId(player.getProfileId());
+                playerBuilder.setReady(player.isReady());
                 stateBuilder.addPlayers(playerBuilder.buildPartial());
             }
             for (int i = 0; i < stateBuilder.getMapSlotsCount(); i++) {
                 Lobby.MapSlot.Builder bldr = stateBuilder.getMapSlotsBuilder(i);
                 bldr.setVotes(0);
                 for (LobbyPlayer player : players) {
-                    if (player.mapId == bldr.getMapId()) {
+                    if (player.getMapId() == bldr.getMapId()) {
                         bldr.setVotes(bldr.getVotes() + 1);
                     }
                 }
@@ -78,10 +78,10 @@ public class LobbySession extends Session<LobbyPlayer> {
         stateBuilder.setTime(timeState);
         int readyCount = 0;
         for (LobbyPlayer player : players) {
-            readyCount += player.ready ? 1 : 0;
-            if (!player.synced) {
+            readyCount += player.isReady() ? 1 : 0;
+            if (!player.isSynced()) {
                 player.channel.write(stateBuilder.buildPartial());
-                player.synced = true;
+                player.setSynced(true);
             } else {
                 player.channel.write(timeState);
             }
@@ -99,8 +99,8 @@ public class LobbySession extends Session<LobbyPlayer> {
         int[] maps = new int[Maps.MAP_COUNT];
         for(int i = 0; i < players.size(); i++) {
             LobbyPlayer player = players.get(i);
-            if (player.mapId != -1)
-                maps[player.mapId]++;
+            if (player.getMapId() != -1)
+                maps[player.getMapId()]++;
         }
         int mapId = -1;
         int votes = 0;

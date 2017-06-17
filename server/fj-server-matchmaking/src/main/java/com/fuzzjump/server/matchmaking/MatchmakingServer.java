@@ -1,30 +1,27 @@
 package com.fuzzjump.server.matchmaking;
 
+import com.fuzzjump.server.base.FuzzJumpServer;
 import com.fuzzjump.server.common.FuzzJumpMessageHandlers;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.fuzzjump.server.matchmaking.lobby.LobbyPlayer;
 import com.fuzzjump.server.matchmaking.lobby.LobbySession;
-import com.steveadoo.server.base.Player;
-import com.steveadoo.server.base.Server;
-import com.steveadoo.server.base.ServerInfo;
-import com.steveadoo.server.base.Session;
-import com.steveadoo.server.common.packets.PacketHandler;
+import com.steveadoo.server.common.packets.PacketProcessor;
+
 import io.netty.channel.Channel;
 
 import javax.crypto.NoSuchPaddingException;
-import java.net.InetSocketAddress;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class MatchmakingServer extends Server {
+public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingServerInfo> {
 
     private static final int MAX_PLAYERS = 4;
     private static final int TICK = 500;
 
-    private final GameServerTransferer gameServerTransferer;
+    //private final GameServerTransferer gameServerTransferer;
 
     private ScheduledExecutorService matchService = Executors.newScheduledThreadPool(4);
 
@@ -32,35 +29,35 @@ public class MatchmakingServer extends Server {
     private ConcurrentLinkedQueue<LobbySession> openSessions = new ConcurrentLinkedQueue<>();
 
 
-    public MatchmakingServer(ServerInfo serverInfo, InetSocketAddress gameServerAddress) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
-        super(serverInfo, new PacketHandler(FuzzJumpMessageHandlers.handlers), true);
-        this.gameServerTransferer = new GameServerTransferer(gameServerAddress);
-        getPacketHandler().addListener(Lobby.Loaded.class, this::lobbyLoaded);
-        getPacketHandler().addListener(Lobby.ReadySet.class, this::readySet);
-        getPacketHandler().addListener(Lobby.MapSlotSet.class, this::mapSlotSet);
+    public MatchmakingServer(MatchmakingServerInfo serverInfo) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
+        super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.handlers));
+        //this.gameServerTransferer = new GameServerTransferer(gameServerAddress);
+        getPacketProcessor().addListener(Lobby.Loaded.class, this::lobbyLoaded);
+        getPacketProcessor().addListener(Lobby.ReadySet.class, this::readySet);
+        getPacketProcessor().addListener(Lobby.MapSlotSet.class, this::mapSlotSet);
     }
 
     private void readySet(LobbyPlayer player, Lobby.ReadySet message) {
         if (!checkSession(player))
             return;
-        player.ready = message.getReady();
-        player.session.setUpdate(true);
+        player.setReady(message.getReady());
+        player.getSession().setUpdate(true);
     }
 
     private void mapSlotSet(LobbyPlayer player, Lobby.MapSlotSet message) {
         if (!checkSession(player))
             return;
-        player.mapId = message.getMapId();
-        player.session.setUpdate(true);
+        player.setMapId(message.getMapId());
+        player.getSession().setUpdate(true);
     }
 
     private void lobbyLoaded(LobbyPlayer player, Lobby.Loaded message) {
         //TODO split this method up
         //player is in lobby and ready to find a game
-        if (player.session != null)
+        if (player.getSession() != null)
             return;
         if (message.hasGameId()) {
-            Session session = sessions.get(message.getGameId());
+            LobbySession session = sessions.get(message.getGameId());
             if (session == null) {
                 player.channel.writeAndFlush(Lobby.GameFound.newBuilder().setFound(false).buildPartial()).addListener((f) -> player.channel.disconnect());
             } else {
@@ -96,7 +93,10 @@ public class MatchmakingServer extends Server {
             session.addPlayer(player);
             if (session.filled())
                 openSessions.remove(session);
-            player.channel.writeAndFlush(Lobby.GameFound.newBuilder().setFound(true).setGameId(session.id).setGameName(Server.MACHINE_NAME).buildPartial());
+            player.channel.writeAndFlush(Lobby.GameFound.newBuilder().setFound(true)
+                    .setGameId(session.id)
+                    .setGameName("GAME")
+                    .buildPartial());
         }
     }
 
@@ -105,7 +105,7 @@ public class MatchmakingServer extends Server {
             openSessions.remove(lobbySession);
             sessions.remove(lobbySession.id);
             //TODO send a status update to client
-            gameServerTransferer.transfer(lobbySession);
+            //gameServerTransferer.transfer(lobbySession);
         }
         if (lobbySession.end()) {
             lobbySession.future.cancel(false);
@@ -115,7 +115,7 @@ public class MatchmakingServer extends Server {
 
 
     private boolean checkSession(LobbyPlayer player) {
-        if (player.session == null) {
+        if (player.getSession() == null) {
             player.channel.disconnect();
             return false;
         }
@@ -124,22 +124,22 @@ public class MatchmakingServer extends Server {
 
 
     @Override
-    public Player createPlayer(Channel channel, long profileId) {
-        return new LobbyPlayer(channel, profileId);
+    public LobbyPlayer createPlayer(Channel channel) {
+        return new LobbyPlayer(channel);
     }
 
     @Override
-    public void connected(Player player) {
+    public void connected(LobbyPlayer player) {
         System.out.println("Channel connected");
     }
 
     @Override
-    public void disconnected(Player player) {
-        if (player.session == null)
+    public void disconnected(LobbyPlayer player) {
+        if (player.getSession() == null)
             return;
-        player.session.removePlayer(player);
-        if (!player.session.filled() && !openSessions.contains(player.session)) {
-            openSessions.offer((LobbySession)player.session);
+        player.getSession().removePlayer(player);
+        if (!player.getSession().filled() && !openSessions.contains(player.getSession())) {
+            openSessions.offer((LobbySession)player.getSession());
         }
     }
 

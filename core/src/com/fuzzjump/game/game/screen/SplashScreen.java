@@ -11,6 +11,8 @@ import com.fuzzjump.libgdxscreens.StageScreen;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 
+import java.io.File;
+
 import javax.inject.Inject;
 
 /**

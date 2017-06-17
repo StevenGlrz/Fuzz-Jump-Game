@@ -5,12 +5,5 @@ dependencies {
     compile 'com.google.protobuf:protobuf-java:2.6.1'
 }
 
-task runProtobuf(type: Exec) {
-    println 'running protoc'
-    commandLine 'cmd', '/c', 'compile.bat'
-}
-
-tasks.runProtobuf.execute()
-
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
