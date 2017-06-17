@@ -14,11 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.game.game.graphics.ActorSwitcher;
-import com.fuzzjump.game.game.graphics.FJDragDownBarTable;
-import com.fuzzjump.game.game.graphics.Fuzzle;
+import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
+import com.fuzzjump.game.game.screen.component.ActorSwitcher;
+import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
+import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.game.game.player.unlockable.UnlockableDefinitions;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -45,16 +46,18 @@ public class MenuUI extends StageUI {
     private FJDragDownBarTable dropdownTable;
 
     private final Profile profile;
-    private final UnlockableDefinitions definitions;
+    private final UnlockableRepository definitions;
+    private final UnlockableColorizer colorizer;
 
     private final Stage stage;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, Stage stage, Profile profile, UnlockableDefinitions definitions) {
+    public MenuUI(Textures textures, Skin skin, Stage stage, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
         super(textures, skin);
         this.profile = profile;
         this.stage = stage;
         this.definitions = definitions;
+        this.colorizer = colorizer;
 
         profile.getAppearance().createDummy(definitions);
     }
@@ -65,7 +68,7 @@ public class MenuUI extends StageUI {
         uiSwitcher = new ActorSwitcher();
 
         Label messageLabel = new Label("Loading", getSkin(), "default");
-        final Image progressImage = new Image(textures.getTextureRegionDrawable("ui-progressspinner"));
+        final Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
         final TextButton progressCloseButton = new TextButton("Close", createDefaultTBStyle(this));
         progressImage.setOrigin(Align.center);
         progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
@@ -96,7 +99,7 @@ public class MenuUI extends StageUI {
         register(Assets.MenuUI.CLOSE_BUTTON, progressCloseButton);
         register(Assets.MenuUI.PROGRESS_IMAGE, progressImage);
 
-        this.profileUI = new CharacterSelectionUI(this, stage, profile, definitions);
+        this.profileUI = new CharacterSelectionUI(this, stage, profile, definitions, colorizer);
         this.settingsUI = new SettingsUI(this);
 
         setFillParent(true);
@@ -128,9 +131,9 @@ public class MenuUI extends StageUI {
 
 
         Table pictureTable = new Table();
-        Fuzzle image = new Fuzzle(this, definitions);
+        Fuzzle fuzzle = new Fuzzle(this, definitions, colorizer);
         TextButton profileButton = new TextButton("Customize", createDefaultTBStyle(this));
-        pictureTable.add(image).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
+        pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
         pictureTable.add(profileButton).padBottom(Value.percentHeight(.0416f, pictureTable)).size(Value.percentWidth(.95f, pictureTable), Value.percentWidth(0.25f, pictureTable));
         innerTable.add(pictureTable).right().expand().size(Value.percentWidth(.4f, innerTable), topRowHeight);
 
@@ -173,13 +176,13 @@ public class MenuUI extends StageUI {
         // Register click listener
         Helper.addClickAction(profileButton, (e, x, y) -> {
             profileUI.showing();
-            uiSwitcher.setDisplayedChild(2);
+            uiSwitcher.setDisplayedChild(1);
         });
         Helper.addClickAction(progressCloseButton, (e, x, y) -> {
             progressDialog.hide();
             progressCloseButton.setVisible(false);
         });
-        Helper.addClickAction(friendsButton, (e, x, y) -> uiSwitcher.setDisplayedChild(1));
+        //Helper.addClickAction(friendsButton, (e, x, y) -> uiSwitcher.setDisplayedChild(1));
         Helper.addClickAction(settingsBtn, (e, x, y) -> uiSwitcher.setDisplayedChild(2));
         Gdx.app.postRunnable(() -> {
             profileUI.init();
@@ -190,5 +193,9 @@ public class MenuUI extends StageUI {
     @Override
     public void backPressed() {
 
+    }
+
+    public void showMain() {
+        uiSwitcher.setDisplayedChild(0);
     }
 }

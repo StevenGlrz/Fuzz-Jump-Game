@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.graphics;
+package com.fuzzjump.game.game.screen.component;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -10,14 +10,14 @@ import java.util.List;
 
 public class ActorSwitcher extends Table {
 
-    private final List<WidgetInfo> actors = new ArrayList<>();
+    private final List<Widget> actors = new ArrayList<>();
     private int currentIdx;
 
     public void setDisplayedChild(final int idx) {
         if (idx < 0 || idx > actors.size()) {
             return;
         }
-        WidgetInfo info = actors.get(idx);
+        Widget info = actors.get(idx);
         Actor newActor = info.actor;
         if (actors.size() > 1) {
             clearChildren();
@@ -28,7 +28,7 @@ public class ActorSwitcher extends Table {
 
 
     public void addWidget(Actor widget, Value width, Value height, int align) {
-        actors.add(new WidgetInfo(widget, width, height, align));
+        actors.add(new Widget(widget, width, height, align));
         if (actors.size() == 1) {
             setDisplayedChild(0);
         }
@@ -56,7 +56,7 @@ public class ActorSwitcher extends Table {
         return currentIdx;
     }
 
-    private class WidgetInfo {
+    private class Widget {
 
         public int align;
         public Actor actor;
@@ -64,7 +64,7 @@ public class ActorSwitcher extends Table {
         public Value width;
         public Value height;
 
-        public WidgetInfo(Actor actor, Value width, Value height, int align) {
+        public Widget(Actor actor, Value width, Value height, int align) {
             this.align = align;
             this.actor = actor;
             this.width = width;

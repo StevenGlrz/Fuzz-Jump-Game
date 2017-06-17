@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.graphics;
+package com.fuzzjump.game.game.screen.component;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,10 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 public class ColorDrawable extends BaseDrawable {
 
 	private final Color color;
+	private final float width;
+	private final float height;
 	private Texture texture;
 
 	public ColorDrawable(Color color, float width, float height) {
 		this.color = color;
+		this.width = width;
+		this.height = height;
 	}
 
 	@Override
@@ -25,8 +29,8 @@ public class ColorDrawable extends BaseDrawable {
 
 			texture = new Texture(pixmap);
 
-			this.setMinWidth(width);
-			this.setMinHeight(height);
+			this.setMinWidth(this.width);
+			this.setMinHeight(this.height);
 		}
 		Color before = batch.getColor();
 		batch.setColor(color);

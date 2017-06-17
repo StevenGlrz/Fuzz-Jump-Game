@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.graphics;
+package com.fuzzjump.game.game.screen.component;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.fuzzjump.game.game.Assets;
 
 /**
  * Created by Steveadoo on 9/30/2015.
@@ -29,17 +30,18 @@ public class CategoryFrame extends Table {
     private Image checkboxImage;
     private boolean checked;
 
+    private GlyphLayout glyphLayout = new GlyphLayout();
+
     public CategoryFrame(String title, Skin skin, CheckBox.CheckBoxStyle style) {
-        this.font = skin.getFont("profile-font");
+        this.font = skin.getFont(Assets.PROFILE_FONT);
         this.title = title;
         this.skin = skin;
         this.style = style;
-        this.categoryDrawable = new TextureRegionDrawable();
-        setTouchable(Touchable.enabled);
-        init();
     }
 
     public void init() {
+        categoryDrawable = new TextureRegionDrawable();
+        setTouchable(Touchable.enabled);
         checkboxImage = new Image(style.checkboxOff, Scaling.fit) {
             public void draw(Batch batch, float parentAlpha) {
                 super.draw(batch, parentAlpha);
@@ -50,13 +52,9 @@ public class CategoryFrame extends Table {
         add(new Label(title, skin, "small"));
     }
 
-    private GlyphLayout glyphLayout = new GlyphLayout();
-
     private void drawCheckbox(Batch batch, float parentAlpha) {
-        float width = 0;
-        float height = 0;
-        float x = 0;
-        float y = 0;
+        float width, height;
+        float x, y;
         if (categoryDrawable != null) {
             width = checkboxImage.getImageWidth() * .75f;
             height = width / ((float) categoryDrawable.getRegion().getRegionWidth() / (float) categoryDrawable.getRegion().getRegionHeight());
@@ -88,10 +86,11 @@ public class CategoryFrame extends Table {
         if (region == null) {
             categoryDrawable = null;
         } else {
-            if (categoryDrawable == null)
+            if (categoryDrawable == null) {
                 categoryDrawable = new TextureRegionDrawable(region);
-            else
+            } else {
                 categoryDrawable.setRegion(region);
+            }
         }
     }
 

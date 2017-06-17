@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.graphics;
+package com.fuzzjump.game.game.screen.component;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;

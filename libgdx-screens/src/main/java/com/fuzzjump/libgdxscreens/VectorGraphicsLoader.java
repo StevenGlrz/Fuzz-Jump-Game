@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.fuzzjump.libgdxscreens.graphics.CColorGroup;
+import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -27,7 +27,7 @@ public abstract class VectorGraphicsLoader {
         this.cacheService = Executors.newSingleThreadExecutor();
     }
 
-    public TextureRegion load(final VectorDetail vectorDetails, CColorGroup replaceGroup, CColorGroup baseGroup, final boolean cache) {
+    public TextureRegion load(final VectorDetail vectorDetails, ColorGroup replaceGroup, ColorGroup baseGroup, final boolean cache) {
         if (cache) {
             if (Gdx.files.isLocalStorageAvailable()) {
                 FileHandle file = Gdx.files.local("pngcache/" + vectorDetails.atlas + ".png");

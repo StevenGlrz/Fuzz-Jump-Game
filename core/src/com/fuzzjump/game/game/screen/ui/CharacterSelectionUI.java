@@ -26,16 +26,17 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.badlogic.gdx.utils.SnapshotArray;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.game.game.graphics.CategoryFrame;
-import com.fuzzjump.game.game.graphics.ColorDrawable;
-import com.fuzzjump.game.game.graphics.Fuzzle;
 import com.fuzzjump.game.game.player.Appearance;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
+import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
-import com.fuzzjump.game.game.player.unlockable.UnlockableDefinitions;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.screen.component.CategoryFrame;
+import com.fuzzjump.game.game.screen.component.ColorDrawable;
+import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.libgdxscreens.StageUI;
-import com.fuzzjump.libgdxscreens.graphics.CColorGroup;
+import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import java.util.List;
 
@@ -46,10 +47,11 @@ import static com.fuzzjump.game.game.Assets.createDialogStyle;
 public class CharacterSelectionUI extends StageUI implements Appearance.AppearanceChangeListener {
 
     // TODO - Maybe a better system for this?
-    private final StageUI parent;
+    private final MenuUI parent;
     private final Stage stage;
     private final Profile profile;
-    private final UnlockableDefinitions definitions;
+    private final UnlockableRepository definitions;
+    private final UnlockableColorizer colorizer;
 
     private Table topTable;
     private Table midTable;
@@ -65,22 +67,23 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             populateItemsTable();
         }
     };
-    private ColorGroup colorGroup;
+    private ColorSet colorSet;
 
     private Image unlockableImage;
     private Label buyingUnlockableLabel;
     private Label costLabel;
     private Dialog buyingDialog;
 
-    public CharacterSelectionUI(MenuUI parent, Stage stage, Profile profile, UnlockableDefinitions definitions) {
+    public CharacterSelectionUI(MenuUI parent, Stage stage, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
         super(parent.getTextures(), parent.getSkin());
         this.parent = parent;
         this.stage = stage;
         this.stageScreen = parent.getStageScreen();
         this.profile = profile;
         this.definitions = definitions;
+        this.colorizer = colorizer;
     }
-    
+
     @Override
     public void init() {
 
@@ -185,6 +188,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
         for (int i = 0; i < Appearance.Equipment.COUNT; i++) {
             CategoryFrame frame = new CategoryFrame(Appearance.TITLES[i], getSkin(), createCFrameStyle(parent));
+            frame.init();
             if (i == 0) {
                 frame.setChecked(true);
             }
@@ -201,15 +205,15 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
         Value padInside = Value.percentWidth(.05f, midTable);
         Value padOutside = Value.percentWidth(.035f, midTable);
-        colorGroup = new ColorGroup(Value.percentWidth(.15f, midTable), Value.percentHeight(.015f, midTable));
-        ScrollPane scrollPane = new ScrollPane(colorGroup);
+        colorSet = new ColorSet(Value.percentWidth(.15f, midTable), Value.percentHeight(.015f, midTable));
+        ScrollPane scrollPane = new ScrollPane(colorSet);
         scrollPane.setScrollingDisabled(true, false);
         scrollPane.layout();
         Table holder = new Table();
         holder.add(scrollPane).fill().expand();
         midTable.add(holder).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padLeft(padOutside).padRight(padInside);
 
-        Fuzzle fuzzle = new Fuzzle(this, definitions, profile);
+        Fuzzle fuzzle = new Fuzzle(this, definitions, colorizer, profile);
         midTable.add(fuzzle).size(Value.percentWidth(.6f, midTable)).center().expand();
 
         midTable.add(new Actor()).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padRight(padOutside).padLeft(padInside);
@@ -270,7 +274,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             itemsContainer.add(entry).size(size).padLeft(pad).padRight(pad);
         }
         if (!oneSelected) {
-            colorGroup.update(null);
+            colorSet.update(null);
         }
         parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG).hide();
     }
@@ -298,7 +302,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             ColorEntry colorEntry = (ColorEntry) event.getListenerActor();
             if (colorEntry.selected)
                 return;
-            SnapshotArray<Actor> colorEntries = colorGroup.getChildren();
+            SnapshotArray<Actor> colorEntries = colorSet.getChildren();
             int newIndex = 0;
             for (int i = 0; i < colorEntries.size; i++) {
                 Actor actor = colorEntries.get(i);
@@ -327,11 +331,11 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     }
 
     private void refreshColors(UnlockableEntry entry) {
-        colorGroup.clearChildren();
+        colorSet.clearChildren();
         int selectedColor = entry.getUnlockable().getColorIndex();
-        CColorGroup[] defColorGroups = entry.unlockableDefinition.getColorGroups();
+        ColorGroup[] defColorGroups = entry.unlockableDefinition.getColorGroups();
         if (defColorGroups == null) {
-            colorGroup.update(null);
+            colorSet.update(null);
             return;
         }
         ColorEntry[] colorEntries = new ColorEntry[defColorGroups.length];
@@ -343,7 +347,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             colorEntries[i] = colorEntry;
             colorEntry.addListener(colorClickListener);
         }
-        colorGroup.update(colorEntries);
+        colorSet.update(colorEntries);
     }
 
     private void showBuyDialog(UnlockableEntry entry) {
@@ -393,15 +397,15 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             messageLabel.setText("Saving profile...");
             dialog.show(stage);
 
-        }  else {
-           // parent.showMain();
+        } else {
+            parent.showMain();
         }
     }
 
     @Override
     public void appearanceChanged() {
         for (int i = 0; i < Appearance.Equipment.COUNT; i++) {
-            getCategoryFrame(i).setCategoryDrawable(definitions.getColored(textures, profile.getAppearance().getEquip(i), false));
+            getCategoryFrame(i).setCategoryDrawable(colorizer.getColored(textures, profile.getAppearance().getEquip(i), false));
         }
     }
 
@@ -414,7 +418,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         profile.getAppearance().snapshot();
     }
 
-    public class UnlockableEntry extends Actor {
+    private class UnlockableEntry extends Actor {
 
         private final UnlockableDefinition unlockableDefinition;
 
@@ -438,8 +442,8 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             if (unlockable != null) {
                 System.out.println(definition.getName() + ", " + unlockable.getColorIndex());
             }
-            this.accessoryImg = new TextureRegionDrawable(definitions.getColored(textures, definition, unlockable == null ? 0 : unlockable.getColorIndex(), true));
-            this.font = getSkin().getFont("profile-font");
+            this.accessoryImg = new TextureRegionDrawable(colorizer.getColored(textures, definition, unlockable == null ? 0 : unlockable.getColorIndex(), true));
+            this.font = getSkin().getFont(Assets.PROFILE_FONT);
             this.unlockableDefinition = definition;
             this.unlocked = unlockable != null;
             this.unlockable = unlockable;
@@ -494,7 +498,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         }
     }
 
-    public class CustomizeCategory extends Table {
+    private class CustomizeCategory extends Table {
 
         private final Label titleLbl;
         private final Image img;
@@ -524,7 +528,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
     }
 
-    public class UnlockableGroup extends Table {
+    private class UnlockableGroup extends Table {
 
         private UnlockableEntry[] unlockables;
 
@@ -551,14 +555,14 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     }
 
 
-    public class ColorGroup extends Table {
+    private class ColorSet extends Table {
 
         private final Value size;
         private final Value pad;
 
         private ColorEntry[] colors;
 
-        public ColorGroup(Value size, Value pad) {
+        public ColorSet(Value size, Value pad) {
             this.size = size;
             this.pad = pad;
         }
@@ -588,7 +592,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
     }
 
-    public class ColorEntry extends Image {
+    private class ColorEntry extends Image {
 
         boolean selected;
 
