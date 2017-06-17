@@ -59,7 +59,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         status.setVisible(true);
         closeButton.setVisible(false);
         status.setText("Finding game...");
-        progressDialog.show(getStage());
+        showDialog(progressDialog, getStage());
         gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
         initPacketListeners();
         gameSession.connect();

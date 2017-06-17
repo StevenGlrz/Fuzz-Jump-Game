@@ -32,6 +32,7 @@ import static com.fuzzjump.game.game.Assets.createLeaderboardBtnStyle;
 import static com.fuzzjump.game.game.Assets.createPlayTBStyle;
 import static com.fuzzjump.game.game.Assets.createPlusTBStyle;
 import static com.fuzzjump.game.game.Assets.createSettingsBtnStyle;
+import static com.fuzzjump.game.game.Assets.createSmallTBStyle;
 import static com.fuzzjump.game.game.Assets.createStoreBtnStyle;
 
 /**
@@ -108,17 +109,18 @@ public class MenuUI extends StageUI {
         menuTable.setBackground(textures.getTextureRegionDrawable("ui-panel-mainmenu"));
 
         Value padSides = Value.percentWidth(.05f, menuTable);
-        Value padTopBottom = Value.percentHeight(.05f, menuTable);
+        Value padTopBottom = Value.percentHeight(.15f, menuTable);
+        Value padTop = Value.percentHeight(.3f, menuTable);
 
         Table innerTable = new Table();
-        menuTable.add(innerTable).pad(padTopBottom, padSides, padTopBottom, padSides).size(Value.percentWidth(.95f, menuTable), Value.percentHeight(.9f, menuTable)).expand();
+        menuTable.add(innerTable).pad(padTop, padSides, padTopBottom, padSides).size(Value.percentWidth(.95f, menuTable), Value.percentHeight(.9f, menuTable)).expand();
 
-        Value topRowHeight = Value.percentHeight(.65f, innerTable);
+        Value topRowHeight = Value.percentHeight(.6f, innerTable);
 
         Table buttonsTable = new Table();
         TextButton publicGameButton = new TextButton("Find Game", createPlayTBStyle(this));
         publicGameButton.getLabel().setAlignment(Align.right);
-        publicGameButton.getLabelCell().padRight(Value.percentWidth(.15f, publicGameButton));
+        publicGameButton.getLabelCell().padRight(Value.percentWidth(.1f, publicGameButton));
         TextButton privateGameButton = new TextButton("New Game", createPlusTBStyle(this));
         privateGameButton.getLabel().setAlignment(Align.right);
         privateGameButton.getLabelCell().padRight(Value.percentWidth(.05f, privateGameButton));
@@ -132,10 +134,10 @@ public class MenuUI extends StageUI {
 
         Table pictureTable = new Table();
         Fuzzle fuzzle = new Fuzzle(this, colorizer);
-        TextButton profileButton = new TextButton("Customize", createDefaultTBStyle(this));
+        TextButton profileButton = new TextButton("Customize", createSmallTBStyle(this));
         pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
         pictureTable.add(profileButton).padBottom(Value.percentHeight(.0416f, pictureTable)).size(Value.percentWidth(.95f, pictureTable), Value.percentWidth(0.25f, pictureTable));
-        innerTable.add(pictureTable).right().expand().size(Value.percentWidth(.4f, innerTable), topRowHeight);
+        innerTable.add(pictureTable).right().expand().size(Value.percentHeight(.4f, innerTable), topRowHeight);
 
         innerTable.row();
 
@@ -150,13 +152,13 @@ public class MenuUI extends StageUI {
         Value btnWidth = btnHeight;
         Value btnPad = Value.percentWidth(.025f, btnGroup);
         btnGroup.defaults().size(btnWidth, btnHeight);
-        btnGroup.add(leaderboardBtn).expand();
-        btnGroup.add(storeBtn).expand().padLeft(btnPad).padRight(btnPad);
-        btnGroup.add(settingsBtn).expand();
+        btnGroup.add(leaderboardBtn).top().expand();
+        btnGroup.add(storeBtn).top().expand().padLeft(btnPad).padRight(btnPad);
+        btnGroup.add(settingsBtn).top().expand();
 
-        lowerButtonsTable.add(btnGroup).size(Value.percentWidth(.55f, lowerButtonsTable), Value.percentHeight(.75f, lowerButtonsTable));
+        lowerButtonsTable.add(btnGroup).top().size(Value.percentWidth(.55f, lowerButtonsTable), Value.percentHeight(.75f, lowerButtonsTable));
 
-        innerTable.add(lowerButtonsTable).colspan(2).size(Value.percentWidth(1f, innerTable), Value.percentHeight(.3f, innerTable)).center().expand();
+        innerTable.add(lowerButtonsTable).colspan(2).size(Value.percentWidth(1f, innerTable), Value.percentHeight(.3f, innerTable)).top();
 
         register(Assets.MenuUI.PUBLIC_GAME, publicGameButton);
 

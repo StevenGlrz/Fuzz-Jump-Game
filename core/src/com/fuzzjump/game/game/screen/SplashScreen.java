@@ -146,6 +146,6 @@ public class SplashScreen extends StageScreen<SplashUI> {
 
     private void createFont(String name, SmartFontGenerator smartGen, FreeTypeFontGenerator gen, FreeTypeFontParameter param, int size) {
         param.size = size;
-        skin.add(name, smartGen.createFont(gen, name, param), BitmapFont.class);
+        skin.add(name, gen.generateFont(param), BitmapFont.class);
     }
 }

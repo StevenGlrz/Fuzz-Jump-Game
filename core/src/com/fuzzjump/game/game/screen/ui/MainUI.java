@@ -97,22 +97,22 @@ public class MainUI extends StageUI {
 
         // TODO Locale's
         TextButton facebookButton = new TextButton("Login with Facebook", createFbTBStyle(this));
-        facebookButton.getLabel().setAlignment(Align.center);
-        facebookButton.getLabelCell().padRight(Value.percentWidth(.15f, facebookButton));
+        facebookButton.getLabel().setAlignment(Align.right);
+        facebookButton.getLabelCell().padRight(Value.percentWidth(.075f, facebookButton));
 
-        TextButton kerpowButton = new TextButton("Register Name", createEmailTBStyle(this));
-        kerpowButton.getLabel().setAlignment(Align.center);
-        kerpowButton.getLabelCell().padRight(Value.percentWidth(.175f, kerpowButton));
+        TextButton registerNameButton = new TextButton("Register Name", createEmailTBStyle(this));
+        registerNameButton.getLabel().setAlignment(Align.right);
+        registerNameButton.getLabelCell().padRight(Value.percentWidth(.175f, registerNameButton));
 
         register(Assets.MainScreen.REGISTER_FACEBOOK, facebookButton);
 
         // Register click actions
-        Helper.addClickAction(kerpowButton, (e, x, y) -> showRegistration());
+        Helper.addClickAction(registerNameButton, (e, x, y) -> showRegistration());
 
         Value topBottomPadding = Value.percentHeight(.045f, welcomeTable);
 
         welcomeTable.add(facebookButton).padTop(topBottomPadding).row();
-        welcomeTable.add(kerpowButton).row();
+        welcomeTable.add(registerNameButton).row();
 
 
         switcher.addWidget(welcomeTable, Value.percentWidth(.975f, switcher), Value.percentWidth(0.64642315f, switcher));
@@ -125,7 +125,6 @@ public class MainUI extends StageUI {
 
     private void showRegistration() {
         switcher.setDisplayedChild(1);
-        mainTable.setTitle("Enter Username");
     }
 
     private void setupLoginTable() {
