@@ -36,6 +36,7 @@ import com.fuzzjump.game.game.screen.component.CategoryFrame;
 import com.fuzzjump.game.game.screen.component.ColorDrawable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
@@ -68,6 +69,47 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             populateItemsTable();
         }
     };
+
+    private ClickListener entryClickListener = new ClickListener() {
+
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            UnlockableEntry entry = (UnlockableEntry) event.getListenerActor();
+            if (entry.selected)
+                return;
+            if (!entry.unlocked) {
+                showBuyDialog(entry);
+                return;
+            }
+            selectUnlockable(entry);
+        }
+
+    };
+
+    private ClickListener colorClickListener = new ClickListener() {
+
+        @Override
+        public void clicked(InputEvent event, float x, float y) {
+            ColorEntry colorEntry = (ColorEntry) event.getListenerActor();
+            if (colorEntry.selected)
+                return;
+            SnapshotArray<Actor> colorEntries = colorSet.getChildren();
+            int newIndex = 0;
+            for (int i = 0; i < colorEntries.size; i++) {
+                Actor actor = colorEntries.get(i);
+                if (actor != event.getListenerActor()) {
+                    ((ColorEntry) actor).setSelected(false);
+                } else {
+                    newIndex = i;
+                }
+            }
+            colorEntry.setSelected(true);
+            UnlockableEntry unlockableEntry = (UnlockableEntry) colorEntry.getUserObject();
+            profile.getAppearance().setColorIndex(unlockableEntry.unlockable.getId(), newIndex);
+        }
+
+    };
+
     private ColorSet colorSet;
 
     private Image unlockableImage;
@@ -113,13 +155,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         TextButton cancelButton = new TextButton("Cancel", createDefaultTBStyle(this));
         TextButton purchaseButton = new TextButton("Buy", createDefaultTBStyle(this));
 
-        cancelButton.addListener(new ClickListener() {
-
-            public void clicked(InputEvent event, float x, float y) {
-                buyingDialog.hide();
-            }
-
-        });
+        Helper.addClickAction(cancelButton, (e, x, y) -> buyingDialog.hide());
 
         parent.register(Assets.MenuUI.SELECT_BUY_BUTTON, purchaseButton);
 
@@ -174,7 +210,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Value width = Value.percentWidth(.15f, topTable);
         Value height = Value.percentWidth(0.160335f, topTable);
 
-        for (int i = 0; i < Appearance.Equipment.COUNT; i++) {
+        for (int i = 0; i < Appearance.COUNT; i++) {
             CategoryFrame frame = new CategoryFrame(Appearance.TITLES[i], getGameSkin(), createCFrameStyle(parent));
             frame.init();
             if (i == 0) {
@@ -244,7 +280,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Value size = Value.percentHeight(.75f, lowMidTable);
         Value pad = Value.percentHeight(.05f, lowMidTable);
 
-        List<UnlockableDefinition> defs = definitions.getDefinitions(selectedCategory, profile.getAppearance().getEquip(Appearance.Equipment.FUZZLE).getDefinition().getId());
+        List<UnlockableDefinition> defs = definitions.getDefinitions(selectedCategory, profile.getAppearance().getEquip(Appearance.FUZZLE).getDefinition().getId());
         boolean oneSelected = false;
         for (int i = 0; i < defs.size(); i++) {
             UnlockableDefinition def = defs.get(i);
@@ -266,46 +302,6 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         }
         parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG).hide();
     }
-
-    private ClickListener entryClickListener = new ClickListener() {
-
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            UnlockableEntry entry = (UnlockableEntry) event.getListenerActor();
-            if (entry.selected)
-                return;
-            if (!entry.unlocked) {
-                showBuyDialog(entry);
-                return;
-            }
-            selectUnlockable(entry);
-        }
-
-    };
-
-    private ClickListener colorClickListener = new ClickListener() {
-
-        @Override
-        public void clicked(InputEvent event, float x, float y) {
-            ColorEntry colorEntry = (ColorEntry) event.getListenerActor();
-            if (colorEntry.selected)
-                return;
-            SnapshotArray<Actor> colorEntries = colorSet.getChildren();
-            int newIndex = 0;
-            for (int i = 0; i < colorEntries.size; i++) {
-                Actor actor = colorEntries.get(i);
-                if (actor != event.getListenerActor()) {
-                    ((ColorEntry) actor).setSelected(false);
-                } else {
-                    newIndex = i;
-                }
-            }
-            colorEntry.setSelected(true);
-            UnlockableEntry unlockableEntry = (UnlockableEntry) colorEntry.getUserObject();
-            profile.getAppearance().setColorIndex(unlockableEntry.unlockable.getId(), newIndex);
-        }
-
-    };
 
     private void selectUnlockable(UnlockableEntry entry) {
         for (Actor actor : itemsContainer.getChildren()) {
@@ -392,7 +388,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
     @Override
     public void appearanceChanged() {
-        for (int i = 0; i < Appearance.Equipment.COUNT; i++) {
+        for (int i = 0; i < Appearance.COUNT; i++) {
             getCategoryFrame(i).setCategoryDrawable(colorizer.getColored(textures, profile.getAppearance().getEquip(i), false));
         }
     }

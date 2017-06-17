@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.Scaling;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
+import com.fuzzjump.game.game.screen.WaitingScreen;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
@@ -29,6 +30,9 @@ import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
+import com.fuzzjump.server.common.messages.lobby.Lobby;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -39,7 +43,7 @@ import static com.fuzzjump.game.game.Assets.createXTBStyle;
 
 public class WaitingUI extends StageUI {
 
-    private final Profile profile;
+    private final Profile mProfile;
     private final UnlockableColorizer colorizer;
 
     private PlayerSlot[] playerSlots = new PlayerSlot[4];
@@ -52,13 +56,13 @@ public class WaitingUI extends StageUI {
     @Inject
     public WaitingUI(Textures textures, Skin skin, Profile profile, UnlockableColorizer colorizer) {
         super(textures, skin);
-        this.profile = profile;
+        this.mProfile = profile;
         this.colorizer = colorizer;
     }
 
     @Override
     public void init() {
-        FJDragDownBarTable dropdownTable = new FJDragDownBarTable(this, profile);
+        FJDragDownBarTable dropdownTable = new FJDragDownBarTable(this, mProfile);
         setFillParent(true);
 
         Label messageLabel = new Label("Loading", getGameSkin(), "default");
@@ -101,7 +105,7 @@ public class WaitingUI extends StageUI {
             playerTable.add(playerSlots[i] = new PlayerSlot()).size(width, height).center().expand();
         }
 
-        playerSlots[0].setPlayer(profile);
+        playerSlots[0].setPlayer(mProfile);
 
         Label selectLevelLabel = new Label("Select Level", getGameSkin(), "default");
         selectLevelLabel.setAlignment(Align.topLeft | Align.center);
@@ -154,31 +158,32 @@ public class WaitingUI extends StageUI {
         });
     }
 
-//    public void setPlayers(Map<Integer, PlayerProfile> players) {
-//        for (int i = 0; i < 4; i++) {
-//            PlayerProfile profile = players.get(i);
-//            playerSlots[i].setPlayer(profile);
-//            if (profile != null) {
-//                if (profile == profile) {
-//                    readyButton.setText(profile.isReady() ? "Unready" : "Ready");
-//                }
-//            }
-//        }
-//    }
-//
-//    public void setMapSlots(List<Lobby.MapSlot> slots) {
-//        for (int i = 0; i < slots.size(); i++) {
-//            Lobby.MapSlot slot = slots.get(i);
-//            MapSlot clientSlot = mapSlots[i];
-//            if (slot.getMapId() != -1) {
-//                clientSlot.setDrawable(getTextureRegionAbsolutePathDrawable(String.format("data/maps/%s/preview.png", GameMap.MAPS[slot.getMapId()])));
-//            } else {
-//                clientSlot.setDrawable(this.textures.getTextureRegionDrawable("ui-question-mark"));
-//            }
-//            clientSlot.setUserObject(slot.getMapId());
-//            clientSlot.votes = slot.getVotes();
-//        }
-//    }
+    public void update(List<Profile> players) {
+        for(int i = 0; i < WaitingScreen.MAX_PLAYERS; i++) {
+            Profile profile = i < players.size() ? players.get(i) : null;
+            playerSlots[i].setPlayer(profile);
+            if (profile != null) {
+                if (profile == mProfile) {
+                    readyButton.setText(profile.isReady() ? "Unready" : "Ready");
+                }
+            }
+        }
+    }
+
+
+    public void setMapSlots(List<Lobby.MapSlot> slots) {
+        for (int i = 0; i < slots.size(); i++) {
+            Lobby.MapSlot slot = slots.get(i);
+            MapSlot clientSlot = mapSlots[i];
+            if (slot.getMapId() != -1) {
+                clientSlot.setDrawable(textures.getTextureRegionAbsolutePathDrawable(String.format("data/maps/%s/preview.png", Assets.MAPS[slot.getMapId()])));
+            } else {
+                clientSlot.setDrawable(textures.getTextureRegionDrawable("ui-question-mark"));
+            }
+            clientSlot.setUserObject(slot.getMapId());
+            clientSlot.votes = slot.getVotes();
+        }
+    }
 
 
     @Override

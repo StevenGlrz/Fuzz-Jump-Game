@@ -48,6 +48,14 @@ public class Assets {
     public static final String UI_PROGRESS_SPINNER = "ui-progressspinner";
     public static final String UI_PANEL_WELCOME = "ui-panel-welcome";
 
+    // Maps
+    public final static String[] MAPS = {
+            "sunny_day_map",
+            "snow_map",
+            "jungle_map",
+            "city_map",
+            "desert_map"
+    };
 
     // Loaded resources
     public static BitmapFont DEBUG_FONT = null;

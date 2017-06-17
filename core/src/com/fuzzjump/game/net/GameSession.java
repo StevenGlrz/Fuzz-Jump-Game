@@ -65,24 +65,16 @@ public class GameSession implements Client.ConnectionListener {
     @Override
     public void connected() {
         if (watcher != null) {
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    watcher.onConnect();
-                }
-            });
+            Gdx.app.postRunnable(watcher::onConnect);
         }
     }
 
     @Override
     public void disconnected() {
         if (watcher != null) {
-            Gdx.app.postRunnable(new Runnable() {
-                @Override
-                public void run() {
-                    watcher.onDisconnect();
-                    watcher = null;
-                }
+            Gdx.app.postRunnable(() -> {
+                watcher.onDisconnect();
+                watcher = null;
             });
         }
     }
