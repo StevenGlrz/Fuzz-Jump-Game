@@ -112,9 +112,9 @@ public class Appearance implements Storable {
     public void createDummy(UnlockableRepository definitions) {
         setEquip(0, 0);
         setEquip(1, 32);
-        setEquip(2, 108);
-        setEquip(3, 88);
-        setEquip(4, 93);
+        setEquip(2, 118);
+        setEquip(3, 0);
+        setEquip(4, 73);
 
         for (int i = 0; i < equips.length; i++) {
             unlockables.put((int) equips[i], new Unlockable(definitions.getDefinition((int) equips[i]), (int) equips[i], 0));

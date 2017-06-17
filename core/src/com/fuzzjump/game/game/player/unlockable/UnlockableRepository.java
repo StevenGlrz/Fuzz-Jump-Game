@@ -140,8 +140,7 @@ public class UnlockableRepository {
     public List<UnlockableDefinition> getDefinitions(int category, int fuzz) {
         List<UnlockableDefinition> defs = new ArrayList<>();
         UnlockableDefinition fuzzDef = definitionsCategories[0].get(fuzz);
-        for(int i = 0; i < definitionsCategories[category].size(); i++) {
-            UnlockableDefinition check = definitionsCategories[category].get(i);
+        for (UnlockableDefinition check : definitionsCategories[category].values()) {
             if (check.validFuzzle(fuzzDef.getAllowedTags()))
                 defs.add(check);
         }
