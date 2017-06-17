@@ -1,6 +1,5 @@
 package com.fuzzjump.libgdxscreens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
@@ -16,6 +15,8 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     private Stage stage;
     private boolean cleared;
+
+    private long initalFrame;
 
     public StageScreen(TUI ui) {
         this.ui = ui;
@@ -37,8 +38,6 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
         }
     }
 
-    private int drawn = 0;
-
     protected final void clear() {
         cleared = true;
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -55,16 +54,19 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
         if (!cleared) {
             clear();
         }
-        if (drawn == 1) {
+        long currentFrame = Gdx.graphics.getFrameId();
+        if (currentFrame - initalFrame == 1) {
             rendered();
-            drawn = 2;
         }
+
+        onPreRender(delta);
         stage.act(delta);
-
         stage.draw();
+        onPostRender(delta);
 
-        if (drawn == 0)
-            drawn++;
+        if (initalFrame == 0) {
+            initalFrame = currentFrame;
+        }
         cleared = false;
     }
 
@@ -88,7 +90,17 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     public abstract void initialize();
 
+    public void onPreRender(float delta) {
+
+    }
+
+    public void onPostRender(float delta) {
+
+    }
+
     public abstract void showing();
+
+    public abstract void clicked(int id, Actor actor);
 
     public void backPressed() {
         if (ui != null)

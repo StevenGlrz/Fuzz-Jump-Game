@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fuzzjump.game.FuzzJump;
+import com.fuzzjump.game.game.screen.MainScreen;
+import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
 import com.fuzzjump.libgdxscreens.ScreenHandler;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -21,6 +23,7 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
     private final Textures textures;
 
     //I really dont like this.
+    //No one likes you ^
     private FuzzJump fuzzJump;
 
     @Inject
@@ -39,14 +42,19 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
 
     public void create() {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
+        // Configure input processor
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(stage);
-
         Gdx.input.setInputProcessor(multiplexer);
 
+        //  Clear graphics
         Gdx.gl.glClearColor(1, 1, 1, 1);
 
+        // Configure screens
         screenHandler.addScreen(SplashScreen.class, 0);
+        screenHandler.addScreen(MainScreen.class, 0);
+        screenHandler.addScreen(MenuScreen.class, 2);
 
         screenHandler.showScreen(SplashScreen.class);
     }

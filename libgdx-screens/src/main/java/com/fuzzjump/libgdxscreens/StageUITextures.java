@@ -5,13 +5,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Steveadoo on 2/7/2016.
  */
 public class StageUITextures {
 
-    private final HashMap<String, TextureReferenceCounter> textureMap = new HashMap<>();
+    private final Map<String, TextureReferenceCounter> textureMap = new HashMap<>();
 
     private final Textures textures;
 
@@ -25,7 +26,7 @@ public class StageUITextures {
         }
     }
 
-    public HashMap<String, TextureReferenceCounter> getTextures() {
+    public Map<String, TextureReferenceCounter> getTextures() {
         return textureMap;
     }
 
@@ -83,6 +84,14 @@ public class StageUITextures {
             this.region = new WeakReference(region);
             if (hardref)
                 this.hardrefregion = region;
+        }
+
+        public void inc() {
+            references++;
+        }
+
+        public WeakReference<TextureRegion> getRegion() {
+            return region;
         }
     }
 

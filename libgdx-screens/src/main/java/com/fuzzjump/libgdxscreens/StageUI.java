@@ -1,12 +1,14 @@
 package com.fuzzjump.libgdxscreens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,15 +16,18 @@ public abstract class StageUI extends Table {
 
     protected StageScreen stageScreen;
     protected StageUITextures textures;
-    protected Skin skin;
 
     private ArrayList<AfterRenderRunnable> nextRenderList = new ArrayList<>();
 
-    private Map<Integer, Actor> actors = new HashMap<Integer, Actor>();
+    private Map<Integer, Actor> actors = new HashMap<>();
 
     public StageUI(Textures textures, Skin skin) {
-        this.textures = new StageUITextures(textures);
-        this.skin = skin;
+        this(new StageUITextures(textures), skin);
+    }
+
+    public StageUI(StageUITextures textures, Skin skin) {
+        super(skin);
+        this.textures = textures;
     }
 
     public void register(int id, Actor actor) {
@@ -31,6 +36,15 @@ public abstract class StageUI extends Table {
 
     public void register(final int id, final Actor actor, final boolean waitForTouchUp) {
         actors.put(id, actor);
+        actor.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                if (waitForTouchUp && event.getType() == InputEvent.Type.touchUp) {
+                    stageScreen.clicked(id, actor);
+                } else if (!waitForTouchUp && event.getType() == InputEvent.Type.touchDown) {
+                    stageScreen.clicked(id, actor);
+                }
+            }
+        });
     }
 
     @Override
@@ -68,8 +82,12 @@ public abstract class StageUI extends Table {
     public abstract void init();
     public abstract void backPressed();
 
-    public java.util.Collection<Actor> getActors() {
+    public Collection<Actor> getActors() {
         return actors.values();
+    }
+
+    public StageScreen getStageScreen() {
+        return stageScreen;
     }
 
     public boolean remove() {

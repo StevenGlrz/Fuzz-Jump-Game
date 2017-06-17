@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.fuzzjump.game.FuzzJump;
+import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.libgdxscreens.ScreenHandler;
 import com.fuzzjump.libgdxscreens.ScreenResolver;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -21,6 +22,12 @@ public class FuzzJumpGameModule {
     @Provides
     public ScreenResolver provideScreenResolver(FuzzJump fuzzJump) {
         return new FuzzJumpScreenResolver(fuzzJump);
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public Profile provideProfile() {
+        return new Profile();
     }
 
     @FuzzJumpScope
