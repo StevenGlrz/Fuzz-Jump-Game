@@ -1,6 +1,5 @@
 package com.fuzzjump.game.net;
 
-import com.google.protobuf.GeneratedMessage;
 import com.steveadoo.server.common.packets.Packet;
 import com.steveadoo.server.common.packets.PacketProcessor;
 import com.steveadoo.server.common.packets.exceptions.MessageHandlerException;
@@ -12,7 +11,11 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class Client {
 
@@ -56,14 +59,7 @@ public class Client {
                 e.printStackTrace();
             }
         }
-        thread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                connect();
-            }
-
-        });
+        thread = new Thread(this::connect);
         thread.start();
     }
 

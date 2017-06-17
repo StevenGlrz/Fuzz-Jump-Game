@@ -3,9 +3,7 @@ package com.fuzzjump.game.game.player;
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
-import com.fuzzjump.game.persistence.Storable;
 import com.fuzzjump.game.util.Helper;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -16,10 +14,18 @@ import java.util.Map;
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
-public class Appearance implements Storable {
+public class Appearance {
     // TODO Clean up house
 
     public static final String[] TITLES = {"Fuzzle", "Frame", "Head", "Eyes", "Face"};
+
+    public static final int FUZZLE = 0;
+    public static final int FRAME = 1;
+    public static final int HEAD = 2;
+    public static final int EYES = 3;
+    public static final int FACE = 4;
+
+    public static final int COUNT = 5;
 
     private LinkedList<AppearanceChangeListener> changeListeners = new LinkedList<>();
     private long[] equips = new long[5];
@@ -31,28 +37,6 @@ public class Appearance implements Storable {
 
     public Appearance() {
 
-    }
-
-    @Override
-    public void load(JsonObject data) {
-        JsonArray itemsArray = data.get("ItemSlots").getAsJsonArray();
-        JsonArray unlocksArray = data.get("Unlockables").getAsJsonArray();
-        equipSnapshot = null;
-        colorIndexSnapshot = null;
-        for (int i = 0; i < itemsArray.size(); i++) {
-            JsonObject itemObj = itemsArray.get(i).getAsJsonObject();
-            int slot = itemObj.get("Slot").getAsInt();
-            if (!itemObj.has("UnlockableId") || itemObj.get("UnlockableId").getAsString().equalsIgnoreCase("null")) {
-                equips[slot] = -1;
-            } else {
-                equips[slot] = itemObj.get("UnlockableId").getAsLong();
-            }
-        }
-        unlockables.clear();
-        for (int i = 0; i < unlocksArray.size(); i++) {
-           // createUnlockable(unlocksArray.get(i).getAsJsonObject());
-        }
-        raiseEvent();
     }
 
     public void snapshot() {
@@ -131,37 +115,6 @@ public class Appearance implements Storable {
         return unlockable;
     }
 
-    @Override
-    public void save(JsonObject data) {
-        JsonArray itemsArray = new JsonArray();
-        JsonArray unlocksArray = new JsonArray();
-        for (int i = 0; i < equips.length; i++) {
-            JsonObject equipObject = new JsonObject();
-            equipObject.addProperty("Slot", i);
-
-            Unlockable unlockable = getEquip(i);
-
-            if (unlockable == null) {
-                equipObject.addProperty("UnlockableId", "null");
-            } else {
-                equipObject.addProperty("UnlockableId", unlockable.getId());
-            }
-
-            itemsArray.add(equipObject);
-        }
-        for (int i = 0; i < unlockables.size(); i++) {
-            Unlockable unlockable = unlockables.get(i);
-
-            JsonObject unlocksObject = new JsonObject();
-            unlocksObject.addProperty("ColorIndex", unlockable.getColorIndex());
-            unlocksObject.addProperty("UnlockableId", unlockable.getId());
-            unlocksObject.addProperty("UnlockableDefinitionId", unlockable.getDefinition().getId());
-            unlocksArray.add(unlocksObject);
-        }
-        data.add("ItemSlots", itemsArray);
-        data.add("Unlockables", unlocksArray);
-    }
-
     public void setEquip(int index, long id) {
         this.equips[index] = id;
         raiseEvent();
@@ -230,16 +183,6 @@ public class Appearance implements Storable {
 
     public boolean loaded() {
         return unlockables.size() > 0;
-    }
-
-    public static class Equipment {
-        public static final int FUZZLE = 0;
-        public static final int FRAME = 1;
-        public static final int HEAD = 2;
-        public static final int EYES = 3;
-        public static final int FACE = 4;
-
-        public static final int COUNT = 5;
     }
 
     public interface AppearanceChangeListener {

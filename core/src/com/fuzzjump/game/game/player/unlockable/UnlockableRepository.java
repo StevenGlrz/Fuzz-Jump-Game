@@ -137,8 +137,9 @@ public class UnlockableRepository {
         List<UnlockableDefinition> defs = new ArrayList<>();
         UnlockableDefinition fuzzDef = definitionsCategories[0].get(fuzz);
         for (UnlockableDefinition check : definitionsCategories[category].values()) {
-            if (check.validFuzzle(fuzzDef.getAllowedTags()))
+            if (check.validFuzzle(fuzzDef.getAllowedTags())) {
                 defs.add(check);
+            }
         }
         return defs;
     }

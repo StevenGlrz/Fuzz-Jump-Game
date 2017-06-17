@@ -38,9 +38,7 @@ public class ReceivedPacketRunnable implements Pool.Poolable, Runnable {
                     processor.processPacket(session, packets.get(i));
                 }
             }
-        } catch (MissingHandlerException e) {
-            e.printStackTrace();
-        } catch (MessageHandlerException e) {
+        } catch (MissingHandlerException | MessageHandlerException e) {
             e.printStackTrace();
         }
         Pools.free(this);

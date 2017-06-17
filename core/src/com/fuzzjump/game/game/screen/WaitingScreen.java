@@ -1,6 +1,7 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,14 +17,18 @@ import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
 public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
 
-    public static final int MAXIMUM_PLAYERS = 4;
+    public static final int MAX_PLAYERS = 4;
 
     private final FuzzJumpParams params;
+
+    private final Stage stage;
 
     private final Lobby.ReadySet.Builder readySetBuilder = Lobby.ReadySet.newBuilder();
     private final Lobby.MapSlotSet.Builder mapSlotSetBuilder = Lobby.MapSlotSet.newBuilder();
@@ -39,11 +44,12 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private Profile[] newPlayers;
     private final Profile profile;
 
-    private ArrayList<Profile> players = new ArrayList<>();
+    private List<Profile> players = new ArrayList<>();
 
     @Inject
-    public WaitingScreen(WaitingUI ui, FuzzJumpParams params, Profile profile) {
+    public WaitingScreen(Stage stage, WaitingUI ui, FuzzJumpParams params, Profile profile) {
         super(ui);
+        this.stage = stage;
         this.params = params;
         this.profile = profile;
     }
@@ -59,7 +65,8 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         status.setVisible(true);
         closeButton.setVisible(false);
         status.setText("Finding game...");
-        progressDialog.show(getStage());
+        progressDialog.show(stage);
+
         gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
         initPacketListeners();
         gameSession.connect();
@@ -77,7 +84,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     private void setTime(int time) {
-        timeLabel.setText(String.format("%02d:%02d", time / 60, time % 60));
+        timeLabel.setText(String.format(Locale.US, "%02d:%02d", time / 60, time % 60));
     }
 
     private void lobbyUpdate(GameSession session, Lobby.LobbyState message) {
@@ -101,9 +108,9 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 profile.setReady(player.getReady());
                 players.add(profile);
             }
-            //getUI().(players);
+            getUI().update(players);
         }
-        //ui.setMapSlots(message.getMapSlotsList());
+        getUI().setMapSlots(message.getMapSlotsList());
         int time = message.getTime().getTime();
         setTime(time);
     }
@@ -119,12 +126,11 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     private void gameFound(GameSession session, Lobby.GameFound message) {
-
+        System.out.println("Game found message");
     }
 
     @Override
     public void showing() {
-
     }
 
     @Override

@@ -35,10 +35,6 @@ public class FuzzJump extends Game {
         game.create();
     }
 
-    public FuzzJumpGame getFuzzJumpGame() {
-        return game;
-    }
-
     public FuzzJumpComponent getComponent() {
         return component;
     }

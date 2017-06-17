@@ -81,11 +81,11 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
 
     @Override
     public void appearanceChanged() {
-        setFuzzle(profile.getAppearance().getEquip(Appearance.Equipment.FUZZLE));
-        setFrame(profile.getAppearance().getEquip(Appearance.Equipment.FRAME));
-        setEyes(profile.getAppearance().getEquip(Appearance.Equipment.EYES));
-        setFace(profile.getAppearance().getEquip(Appearance.Equipment.FACE));
-        setHead(profile.getAppearance().getEquip(Appearance.Equipment.HEAD));
+        setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE));
+        setFrame(profile.getAppearance().getEquip(Appearance.FRAME));
+        setEyes(profile.getAppearance().getEquip(Appearance.EYES));
+        setFace(profile.getAppearance().getEquip(Appearance.FACE));
+        setHead(profile.getAppearance().getEquip(Appearance.HEAD));
     }
 
     @Override
