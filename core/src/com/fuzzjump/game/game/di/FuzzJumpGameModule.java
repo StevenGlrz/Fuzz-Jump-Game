@@ -27,12 +27,6 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
-    public Profile provideProfile() {
-        return new Profile();
-    }
-
-    @FuzzJumpScope
-    @Provides
     public UnlockableRepository provideUnlockableDefinitions() {
         return new UnlockableRepository();
     }

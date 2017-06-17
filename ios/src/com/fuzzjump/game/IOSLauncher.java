@@ -15,7 +15,8 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        FuzzJump fuzzJump = new FuzzJump(new FuzzJumpParams(), new PlatformModule(null));
+        FuzzJumpParams params = new FuzzJumpParams("", 9);
+        FuzzJump fuzzJump = new FuzzJump(params, new PlatformModule(null));
         return new IOSApplication(fuzzJump, config);
     }
 

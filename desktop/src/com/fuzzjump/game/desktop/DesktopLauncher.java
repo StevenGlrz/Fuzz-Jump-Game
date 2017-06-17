@@ -15,7 +15,8 @@ public class DesktopLauncher {
 
 		config.width = 540;
 		config.height = 960;
-		FuzzJump fuzzJump = new FuzzJump(new FuzzJumpParams(), new PlatformModule(new DesktopGraphicsLoader(Executors.newFixedThreadPool(2), "")));
+		FuzzJumpParams params = new FuzzJumpParams(arg[0], Integer.parseInt(arg[1]));
+		FuzzJump fuzzJump = new FuzzJump(params, new PlatformModule(new DesktopGraphicsLoader(Executors.newFixedThreadPool(2), "")));
 		new LwjglApplication(fuzzJump, config);
 	}
 }

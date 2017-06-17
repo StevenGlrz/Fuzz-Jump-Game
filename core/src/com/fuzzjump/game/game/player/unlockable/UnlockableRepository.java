@@ -20,10 +20,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-/**
- * Kerpow Games, LLC
- * Created by stephen on 6/7/2015.
- */
 @Singleton
 public class UnlockableRepository {
 

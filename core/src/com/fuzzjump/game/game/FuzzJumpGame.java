@@ -25,6 +25,7 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
 
     //I really dont like this.
     //No one likes you ^
+    //fuck off
     private FuzzJump fuzzJump;
 
     @Inject

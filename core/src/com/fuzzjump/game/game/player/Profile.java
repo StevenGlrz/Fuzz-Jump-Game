@@ -6,8 +6,7 @@ package com.fuzzjump.game.game.player;
 public class Profile {
 
     private int playerIndex;
-    private long userId = -1;
-    private long profileId = -1;
+    private int profileId = -1;
     private int coins;
     private int ranking = 1;
     protected String name;
@@ -21,22 +20,13 @@ public class Profile {
         this.appearance = new Appearance();
     }
 
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(long id) {
-        this.userId = id;
-    }
-
     public long getProfileId() {
         return profileId;
     }
 
-    public void setProfileId(long id) {
+    public void setProfileId(int id) {
         this.profileId = id;
     }
-
 
     public String getName() {
         return name;
@@ -83,7 +73,7 @@ public class Profile {
     }
 
     public boolean valid() {
-        return userId != -1;
+        return profileId != -1;
     }
 
     public void setReady(boolean ready) {

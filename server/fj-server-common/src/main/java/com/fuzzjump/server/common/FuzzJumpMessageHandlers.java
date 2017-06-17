@@ -13,7 +13,7 @@ import java.util.List;
 
 public class FuzzJumpMessageHandlers {
 
-    public static final List<MessageHandler> handlers;
+    public static final List<MessageHandler> HANDLERS;
 
     private static final MessageHandler.Encoder<? extends GeneratedMessage> ENCODER = new MessageHandler.Encoder<GeneratedMessage>() {
         @Override
@@ -34,7 +34,7 @@ public class FuzzJumpMessageHandlers {
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.READY_UPDATE, Lobby.ReadySet.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_LOADED, Lobby.Loaded.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_FOUND, Lobby.GameFound.getDefaultInstance()));
-        handlers = Collections.unmodifiableList(tempHandlerList);
+        HANDLERS = Collections.unmodifiableList(tempHandlerList);
     }
 
     public static MessageHandler createProtoMessageHandler(int opcode, final GeneratedMessage message) {
