@@ -108,6 +108,10 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
         return serverInfo;
     }
 
+    public final ScheduledExecutorService getExecutorService() {
+        return executorService;
+    }
+
     /**
      * Called when a player connects
      * TODO move this out into some sort of PlayerHandler?

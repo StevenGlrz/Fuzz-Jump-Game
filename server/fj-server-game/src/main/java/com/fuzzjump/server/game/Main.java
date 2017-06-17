@@ -5,6 +5,8 @@ import com.steveadoo.server.base.ServerInfo;
 
 import java.net.InetSocketAddress;
 
+import io.netty.bootstrap.ServerBootstrap;
+
 public class Main {
 
     /*private static final ServerInfo SERVER_INFO = new ServerInfo("https://management.core.windows.net",
@@ -18,7 +20,18 @@ public class Main {
             6895);*/
 
     public static void main(String[] args) {
-        //TODO
+        GameServerInfo serverInfo = loadServerInfo(args);
+        GameServer server = new GameServer(serverInfo);
+        ServerBootstrapper bootstrapper = new ServerBootstrapper();
+        ServerBootstrap bootstrap = bootstrapper.bootstrap(server);
+        bootstrap.bind(new InetSocketAddress(serverInfo.privatePort));
     }
 
+    private static GameServerInfo loadServerInfo(String[] args) {
+        return new GameServerInfo(
+                Integer.parseInt(args[0]),
+                Integer.parseInt(args[1]),
+                args[2]
+        );
+    }
 }

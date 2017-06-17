@@ -29,7 +29,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
     private ConcurrentLinkedQueue<LobbySession> openSessions = new ConcurrentLinkedQueue<>();
 
 
-    public MatchmakingServer(MatchmakingServerInfo serverInfo) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public MatchmakingServer(MatchmakingServerInfo serverInfo) {
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.handlers));
         //this.gameServerTransferer = new GameServerTransferer(gameServerAddress);
         getPacketProcessor().addListener(Lobby.Loaded.class, this::lobbyLoaded);

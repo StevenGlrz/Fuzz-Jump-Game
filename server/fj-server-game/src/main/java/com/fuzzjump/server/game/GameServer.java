@@ -28,13 +28,16 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
 
     private static final int TICK = 100;
 
-    private ExecutorService gameService = Executors.newCachedThreadPool();
+    private final GameServerValidator gameServerValidator;
+    private final ScheduledExecutorService gameService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
-    private ConcurrentHashMap<String, GameSession> sessions = new ConcurrentHashMap<>();
+    private final ConcurrentHashMap<String, GameSession> sessions = new ConcurrentHashMap<>();
 
 
-    public GameServer(GameServerInfo serverInfo) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException, InvalidAlgorithmParameterException {
+    public GameServer(GameServerInfo serverInfo) {
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.handlers));
+        gameServerValidator = new GameServerValidator(this);
+        addValidator(gameServerValidator);
         getPacketProcessor().addListener(Lobby.GameServerSetup.class, this::onGameServerSetup);
         getPacketProcessor().addListener(Game.Loaded.class, this::onGameLoaded);
     }
@@ -56,11 +59,11 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
 
     private void onGameServerSetup(Channel channel, Lobby.GameServerSetup message) {
         int keyCount = message.getPlayerCount();
-        String[] keys = new String[4];//validator.generateKeys(keyCount);
+        String[] keys = gameServerValidator.generateSessionKeys(keyCount);
         String gameId = UUID.randomUUID().toString();
         GameSession session = new GameSession(message.getMapId(), gameId, message.getPlayerCount());
         sessions.put(gameId, session);
-        gameService.submit(() -> processSession(session));
+        session.setTickFuture(gameService.scheduleAtFixedRate(() -> processSession(session), 0, TICK, TimeUnit.MILLISECONDS));
         Lobby.GameServerSetupResponse.Builder builder = Lobby.GameServerSetupResponse.newBuilder();
         builder.setGameId(gameId);
         builder.setSeed(session.seed);
@@ -72,16 +75,11 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
     }
 
     private void processSession(GameSession session) {
-        while (session.update()) {
-            try {
-                Thread.sleep(TICK);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                session.destroy();
-                break;
-            }
+        if (!session.update()) {
+            session.getTickFuture().cancel(true);
+            session.destroy();
+            sessions.remove(session.id);
         }
-        sessions.remove(session.id);
     }
 
     @Override
