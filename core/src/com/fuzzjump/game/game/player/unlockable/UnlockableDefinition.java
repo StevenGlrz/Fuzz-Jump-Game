@@ -1,6 +1,7 @@
 package com.fuzzjump.game.game.player.unlockable;
 
-import com.fuzzjump.libgdxscreens.graphics.CColorGroup;
+import com.badlogic.gdx.math.Rectangle;
+import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 /**
  * Kerpow Games, LLC
@@ -10,14 +11,14 @@ public class UnlockableDefinition {
 
     private final String name;
     private final int cost;
-    private final CColorGroup replaceGroup;
-    private String[] allowedTags;
+    private final ColorGroup replaceGroup;
+    private final String[] allowedTags;
     private final int category;
     private final int id;
-    private CColorGroup[] colorGroups;
-    private UnlockableBound[] bounds;
+    private ColorGroup[] colorGroups;
+    private Rectangle[] bounds;
 
-    public UnlockableDefinition(int id, int category, String name, int cost, String[] allowedTags, CColorGroup replaceGroup) {
+    public UnlockableDefinition(int id, int category, String name, int cost, String[] allowedTags, ColorGroup replaceGroup) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -53,11 +54,11 @@ public class UnlockableDefinition {
         return id;
     }
 
-    public void setColorGroups(CColorGroup[] colorGroups) {
+    public void setColorGroups(ColorGroup[] colorGroups) {
         this.colorGroups = colorGroups;
     }
 
-    public CColorGroup[] getColorGroups() {
+    public ColorGroup[] getColorGroups() {
         return colorGroups;
     }
 
@@ -65,15 +66,15 @@ public class UnlockableDefinition {
         return allowedTags;
     }
 
-    public CColorGroup getReplaceGroup() {
+    public ColorGroup getReplaceGroup() {
         return replaceGroup;
     }
 
-    public void setBounds(UnlockableBound[] bounds) {
+    public void setBounds(Rectangle[] bounds) {
         this.bounds = bounds;
     }
 
-    public UnlockableBound[] getBounds() {
+    public Rectangle[] getBounds() {
         return bounds;
     }
 }

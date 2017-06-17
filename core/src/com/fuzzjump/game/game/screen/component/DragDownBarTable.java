@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.graphics;
+package com.fuzzjump.game.game.screen.component;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;

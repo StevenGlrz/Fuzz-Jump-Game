@@ -32,8 +32,7 @@ public class SettingsUI extends StageUI {
 
     @Override
     public void init() {
-        System.out.println("Hii?");
-        Label soundLabel = new Label("Sound...............................", getSkin(), "default");
+        Label soundLabel = new Label("Sound", getSkin(), "default");
         CheckBox soundCheckbox = new CheckBox("", createCheckBoxStyle(this));
         //soundCheckbox.setChecked(game.playingSound());
         TextButton logoutButton = new TextButton("Logout", createDefaultTBStyle(this));
@@ -74,6 +73,6 @@ public class SettingsUI extends StageUI {
 
     @Override
     public void backPressed() {
-        //parent.showMain();
+        parent.showMain();
     }
 }

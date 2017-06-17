@@ -2,7 +2,7 @@ package com.fuzzjump.game.game.player;
 
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
-import com.fuzzjump.game.game.player.unlockable.UnlockableDefinitions;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.persistence.Storable;
 import com.fuzzjump.game.util.Helper;
 import com.google.gson.JsonArray;
@@ -58,8 +58,8 @@ public class Appearance implements Storable {
     public void snapshot() {
         equipSnapshot = equips.clone();
         colorIndexSnapshot.clear();
-        for (int i = 0; i < unlockables.size(); i++) {
-            Unlockable u = unlockables.get(i);
+
+        for (Unlockable u : unlockables.values()) {
             colorIndexSnapshot.put(u.getId(), u.getColorIndex());
         }
     }
@@ -72,8 +72,7 @@ public class Appearance implements Storable {
             }
         }
         if (colorIndexSnapshot.size() > 0) {
-            for (int i = 0; i < unlockables.size(); i++) {
-                Unlockable u = unlockables.get(i);
+            for (Unlockable u : unlockables.values()) {
                 if (Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
                     return true;
                 }
@@ -110,7 +109,7 @@ public class Appearance implements Storable {
         return diffs;
     }
 
-    public void createDummy(UnlockableDefinitions definitions) {
+    public void createDummy(UnlockableRepository definitions) {
         setEquip(0, 0);
         setEquip(1, 32);
         setEquip(2, 108);
@@ -122,7 +121,7 @@ public class Appearance implements Storable {
         }
     }
 
-    public Unlockable createUnlockable(UnlockableDefinitions definitions, JsonObject unlockObj) {
+    public Unlockable createUnlockable(UnlockableRepository definitions, JsonObject unlockObj) {
         int unlockableId = unlockObj.get("UnlockableId").getAsInt(); // was interpreted as long before, so need to test
         int colorIndex = unlockObj.get("ColorIndex").getAsInt();
         int definitionId = unlockObj.get("UnlockableDefinitionId").getAsInt();
@@ -199,7 +198,6 @@ public class Appearance implements Storable {
     public Unlockable getItem(UnlockableDefinition def) {
         return getItem(getItemId(def));
     }
-
 
     public void setColorIndex(long itemId, int entryIndex) {
         Unlockable unlockable = getItem(itemId);

@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.game.game.player.unlockable.UnlockableDefinitions;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
 import com.fuzzjump.game.service.user.IUserService;
 import com.fuzzjump.libgdxscreens.StageScreen;
@@ -40,12 +40,12 @@ public class SplashScreen extends StageScreen<SplashUI> {
     private final IUserService userService;
     private final Textures textures;
     private final Skin skin;
-    private final UnlockableDefinitions definitions;
+    private final UnlockableRepository definitions;
 
     private final Queue<Runnable> load = new LinkedList<>();
 
     @Inject
-    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableDefinitions definitions) {
+    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableRepository definitions) {
         super(ui);
         this.userService = userService;
         this.textures = textures;
