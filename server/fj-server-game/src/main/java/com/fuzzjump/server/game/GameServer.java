@@ -6,21 +6,10 @@ import com.fuzzjump.server.common.messages.game.Game;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.fuzzjump.server.game.game.GamePlayer;
 import com.fuzzjump.server.game.game.GameSession;
-import com.steveadoo.server.base.Player;
-import com.steveadoo.server.base.Server;
-import com.steveadoo.server.base.ServerInfo;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
 import io.netty.channel.Channel;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import java.util.concurrent.*;
 
@@ -35,7 +24,7 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
 
 
     public GameServer(GameServerInfo serverInfo) {
-        super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.handlers));
+        super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
         gameServerValidator = new GameServerValidator(this);
         addValidator(gameServerValidator);
         getPacketProcessor().addListener(Lobby.GameServerSetup.class, this::onGameServerSetup);

@@ -68,7 +68,7 @@ public class FuzzJumpApplication extends AndroidApplication {
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
             fuzzJump = new FuzzJump(
-                    new FuzzJumpParams(),
+                    new FuzzJumpParams("", 9),
                     new PlatformModule(new AndroidGraphicsLoader(executor, Gdx.files.getExternalStoragePath()))
             );
             layout = new RelativeLayout(this);

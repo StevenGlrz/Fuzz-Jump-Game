@@ -3,6 +3,8 @@ package com.fuzzjump.game.di;
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.FuzzJumpGame;
+import com.fuzzjump.game.game.di.FuzzJumpScope;
+import com.fuzzjump.game.game.player.Profile;
 
 import javax.inject.Singleton;
 
@@ -31,5 +33,12 @@ public class FuzzJumpModule {
     public FuzzJumpParams provideParams() {
         return params;
     }
+
+    @Singleton
+    @Provides
+    public Profile provideProfile() {
+        return new Profile();
+    }
+
 
 }

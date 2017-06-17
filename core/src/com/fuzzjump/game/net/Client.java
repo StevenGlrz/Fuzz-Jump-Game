@@ -14,9 +14,6 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.*;
 
-/**
- * Created by Steveadoo on 12/29/2015.
- */
 public class Client {
 
     private final int selectorTimeout;
@@ -31,19 +28,19 @@ public class Client {
     private InetSocketAddress address;
 
     private PacketProcessor packetProcessor;
-    private Queue<GeneratedMessage> writeQueue = new LinkedList<>();
+    private Queue<Object> writeQueue = new LinkedList<>();
 
     private boolean connected = false;
     private Thread thread;
 
-    public Client(PacketProcessor packetHandler, ConnectionListener listener, int selectorTimeout, int readBufferSize) {
-        this.packetProcessor = packetHandler;
+    public Client(PacketProcessor packetProcessor, ConnectionListener listener, int selectorTimeout, int readBufferSize) {
+        this.packetProcessor = packetProcessor;
         this.selectorTimeout = selectorTimeout;
         this.listener = listener;
         this.readBuffer = ByteBuffer.allocate(readBufferSize);
     }
 
-    public void send(GeneratedMessage message) {
+    public void send(Object message) {
         synchronized (writeQueue) {
             writeQueue.offer(message);
         }
@@ -223,7 +220,7 @@ public class Client {
 
     private boolean write(SelectionKey key) throws IOException, MissingHandlerException, MessageHandlerException {
         SocketChannel channel = (SocketChannel) key.channel();
-        GeneratedMessage message = null;
+        Object message = null;
         ByteBuffer buffer = null;
         Packet packet = null;
         synchronized (writeQueue) {

@@ -9,10 +9,6 @@ import com.steveadoo.server.common.packets.PacketProcessor;
 
 import io.netty.channel.Channel;
 
-import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -30,7 +26,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
 
 
     public MatchmakingServer(MatchmakingServerInfo serverInfo) {
-        super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.handlers));
+        super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
         //this.gameServerTransferer = new GameServerTransferer(gameServerAddress);
         getPacketProcessor().addListener(Lobby.Loaded.class, this::lobbyLoaded);
         getPacketProcessor().addListener(Lobby.ReadySet.class, this::readySet);
