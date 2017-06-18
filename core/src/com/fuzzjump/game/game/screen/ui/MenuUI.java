@@ -17,6 +17,7 @@ import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
+import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
@@ -59,13 +60,11 @@ public class MenuUI extends StageUI {
         this.stage = stage;
         this.definitions = definitions;
         this.colorizer = colorizer;
-
-        profile.getAppearance().createDummy(definitions);
     }
 
     @Override
     public void init() {
-        dropdownTable = new FJDragDownBarTable(this); //, getGame().getProfile());
+        dropdownTable = new FJDragDownBarTable(this, profile);
         uiSwitcher = new ActorSwitcher();
 
         Label messageLabel = new Label("Loading", getGameSkin(), "default");
@@ -74,20 +73,7 @@ public class MenuUI extends StageUI {
         progressImage.setOrigin(Align.center);
         progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
 
-        final Dialog progressDialog = new Dialog("", createDialogStyle(this)) {
-
-            @Override
-            public float getPrefWidth() {
-                return Gdx.graphics.getWidth() * 0.65f;
-            }
-
-            @Override
-            public float getPrefHeight() {
-                return Gdx.graphics.getWidth() * 0.5081829277777778f;
-            }
-
-
-        };
+        final Dialog progressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
         progressDialog.setModal(true);
         progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
         progressDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, progressDialog));
@@ -134,6 +120,8 @@ public class MenuUI extends StageUI {
 
         Table pictureTable = new Table();
         Fuzzle fuzzle = new Fuzzle(this, colorizer);
+        fuzzle.setProfile(profile);
+
         TextButton profileButton = new TextButton("Customize", createSmallTBStyle(this));
         pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
         pictureTable.add(profileButton).padBottom(Value.percentHeight(.0416f, pictureTable)).size(Value.percentWidth(.95f, pictureTable), Value.percentWidth(0.25f, pictureTable));

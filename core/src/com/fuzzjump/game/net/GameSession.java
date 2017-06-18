@@ -28,7 +28,7 @@ public class GameSession implements Client.ConnectionListener {
         this.port = port;
         this.watcher = watcher;
         this.runnablePool = Pools.get(ReceivedPacketRunnable.class);
-        this.client = new Client(packetProcessor, this, EVENT_TIMEOUT, 128);
+        this.client = new Client(packetProcessor, this, EVENT_TIMEOUT, 256);
     }
 
     public void connect() {

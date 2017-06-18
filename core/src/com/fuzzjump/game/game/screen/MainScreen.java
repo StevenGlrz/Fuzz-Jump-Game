@@ -7,6 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.service.user.IUserService;
 import com.fuzzjump.libgdxscreens.StageScreen;
@@ -20,9 +22,11 @@ public class MainScreen extends StageScreen<MainUI> {
 
     //We can get rid of the UI from the constructor, I dont feel like doing that rn tho
     @Inject
-    public MainScreen(MainUI ui, IUserService userService) {
+    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository definitions) {
         super(ui);
         this.userService = userService;
+
+        profile.getAppearance().createDummy(definitions); // TODO THIS IS TEMPORARY
     }
 
     @Override

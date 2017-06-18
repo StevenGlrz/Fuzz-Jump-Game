@@ -423,9 +423,6 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             this.bg = textures.getTextureRegionDrawable("ui-wait-square");
             this.lock = textures.getTextureRegionDrawable("ui-lock");
             this.coinIcon = textures.getTextureRegionDrawable("kerpow-coin");
-            if (unlockable != null) {
-                System.out.println(definition.getName() + ", " + unlockable.getColorIndex());
-            }
             this.accessoryImg = new TextureRegionDrawable(colorizer.getColored(textures, definition, unlockable == null ? 0 : unlockable.getColorIndex(), true));
             this.font = getGameSkin().getFont(Assets.PROFILE_FONT);
             this.unlockableDefinition = definition;

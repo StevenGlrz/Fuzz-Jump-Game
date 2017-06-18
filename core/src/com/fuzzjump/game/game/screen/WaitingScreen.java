@@ -56,6 +56,9 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void initialize() {
+        gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
+        gameSession.connect();
+
         progressDialog = getUI().actor(Dialog.class, Assets.WaitingUI.PROGRESS_DIALOG);
         image = getUI().actor(Image.class, Assets.WaitingUI.PROGRESS_IMAGE);
         status = getUI().actor(Label.class, Assets.WaitingUI.PROGRESS_LABEL);
@@ -66,9 +69,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         closeButton.setVisible(false);
         status.setText("Finding game...");
         showDialog(progressDialog, getStage());
-        gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
         initPacketListeners();
-        gameSession.connect();
     }
 
     private void initPacketListeners() {

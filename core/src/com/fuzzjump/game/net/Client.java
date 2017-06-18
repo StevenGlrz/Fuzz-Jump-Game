@@ -11,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,7 +30,7 @@ public class Client {
     private InetSocketAddress address;
 
     private PacketProcessor packetProcessor;
-    private Queue<Object> writeQueue = new LinkedList<>();
+    private final Queue<Object> writeQueue = new LinkedList<>();
 
     private boolean connected = false;
     private Thread thread;
@@ -112,8 +111,8 @@ public class Client {
         selector = Selector.open();
         socket = SocketChannel.open();
         socket.socket().setTcpNoDelay(true);
-        socket.socket().setSendBufferSize(30);
-        socket.socket().setReceiveBufferSize(30);
+        socket.socket().setSendBufferSize(512);
+        socket.socket().setReceiveBufferSize(512);
         socket.socket().setKeepAlive(true);
         socket.configureBlocking(false);
         socket.register(selector, SelectionKey.OP_CONNECT);
@@ -131,8 +130,9 @@ public class Client {
     }
 
     private void handleKey(SelectionKey key) throws IOException {
-        if (!key.isValid())
+        if (!key.isValid()) {
             return;
+        }
         if (key.isConnectable()) {
             if (connect(key)) {
                 connected = true;
@@ -156,61 +156,42 @@ public class Client {
     private void read(SelectionKey key) throws IOException {
         SocketChannel channel = (SocketChannel) key.channel();
         readBuffer.clear();
-        int length;
-        try {
-            length = channel.read(readBuffer);
-        } catch (IOException e) {
-            e.printStackTrace();
-            key.cancel();
-            channel.close();
-            return;
+
+        int length = 0;
+        int totalLength = 0;
+        while ((length = channel.read(readBuffer)) > 0) {
+            totalLength += length;
+
+            if (!readBuffer.hasRemaining()) {
+                break;
+            }
         }
         if (length == -1) {
             channel.close();
             key.cancel();
             return;
-        } else if (length == 0) {
-            return;
         }
-        readBuffer.flip();
-        parse(key, readBuffer);
+        if (totalLength > 0) {
+            readBuffer.flip();
+            parse(key, readBuffer);
+        }
     }
 
     private void parse(SelectionKey key, ByteBuffer buffer) throws IOException {
-        SocketChannel channel = (SocketChannel) key.channel();
-        //Most of the time we will only receive one packet in a message, but if we do get multiple,
-        //switch to a list and pass all of them to the listener at once
-        Packet singlePacket = null;
-        List<Packet> packets = null;
         while (buffer.hasRemaining()) {
             int opcode = buffer.get() & 0xFF;
             int len = buffer.get() & 0xFF;
-            while (readBuffer.remaining() < len) {
-                if (channel.read(readBuffer) == -1) {
-                    channel.close();
-                    key.cancel();
-                    return;
-                }
+
+            if (buffer.remaining() < len) {
+                // TODO Handle this
+                return;
             }
+
             byte[] data = new byte[len];
-            readBuffer.get(data);
+            buffer.get(data);
             Packet packet = new Packet(opcode, data);
-            //if there is more data in the buffer, more than one packet was received
-            if (readBuffer.hasRemaining() && packets == null) {
-                packets = new ArrayList<>();
-            }
-            if (packets != null) {
-                packets.add(packet);
-            } else {
-                singlePacket = packet;
-            }
-        }
-        if (listener != null) {
-            if (singlePacket != null) {
-                listener.receivedMessage(singlePacket);
-            } else {
-                listener.receivedMessages(packets);
-            }
+
+            listener.receivedMessage(packet);
         }
     }
 
