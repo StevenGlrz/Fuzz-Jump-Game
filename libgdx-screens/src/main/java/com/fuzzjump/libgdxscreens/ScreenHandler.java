@@ -99,13 +99,13 @@ public class ScreenHandler {
                 if (!fFromCache) {
                     screen.initialize();
                 }
-                checkCache();
                 screen.showing();
                 stage.addActor(screen.getUI());
                 if (screenChangeHandler != null) {
                     screenChangeHandler.changeScreen(screen);
                 }
                 currentScreen = screen;
+                checkCache();
             }
         });
         return clazz.cast(show);
