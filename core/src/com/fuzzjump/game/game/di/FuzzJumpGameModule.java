@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.fuzzjump.game.FuzzJump;
-import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.libgdxscreens.ScreenHandler;
 import com.fuzzjump.libgdxscreens.ScreenResolver;
@@ -29,6 +29,12 @@ public class FuzzJumpGameModule {
     @Provides
     public UnlockableRepository provideUnlockableDefinitions() {
         return new UnlockableRepository();
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public UnlockableColorizer provideUnlockableColorizer(VectorGraphicsLoader graphicsLoader) {
+        return new UnlockableColorizer(graphicsLoader);
     }
 
     @FuzzJumpScope

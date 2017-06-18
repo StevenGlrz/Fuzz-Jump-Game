@@ -84,11 +84,6 @@ public class GameSession implements Client.ConnectionListener {
         postOnUIThread(packet);
     }
 
-    @Override
-    public void receivedMessages(List<Packet> packets) {
-        postOnUIThread(packets);
-    }
-
     public void postOnUIThread(Packet packet) {
         ReceivedPacketRunnable runnable = runnablePool.obtain();
         runnable.init(this, getPacketProcessor(), packet);

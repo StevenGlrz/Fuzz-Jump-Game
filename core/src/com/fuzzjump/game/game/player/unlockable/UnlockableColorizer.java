@@ -8,18 +8,13 @@ import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Created by stephen on 8/21/2015.
  */
-@Singleton
 public class UnlockableColorizer {
 
     private final VectorGraphicsLoader vectorGraphicsLoader;
 
-    @Inject
     public UnlockableColorizer(VectorGraphicsLoader vectorGraphicsLoader) {
         this.vectorGraphicsLoader = vectorGraphicsLoader;
     }
@@ -37,6 +32,7 @@ public class UnlockableColorizer {
         return colorized.getRegion().get();
     }
 
+    // TODO Jesus this is slow. Can this be optimized?
     public TextureRegion getColored(StageUITextures textures, Unlockable unlockable, boolean hardref) {
         if (unlockable == null)
             return null;

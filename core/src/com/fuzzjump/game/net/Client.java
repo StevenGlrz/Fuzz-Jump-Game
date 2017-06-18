@@ -13,7 +13,6 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 public class Client {
@@ -252,8 +251,6 @@ public class Client {
         void disconnected();
 
         void receivedMessage(Packet packet);
-
-        void receivedMessages(List<Packet> packets);
 
     }
 }

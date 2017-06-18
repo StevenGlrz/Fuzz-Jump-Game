@@ -10,6 +10,7 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
+import com.fuzzjump.libgdxscreens.ScreenLoader;
 import com.fuzzjump.libgdxscreens.StageUI;
 
 /**
@@ -76,16 +77,19 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             this.profile.getAppearance().removeChangeListener(this);
         this.profile = profile;
         profile.getAppearance().addChangeListener(this);
-        appearanceChanged();
+    }
+
+    public void load(ScreenLoader loader) {
+        loader.add(() -> setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE)));
+        loader.add(() -> setFrame(profile.getAppearance().getEquip(Appearance.FRAME)));
+        loader.add(() -> setEyes(profile.getAppearance().getEquip(Appearance.EYES)));
+        loader.add(() -> setFace(profile.getAppearance().getEquip(Appearance.FACE)));
+        loader.add(() -> setHead(profile.getAppearance().getEquip(Appearance.HEAD)));
     }
 
     @Override
     public void appearanceChanged() {
-        setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE));
-        setFrame(profile.getAppearance().getEquip(Appearance.FRAME));
-        setEyes(profile.getAppearance().getEquip(Appearance.EYES));
-        setFace(profile.getAppearance().getEquip(Appearance.FACE));
-        setHead(profile.getAppearance().getEquip(Appearance.HEAD));
+        // TODO
     }
 
     @Override

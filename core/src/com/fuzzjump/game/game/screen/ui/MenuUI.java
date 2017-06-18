@@ -1,7 +1,6 @@
 package com.fuzzjump.game.game.screen.ui;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -14,14 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
-import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.util.Helper;
+import com.fuzzjump.libgdxscreens.ScreenLoader;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
 
@@ -64,120 +64,136 @@ public class MenuUI extends StageUI {
 
     @Override
     public void init() {
-        dropdownTable = new FJDragDownBarTable(this, profile);
-        uiSwitcher = new ActorSwitcher();
+        ScreenLoader loader = getStageScreen().getLoader();
 
-        Label messageLabel = new Label("Loading", getGameSkin(), "default");
-        final Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
-        final TextButton progressCloseButton = new TextButton("Close", createDefaultTBStyle(this));
-        progressImage.setOrigin(Align.center);
-        progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
+        // Load loading dialog
+        loader.add(() -> {
+            Label messageLabel = new Label("Loading", getGameSkin(), "default");
+            final Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
+            final TextButton progressCloseButton = new TextButton("Close", createDefaultTBStyle(this));
+            progressImage.setOrigin(Align.center);
+            progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
 
-        final Dialog progressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
-        progressDialog.setModal(true);
-        progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
-        progressDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, progressDialog));
-        progressCloseButton.setVisible(false);
+            final Dialog progressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
+            progressDialog.setModal(true);
+            progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
+            progressDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, progressDialog));
+            progressCloseButton.setVisible(false);
 
-        progressDialog.getButtonTable().add(progressCloseButton).size(Value.percentWidth(.475f, progressDialog), Value.percentWidth(0.1315789473684211f, progressDialog)).padBottom(Value.percentHeight(.035f, progressDialog)).center().expand();
 
-        register(Assets.MenuUI.PROGRESS_DIALOG, progressDialog);
-        register(Assets.MenuUI.PROGRESS_LABEL, messageLabel);
-        register(Assets.MenuUI.CLOSE_BUTTON, progressCloseButton);
-        register(Assets.MenuUI.PROGRESS_IMAGE, progressImage);
+            progressDialog.getButtonTable().add(progressCloseButton).size(Value.percentWidth(.475f, progressDialog), Value.percentWidth(0.1315789473684211f, progressDialog)).padBottom(Value.percentHeight(.035f, progressDialog)).center().expand();
 
+            register(Assets.MenuUI.PROGRESS_DIALOG, progressDialog);
+            register(Assets.MenuUI.PROGRESS_LABEL, messageLabel);
+            register(Assets.MenuUI.CLOSE_BUTTON, progressCloseButton);
+            register(Assets.MenuUI.PROGRESS_IMAGE, progressImage);
+            Helper.addClickAction(progressCloseButton, (e, x, y) -> {
+                progressDialog.hide();
+                progressCloseButton.setVisible(false);
+            });
+        });
+
+        // Doesn't require background loading
         this.profileUI = new CharacterSelectionUI(this, stage, profile, definitions, colorizer);
         this.settingsUI = new SettingsUI(this);
 
+
         setFillParent(true);
 
-        Table menuTable = new Table();
-        menuTable.setBackground(textures.getTextureRegionDrawable("ui-panel-mainmenu"));
-
-        Value padSides = Value.percentWidth(.05f, menuTable);
-        Value padTopBottom = Value.percentHeight(.15f, menuTable);
-        Value padTop = Value.percentHeight(.3f, menuTable);
-
-        Table innerTable = new Table();
-        menuTable.add(innerTable).pad(padTop, padSides, padTopBottom, padSides).size(Value.percentWidth(.95f, menuTable), Value.percentHeight(.9f, menuTable)).expand();
-
-        Value topRowHeight = Value.percentHeight(.6f, innerTable);
-
-        Table buttonsTable = new Table();
-        TextButton publicGameButton = new TextButton("Find Game", createPlayTBStyle(this));
-        publicGameButton.getLabel().setAlignment(Align.right);
-        publicGameButton.getLabelCell().padRight(Value.percentWidth(.1f, publicGameButton));
-        TextButton privateGameButton = new TextButton("New Game", createPlusTBStyle(this));
-        privateGameButton.getLabel().setAlignment(Align.right);
-        privateGameButton.getLabelCell().padRight(Value.percentWidth(.05f, privateGameButton));
-        TextButton friendsButton = new TextButton("Friends", createDefaultTBStyle(this));
-        buttonsTable.defaults().size(Value.percentWidth(.95f, buttonsTable), Value.percentWidth(0.25f, buttonsTable));
-        buttonsTable.add(publicGameButton).expand().row();
-        buttonsTable.add(privateGameButton).expand().row();
-        buttonsTable.add(friendsButton).expand().row();
-        innerTable.add(buttonsTable).left().padRight(padSides).expand().size(Value.percentWidth(.55f, innerTable), topRowHeight);
-
-
-        Table pictureTable = new Table();
-        Fuzzle fuzzle = new Fuzzle(this, colorizer);
-        fuzzle.setProfile(profile);
-
-        TextButton profileButton = new TextButton("Customize", createSmallTBStyle(this));
-        pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
-        pictureTable.add(profileButton).padBottom(Value.percentHeight(.0416f, pictureTable)).size(Value.percentWidth(.95f, pictureTable), Value.percentWidth(0.25f, pictureTable));
-        innerTable.add(pictureTable).right().expand().size(Value.percentHeight(.4f, innerTable), topRowHeight);
-
-        innerTable.row();
-
-        Table lowerButtonsTable = new Table();
-        Table btnGroup = new Table();
-
-        ImageButton leaderboardBtn = new ImageButton(createLeaderboardBtnStyle(this));
-        ImageButton storeBtn = new ImageButton(createStoreBtnStyle(this));
-        ImageButton settingsBtn = new ImageButton(createSettingsBtnStyle(this));
-
-        Value btnHeight = Value.percentHeight(1f, btnGroup);
-        Value btnWidth = btnHeight;
-        Value btnPad = Value.percentWidth(.025f, btnGroup);
-        btnGroup.defaults().size(btnWidth, btnHeight);
-        btnGroup.add(leaderboardBtn).top().expand();
-        btnGroup.add(storeBtn).top().expand().padLeft(btnPad).padRight(btnPad);
-        btnGroup.add(settingsBtn).top().expand();
-
-        lowerButtonsTable.add(btnGroup).top().size(Value.percentWidth(.55f, lowerButtonsTable), Value.percentHeight(.75f, lowerButtonsTable));
-
-        innerTable.add(lowerButtonsTable).colspan(2).size(Value.percentWidth(1f, innerTable), Value.percentHeight(.3f, innerTable)).top();
-
-        register(Assets.MenuUI.PUBLIC_GAME, publicGameButton);
-
-
-        uiSwitcher.addWidget(menuTable, Value.percentWidth(.975f, uiSwitcher), Value.percentWidth(0.8061598235294119f, uiSwitcher));
-        //uiSwitcher.addWidget(friendsUI, Value.percentWidth(.9f, uiSwitcher), Value.percentWidth(0.8288981077080586f, uiSwitcher));
-        uiSwitcher.addWidget(profileUI, Value.percentWidth(.9f, uiSwitcher), Value.percentHeight(.5f, uiSwitcher));
-        uiSwitcher.addWidget(settingsUI);
-
-
-        add(dropdownTable).expand().fill();
-
-        Table contentTable = dropdownTable.getContentTable();
-
-        contentTable.add(uiSwitcher).fill().center().expand();
-
-        // Register click listener
-        Helper.addClickAction(profileButton, (e, x, y) -> {
-            profileUI.showing();
-            uiSwitcher.setDisplayedChild(1);
+        // Load our main elements. THIS SHOULD BE IN ORDER
+        loader.add(() -> {
+            dropdownTable = new FJDragDownBarTable(this, profile);
+            uiSwitcher = new ActorSwitcher();
         });
-        Helper.addClickAction(progressCloseButton, (e, x, y) -> {
-            progressDialog.hide();
-            progressCloseButton.setVisible(false);
+
+        loader.add(() -> {
+            Table menuTable = new Table();
+            menuTable.setBackground(textures.getTextureRegionDrawable("ui-panel-mainmenu"));
+
+            Value padSides = Value.percentWidth(.05f, menuTable);
+            Value padTopBottom = Value.percentHeight(.15f, menuTable);
+            Value padTop = Value.percentHeight(.3f, menuTable);
+
+            Table innerTable = new Table();
+            menuTable.add(innerTable).pad(padTop, padSides, padTopBottom, padSides).size(Value.percentWidth(.95f, menuTable), Value.percentHeight(.9f, menuTable)).expand();
+
+            Value topRowHeight = Value.percentHeight(.6f, innerTable);
+
+            Table buttonsTable = new Table();
+            TextButton publicGameButton = new TextButton("Find Game", createPlayTBStyle(this));
+            publicGameButton.getLabel().setAlignment(Align.right);
+            publicGameButton.getLabelCell().padRight(Value.percentWidth(.1f, publicGameButton));
+            TextButton privateGameButton = new TextButton("New Game", createPlusTBStyle(this));
+            privateGameButton.getLabel().setAlignment(Align.right);
+            privateGameButton.getLabelCell().padRight(Value.percentWidth(.05f, privateGameButton));
+            TextButton friendsButton = new TextButton("Friends", createDefaultTBStyle(this));
+            buttonsTable.defaults().size(Value.percentWidth(.95f, buttonsTable), Value.percentWidth(0.25f, buttonsTable));
+            buttonsTable.add(publicGameButton).expand().row();
+            buttonsTable.add(privateGameButton).expand().row();
+            buttonsTable.add(friendsButton).expand().row();
+            innerTable.add(buttonsTable).left().padRight(padSides).expand().size(Value.percentWidth(.55f, innerTable), topRowHeight);
+
+
+            Table pictureTable = new Table();
+
+            Fuzzle fuzzle = new Fuzzle(this, colorizer, profile);
+            fuzzle.load(loader);
+
+            TextButton profileButton = new TextButton("Customize", createSmallTBStyle(this));
+            pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
+            pictureTable.add(profileButton).padBottom(Value.percentHeight(.0416f, pictureTable)).size(Value.percentWidth(.95f, pictureTable), Value.percentWidth(0.25f, pictureTable));
+            innerTable.add(pictureTable).right().expand().size(Value.percentHeight(.4f, innerTable), topRowHeight);
+
+            innerTable.row();
+
+            Table lowerButtonsTable = new Table();
+            Table btnGroup = new Table();
+
+            ImageButton leaderboardBtn = new ImageButton(createLeaderboardBtnStyle(this));
+            ImageButton storeBtn = new ImageButton(createStoreBtnStyle(this));
+            ImageButton settingsBtn = new ImageButton(createSettingsBtnStyle(this));
+
+            Value btnHeight = Value.percentHeight(1f, btnGroup);
+            Value btnWidth = btnHeight;
+            Value btnPad = Value.percentWidth(.025f, btnGroup);
+            btnGroup.defaults().size(btnWidth, btnHeight);
+            btnGroup.add(leaderboardBtn).top().expand();
+            btnGroup.add(storeBtn).top().expand().padLeft(btnPad).padRight(btnPad);
+            btnGroup.add(settingsBtn).top().expand();
+
+            lowerButtonsTable.add(btnGroup).top().size(Value.percentWidth(.55f, lowerButtonsTable), Value.percentHeight(.75f, lowerButtonsTable));
+
+            innerTable.add(lowerButtonsTable).colspan(2).size(Value.percentWidth(1f, innerTable), Value.percentHeight(.3f, innerTable)).top();
+
+            register(Assets.MenuUI.PUBLIC_GAME, publicGameButton);
+
+
+            uiSwitcher.addWidget(menuTable, Value.percentWidth(.975f, uiSwitcher), Value.percentWidth(0.8061598235294119f, uiSwitcher));
+            //uiSwitcher.addWidget(friendsUI, Value.percentWidth(.9f, uiSwitcher), Value.percentWidth(0.8288981077080586f, uiSwitcher));
+            uiSwitcher.addWidget(profileUI, Value.percentWidth(.9f, uiSwitcher), Value.percentHeight(.5f, uiSwitcher));
+            uiSwitcher.addWidget(settingsUI);
+
+            // Register click listener
+            Helper.addClickAction(profileButton, (e, x, y) -> {
+                profileUI.showing();
+                uiSwitcher.setDisplayedChild(1);
+            });
+            //Helper.addClickAction(friendsButton, (e, x, y) -> uiSwitcher.setDisplayedChild(1));
+            Helper.addClickAction(settingsBtn, (e, x, y) -> uiSwitcher.setDisplayedChild(2));
         });
-        //Helper.addClickAction(friendsButton, (e, x, y) -> uiSwitcher.setDisplayedChild(1));
-        Helper.addClickAction(settingsBtn, (e, x, y) -> uiSwitcher.setDisplayedChild(2));
-        Gdx.app.postRunnable(() -> {
-            profileUI.init();
-            settingsUI.init();
+
+
+        // Note expensive operations, but since these are not available immediately then we do this here.
+        loader.add(() -> {
+            add(dropdownTable).expand().fill();
+
+            Table contentTable = dropdownTable.getContentTable();
+
+            contentTable.add(uiSwitcher).fill().center().expand();
         });
+
+        loader.add(() -> profileUI.init());
+        loader.add(() -> settingsUI.init());
     }
 
     @Override

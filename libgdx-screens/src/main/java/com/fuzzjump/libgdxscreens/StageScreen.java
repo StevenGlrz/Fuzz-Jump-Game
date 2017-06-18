@@ -11,15 +11,17 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     protected ScreenHandler screenHandler;
 
-    private StageUI ui;
+    private final StageUI ui;
+    private ScreenLoader loader;
 
     private Stage stage;
     private boolean cleared;
 
-    private long initalFrame;
+    private boolean rendered;
 
     public StageScreen(TUI ui) {
         this.ui = ui;
+        this.loader = new ScreenLoader();
     }
 
     //init -> add -> showScreen.
@@ -32,8 +34,8 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
             try {
                 ui.init();
             } catch (Exception e) {
+                System.err.println("Error initializing UI");
                 e.printStackTrace();
-                System.out.println("Error initializing getUI");
             }
         }
     }
@@ -54,18 +56,15 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
         if (!cleared) {
             clear();
         }
-        long currentFrame = Gdx.graphics.getFrameId();
-        if (currentFrame - initalFrame == 1) {
-            rendered();
-        }
 
         onPreRender(delta);
         stage.act(delta);
         stage.draw();
         onPostRender(delta);
 
-        if (initalFrame == 0) {
-            initalFrame = currentFrame;
+        if (!rendered) {
+            rendered = true;
+            rendered();
         }
         cleared = false;
     }
@@ -88,19 +87,31 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
         return stage;
     }
 
-    public abstract void initialize();
+    /**
+     * Called once the UI has been initialized and the screen is not
+     * being initalized as a cached screen.
+     */
+    public abstract void onReady();
+
+    /**
+     * Called once the screen is being displayed regardless of its cached state.
+     */
+    public abstract void showing();
+
+    /**
+     * Click management for actors on the screen
+     * @param id The id of the actor.
+     * @param actor The clicked actor.
+     */
+    public abstract void clicked(int id, Actor actor);
 
     public void onPreRender(float delta) {
 
     }
 
     public void onPostRender(float delta) {
-
+        loader.process();
     }
-
-    public abstract void showing();
-
-    public abstract void clicked(int id, Actor actor);
 
     public void backPressed() {
         if (ui != null)
@@ -123,5 +134,18 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
             stage.addActor(ui);
             ui.invalidateHierarchy();
         }
+    }
+
+    /**
+     * The purpose of this function is to switch the loader to the loader of the
+     * next screen. This is so our current display can load the next screen's information.
+     * @param loader The screen loader.
+     */
+    public void setLoader(ScreenLoader loader) {
+        this.loader = loader;
+    }
+
+    public ScreenLoader getLoader() {
+        return loader;
     }
 }

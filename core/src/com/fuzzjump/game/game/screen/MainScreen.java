@@ -30,7 +30,7 @@ public class MainScreen extends StageScreen<MainUI> {
     }
 
     @Override
-    public void initialize() {
+    public void onReady() {
 
     }
 
@@ -56,9 +56,7 @@ public class MainScreen extends StageScreen<MainUI> {
                     waitingDialog.setName("Logging in...");
                     showDialog(waitingDialog, getStage());
 
-                    Gdx.app.postRunnable(() -> {
-                        screenHandler.showScreen(MenuScreen.class);
-                    });
+                    screenHandler.showScreen(MenuScreen.class);
                 }
                 Gdx.input.setOnscreenKeyboardVisible(false);
             }
@@ -90,8 +88,6 @@ public class MainScreen extends StageScreen<MainUI> {
                 Gdx.input.setOnscreenKeyboardVisible(false);
             }
             break;
-            case Assets.MainScreen.REGISTER_GMAIL:
-                break;
             case Assets.MainScreen.REGISTER_FACEBOOK:
 
                 break;

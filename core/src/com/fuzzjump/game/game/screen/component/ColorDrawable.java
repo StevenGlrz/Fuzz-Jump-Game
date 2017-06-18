@@ -10,14 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
 public class ColorDrawable extends BaseDrawable {
 
 	private final Color color;
-	private final float width;
-	private final float height;
+	private final float setWidth;
+	private final float setHeight;
 	private Texture texture;
 
-	public ColorDrawable(Color color, float width, float height) {
+	public ColorDrawable(Color color, float setWidth, float setHeight) {
 		this.color = color;
-		this.width = width;
-		this.height = height;
+		this.setWidth = setWidth;
+		this.setHeight = setHeight;
 	}
 
 	@Override
@@ -29,8 +29,8 @@ public class ColorDrawable extends BaseDrawable {
 
 			texture = new Texture(pixmap);
 
-			this.setMinWidth(this.width);
-			this.setMinHeight(this.height);
+			this.setMinWidth(this.setWidth);
+			this.setMinHeight(this.setHeight);
 		}
 		Color before = batch.getColor();
 		batch.setColor(color);

@@ -250,6 +250,7 @@ public class WaitingUI extends StageUI {
             statusImage.setVisible(true);
             this.fuzzle.setProfile(newPlayer);
 
+
             profileChanged();
         }
 

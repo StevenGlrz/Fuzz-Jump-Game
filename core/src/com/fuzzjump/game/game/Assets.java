@@ -76,7 +76,6 @@ public class Assets {
         public static final int REGISTER_PWD_FIELD = 9;
         public static final int REGISTER_PWD_FIELD_2 = 10;
         public static final int REGISTER_FACEBOOK = 11;
-        public static final int REGISTER_GMAIL = 12;
         public static final int REGISTER_BUTTON = 13;
     }
 

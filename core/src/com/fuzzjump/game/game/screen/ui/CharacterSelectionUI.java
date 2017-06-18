@@ -37,6 +37,7 @@ import com.fuzzjump.game.game.screen.component.ColorDrawable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;
+import com.fuzzjump.libgdxscreens.ScreenLoader;
 import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
@@ -54,6 +55,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
+    private final ScreenLoader loader;
 
     private Table topTable;
     private Table midTable;
@@ -125,59 +127,61 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
+        this.loader = stageScreen.getLoader();
     }
 
     @Override
     public void init() {
 
-        buyingDialog = new FuzzDialog("", createDialogStyle(this), 0.75f, 0.8352089253422888f);
+        loader.add(() -> {
+            buyingDialog = new FuzzDialog("", createDialogStyle(this), 0.75f, 0.8352089253422888f);
 
-        parent.register(Assets.MenuUI.BUYING_DIALOG, buyingDialog);
+            parent.register(Assets.MenuUI.BUYING_DIALOG, buyingDialog);
 
-        buyingDialog.setModal(true);
+            buyingDialog.setModal(true);
 
-        buyingUnlockableLabel = new Label("Item name", getGameSkin(), "default");
-        unlockableImage = new Image();
-        unlockableImage.setScaling(Scaling.fit);
+            buyingUnlockableLabel = new Label("Item name", getGameSkin(), "default");
+            unlockableImage = new Image();
+            unlockableImage.setScaling(Scaling.fit);
 
-        buyingDialog.getContentTable().add(buyingUnlockableLabel).padTop(Value.percentHeight(.1f, buyingDialog)).row();
-        buyingDialog.getContentTable().add(unlockableImage).center().expand().size(Value.percentWidth(.45f, buyingDialog)).row();
+            buyingDialog.getContentTable().add(buyingUnlockableLabel).padTop(Value.percentHeight(.1f, buyingDialog)).row();
+            buyingDialog.getContentTable().add(unlockableImage).center().expand().size(Value.percentWidth(.45f, buyingDialog)).row();
 
-        Table costTable = new Table();
+            Table costTable = new Table();
 
-        costTable.add(new Image(textures.getTextureRegionDrawable("kerpow-coin"))).size(Value.percentHeight(1f, costTable)).left();
-        costTable.add(costLabel = new Label("cost", getGameSkin(), "default")).padLeft(Value.percentWidth(.01f, buyingDialog)).expand().right();
+            costTable.add(new Image(textures.getTextureRegionDrawable("kerpow-coin"))).size(Value.percentHeight(1f, costTable)).left();
+            costTable.add(costLabel = new Label("cost", getGameSkin(), "default")).padLeft(Value.percentWidth(.01f, buyingDialog)).expand().right();
 
-        Value padBottom = Value.percentHeight(.035f, buyingDialog);
+            Value padBottom = Value.percentHeight(.035f, buyingDialog);
 
-        buyingDialog.getContentTable().add(costTable).height(Value.percentHeight(.075f, buyingDialog)).padBottom(padBottom).center();
+            buyingDialog.getContentTable().add(costTable).height(Value.percentHeight(.075f, buyingDialog)).padBottom(padBottom).center();
 
-        TextButton cancelButton = new TextButton("Cancel", createDefaultTBStyle(this));
-        TextButton purchaseButton = new TextButton("Buy", createDefaultTBStyle(this));
+            TextButton cancelButton = new TextButton("Cancel", createDefaultTBStyle(this));
+            TextButton purchaseButton = new TextButton("Buy", createDefaultTBStyle(this));
 
-        Helper.addClickAction(cancelButton, (e, x, y) -> buyingDialog.hide());
+            Helper.addClickAction(cancelButton, (e, x, y) -> buyingDialog.hide());
 
-        parent.register(Assets.MenuUI.SELECT_BUY_BUTTON, purchaseButton);
+            parent.register(Assets.MenuUI.SELECT_BUY_BUTTON, purchaseButton);
 
-        Value padSide = Value.percentWidth(.05f, buyingDialog);
-        buyingDialog.getButtonTable().add(cancelButton).size(Value.percentWidth(.475f, buyingDialog), Value.percentWidth(0.1315789473684211f, buyingDialog)).left().padLeft(padSide).padBottom(padBottom).expand();
-        buyingDialog.getButtonTable().add(purchaseButton).size(Value.percentWidth(.475f, buyingDialog), Value.percentWidth(0.1315789473684211f, buyingDialog)).right().padRight(padSide).padBottom(padBottom).expand();
+            Value padSide = Value.percentWidth(.05f, buyingDialog);
+            buyingDialog.getButtonTable().add(cancelButton).size(Value.percentWidth(.475f, buyingDialog), Value.percentWidth(0.1315789473684211f, buyingDialog)).left().padLeft(padSide).padBottom(padBottom).expand();
+            buyingDialog.getButtonTable().add(purchaseButton).size(Value.percentWidth(.475f, buyingDialog), Value.percentWidth(0.1315789473684211f, buyingDialog)).right().padRight(padSide).padBottom(padBottom).expand();
+        });
+        loader.add(() -> initTopTable(loader));
+        loader.add(() -> initMidtable(loader));
+        loader.add(this::initLowMidTable);
+        loader.add(this::initLowTable);
 
-        initTopTable();
-        initMidtable();
-        initLowMidTable();
-        initLowTable();
 
         selectedCategory = 0;
-
-        refreshItemsTable();
-
         profile.getAppearance().addChangeListener(this);
 
-        add(topTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.2157697975873454f, this)).row();
-        add(midTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.6704595716097392f, this)).row();
-        add(lowMidTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.21576796231076f, this)).row();
-        add(lowTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.17139831558315f, this)).row();
+        loader.add(() -> {
+            add(topTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.2157697975873454f, this)).row();
+            add(midTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.6704595716097392f, this)).row();
+            add(lowMidTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.21576796231076f, this)).row();
+            add(lowTable).size(Value.percentWidth(1f, this), Value.percentWidth(0.17139831558315f, this)).row();
+        });
     }
 
     private ClickListener frameClickListener = new ClickListener() {
@@ -192,7 +196,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
                         return;
                     frame.setChecked(true);
                     selectedCategory = index;
-                    refreshItemsTable();
+                    displayLoad();
                 } else {
                     frame.setChecked(false);
                 }
@@ -202,7 +206,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
     };
 
-    public void initTopTable() {
+    public void initTopTable(ScreenLoader loader) {
         topTable = new Table();
         topTable.setBackground(textures.getTextureRegionDrawable("ui-panel-character1"));
 
@@ -211,19 +215,20 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Value height = Value.percentWidth(0.160335f, topTable);
 
         for (int i = 0; i < Appearance.COUNT; i++) {
-            CategoryFrame frame = new CategoryFrame(Appearance.TITLES[i], getGameSkin(), createCFrameStyle(parent));
+            final int index = i;
+            CategoryFrame frame = new CategoryFrame(Appearance.TITLES[index], getGameSkin(), createCFrameStyle(parent));
             frame.init();
-            if (i == 0) {
+            if (index == 0) {
                 frame.setChecked(true);
             }
             topTable.add(frame).padLeft(pad).padRight(pad).size(width, height).expand();
             frame.addListener(frameClickListener);
-            frame.setUserObject(i);
+            frame.setUserObject(index);
         }
-        appearanceChanged();
+        loader.add(this::appearanceChanged);
     }
 
-    public void initMidtable() {
+    public void initMidtable(ScreenLoader loader) {
         midTable = new Table();
         midTable.setBackground(textures.getTextureRegionDrawable("ui-panel-character2"));
 
@@ -237,7 +242,10 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         holder.add(scrollPane).fill().expand();
         midTable.add(holder).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padLeft(padOutside).padRight(padInside);
 
+        // TODO Do we really need two fuzzle instances?
         Fuzzle fuzzle = new Fuzzle(this, colorizer, profile);
+        fuzzle.load(loader);
+
         midTable.add(fuzzle).size(Value.percentWidth(.6f, midTable)).center().expand();
 
         midTable.add(new Actor()).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padRight(padOutside).padLeft(padInside);
@@ -262,7 +270,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         lowMidTable.add(rightImage).size(imageSize);
     }
 
-    private void refreshItemsTable() {
+    public void displayLoad() {
         Dialog dialog = parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG);
         Label label = parent.actor(Assets.MenuUI.PROGRESS_LABEL);
         Button button = parent.actor(Assets.MenuUI.CLOSE_BUTTON);
@@ -272,7 +280,6 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Action showAction = dialog.getActions().get(dialog.getActions().size - 1);
         dialog.addAction(Actions.sequence(Actions.after(showAction), Actions.run(populateItemsTableRunnable)));
     }
-
 
     private void populateItemsTable() {
         itemsContainer.clearChildren();
@@ -389,7 +396,10 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     @Override
     public void appearanceChanged() {
         for (int i = 0; i < Appearance.COUNT; i++) {
-            getCategoryFrame(i).setCategoryDrawable(colorizer.getColored(textures, profile.getAppearance().getEquip(i), false));
+            final int index = i;
+            loader.add(() -> {
+                getCategoryFrame(index).setCategoryDrawable(colorizer.getColored(textures, profile.getAppearance().getEquip(index), false));
+            });
         }
     }
 

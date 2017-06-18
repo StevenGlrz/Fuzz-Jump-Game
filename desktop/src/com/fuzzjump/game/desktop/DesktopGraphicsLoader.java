@@ -84,9 +84,7 @@ public class DesktopGraphicsLoader extends VectorGraphicsLoader {
         byte[] pngData = null;
         try {
             pngData = future.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         Pixmap pixmap = new Pixmap(pngData, 0, pngData.length);

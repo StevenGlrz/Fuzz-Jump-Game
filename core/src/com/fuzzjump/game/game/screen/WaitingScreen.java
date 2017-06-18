@@ -55,7 +55,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     @Override
-    public void initialize() {
+    public void onReady() {
         gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
         gameSession.connect();
 

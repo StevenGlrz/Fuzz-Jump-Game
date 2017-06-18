@@ -15,24 +15,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Singleton;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-@Singleton
 public class UnlockableRepository {
 
     private static final String DEFINITIONS_PATH = "data/unlockable-definitions.xml";
     public static final int FUZZLE_COUNT = 6;
 
     private Map<Integer, UnlockableDefinition> definitions = new HashMap<>();
-    private Map<Integer, UnlockableDefinition>[] definitionsCategories = new HashMap[5];
 
     public void init() {
-        for (int i = 0; i < definitionsCategories.length; i++) {
-            definitionsCategories[i] = new HashMap<>();
-        }
         try {
 
             DocumentBuilder bldr = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -61,7 +55,6 @@ public class UnlockableRepository {
                     allowedTags = allowedTag.split(",");
                 }
                 UnlockableDefinition def = new UnlockableDefinition(id, category, name, cost, allowedTags, replaceGroup);
-                definitionsCategories[category].put(id, def);
                 definitions.put(id, def);
 
                 NodeList colorsNode = entry.getElementsByTagName("colors");
@@ -135,20 +128,16 @@ public class UnlockableRepository {
 
     public List<UnlockableDefinition> getDefinitions(int category, int fuzz) {
         List<UnlockableDefinition> defs = new ArrayList<>();
-        UnlockableDefinition fuzzDef = definitionsCategories[0].get(fuzz);
-        for (UnlockableDefinition check : definitionsCategories[category].values()) {
-            if (check.validFuzzle(fuzzDef.getAllowedTags())) {
+        UnlockableDefinition fuzzDef = definitions.get(fuzz);
+        for (UnlockableDefinition check : definitions.values()) {
+            if (check.getCategory() == category && check.validFuzzle(fuzzDef.getAllowedTags())) {
                 defs.add(check);
             }
         }
         return defs;
     }
 
-    public UnlockableDefinition getDefinition(int definitionId) {
-        return definitions.get(definitionId);
-    }
-
-    public Map<Integer, UnlockableDefinition> getDefinitions() {
-        return definitions;
+    public UnlockableDefinition getDefinition(int id) {
+        return definitions.get(id);
     }
 }

@@ -19,7 +19,7 @@ public class MenuScreen extends StageScreen<MenuUI> {
     }
 
     @Override
-    public void initialize() {
+    public void onReady() {
 
     }
 

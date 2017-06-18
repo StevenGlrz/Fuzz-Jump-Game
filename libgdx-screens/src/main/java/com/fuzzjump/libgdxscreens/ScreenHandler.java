@@ -1,9 +1,7 @@
 package com.fuzzjump.libgdxscreens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -11,13 +9,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 public class ScreenHandler {
 
-    private final LinkedHashMap<String, ScreenInfo> screens;
-    private final ArrayList<StageScreen> cachedScreens;
+    private final Map<String, ScreenSession> screens;
+    private final List<StageScreen> cachedScreens;
     private final Textures textures;
     private final Stage stage;
     private final ScreenResolver screenResolver;
@@ -38,7 +36,7 @@ public class ScreenHandler {
      * the next screen is and decide to cache off of that.
      */
     public void addScreen(Class<? extends StageScreen> type, int cacheDistance) {
-        ScreenInfo info = new ScreenInfo(type, cacheDistance, screens.size());
+        ScreenSession info = new ScreenSession(type, cacheDistance, screens.size());
         screens.put(type.getName(), info);
     }
 
@@ -51,27 +49,31 @@ public class ScreenHandler {
         });
     }
 
+    public <T extends StageScreen> void loadScreen(Class<T> clazz) {
+
+    }
+
     public <T extends StageScreen> T showScreen(Class<T> clazz) {
         StageScreen show = cached(clazz.getName());
         boolean fromCache = true;
-        final LinkedList<Texture> removedTextures = new LinkedList<>();
+        boolean currentScreenExists = currentScreen != null;
         if (show == null) {
             fromCache = false;
             try {
                 HashMap<String, Integer> referenceCounts = null;
-                if (currentScreen != null) {
+                if (currentScreenExists) {
                     referenceCounts = new HashMap<>();
                     for (Map.Entry<String, StageUITextures.TextureReferenceCounter> entry : currentScreen.getUI().getTextures().getTextures().entrySet()) {
                         referenceCounts.put(entry.getKey(), entry.getValue().references);
                     }
                 }
                 show = initScreen(clazz.getName());
-                if (currentScreen != null) {
-                    //pass the loaded textures to the new getUI
+                if (currentScreenExists) {
+                    // pass the loaded textures to the new ui
                     currentScreen.getUI().getTextures().getTextures().putAll(currentScreen.getUI().getTextures().getTextures());
                 }
                 show.init(stage, this);
-                if (currentScreen != null) {
+                if (currentScreenExists) {
                     Map<String, StageUITextures.TextureReferenceCounter> newTextures = show.getUI().getTextures().getTextures();
                     for (Map.Entry<String, Integer> entry : referenceCounts.entrySet()) {
                         //the loaded texture isn't used on this screen so remove it from the screens map
@@ -90,24 +92,26 @@ public class ScreenHandler {
         final boolean fFromCache = fromCache;
         final StageScreen screen = show;
         //update the screen on the next draw
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                for (Texture texture : removedTextures) {
-                    texture.dispose();
-                }
-                if (!fFromCache) {
-                    screen.initialize();
-                }
-                screen.showing();
-                stage.addActor(screen.getUI());
-                if (screenChangeHandler != null) {
-                    screenChangeHandler.changeScreen(screen);
-                }
-                currentScreen = screen;
-                checkCache();
+        if (screen != null) {
+            if (currentScreenExists) {
+                currentScreen.setLoader(screen.getLoader());
             }
-        });
+            screen.getLoader().onDone(new Runnable() {
+                @Override
+                public void run() {
+                    if (!fFromCache) {
+                        screen.onReady();
+                    }
+                    screen.showing();
+                    stage.addActor(screen.getUI());
+                    if (screenChangeHandler != null) {
+                        screenChangeHandler.changeScreen(screen);
+                    }
+                    currentScreen = screen;
+                    //checkCache();
+                }
+            });
+        }
         return clazz.cast(show);
     }
 
@@ -116,11 +120,18 @@ public class ScreenHandler {
     }
 
     private StageScreen cached(String name) {
-        if (cachedScreens.isEmpty()) return null;
-        ScreenInfo info = screens.get(name);
-        for (StageScreen screen : cachedScreens) {
-            if (info.type.isInstance(screen))
+        if (cachedScreens.isEmpty()) {
+            return null;
+        }
+        ScreenSession info = screens.get(name);
+        if (info == null) {
+            throw new RuntimeException("Screen " + name + " does not exist");
+        }
+        for (int i = 0, n = cachedScreens.size(); i < n; i++) {
+            StageScreen screen = cachedScreens.get(i);
+            if (info.type.isInstance(screen)) {
                 return screen;
+            }
         }
         return null;
     }
@@ -130,7 +141,7 @@ public class ScreenHandler {
             return;
         }
         boolean addToCache = true;
-        ScreenInfo current = screens.get(currentScreen.getClass().getName());
+        ScreenSession current = screens.get(currentScreen.getClass().getName());
         Map<String, StageUITextures.TextureReferenceCounter> disposing = new HashMap<>();
         Map<String, StageUITextures.TextureReferenceCounter> loadedTextures = new HashMap<>();
         loadedTextures.putAll(currentScreen.getUI().getTextures().getTextures());
@@ -160,7 +171,7 @@ public class ScreenHandler {
             cachedScreens.add(currentScreen);
     }
 
-    private boolean remove(ScreenInfo current, ScreenInfo check) {
+    private boolean remove(ScreenSession current, ScreenSession check) {
         return Math.abs(current.index - check.index) > check.cacheDistance;
     }
 
@@ -178,13 +189,13 @@ public class ScreenHandler {
 
     }
 
-    private class ScreenInfo {
+    private class ScreenSession {
 
         public final Class<? extends StageScreen> type;
         public final int cacheDistance;
         private final int index;
 
-        public ScreenInfo(Class<? extends StageScreen> type, int cacheDistance, int index) {
+        public ScreenSession(Class<? extends StageScreen> type, int cacheDistance, int index) {
             this.type = type;
             this.cacheDistance = cacheDistance;
             this.index = index;
