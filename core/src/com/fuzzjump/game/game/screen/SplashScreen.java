@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
 import com.fuzzjump.game.service.user.IUserService;
@@ -40,14 +41,16 @@ public class SplashScreen extends StageScreen<SplashUI> {
     private final Textures textures;
     private final Skin skin;
     private final UnlockableRepository definitions;
+    private final UnlockableColorizer colorizer;
 
     @Inject
-    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableRepository definitions) {
+    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableRepository definitions, UnlockableColorizer colorizer) {
         super(ui);
         this.userService = userService;
         this.textures = textures;
         this.skin = skin;
         this.definitions = definitions;
+        this.colorizer = colorizer;
     }
 
     @Override
@@ -90,7 +93,21 @@ public class SplashScreen extends StageScreen<SplashUI> {
         // Load textures
         loader.add(this::loadTextures);
 
+        // Load unlockable definitions
         loader.add(definitions::init);
+
+        // Preload Fuzzles
+        for (int i = 0; i < Assets.FUZZLE_COUNT; i++) {
+            final int index = i;
+            loader.add(() -> colorizer.getColored(getUI().getTextures(), definitions.getDefinition(index), 0, false));
+        }
+
+        // Preload frames and help compiler optimize SVG loading code
+        for (int i = 32, n = i + 2; i < n; i++) {
+            // TODO Not necessary if Fuzzles haven't been cached, but that is only the case on first run, but we want to prevent this if fuzzles are cached in order to have a shorter first time start up
+            final int index = i;
+            loader.add(() -> colorizer.getColored(getUI().getTextures(), definitions.getDefinition(index), 0, false));
+        }
 
         loader.onDone(() -> screenHandler.showScreen(MainScreen.class));
 

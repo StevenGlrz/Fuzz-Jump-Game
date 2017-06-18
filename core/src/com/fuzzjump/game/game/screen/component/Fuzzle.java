@@ -80,11 +80,13 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
     }
 
     public void load(ScreenLoader loader) {
-        loader.add(() -> setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE)));
-        loader.add(() -> setFrame(profile.getAppearance().getEquip(Appearance.FRAME)));
-        loader.add(() -> setEyes(profile.getAppearance().getEquip(Appearance.EYES)));
-        loader.add(() -> setFace(profile.getAppearance().getEquip(Appearance.FACE)));
-        loader.add(() -> setHead(profile.getAppearance().getEquip(Appearance.HEAD)));
+        if (profile != null) {
+            setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE)); // fuzzles are cached
+            loader.add(() -> setFrame(profile.getAppearance().getEquip(Appearance.FRAME)));
+            loader.add(() -> setEyes(profile.getAppearance().getEquip(Appearance.EYES)));
+            loader.add(() -> setFace(profile.getAppearance().getEquip(Appearance.FACE)));
+            loader.add(() -> setHead(profile.getAppearance().getEquip(Appearance.HEAD)));
+        }
     }
 
     @Override

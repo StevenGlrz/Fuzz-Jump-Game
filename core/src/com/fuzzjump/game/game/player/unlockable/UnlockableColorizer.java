@@ -32,7 +32,6 @@ public class UnlockableColorizer {
         return colorized.getRegion().get();
     }
 
-    // TODO Jesus this is slow. Can this be optimized?
     public TextureRegion getColored(StageUITextures textures, Unlockable unlockable, boolean hardref) {
         if (unlockable == null)
             return null;
@@ -54,14 +53,13 @@ public class UnlockableColorizer {
         return regions;
     }
 
-
     public TextureRegion colorize(UnlockableDefinition definition, int colorIndex) {
         VectorGraphicsLoader.VectorDetail svgInfo = new VectorGraphicsLoader.VectorDetail(Assets.UNLOCKABLES_DIR + definition.getCategory() + "/" + definition.getId() + ".svg", "unlockable-" + definition.getCategory() + "-" + definition.getId(), "screen_width:.75", "asp");
         ColorGroup group = null;
         if (definition.getColorGroups() != null && definition.getColorGroups().length > colorIndex)
             group = definition.getColorGroups()[colorIndex];
-        //never cache unlockables
-        return vectorGraphicsLoader.load(svgInfo, group, definition.getReplaceGroup(), false);
+        //never cache unlockable (unless it is a fuzz)
+        return vectorGraphicsLoader.load(svgInfo, group, definition.getReplaceGroup(), definition.getId() < Assets.FUZZLE_COUNT);
     }
 
     public TextureRegion colorize(Unlockable unlockable) {

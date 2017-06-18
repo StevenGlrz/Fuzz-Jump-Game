@@ -47,13 +47,14 @@ public abstract class VectorGraphicsLoader {
 
         if (replaceGroup != null) {
             for (int i = 0; i < replaceGroup.colors.length; i++) {
-                svgString = svgString.replaceAll(baseGroup.colors[replaceGroup.colors[i].index].colorString, replaceGroup.colors[i].colorString);
-                svgString = svgString.replaceAll(baseGroup.colors[replaceGroup.colors[i].index].colorString.toUpperCase(), replaceGroup.colors[i].colorString);
+                ColorGroup.IndexColor colorToReplace = replaceGroup.colors[i];
+                ColorGroup.IndexColor baseColor = baseGroup.colors[colorToReplace.index];
+
+                svgString = svgString.replaceAll(baseColor.colorString, colorToReplace.colorString);
+                svgString = svgString.replaceAll(baseColor.colorString.toUpperCase(), colorToReplace.colorString);
             }
         }
-
         FileHandle file = Gdx.files.internal(name);
-
         switch(vectorDetails.type) {
             case "svg":
                 TextureRegion region = null;

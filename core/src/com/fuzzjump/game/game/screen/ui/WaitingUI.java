@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -25,7 +23,6 @@ import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.screen.WaitingScreen;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
-import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.StageUI;
@@ -37,7 +34,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
-import static com.fuzzjump.game.game.Assets.createDialogStyle;
 import static com.fuzzjump.game.game.Assets.createPlusImageBtnStyle;
 import static com.fuzzjump.game.game.Assets.createXTBStyle;
 
@@ -62,28 +58,10 @@ public class WaitingUI extends StageUI {
 
     @Override
     public void init() {
-        FJDragDownBarTable dropdownTable = new FJDragDownBarTable(this, mProfile);
         setFillParent(true);
 
-        Label messageLabel = new Label("Loading", getGameSkin(), "default");
-        final Image progressImage = new Image(textures.getTextureRegionDrawable("ui-progressspinner"));
-        final TextButton progressCloseButton = new TextButton("Close", createDefaultTBStyle(this));
-        progressImage.setOrigin(Align.center);
-        progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
+        FJDragDownBarTable dropdownTable = new FJDragDownBarTable(this, mProfile);
 
-        final Dialog progressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
-
-        progressDialog.setModal(true);
-        progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
-        progressDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, progressDialog));
-        progressCloseButton.setVisible(false);
-
-        progressDialog.getButtonTable().add(progressCloseButton).size(Value.percentWidth(.475f, progressDialog), Value.percentWidth(0.1315789473684211f, progressDialog)).padBottom(Value.percentHeight(.035f, progressDialog)).center().expand();
-
-        register(Assets.WaitingUI.PROGRESS_DIALOG, progressDialog);
-        register(Assets.WaitingUI.PROGRESS_LABEL, messageLabel);
-        register(Assets.WaitingUI.CLOSE_BUTTON, progressCloseButton);
-        register(Assets.WaitingUI.PROGRESS_IMAGE, progressImage);
 
         Table contentTable = dropdownTable.getContentTable();
         Table innerTable = new Table();
@@ -144,18 +122,11 @@ public class WaitingUI extends StageUI {
         readyButton = new TextButton("Ready", createDefaultTBStyle(this));
         register(Assets.WaitingUI.CANCEL_BUTTON, cancelBtn);
         register(Assets.WaitingUI.READY_BUTTON, readyButton);
-        //mapTable.add(new Actor()).center().expand().row();
 
         mapTable.add(cancelBtn).padBottom(padBottom).center().expand(true, false).size(Value.percentWidth(.45f, mapTable), Value.percentWidth(0.15957446808510638297872340425532f, mapTable));
         mapTable.add(readyButton).padBottom(padBottom).center().expand(true, false).size(Value.percentWidth(.45f, mapTable), Value.percentWidth(0.15957446808510638297872340425532f, mapTable));
 
         add(dropdownTable).expand().fill();
-
-        Helper.addClickAction(progressCloseButton, (e, x, y) -> {
-            progressDialog.hide();
-            progressCloseButton.setVisible(false);
-            progressImage.setVisible(true);
-        });
     }
 
     public void update(List<Profile> players) {
@@ -220,7 +191,8 @@ public class WaitingUI extends StageUI {
             statusImage = new Image(xDrawable);
             addActor(statusImage);
 
-            this.fuzzle = new Fuzzle(WaitingUI.this, colorizer);
+            this.fuzzle = new Fuzzle(WaitingUI.this, colorizer, player);
+            fuzzle.load(stageScreen.getLoader());
             ImageButton addButton = new ImageButton(createPlusImageBtnStyle(WaitingUI.this));
             addButton.addListener(new ClickListener() {
 
@@ -249,7 +221,7 @@ public class WaitingUI extends StageUI {
             switcher.setDisplayedChild(1);
             statusImage.setVisible(true);
             this.fuzzle.setProfile(newPlayer);
-
+            this.fuzzle.load(stageScreen.getLoader());
 
             profileChanged();
         }

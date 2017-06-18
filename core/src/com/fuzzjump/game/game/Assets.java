@@ -56,6 +56,7 @@ public class Assets {
             "city_map",
             "desert_map"
     };
+    public static final int FUZZLE_COUNT = 6;
 
     // Loaded resources
     public static BitmapFont DEBUG_FONT = null;
@@ -110,11 +111,6 @@ public class Assets {
     }
 
     public class WaitingUI {
-
-        public static final int PROGRESS_DIALOG = 1;
-        public static final int PROGRESS_LABEL = 2;
-        public static final int CLOSE_BUTTON = 3;
-        public static final int PROGRESS_IMAGE = 4;
         public static final int TIME_LABEL = 5;
         public static final int READY_BUTTON = 6;
         public static final int CANCEL_BUTTON = 7;

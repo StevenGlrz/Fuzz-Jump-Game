@@ -2,9 +2,6 @@ package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
@@ -35,10 +32,6 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private GameSession gameSession;
 
-    private Dialog progressDialog;
-    private Image image;
-    private Label status;
-    private Button closeButton;
     private Label timeLabel;
 
     private Profile[] newPlayers;
@@ -59,16 +52,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
         gameSession.connect();
 
-        progressDialog = getUI().actor(Dialog.class, Assets.WaitingUI.PROGRESS_DIALOG);
-        image = getUI().actor(Image.class, Assets.WaitingUI.PROGRESS_IMAGE);
-        status = getUI().actor(Label.class, Assets.WaitingUI.PROGRESS_LABEL);
-        closeButton = getUI().actor(Button.class, Assets.WaitingUI.CLOSE_BUTTON);
         timeLabel = this.getUI().actor(Assets.WaitingUI.TIME_LABEL);
-        image.setVisible(true);
-        status.setVisible(true);
-        closeButton.setVisible(false);
-        status.setText("Finding game...");
-        showDialog(progressDialog, getStage());
         initPacketListeners();
     }
 
@@ -151,8 +135,6 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void onConnect() {
-        progressDialog.setVisible(false);
-        closeButton.setVisible(true);
         Lobby.Loaded loadedMessage = Lobby.Loaded.newBuilder().buildPartial();
         gameSession.send(loadedMessage);
     }

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -65,12 +64,6 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
     private int selectedCategory;
 
-    private Runnable populateItemsTableRunnable = new Runnable() {
-        @Override
-        public void run() {
-            populateItemsTable();
-        }
-    };
 
     private ClickListener entryClickListener = new ClickListener() {
 
@@ -214,8 +207,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Value width = Value.percentWidth(.15f, topTable);
         Value height = Value.percentWidth(0.160335f, topTable);
 
-        for (int i = 0; i < Appearance.COUNT; i++) {
-            final int index = i;
+        for (int index = 0; index < Appearance.COUNT; index++) {
             CategoryFrame frame = new CategoryFrame(Appearance.TITLES[index], getGameSkin(), createCFrameStyle(parent));
             frame.init();
             if (index == 0) {
@@ -278,7 +270,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         button.setVisible(false);
         dialog.show(stage);
         Action showAction = dialog.getActions().get(dialog.getActions().size - 1);
-        dialog.addAction(Actions.sequence(Actions.after(showAction), Actions.run(populateItemsTableRunnable)));
+        dialog.addAction(Actions.sequence(Actions.after(showAction), Actions.run(this::populateItemsTable)));
     }
 
     private void populateItemsTable() {
@@ -429,7 +421,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
         private Drawable bg;
 
-        public UnlockableEntry(UnlockableDefinition definition, Unlockable unlockable) {
+        private UnlockableEntry(UnlockableDefinition definition, Unlockable unlockable) {
             this.bg = textures.getTextureRegionDrawable("ui-wait-square");
             this.lock = textures.getTextureRegionDrawable("ui-lock");
             this.coinIcon = textures.getTextureRegionDrawable("kerpow-coin");
@@ -439,8 +431,6 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             this.unlocked = unlockable != null;
             this.unlockable = unlockable;
         }
-
-        private GlyphLayout glyphLayout = new GlyphLayout();
 
         @Override
         public void draw(Batch batch, float parentAlpha) {
