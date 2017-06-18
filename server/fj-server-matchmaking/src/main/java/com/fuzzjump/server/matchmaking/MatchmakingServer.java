@@ -89,7 +89,8 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
             session.addPlayer(player);
             if (session.filled())
                 openSessions.remove(session);
-            player.channel.writeAndFlush(Lobby.GameFound.newBuilder().setFound(true)
+            player.channel.writeAndFlush(Lobby.GameFound.newBuilder()
+                    .setFound(true)
                     .setGameId(session.id)
                     .setGameName("GAME")
                     .buildPartial());

@@ -1,6 +1,7 @@
 package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
@@ -41,6 +42,7 @@ public class MainUI extends StageUI {
     @Override
     public void init() {
         this.editTextStyle = Assets.createETxtFieldStyle(this);
+        this.editTextStyle.messageFontColor = Color.WHITE;
 
         setFillParent(true);
 
@@ -82,7 +84,6 @@ public class MainUI extends StageUI {
         Table contentTable = mainTable.getContentTable();
 
         setupWelcomeTable();
-        setupLoginTable();
 
         contentTable.add(switcher).fill().center().expand();
     }
@@ -91,76 +92,42 @@ public class MainUI extends StageUI {
     private void setupWelcomeTable() {
         Table welcomeTable = new Table();
         welcomeTable.setBackground(textures.getTextureRegionDrawable(Assets.UI_PANEL_WELCOME));
-        Value padTop = Value.percentHeight(.025f, welcomeTable);
-        Value padSides = Value.percentHeight(-.05f, welcomeTable);
-        welcomeTable.defaults().padTop(padTop).padLeft(padSides).padRight(padSides).size(Value.percentWidth(.9f, welcomeTable), Value.percentWidth(0.2334149576573819f, welcomeTable));
-
+        Value padBottom = Value.percentHeight(.05f, welcomeTable);
         // TODO Locale's
-        TextButton facebookButton = new TextButton("Login with Facebook", createFbTBStyle(this));
-        facebookButton.getLabel().setAlignment(Align.right);
-        facebookButton.getLabelCell().padRight(Value.percentWidth(.075f, facebookButton));
-
-        TextButton registerNameButton = new TextButton("Register Name", createEmailTBStyle(this));
-        registerNameButton.getLabel().setAlignment(Align.right);
-        registerNameButton.getLabelCell().padRight(Value.percentWidth(.175f, registerNameButton));
-
-        register(Assets.MainScreen.REGISTER_FACEBOOK, facebookButton);
-
-        // Register click actions
-        Helper.addClickAction(registerNameButton, (e, x, y) -> showRegistration());
 
         Value topBottomPadding = Value.percentHeight(.045f, welcomeTable);
 
-        welcomeTable.add(facebookButton).padTop(topBottomPadding).row();
-        welcomeTable.add(registerNameButton).row();
-
-
-        switcher.addWidget(welcomeTable, Value.percentWidth(.975f, switcher), Value.percentWidth(0.64642315f, switcher));
-    }
-
-    private void showWelcomeTable() {
-        switcher.setDisplayedChild(0);
-        mainTable.setTitle("Welcome!");
-    }
-
-    private void showRegistration() {
-        switcher.setDisplayedChild(1);
-    }
-
-    private void setupLoginTable() {
         register(Assets.MainScreen.LOGIN_USER_FIELD, new TextField("", editTextStyle));
 
-        Label usernameLabel = new Label("Enter name:", getGameSkin());
-        usernameLabel.setAlignment(Align.left);
+        final Label messageLabel = new Label("To begin, enter a display name\n or use your facebook account.", getGameSkin(), "profile");
+        welcomeTable.add(messageLabel).align(Align.center).center().expand().colspan(2).row();
+
         final TextField loginUserField = actor(TextField.class, Assets.MainScreen.LOGIN_USER_FIELD);
-
-        Table loginTable = new Table();
-        loginTable.setBackground(textures.getTextureRegionDrawable("ui-panel-login"));
-
-        Value padTop = Value.percentHeight(.01f, loginTable);
-        Value padBottom = Value.percentHeight(.05f, loginTable);
-        Value padSides = Value.percentHeight(.0425f, loginTable);
-        loginTable.defaults().padTop(padTop).padLeft(padSides).padRight(padSides).center().size(Value.percentWidth(.95f, loginTable), Value.percentWidth(0.132558402f, loginTable));
-
-        loginTable.add(usernameLabel).colspan(2).left().row();
-        loginTable.add(loginUserField).padTop(0).colspan(2).row();
-
-        TextButton cancelBtn = new TextButton("Cancel", createXTBStyle(this));
-        TextButton startBtn = new TextButton("Start", createPlayTBStyle(this));
-
-        loginTable.add(new Actor()).colspan(2).center().expand().row();
-
-        loginTable.add(cancelBtn).padBottom(padBottom).left().size(Value.percentWidth(.45f, loginTable), Value.percentWidth(0.15957446808510638297872340425532f, loginTable));
-        loginTable.add(startBtn).padBottom(padBottom).right().size(Value.percentWidth(.45f, loginTable), Value.percentWidth(0.15957446808510638297872340425532f, loginTable));
+        loginUserField.setMessageText("Enter display name");
+        welcomeTable.add(loginUserField).padTop(0).colspan(2).size(Value.percentWidth(.95f, welcomeTable), Value.percentWidth(0.132558402f, welcomeTable)).row();
 
         loginUserField.getStyle().background.setLeftWidth(Gdx.graphics.getWidth() / 40);
         loginUserField.getStyle().background.setRightWidth(Gdx.graphics.getWidth() / 35);
 
-        Helper.addClickAction(cancelBtn, (e, x, y) -> showWelcomeTable());
+        TextButton facebookButton = new TextButton("Facebook", createFbTBStyle(this));
+        facebookButton.getLabel().setAlignment(Align.right);
+        facebookButton.getLabelCell().padRight(Value.percentWidth(.075f, facebookButton));
 
-        switcher.addWidget(loginTable, Value.percentWidth(.9f, switcher), Value.percentWidth(0.4836379999999998f, switcher));
+        TextButton startBtn = new TextButton("Start", createPlayTBStyle(this));
+        facebookButton.getLabel().setAlignment(Align.right);
+        facebookButton.getLabelCell().padRight(Value.percentWidth(.075f, facebookButton));
+
+        welcomeTable.add(facebookButton).padLeft(Value.percentWidth(.025f, welcomeTable)).padTop(topBottomPadding).padBottom(topBottomPadding).left().size(Value.percentWidth(.45f, welcomeTable), Value.percentWidth(0.15957446808510638297872340425532f, welcomeTable));
+        welcomeTable.add(startBtn).padRight(Value.percentWidth(.025f, welcomeTable)).padTop(topBottomPadding).padBottom(topBottomPadding).right().size(Value.percentWidth(.45f, welcomeTable), Value.percentWidth(0.15957446808510638297872340425532f, welcomeTable));
 
         register(Assets.MainScreen.START_BUTTON, startBtn);
+        register(Assets.MainScreen.REGISTER_FACEBOOK, facebookButton);
+
+        switcher.addWidget(welcomeTable, Value.percentWidth(.8f, switcher), Value.percentWidth(0.5303984820512819f, switcher));
+    }
+
+    private void showRegistration() {
+        switcher.setDisplayedChild(1);
     }
 
 

@@ -87,7 +87,7 @@ public abstract class VectorGraphicsLoader {
 
     public TextureRegion load(final VectorDetail vectorDetail, final boolean cache) {
         if (cache) {
-            FileHandle file = Gdx.files.absolute(cacheLocation + "/pngcache/" + vectorDetail.atlas + ".png");
+            FileHandle file = Gdx.files.local(cacheLocation + "/pngcache/" + vectorDetail.atlas + ".png");
             try {
                 if (file.exists())
                     return new TextureRegion(new Texture(file));
@@ -142,7 +142,7 @@ public abstract class VectorGraphicsLoader {
     protected void cache(final byte[] data, final VectorDetail vectorDetail) {
         cacheService.submit(new Runnable() {
             public void run() {
-                FileHandle file = Gdx.files.absolute(cacheLocation + "/pngcache/" + vectorDetail.getAtlasName() + ".png");
+                FileHandle file = Gdx.files.local(cacheLocation + "/pngcache/" + vectorDetail.getAtlasName() + ".png");
                 Pixmap pixmap = new Pixmap(data, 0, data.length);
                 try {
                     PixmapIO.writePNG(file, pixmap);

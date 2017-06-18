@@ -51,10 +51,10 @@ public class MainScreen extends StageScreen<MainUI> {
                 if (userField.getText().isEmpty()) {
                     userField.setMessageText("Please enter your email");
                 } else {
-                    ui.actor(Label.class, Assets.MainScreen.LOGIN_DIALOG_MESSAGE).setText("Attempting to login");
+                    ui.actor(Label.class, Assets.MainScreen.LOGIN_DIALOG_MESSAGE).setText("Logging in...");
                     ui.actor(Button.class, Assets.MainScreen.LOGIN_DIALOG_OK).setVisible(false);
                     waitingDialog.setName("Logging in...");
-                    waitingDialog.show(getStage());
+                    showDialog(waitingDialog, getStage());
 
                     Gdx.app.postRunnable(() -> {
                         screenHandler.showScreen(MenuScreen.class);
