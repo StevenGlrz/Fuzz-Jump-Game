@@ -1,8 +1,5 @@
-package com.fuzzjump.game.model.profile;
+package com.fuzzjump.game.game.player;
 
-/**
- * Created by Steveadoo on 10/21/2015.
- */
 public class FriendProfile extends Profile {
 
     public static final int STATUS_NONE = -1;
@@ -15,14 +12,13 @@ public class FriendProfile extends Profile {
 
     }
 
-    public FriendProfile(String displayName, long userId) {
+    public FriendProfile(String displayName, int userId) {
         this.setName(displayName);
-        this.setUserId(userId);
+        this.setProfileId(userId);
     }
 
     public void setStatus(int status) {
         this.status = status;
-        raiseEvent();
     }
 
     public int getStatus() {

@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.screen.game.map;
+package com.fuzzjump.game.game.map;
 
 /**
  *

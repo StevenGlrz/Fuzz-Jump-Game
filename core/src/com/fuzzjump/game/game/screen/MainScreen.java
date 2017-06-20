@@ -11,8 +11,8 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.service.user.IUserService;
-import com.fuzzjump.libgdxscreens.StageScreen;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 import javax.inject.Inject;
 
@@ -35,7 +35,7 @@ public class MainScreen extends StageScreen<MainUI> {
     }
 
     @Override
-    public void showing() {
+    public void onShow() {
 
     }
 

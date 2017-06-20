@@ -15,7 +15,7 @@ import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
 
 import javax.inject.Inject;

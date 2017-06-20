@@ -6,7 +6,7 @@ package com.fuzzjump.game.game;
  *
  * Created by Steven Galarza on 6/19/2017.
  */
-public class FuzzState {
+public class FuzzContext {
 
 
     private String gameId;

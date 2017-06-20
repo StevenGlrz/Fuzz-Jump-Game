@@ -1,11 +1,11 @@
-package com.fuzzjump.game.game.screen.game;
+package com.fuzzjump.game.game.screen.game.actors;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.fuzzjump.game.model.World;
+import com.fuzzjump.game.game.screen.game.World;
 
 
 public abstract class PhysicActor extends Image {
@@ -41,7 +41,6 @@ public abstract class PhysicActor extends Image {
     };
 
     public PhysicActor(World world, TextureRegion texture) {
-        this.world = world;
         velocityModifier.set(1, 1);
         if (texture != null) {
             setSize(texture.getRegionWidth(), texture.getRegionHeight());

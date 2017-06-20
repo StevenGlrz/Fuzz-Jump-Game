@@ -1,4 +1,4 @@
-package com.fuzzjump.libgdxscreens;
+package com.fuzzjump.libgdxscreens.screen;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.fuzzjump.libgdxscreens.Textures;
 
 import java.util.Collection;
 import java.util.HashMap;

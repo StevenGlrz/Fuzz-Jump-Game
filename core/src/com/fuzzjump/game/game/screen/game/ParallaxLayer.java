@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.ingame;
+package com.fuzzjump.game.game.screen.game;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -1,27 +1,30 @@
-package com.fuzzjump.game.game.ui;
+package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
-import com.fuzzjump.game.game.StageIds;
-import com.fuzzjump.game.game.StageUI;
-import com.fuzzjump.game.game.screens.GameScreen;
+import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.libgdxscreens.Textures;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
-import static com.fuzzjump.game.util.Styles.createDialogStyle;
+import javax.inject.Inject;
+
+import static com.fuzzjump.game.game.Assets.createDialogStyle;
 
 public class GameUI extends StageUI {
 
-    private final GameScreen screen;
 
     private Table uiComponents;
 
-    public GameUI(GameScreen screen) {
-        this.screen = screen;
+    @Inject
+    public GameUI(Textures textures, Skin skin) {
+        super(textures, skin);
     }
 
     @Override
@@ -30,8 +33,8 @@ public class GameUI extends StageUI {
         uiComponents = new Table();
         uiComponents.setFillParent(true);
 
-        Label messageLabel = new Label("Loading", game.getSkin(), "default");
-        final Image spinner = new Image(getTextureRegionDrawable("ui-progressspinner"));
+        Label messageLabel = new Label("Loading", getGameSkin(), "default");
+        final Image spinner = new Image(textures.getTextureRegionDrawable("ui-progressspinner"));
         spinner.setOrigin(Align.center);
         spinner.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
 
@@ -53,12 +56,11 @@ public class GameUI extends StageUI {
         progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
         progressDialog.getContentTable().add(spinner).center().expand().size(Value.percentWidth(.25f, progressDialog));
 
-        register(StageIds.GameUI.PROGRESS_DIALOG, progressDialog);
-        register(StageIds.GameUI.PROGRESS_LABEL, messageLabel);
-        register(StageIds.GameUI.PROGRESS_IMAGE, spinner);
+        register(Assets.GameUI.PROGRESS_DIALOG, progressDialog);
+        register(Assets.GameUI.PROGRESS_LABEL, messageLabel);
+        register(Assets.GameUI.PROGRESS_IMAGE, spinner);
 
     }
-
 
 
     /*private void drawSpecial(Table table, Batch batch, float alpha) {
@@ -69,13 +71,13 @@ public class GameUI extends StageUI {
                 if (System.currentTimeMillis() - lastSpecialFlip >= 25) {
                     lastSpecialFlip = System.currentTimeMillis();
                     SpecialType[] types = SpecialType.values();
-                    //currentSpecial = game.getTextures().getTexture(types[screen.getRandom().nextInt(types.length)].icon);
+                    //currentSpecial = game.getMapTextures().getTexture(types[screen.getRandom().nextInt(types.length)].icon);
                 }
             } else {
-                //currentSpecial = game.getTextures().getTexture(plr.getSpecials().getCurrentSpecial().icon);
+                //currentSpecial = game.getMapTextures().getTexture(plr.getSpecials().getCurrentSpecial().icon);
             }
         } else {
-            //currentSpecial = game.getTextures().getTexture("ui-question-mark");
+            //currentSpecial = game.getMapTextures().getTexture("ui-question-mark");
         }
 
         float width = table.getWidth() / 2.5f;

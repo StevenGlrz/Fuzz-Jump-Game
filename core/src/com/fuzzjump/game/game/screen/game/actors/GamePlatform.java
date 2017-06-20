@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.fuzzjump.game.game.screen.component.ColorDrawable;
 import com.fuzzjump.game.game.screen.game.World;
 
-public class Platform extends PhysicActor {
+public class GamePlatform extends PhysicActor {
 
     public static final float DELTA_X = 750;
     private final ColorDrawable colorDrawable;
@@ -16,7 +16,7 @@ public class Platform extends PhysicActor {
 	protected float drawHeight; //account for fuzz's
 	private boolean winner;
 
-	public Platform(World world, float x, float y, float width, float height, TextureRegion texture) {
+	public GamePlatform(World world, float x, float y, float width, float height, TextureRegion texture) {
         super(world, texture);
 		this.texture = texture;
 		this.hitbox = new Rectangle(x, y, width, height * .85f);
@@ -28,7 +28,7 @@ public class Platform extends PhysicActor {
         colorDrawable = new ColorDrawable(Color.GREEN, width, height);
 	}
 
-	public Platform(World world, float x, float y, float width, float height, float physicsY, float drawHeight, TextureRegion texture) {
+	public GamePlatform(World world, float x, float y, float width, float height, float physicsY, float drawHeight, TextureRegion texture) {
 		this(world, x, y, width, height, texture);
 		this.drawHeight = drawHeight;
         this.hitbox.height = physicsY;
@@ -36,9 +36,9 @@ public class Platform extends PhysicActor {
 
     @Override
 	public void hit(PhysicActor other) {
-        if (other instanceof Player) {
-            ((Player) other).velocity.y = 0;
-            ((Player) other).hit = true;
+        if (other instanceof GamePlayer) {
+            ((GamePlayer) other).velocity.y = 0;
+            ((GamePlayer) other).hit = true;
         }
 	}
 

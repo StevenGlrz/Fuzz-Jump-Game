@@ -7,10 +7,15 @@ import com.fuzzjump.server.matchmaking.lobby.LobbyPlayer;
 import com.fuzzjump.server.matchmaking.lobby.LobbySession;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
-import io.netty.channel.Channel;
+import java.util.Iterator;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import java.util.*;
-import java.util.concurrent.*;
+import io.netty.channel.Channel;
 
 public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingServerInfo> {
 
@@ -55,7 +60,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
         if (message.hasGameId()) {
             LobbySession session = sessions.get(message.getGameId());
             if (session == null) {
-                player.channel.writeAndFlush(Lobby.GameFound.newBuilder().setFound(false).buildPartial()).addListener((f) -> player.channel.disconnect());
+                player.getChannel().writeAndFlush(Lobby.GameFound.newBuilder().setFound(false).buildPartial()).addListener((f) -> player.getChannel().disconnect());
             } else {
                 session.addPlayer(player);
             }
@@ -89,7 +94,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
             session.addPlayer(player);
             if (session.filled())
                 openSessions.remove(session);
-            player.channel.writeAndFlush(Lobby.GameFound.newBuilder()
+            player.getChannel().writeAndFlush(Lobby.GameFound.newBuilder()
                     .setFound(true)
                     .setGameId(session.id)
                     .setGameName("GAME")
@@ -113,7 +118,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
 
     private boolean checkSession(LobbyPlayer player) {
         if (player.getSession() == null) {
-            player.channel.disconnect();
+            player.getChannel().disconnect();
             return false;
         }
         return true;

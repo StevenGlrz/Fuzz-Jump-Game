@@ -1,9 +1,10 @@
-package com.fuzzjump.libgdxscreens;
+package com.fuzzjump.libgdxscreens.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.fuzzjump.libgdxscreens.Textures;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class ScreenHandler {
                     if (!fFromCache) {
                         screen.onReady();
                     }
-                    screen.showing();
+                    screen.onShow();
                     stage.addActor(screen.getUI());
                     if (screenChangeHandler != null) {
                         screenChangeHandler.changeScreen(screen);

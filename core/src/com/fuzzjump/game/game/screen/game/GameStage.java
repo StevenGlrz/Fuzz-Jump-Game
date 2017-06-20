@@ -1,6 +1,7 @@
-package com.fuzzjump.game.game.ingame;
+package com.fuzzjump.game.game.screen.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,19 +9,20 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.fuzzjump.game.FuzzJump;
-import com.fuzzjump.game.game.screens.GameScreen;
-import com.fuzzjump.game.game.ingame.actors.CloudActor;
-import com.fuzzjump.game.game.ingame.actors.Player;
-import com.fuzzjump.game.model.map.GameMap;
-import com.fuzzjump.game.model.map.GameMapBackground;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.fuzzjump.game.game.screen.GameScreen;
+import com.fuzzjump.game.game.screen.game.actors.CloudActor;
+import com.fuzzjump.game.game.screen.game.actors.GamePlayer;
+import com.fuzzjump.game.game.map.GameMap;
+import com.fuzzjump.game.game.map.GameMapBackground;
 
 import java.util.List;
 import java.util.Random;
 
-public class IngameStage extends Stage {
+public class GameStage extends Stage {
 
-    private final FuzzJump game;
+    private final Viewport mainViewport;
+    private final Batch batch;
     private final GameScreen screen;
     private final Random random;
     private final GameMap map;
@@ -33,11 +35,12 @@ public class IngameStage extends Stage {
     private Group gameActors = new Group();
     private Group clouds = new Group();
 
-    public IngameStage(FuzzJump game, GameScreen screen) {
-        super(new ScreenViewport(), game.getBatch());
-        this.game = game;
+    public GameStage(Viewport viewport, Batch batch, GameScreen screen) {
+        super(new ScreenViewport(), batch);
+        this.mainViewport = viewport;
+        this.batch = batch;
         this.screen = screen;
-        this.textures = screen.getTextures();
+        this.textures = screen.getMapTextures();
         this.map = screen.getMap();
         this.random = screen.getRandom();
     }
@@ -53,7 +56,7 @@ public class IngameStage extends Stage {
         ((ScreenViewport) getViewport()).setUnitsPerPixel(screen.getWorld().getWidth() / Gdx.graphics.getWidth());
 
         getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
-        game.getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        mainViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
         borderTexture = textures.findRegion("border");
 
@@ -65,7 +68,7 @@ public class IngameStage extends Stage {
 
         addActor(gameActors);
 
-        TextureRegion winnerRegion = screen.ui().getTexture("winners-platform");
+        TextureRegion winnerRegion = screen.getUI().getTextures().getTexture("winners-platform");
         Image winnersPlatform = new Image(winnerRegion);
         winnersPlatform.setSize(winnerRegion.getRegionWidth(), winnerRegion.getRegionHeight());
 
@@ -82,29 +85,29 @@ public class IngameStage extends Stage {
 
         List<GameMapBackground> background = map.getBackgrounds();
 
-        game.getBatch().begin();
+        batch.begin();
         for (int i = 0, n = background.size(); i < n; i++) {
             GameMapBackground bg = map.getBackgrounds().get(i);
 
             float width = bg.getBounds().x == -1 ? map.getWidth() : bg.getBounds().x;
             float height = bg.getBounds().y == -1 ? map.getHeight() : bg.getBounds().y;
 
-            game.getBatch().setProjectionMatrix(gameCamera.calculateParallaxMatrix(bg.getParallax().x, bg.getParallax().y));
+            batch.setProjectionMatrix(gameCamera.calculateParallaxMatrix(bg.getParallax().x, bg.getParallax().y));
             float y =  (-getViewport().getWorldHeight() / 2f) + (getViewport().getWorldHeight() * bg.getYOffset()) + bg.getLayerOffset();
-            game.getBatch().draw(bg.getTexture(), 0, y, width, height);
+            batch.draw(bg.getTexture(), 0, y, width, height);
         }
-        //game.getBatch().end();
-        game.getBatch().setProjectionMatrix(gameCamera.combined);
-        //game.getBatch().begin();
-        gameActors.draw(game.getBatch(), 1);
+        //batch.end();
+        batch.setProjectionMatrix(gameCamera.combined);
+        //batch.begin();
+        gameActors.draw(batch, 1);
         drawBorders();
-        game.getBatch().end();
+        batch.end();
     }
 
     @Override
     public void act(float delta) {
         super.act(delta);
-        Player player = screen.getPlayer();
+        GamePlayer player = screen.getPlayer();
         if (player.getX() - getViewport().getWorldWidth() / 2 > 0 && player.getX() + getViewport().getWorldWidth() / 2 < screen.getWorld().getWidth())
             gameCamera.position.x = player.getX();
         gameCamera.position.y = player.getY();
@@ -140,7 +143,7 @@ public class IngameStage extends Stage {
     }
 
     private void drawBorders() {
-        Player player = screen.getPlayer();
+        GamePlayer player = screen.getPlayer();
 
         if (player.getY() - getViewport().getWorldHeight() / 2 < map.getGround().getY()) {
             //determine how many blocks to draw
@@ -151,7 +154,7 @@ public class IngameStage extends Stage {
                 for (int y = 1; y < yBlocks + 2; y++) {
                     int realX = (x * borderTexture.getRegionWidth());
                     int realY = (int) (map.getGround().getY() - (y * borderTexture.getRegionHeight()));
-                    game.getBatch().draw(borderTexture, realX, realY);
+                    batch.draw(borderTexture, realX, realY);
                 }
             }
         }

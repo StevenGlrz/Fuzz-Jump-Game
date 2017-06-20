@@ -2,6 +2,7 @@ package com.fuzzjump.game.game.player.unlockable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import org.w3c.dom.Document;
@@ -83,13 +84,13 @@ public class UnlockableRepository {
     }
 
     private Rectangle createBound(Element element) {
-        float x = Float.parseFloat(getNodeValue(element, "x"));
-        float y = 1.0f - Float.parseFloat(getNodeValue(element, "y"));
+        float x = Float.parseFloat(Helper.getNodeValue(element, "x"));
+        float y = 1.0f - Float.parseFloat(Helper.getNodeValue(element, "y"));
         float w;
         float h;
 
-        String width = getNodeValue(element, "w");
-        String height = getNodeValue(element, "h");
+        String width = Helper.getNodeValue(element, "w");
+        String height = Helper.getNodeValue(element, "h");
         try {
             w = Float.parseFloat(width);
         } catch(Exception e) {
@@ -101,10 +102,6 @@ public class UnlockableRepository {
             h = height.equals("asp") ? -1 : 0;
         }
         return new Rectangle(x, y, w, h);
-    }
-
-    private String getNodeValue(Element element, String childTag) {
-        return element.getElementsByTagName(childTag).item(0).getTextContent();
     }
 
     private ColorGroup readColorBlock(Element node) {

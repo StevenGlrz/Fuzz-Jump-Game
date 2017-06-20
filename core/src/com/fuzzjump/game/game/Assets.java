@@ -8,12 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
 public class Assets {
+
+    public static final boolean DEBUG = false;
 
     // Resources
     public static final String ATLAS = "main.pack";
@@ -117,6 +119,16 @@ public class Assets {
         public static final int MAP_BUTTON = 8;
 
     }
+
+    public class GameUI {
+
+        public static final int HEIGHT_LABEL = 0;
+
+        public static final int PROGRESS_DIALOG = 4;
+        public static final int PROGRESS_IMAGE = 5;
+        public static final int PROGRESS_LABEL = 6;
+    }
+
 
 
     private static final String BUTTON_UP = "ui-button";

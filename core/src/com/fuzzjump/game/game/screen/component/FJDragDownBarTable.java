@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Scaling;
 import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.libgdxscreens.StageUI;
-import com.fuzzjump.libgdxscreens.StageUITextures;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUITextures;
 
 public class FJDragDownBarTable extends DragDownBarTable {
 

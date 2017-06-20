@@ -25,7 +25,7 @@ import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 

@@ -1,7 +1,8 @@
-package com.fuzzjump.libgdxscreens;
+package com.fuzzjump.libgdxscreens.screen;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.fuzzjump.libgdxscreens.Textures;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -81,7 +82,7 @@ public class StageUITextures {
         }
 
         public TextureReferenceCounter(TextureRegion region, boolean hardref) {
-            this.region = new WeakReference(region);
+            this.region = new WeakReference<>(region);
             if (hardref)
                 this.hardrefregion = region;
         }

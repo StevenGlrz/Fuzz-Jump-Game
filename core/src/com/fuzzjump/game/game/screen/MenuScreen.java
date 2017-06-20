@@ -2,7 +2,7 @@ package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.fuzzjump.game.game.screen.ui.MenuUI;
-import com.fuzzjump.libgdxscreens.StageScreen;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
 
 import javax.inject.Inject;
 
@@ -24,7 +24,7 @@ public class MenuScreen extends StageScreen<MenuUI> {
     }
 
     @Override
-    public void showing() {
+    public void onShow() {
 
     }
 

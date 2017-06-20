@@ -36,8 +36,8 @@ import com.fuzzjump.game.game.screen.component.ColorDrawable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.ScreenLoader;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import java.util.List;
@@ -112,14 +112,14 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     private Label costLabel;
     private Dialog buyingDialog;
 
-    public CharacterSelectionUI(MenuUI parent, Stage stage, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
+    public CharacterSelectionUI(MenuUI parent, UnlockableRepository definitions) {
         super(parent.getTextures(), parent.getGameSkin());
         this.parent = parent;
-        this.stage = stage;
+        this.stage = parent.getStage();
         this.stageScreen = parent.getStageScreen();
-        this.profile = profile;
+        this.profile = parent.getProfile();
         this.definitions = definitions;
-        this.colorizer = colorizer;
+        this.colorizer = parent.getUnlockableColorizer();
         this.loader = stageScreen.getLoader();
     }
 
@@ -399,7 +399,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         return (CategoryFrame) topTable.getChildren().get(index);
     }
 
-    public void showing() {
+    public void onShow() {
         populateItemsTable();
         profile.getAppearance().snapshot();
     }

@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 import static com.fuzzjump.game.game.Assets.createCheckBoxStyle;
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;

@@ -1,4 +1,4 @@
-package com.fuzzjump.libgdxscreens;
+package com.fuzzjump.libgdxscreens.screen;
 
 /**
  * Created by Steveadoo on 6/14/2017.

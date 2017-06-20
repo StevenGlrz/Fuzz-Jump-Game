@@ -1,4 +1,4 @@
-package com.fuzzjump.libgdxscreens;
+package com.fuzzjump.libgdxscreens.screen;
 
 import com.badlogic.gdx.Gdx;
 

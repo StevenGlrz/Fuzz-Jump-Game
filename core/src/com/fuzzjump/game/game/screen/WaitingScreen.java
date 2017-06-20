@@ -9,7 +9,7 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
-import com.fuzzjump.libgdxscreens.StageScreen;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
@@ -114,7 +114,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     @Override
-    public void showing() {
+    public void onShow() {
     }
 
     @Override

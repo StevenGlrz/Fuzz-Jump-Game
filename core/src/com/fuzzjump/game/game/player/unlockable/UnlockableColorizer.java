@@ -2,15 +2,12 @@ package com.fuzzjump.game.game.player.unlockable;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.libgdxscreens.StageUITextures;
+import com.fuzzjump.libgdxscreens.screen.StageUITextures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import java.util.Map;
 
-/**
- * Created by stephen on 8/21/2015.
- */
 public class UnlockableColorizer {
 
     private final VectorGraphicsLoader vectorGraphicsLoader;

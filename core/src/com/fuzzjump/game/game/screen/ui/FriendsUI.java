@@ -1,9 +1,8 @@
-package com.fuzzjump.game.game.ui;
+package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -22,40 +21,29 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.SnapshotArray;
-import com.fuzzjump.game.FuzzJump;
-import com.fuzzjump.game.game.StageIds;
-import com.fuzzjump.game.game.StageScreen;
-import com.fuzzjump.game.game.StageUI;
-import com.fuzzjump.game.game.ui.components.ActorSwitcher;
-import com.fuzzjump.game.game.ui.components.Fuzzle;
-import com.fuzzjump.game.model.character.Unlockable;
-import com.fuzzjump.game.model.character.UnlockableDefinition;
-import com.fuzzjump.game.model.profile.FriendProfile;
-import com.fuzzjump.game.model.profile.Profile;
-import com.fuzzjump.game.net.requests.FriendWebRequest;
-import com.fuzzjump.game.net.requests.GetAppearanceRequest;
-import com.fuzzjump.game.net.requests.GetFriendsWebRequest;
-import com.fuzzjump.game.net.requests.SearchUsersRequest;
-import com.fuzzjump.game.net.requests.WebRequest;
-import com.fuzzjump.game.net.requests.WebRequestCallback;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
+import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.FriendProfile;
+import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.screen.component.ActorSwitcher;
+import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.util.Helper;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import static com.fuzzjump.game.util.Styles.createCloseBtnStyle;
-import static com.fuzzjump.game.util.Styles.createDefaultTBStyle;
-import static com.fuzzjump.game.util.Styles.createETxtFieldStyle;
-import static com.fuzzjump.game.util.Styles.createSmallTBStyle;
+import static com.fuzzjump.game.game.Assets.createCloseBtnStyle;
+import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
+import static com.fuzzjump.game.game.Assets.createETxtFieldStyle;
+import static com.fuzzjump.game.game.Assets.createSmallTBStyle;
 
-public class FriendsUI extends StageUI implements WebRequestCallback {
+public class FriendsUI extends StageUI {
 
-    private MenuUI parent;
+    private final MenuUI parent;
+    private final Profile profile;
+
     private TextField searchField;
     private Table friendsList;
     private ScrollPane friendsScroller;
@@ -67,39 +55,22 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
 
     private ActorSwitcher friendsListSwitcher;
 
-    public FriendsUI(StageScreen stage, FuzzJump game, MenuUI parent) {
-        this.game = game;
-        this.stageScreen = stage;
+    private final Map<Integer, FriendProfile> profileMap = new HashMap<>();
+
+    private Action waitSearchAction = null; // TODO Remove once implemented new API
+
+    public FriendsUI(MenuUI parent) {
+        super(parent.getTextures(), parent.getGameSkin());
+        this.stageScreen = parent.getStageScreen();
         this.parent = parent;
-        init();
-    }
-
-    @Override
-    public TextureRegionDrawable getTextureRegionDrawable(String name) {
-        return parent.getTextureRegionDrawable(name);
-    }
-
-    @Override
-    public TextureRegion getTexture(String name) {
-        return parent.getTexture(name);
-    }
-
-    @Override
-    public TextureRegion getColored(UnlockableDefinition definition, int colorIndex, boolean hardref) {
-        return parent.getColored(definition, colorIndex, hardref);
-    }
-
-    @Override
-    public TextureRegion getColored(Unlockable unlockable, boolean hardref) {
-        return parent.getColored(unlockable, hardref);
+        this.profile = parent.getProfile();
     }
 
     @Override
     public void init() {
+        setBackground(textures.getTextureRegionDrawable("ui-panel-friends"));
 
-        setBackground(getTextureRegionDrawable("ui-panel-friends"));
-
-        final Drawable search = getTextureRegionDrawable("ui-search");
+        final Drawable search = textures.getTextureRegionDrawable("ui-search");
         searchField = new TextField("", createETxtFieldStyle(this)) {
             @Override
             public void draw(Batch batch, float alpha) {
@@ -134,7 +105,7 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         friendsListSwitcher = new ActorSwitcher();
         friendsListSwitcher.addWidget(holder, 1f, 1f);
 
-        Image progressImage = new Image(getTextureRegionDrawable("ui-progressspinner")) {
+        Image progressImage = new Image(textures.getTextureRegionDrawable("ui-progressspinner")) {
             @Override
             public void sizeChanged() {
                 super.sizeChanged();
@@ -146,8 +117,8 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
 
         add(friendsListSwitcher).expand().fillY().top().width(Value.percentWidth(.95f, this)).padBottom(Value.percentHeight(.015f, this)).row();
 
-        Label noneLabel = new Label("No profiles found", game.getSkin());
-        Label nofriendsLabel = new Label("No friends", game.getSkin());
+        Label noneLabel = new Label("No profiles found", getGameSkin());
+        Label nofriendsLabel = new Label("No friends", getGameSkin());
         noneLabel.setAlignment(Align.center);
         nofriendsLabel.setAlignment(Align.center);
 
@@ -158,30 +129,16 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
 
         add(backButton).size(Value.percentWidth(0.475f, this), Value.percentWidth(0.0875f, this)).padBottom(Value.percentHeight(.025f, this));
 
-        backButton.addListener(new ClickListener() {
-
-            public void clicked(InputEvent event, float x, float y) {
-                backPressed();
-            }
-
-        });
 
         friendSquareWidth = Value.percentWidth(.3f, friendsScroller);
         friendSquareHeight = Value.percentWidth(.4f, friendsScroller);
         friendSquarePadBottom = Value.percentWidth(.033f, friendsScroller);
         friendSquarePadSides = Value.percentWidth(.025f, friendsScroller);
 
-        refresh(null);
-    }
+        Helper.addClickAction(backButton, (e, x, y) -> backPressed());
 
-    Runnable updateSearchRunnable = new Runnable() {
-        @Override
-        public void run() {
-            search();
-        }
-    };
-    Action waitSearchAction;
-    WebRequest searchRequest;
+        refresh(profile.getFriends());
+    }
 
     private void updateSearch(String text) {
         if (text.length() > 0) {
@@ -190,15 +147,16 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
                 System.out.println("Removing old search action");
             }
             System.out.println("Adding new action");
-            parent.addAction(waitSearchAction = Actions.delay(.15f, Actions.run(updateSearchRunnable)));
+            parent.addAction(waitSearchAction = Actions.delay(.15f, Actions.run(this::search)));
         } else {
             refresh(null);
         }
     }
 
     private void search() {
-        if (searchRequest != null)
+        /*if (searchRequest != null) {
             searchRequest.cancel();
+        }*/
         System.out.println("Searching");
         String username = searchField.getText();
         if (username.length() == 0) {
@@ -206,62 +164,31 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
             return;
         }
         friendsListSwitcher.setDisplayedChild(1);
-        searchRequest = new SearchUsersRequest(game.getProfile(), username);
-        searchRequest.connect(this);
+//        searchRequest = new SearchUsersRequest(profile, username);
+//        searchRequest.connect(this);
     }
 
-
-    GetAppearanceRequest getAppearanceRequest;
-    Runnable downloadAppearanceRunnable = new Runnable() {
-        @Override
-        public void run() {
-            downloadAppearances();
-        }
-    };
-    Action downloadWaitAction = Actions.delay(.5f, Actions.run(downloadAppearanceRunnable));
-    HashMap<Long, FriendProfile> profileMap = new HashMap<>();
 
     public void refreshFriends() {
         searchField.setDisabled(true);
-        WebRequest getFriendsRequest = new GetFriendsWebRequest(game.getProfile());
         friendsListSwitcher.setDisplayedChild(1);
-        getFriendsRequest.connect(new WebRequestCallback() {
-            @Override
-            public void onResponse(JsonObject response) {
-                try {
-                    if (response != null && response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
-                        game.getProfile().getFriends().load(response.getAsJsonObject(WebRequest.PAYLOAD_KEY));
-                        game.getProfile().save();
-                        refresh(null);
-                        searchField.setDisabled(false);
-                        return;
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                refresh(null);
-                searchField.setDisabled(false);
-            }
-        });
     }
 
-    private List<FriendProfile> currentList;
-
     public void refresh(List<FriendProfile> profiles) {
-        currentList = profiles;
         friendsList.clear();
         int index = 0;
         if (profiles == null) {
-            profiles = game.getProfile().getFriends().getFriends();
-            if (profiles.size() == 0)
+            profiles = profile.getFriends();
+            if (profiles.size() == 0) {
                 index = 3;
+            }
         } else if (profiles.size() == 0) {
             index = 2;
         }
         for (int i = 0, n = profiles.size(); i < n; i++) {
             FriendProfile friend = profiles.get(i);
-            if (profileMap.containsKey(friend.getUserId())) {
-                profiles.set(i, profileMap.get(friend.getUserId()));
+            if (profileMap.containsKey(friend.getProfileId())) {
+                profiles.set(i, profileMap.get(friend.getProfileId()));
             }
         }
         profileMap.clear();
@@ -276,7 +203,7 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
                     .padBottom(friendSquarePadBottom)
                     .padTop(friendSquarePadBottom)
                     .expand();
-            profileMap.put(friend.getUserId(), friend);
+            profileMap.put(friend.getProfileId(), friend);
             //if (column == 1)
             //    cell.padLeft(friendSquarePadSides).padRight(friendSquarePadSides);
             if (i == profiles.size() - 1 && column < 2) {
@@ -293,109 +220,18 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
                 }
             }
         }
-
-        appearanceCounter = 0;
-        downloadMore = false;
-        if (downloadWaitAction != null)
-            parent.removeAction(downloadWaitAction);
-        parent.addAction(downloadWaitAction = Actions.delay(.5f, Actions.run(downloadAppearanceRunnable)));
-
     }
 
-
-    private WebRequestCallback getAppearanceCallback = new WebRequestCallback() {
-        @Override
-        public void onResponse(JsonObject response) {
-            updateAppearances(response);
-        }
-    };
-
-    private boolean downloadMore = false;
-    private int appearanceCounter = 0;
-
-    public void downloadAppearances() {
-        if (getAppearanceRequest != null) {
-            getAppearanceRequest.cancel();
-        }
-        SnapshotArray<Actor> friends = friendsList.getChildren();
-        long[] ids = new long[5];
-        int idCounter = 0;
-        for (int i = appearanceCounter; i < friends.size; i++) {
-            if (friends.get(i) instanceof FriendWidget) {
-                FriendWidget widget = (FriendWidget) friends.get(i);
-                if (widget.profile.getAppearance().loaded())
-                    continue;
-                ids[idCounter++] = widget.profile.getUserId();
-                if (idCounter >= 5) {
-                    appearanceCounter = i;
-                    downloadMore = true;
-                    break;
-                }
-            }
-        }
-        long[] friendIds = new long[idCounter];
-        System.arraycopy(ids, 0, friendIds, 0, idCounter);
-        getAppearanceRequest = new GetAppearanceRequest(friendIds, true);
-        getAppearanceRequest.connect(getAppearanceCallback);
-    }
-
-    public void updateAppearances(JsonObject response) {
-        if (response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
-            JsonArray payload = response.getAsJsonArray(WebRequest.PAYLOAD_KEY);
-            for (int i = 0; i < payload.size(); i++) {
-                JsonObject appearance = payload.get(i).getAsJsonObject();
-                long userId = appearance.get("UserId").getAsLong();
-                if (!profileMap.containsKey(userId))
-                    continue;
-                FriendProfile profile = profileMap.get(userId);
-                profile.setName(appearance.get("DisplayName").getAsString());
-                profile.getAppearance().load(appearance);
-            }
-            if (downloadMore)
-                downloadAppearances();
-        }
-    }
 
     public void changeStatus(final FriendWidget widget, int newStatus) {
-        final Dialog dialog = parent.actor(Dialog.class, StageIds.MenuUI.PROGRESS_DIALOG);
-        final TextButton closeButton = parent.actor(StageIds.MenuUI.CLOSE_BUTTON);
-        final Image progressImage = parent.actor(StageIds.MenuUI.PROGRESS_IMAGE);
-        final Label messageLabel = parent.actor(StageIds.MenuUI.PROGRESS_LABEL);
+        final Dialog dialog = parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG);
+        final TextButton closeButton = parent.actor(Assets.MenuUI.CLOSE_BUTTON);
+        final Image progressImage = parent.actor(Assets.MenuUI.PROGRESS_IMAGE);
+        final Label messageLabel = parent.actor(Assets.MenuUI.PROGRESS_LABEL);
         messageLabel.setText(getStatusLabel(newStatus));
         progressImage.setVisible(true);
         closeButton.setVisible(false);
-        dialog.show(game.getStage());
-        WebRequest request = new FriendWebRequest(game.getProfile(), widget.profile.getUserId(), newStatus);
-        request.connect(new WebRequestCallback() {
-            @Override
-            public void onResponse(JsonObject response) {
-                try {
-                    if (response != null && response.has(WebRequest.RESPONSE_KEY) && response.get(WebRequest.RESPONSE_KEY).getAsInt() == WebRequest.SUCCESS) {
-                        List<FriendProfile> list = currentList;
-                        int status = response.getAsJsonObject(WebRequest.PAYLOAD_KEY).get("Status").getAsInt();
-                        widget.profile.setStatus(status);
-                        if (!game.getProfile().getFriends().contains(widget.profile.getUserId()) && status >= FriendProfile.STATUS_SENT) {
-                            list.remove(widget.profile);
-                            widget.remove();
-                            game.getProfile().getFriends().getFriends().add(widget.profile);
-                            refresh(list);
-                        } else if (game.getProfile().getFriends().contains(widget.profile.getUserId()) && status == FriendProfile.STATUS_NONE) {
-                            widget.remove();
-                            game.getProfile().getFriends().getFriends().remove(widget.profile);
-                            refresh(game.getProfile().getFriends().getFriends());
-                        }
-                        dialog.hide();
-                        return;
-                    }
-                } catch (Exception e) {
-                    // Read error maybe
-                    e.printStackTrace();
-                }
-                progressImage.setVisible(false);
-                closeButton.setVisible(true);
-                messageLabel.setText("Error processing\nrequest");
-            }
-        });
+        dialog.show(getStage());
     }
 
     public String getStatusLabel(int status) {
@@ -414,61 +250,27 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
     @Override
     public void backPressed() {
 
-        final Dialog dialog = parent.actor(Dialog.class, StageIds.MenuUI.PROGRESS_DIALOG);
+        final Dialog dialog = parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG);
         if (dialog.isVisible()) {
-            final TextButton closeButton = parent.actor(StageIds.MenuUI.CLOSE_BUTTON);
+            final TextButton closeButton = parent.actor(Assets.MenuUI.CLOSE_BUTTON);
             if (closeButton.isVisible()) {
-                for (EventListener listener : closeButton.getListeners())
-                    if (listener instanceof ClickListener)
+                for (EventListener listener : closeButton.getListeners()) {
+                    if (listener instanceof ClickListener) {
                         ((ClickListener) listener).clicked(new InputEvent(), 0, 0);
-            }
-        }
-        ((MenuUI) parent).showMain();
-    }
-
-
-    @Override
-    public void onResponse(JsonObject response) {
-        LinkedList<FriendProfile> profiles = new LinkedList<>();
-        try {
-            if (!response.has(WebRequest.RESPONSE_KEY))
-                return;
-            if (response.get(WebRequest.RESPONSE_KEY).getAsInt() != WebRequest.SUCCESS)
-                return;
-            JsonArray results = response.getAsJsonArray(WebRequest.PAYLOAD_KEY);
-            SnapshotArray<Actor> inList = friendsList.getChildren();
-            for (int i = 0; i < results.size(); i++) {
-                JsonObject result = results.get(i).getAsJsonObject();
-                FriendProfile profile = null;
-                for (Actor actor : inList) {
-                    if (actor instanceof FriendWidget) {
-                        FriendWidget friendWidget = (FriendWidget) actor;
-                        if (friendWidget.profile.getUserId() == result.get("UserId").getAsLong()) {
-                            profile = friendWidget.profile;
-                            break;
-                        }
                     }
                 }
-                if (profile == null) {
-                    profile = new FriendProfile(result.get("DisplayName").getAsString(), result.get("UserId").getAsLong());
-                }
-                if (profile.getUserId() == game.getProfile().getUserId() || game.getProfile().getFriends().contains(profile.getUserId()))
-                    continue;
-                profile.setStatus(-1);
-                profiles.add(profile);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        refresh(profiles);
+        parent.showMain();
     }
+    
 
-    public void showing() {
+    public void onShow() {
         searchField.setText("");
         refreshFriends();
     }
 
-    public class FriendWidget extends Table implements Profile.ProfileChangeEventListener {
+    public class FriendWidget extends Table {
 
         private final FriendProfile profile;
 
@@ -480,18 +282,18 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
         public FriendWidget(FriendProfile profile) {
             this.profile = profile;
             this.status = profile.getStatus();
-            profile.addChangeListener(this);
             build();
             profileChanged();
         }
 
         private void build() {
-            Fuzzle fuzzle = new Fuzzle(parent, profile);
+            Fuzzle fuzzle = new Fuzzle(parent, parent.getUnlockableColorizer(), parent.getProfile());
+            // TODO Load fuzzle
             Table fuzzleTable = new Table();
             fuzzleTable.add(fuzzle).width(Value.percentWidth(.75f, fuzzleTable)).height(Value.percentHeight(.75f, fuzzleTable)).center().expand();
-            fuzzleTable.setBackground(getTextureRegionDrawable("ui-frame-friend"));
+            fuzzleTable.setBackground(textures.getTextureRegionDrawable("ui-frame-friend"));
             add(fuzzleTable).width(Value.percentWidth(1f, this)).height(Value.percentWidth(1.068903558153523f, this)).padBottom(Value.percentHeight(.025f, this)).expand().row();
-            add(nameLabel = new Label(profile.getName(), game.getSkin(), "profile")).width(Value.percentWidth(1f, this)).center().expand().padBottom(Value.percentHeight(.025f, this)).row();
+            add(nameLabel = new Label(profile.getName(), getGameSkin(), "profile")).width(Value.percentWidth(1f, this)).center().expand().padBottom(Value.percentHeight(.025f, this)).row();
             add(button = new TextButton("Action", createSmallTBStyle(parent))).width(Value.percentWidth(1f, this)).height(Value.percentWidth(0.1842105263157895f, this));
             nameLabel.setAlignment(Align.center);
 
@@ -539,7 +341,7 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
             closeButton.setSize(closeButtonWidth, closeButtonWidth);
         }
 
-        @Override
+        // TODO Re-add
         public void profileChanged() {
             boolean refresh = false;
             //check if the status changed from pending to accepted because we will need to relayout then
@@ -565,8 +367,9 @@ public class FriendsUI extends StageUI implements WebRequestCallback {
                     closeButton.setVisible(false);
                     break;
             }
-            if (refresh)
+            if (refresh) {
                 refreshFriends();
+            }
         }
     }
 

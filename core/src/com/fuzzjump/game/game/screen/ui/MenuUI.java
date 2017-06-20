@@ -1,7 +1,6 @@
 package com.fuzzjump.game.game.screen.ui;
 
 
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,9 +20,9 @@ import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.ScreenLoader;
-import com.fuzzjump.libgdxscreens.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
+import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 import javax.inject.Inject;
 
@@ -44,6 +43,7 @@ public class MenuUI extends StageUI {
     private ActorSwitcher uiSwitcher;
     private CharacterSelectionUI profileUI;
     private SettingsUI settingsUI;
+    private FriendsUI friendsUI;
 
     private FJDragDownBarTable dropdownTable;
 
@@ -51,13 +51,10 @@ public class MenuUI extends StageUI {
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
 
-    private final Stage stage;
-
     @Inject
-    public MenuUI(Textures textures, Skin skin, Stage stage, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
+    public MenuUI(Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
         super(textures, skin);
         this.profile = profile;
-        this.stage = stage;
         this.definitions = definitions;
         this.colorizer = colorizer;
     }
@@ -94,8 +91,9 @@ public class MenuUI extends StageUI {
         });
 
         // Doesn't require background loading
-        this.profileUI = new CharacterSelectionUI(this, stage, profile, definitions, colorizer);
+        this.profileUI = new CharacterSelectionUI(this, definitions);
         this.settingsUI = new SettingsUI(this);
+        this.friendsUI = new FriendsUI(this);
 
 
         setFillParent(true);
@@ -169,17 +167,20 @@ public class MenuUI extends StageUI {
 
 
             uiSwitcher.addWidget(menuTable, Value.percentWidth(.975f, uiSwitcher), Value.percentWidth(0.8061598235294119f, uiSwitcher));
-            //uiSwitcher.addWidget(friendsUI, Value.percentWidth(.9f, uiSwitcher), Value.percentWidth(0.8288981077080586f, uiSwitcher));
             uiSwitcher.addWidget(profileUI, Value.percentWidth(.9f, uiSwitcher), Value.percentHeight(.5f, uiSwitcher));
+            uiSwitcher.addWidget(friendsUI, Value.percentWidth(.9f, uiSwitcher), Value.percentWidth(0.8288981077080586f, uiSwitcher));
             uiSwitcher.addWidget(settingsUI);
 
             // Register click listener
             Helper.addClickAction(profileButton, (e, x, y) -> {
-                profileUI.showing();
+                profileUI.onShow();
                 uiSwitcher.setDisplayedChild(1);
             });
-            //Helper.addClickAction(friendsButton, (e, x, y) -> uiSwitcher.setDisplayedChild(1));
-            Helper.addClickAction(settingsBtn, (e, x, y) -> uiSwitcher.setDisplayedChild(2));
+            Helper.addClickAction(friendsButton, (e, x, y) -> {
+                friendsUI.onShow();
+                uiSwitcher.setDisplayedChild(2);
+            });
+            Helper.addClickAction(settingsBtn, (e, x, y) -> uiSwitcher.setDisplayedChild(3));
         });
 
 
@@ -192,8 +193,10 @@ public class MenuUI extends StageUI {
             contentTable.add(uiSwitcher).fill().center().expand();
         });
 
+        // Initialize other UI's
         loader.add(() -> profileUI.init());
         loader.add(() -> settingsUI.init());
+        loader.add(() -> friendsUI.init());
     }
 
     @Override
@@ -203,5 +206,13 @@ public class MenuUI extends StageUI {
 
     public void showMain() {
         uiSwitcher.setDisplayedChild(0);
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public UnlockableColorizer getUnlockableColorizer() {
+        return colorizer;
     }
 }

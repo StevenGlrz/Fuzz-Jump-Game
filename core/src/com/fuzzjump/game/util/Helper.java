@@ -5,11 +5,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.fuzzjump.game.game.event.GDXClickListener;
 
+import org.w3c.dom.Element;
+
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
 public class Helper {
 
+    public static String getNodeValue(Element element, String childTag) {
+        return element.getElementsByTagName(childTag).item(0).getTextContent();
+    }
 
     public static void addClickAction(Actor actor, GDXClickListener listener) {
         actor.addListener(new ClickListener() {

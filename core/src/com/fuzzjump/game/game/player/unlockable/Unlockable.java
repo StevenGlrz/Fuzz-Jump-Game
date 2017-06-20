@@ -1,9 +1,5 @@
 package com.fuzzjump.game.game.player.unlockable;
 
-/**
- * Kerpow Games, LLC
- * Created by stephen on 4/7/2015.
- */
 public class Unlockable {
 
     private final UnlockableDefinition definition;

@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.ingame;
+package com.fuzzjump.game.game.screen.game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
@@ -6,10 +6,10 @@ import com.badlogic.gdx.math.Vector3;
 
 public class ParallaxCamera extends OrthographicCamera {
 	
-	Matrix4 parallaxView = new Matrix4();
-	Matrix4 parallaxCombined = new Matrix4();
-	Vector3 tmp = new Vector3();
-	Vector3 tmp2 = new Vector3();
+	private Matrix4 parallaxView = new Matrix4();
+	private Matrix4 parallaxCombined = new Matrix4();
+	private Vector3 tmp = new Vector3();
+	private Vector3 tmp2 = new Vector3();
 
 	public ParallaxCamera (float viewportWidth, float viewportHeight) {
 		super(viewportWidth, viewportHeight);

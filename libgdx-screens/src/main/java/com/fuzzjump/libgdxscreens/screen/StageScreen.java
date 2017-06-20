@@ -1,4 +1,4 @@
-package com.fuzzjump.libgdxscreens;
+package com.fuzzjump.libgdxscreens.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
@@ -96,7 +96,7 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
     /**
      * Called once the screen is being displayed regardless of its cached state.
      */
-    public abstract void showing();
+    public abstract void onShow();
 
     /**
      * Click management for actors on the screen

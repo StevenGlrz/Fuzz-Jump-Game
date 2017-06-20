@@ -15,8 +15,9 @@ import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
 import com.fuzzjump.game.service.user.IUserService;
-import com.fuzzjump.libgdxscreens.ScreenLoader;
-import com.fuzzjump.libgdxscreens.StageScreen;
+import com.fuzzjump.game.util.Helper;
+import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 
@@ -74,8 +75,6 @@ public class SplashScreen extends StageScreen<SplashUI> {
         int screenHeight = Gdx.graphics.getHeight();
 
         // Load fonts.
-
-
         loader.add(() -> createFont(Assets.LARGE_FONT, smartGen, gen, param, screenHeight / 10));
         loader.add(() -> createFont(Assets.BIG_FONT, smartGen, gen, param, screenHeight / 20));
         loader.add(() -> createFont(Assets.DEFAULT_FONT, smartGen, gen, param, screenHeight / 30));
@@ -123,7 +122,7 @@ public class SplashScreen extends StageScreen<SplashUI> {
     }
 
     @Override
-    public void showing() {
+    public void onShow() {
 
     }
 
@@ -142,12 +141,11 @@ public class SplashScreen extends StageScreen<SplashUI> {
             NodeList vectors = document.getDocumentElement().getElementsByTagName("svginfo");
             for (int i = 0, n = vectors.getLength(); i < n; i++) {
                 Element detail = (Element) vectors.item(i);
-                NodeList info = detail.getChildNodes();
 
-                String svg = info.item(1).getTextContent();
-                String atlas = info.item(3).getTextContent();
-                String width = info.item(5).getTextContent();
-                String height = info.item(7).getTextContent();
+                String svg = Helper.getNodeValue(detail, "svg");
+                String atlas = Helper.getNodeValue(detail, "atlas");
+                String width = Helper.getNodeValue(detail, "width");
+                String height = Helper.getNodeValue(detail, "height");
 
                 vectorDetails.add(new VectorGraphicsLoader.VectorDetail(Assets.SVG_DIR + svg, atlas, width, height));
             }

@@ -1,5 +1,8 @@
 package com.fuzzjump.game.game.player;
 
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
@@ -16,11 +19,13 @@ public class Profile {
 
     private Appearance appearance;
 
+    private final List<FriendProfile> friends = new LinkedList<>();
+
     public Profile() {
         this.appearance = new Appearance();
     }
 
-    public long getProfileId() {
+    public int getProfileId() {
         return profileId;
     }
 
@@ -82,5 +87,9 @@ public class Profile {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public List<FriendProfile> getFriends() {
+        return friends;
     }
 }

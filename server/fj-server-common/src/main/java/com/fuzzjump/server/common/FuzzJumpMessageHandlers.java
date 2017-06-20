@@ -5,7 +5,6 @@ import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.google.protobuf.GeneratedMessage;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.steveadoo.server.common.packets.MessageHandler;
-import com.steveadoo.server.common.packets.Packets;
 
 import java.util.Collections;
 import java.util.LinkedList;
@@ -23,9 +22,9 @@ public class FuzzJumpMessageHandlers {
     };
 
     static {
-        List tempHandlerList = new LinkedList<>();
-        tempHandlerList.add(createProtoMessageHandler(Packets.JOIN_PACKET, Join.JoinPacket.getDefaultInstance()));
-        tempHandlerList.add(createProtoMessageHandler(Packets.JOIN_PACKET_RESPONSE, Join.JoinResponsePacket.getDefaultInstance()));
+        List<MessageHandler> tempHandlerList = new LinkedList<>();
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.JOIN_PACKET, Join.JoinPacket.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.JOIN_PACKET_RESPONSE, Join.JoinResponsePacket.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_STATE, Lobby.LobbyState.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_STATE, Lobby.LobbyState.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.TIME_STATE_UPDATE, Lobby.TimeState.getDefaultInstance()));

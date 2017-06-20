@@ -12,7 +12,7 @@ import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
-public class Player extends PhysicActor {
+public class GamePlayer extends PhysicActor {
 
     public static final Color LABEL_COLOR = new Color(246f / 255f, 244f / 255f, 187f / 255f, 1f);
 
@@ -28,7 +28,7 @@ public class Player extends PhysicActor {
     private boolean finished;
     public boolean hit;
 
-    public Player(StageUI ui, World world, Fuzzle fuzzle, Profile profile, float x, float y, float width, BitmapFont font) {
+    public GamePlayer(StageUI ui, World world, Fuzzle fuzzle, Profile profile, float x, float y, float width, BitmapFont font) {
         super(world, null);
         this.profile = profile;
         this.fuzzle = fuzzle;
@@ -108,7 +108,7 @@ public class Player extends PhysicActor {
 
     @Override
     public boolean interested(PhysicActor other) {
-        return other instanceof Platform;
+        return other instanceof GamePlatform;
     }
 
     public void stun(float time) {

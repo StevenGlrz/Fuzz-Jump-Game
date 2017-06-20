@@ -3,10 +3,6 @@ package com.fuzzjump.game.game.player.unlockable;
 import com.badlogic.gdx.math.Rectangle;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
-/**
- * Kerpow Games, LLC
- * Created by stephen on 6/7/2015.
- */
 public class UnlockableDefinition {
 
     private final String name;

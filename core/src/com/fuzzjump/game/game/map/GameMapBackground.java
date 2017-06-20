@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.screen.game.map;
+package com.fuzzjump.game.game.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
