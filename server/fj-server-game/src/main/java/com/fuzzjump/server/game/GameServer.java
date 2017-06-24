@@ -8,10 +8,13 @@ import com.fuzzjump.server.game.game.GamePlayer;
 import com.fuzzjump.server.game.game.GameSession;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
-import io.netty.channel.Channel;
-
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import io.netty.channel.Channel;
 
 public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
 
@@ -35,14 +38,14 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
         try {
             String key = message.getGameId();
             if (!sessions.containsKey(key)) {
-                player.channel.writeAndFlush(Game.LoadedResponse.newBuilder().setFound(false).buildPartial());
+                player.getChannel().writeAndFlush(Game.LoadedResponse.newBuilder().setFound(false).buildPartial());
             } else {
-                player.channel.writeAndFlush(Game.LoadedResponse.newBuilder().setFound(true).buildPartial());
+                player.getChannel().writeAndFlush(Game.LoadedResponse.newBuilder().setFound(true).buildPartial());
                 sessions.get(key).addPlayer(player);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            player.channel.disconnect();
+            player.getChannel().disconnect();
         }
     }
 

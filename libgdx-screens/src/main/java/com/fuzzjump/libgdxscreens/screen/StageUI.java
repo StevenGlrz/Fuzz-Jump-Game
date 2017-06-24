@@ -28,21 +28,31 @@ public abstract class StageUI extends Table {
         this.textures = textures;
     }
 
+    /**
+     * Registers an actor for access between the screen, UI, and any other members with access to the UI.
+     * NOTE: Actors can be replaced
+     * @param id The id of the actor.
+     * @param actor The actor.
+     */
     public void register(int id, Actor actor) {
         register(id, actor, true);
     }
 
-    public void register(final int id, final Actor actor, final boolean waitForTouchUp) {
+    public void register(final int id, final Actor actor, boolean registerListener) {
+        register(id, actor, InputEvent.Type.touchUp, registerListener);
+    }
+
+    public void register(final int id, final Actor actor, final InputEvent.Type expectedEvent, boolean registerListener) {
         actors.put(id, actor);
-        actor.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                if (waitForTouchUp && event.getType() == InputEvent.Type.touchUp) {
-                    stageScreen.clicked(id, actor);
-                } else if (!waitForTouchUp && event.getType() == InputEvent.Type.touchDown) {
-                    stageScreen.clicked(id, actor);
+        if (registerListener) {
+            actor.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    if (event.getType() == expectedEvent) {
+                        stageScreen.clicked(id, actor);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

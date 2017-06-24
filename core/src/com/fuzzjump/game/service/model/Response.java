@@ -1,16 +1,18 @@
 package com.fuzzjump.game.service.model;
 
-public abstract class Response {
+import com.google.gson.JsonObject;
+
+public class Response {
 
     private boolean success;
-    private String errorMessage;
+    private JsonObject body;
+
+    public JsonObject getBody() {
+        return body;
+    }
 
     public boolean isSuccess() {
         return success;
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
     }
 
 

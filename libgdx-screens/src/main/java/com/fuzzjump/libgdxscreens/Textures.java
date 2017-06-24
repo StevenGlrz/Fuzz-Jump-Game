@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Textures {
 
@@ -22,12 +21,6 @@ public class Textures {
 
 	public void add(VectorGraphicsLoader.VectorDetail detail) {
 		details.put(detail.getAtlasName(), detail);
-	}
-
-	public void add(List<VectorGraphicsLoader.VectorDetail> vectorDetails) {
-		for (VectorGraphicsLoader.VectorDetail info: vectorDetails) {
-			details.put(info.getAtlasName(), info);
-		}
 	}
 	
 	public TextureRegion getTexture(String name) {

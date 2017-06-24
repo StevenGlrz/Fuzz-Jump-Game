@@ -79,7 +79,7 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     }
 
-    public TUI getUI() {
+    public TUI ui() {
         return (TUI) ui;
     }
 

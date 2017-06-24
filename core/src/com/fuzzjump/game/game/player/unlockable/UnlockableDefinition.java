@@ -5,12 +5,12 @@ import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 public class UnlockableDefinition {
 
+    private final int id;
     private final String name;
     private final int cost;
-    private final ColorGroup replaceGroup;
     private final String[] allowedTags;
     private final int category;
-    private final int id;
+    private final ColorGroup replaceGroup;
     private ColorGroup[] colorGroups;
     private Rectangle[] bounds;
 

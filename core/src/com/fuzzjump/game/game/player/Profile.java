@@ -1,5 +1,10 @@
 package com.fuzzjump.game.game.player;
 
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.util.Helper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,21 +13,55 @@ import java.util.List;
  */
 public class Profile {
 
+    private String userId;
+    private String userName;
+    private String displayName;
     private int playerIndex;
     private int profileId = -1;
     private int coins;
-    private int ranking = 1;
-    protected String name;
-    private boolean ready;
-
-    private long currentSeed;
-
+    private int experience;
     private Appearance appearance;
 
     private final List<FriendProfile> friends = new LinkedList<>();
 
+    private boolean ready;
+
     public Profile() {
-        this.appearance = new Appearance();
+    }
+
+    public Profile(UnlockableRepository definitions) {
+        createAppearance(definitions);
+    }
+
+    public void createAppearance(UnlockableRepository definitions) {
+        this.appearance = new Appearance(definitions);
+    }
+
+    public void load(JsonObject data) {
+        JsonObject prof = data.getAsJsonObject("profile");
+        JsonArray equips = prof.getAsJsonArray("equips");
+
+        userName = data.get("username").getAsString();
+        displayName = data.get("displayName").getAsString();
+        userId = data.get("userId").getAsString();
+        profileId = prof.get("id").getAsInt();
+        coins = prof.get("coins").getAsInt();
+        experience = prof.get("experience").getAsInt();
+        for (int i = 0, n = equips.size(); i < n; i++) {
+            JsonObject equip = equips.get(i).getAsJsonObject();
+            JsonObject unlockable = Helper.getJsonObject(equip.get("unlockable"));
+
+            int slot = equip.get("slot").getAsInt();
+
+            if (unlockable != null) {
+                int unlockableId = unlockable.get("definitionId").getAsInt();
+                int unlockableColor = unlockable.get("color").getAsInt();
+                appearance.setEquip(slot, unlockableId);
+                appearance.createUnlockable(unlockableId, unlockableColor);
+            } else {
+                appearance.setEquip(slot, -1);
+            }
+        }
     }
 
     public int getProfileId() {
@@ -33,16 +72,12 @@ public class Profile {
         this.profileId = id;
     }
 
-    public String getName() {
-        return name;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public long getCurrentSeed() {
-        return currentSeed;
-    }
-
-    public void setName(String displayName) {
-        this.name = displayName;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public int getCoins() {
@@ -53,20 +88,8 @@ public class Profile {
         this.coins = coins;
     }
 
-    public void setCurrentSeed(long currentSeed) {
-        this.currentSeed = currentSeed;
-    }
-
     public Appearance getAppearance() {
         return appearance;
-    }
-
-    public int getRanking() {
-        return ranking;
-    }
-
-    public void setRanking(int ranking) {
-        this.ranking = ranking;
     }
 
     public int getPlayerIndex() {
@@ -75,10 +98,6 @@ public class Profile {
 
     public void setPlayerIndex(int playerIndex) {
         this.playerIndex = playerIndex;
-    }
-
-    public boolean valid() {
-        return profileId != -1;
     }
 
     public void setReady(boolean ready) {
@@ -91,5 +110,13 @@ public class Profile {
 
     public List<FriendProfile> getFriends() {
         return friends;
+    }
+
+    public int getLevel() {
+        return experience / 100; // TODO Formula for levels
+    }
+
+    public String getApiName() {
+        return userName;
     }
 }

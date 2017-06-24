@@ -68,7 +68,7 @@ public class GamePlayer extends PhysicActor {
         colorDrawable.draw(batch, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         fuzzle.draw(batch, alpha);
 
-        glyphLayout.setText(font, profile.getName());
+        glyphLayout.setText(font, profile.getDisplayName());
         font.setColor(LABEL_COLOR);
         batch.setColor(LABEL_COLOR);
         font.draw(batch, glyphLayout, (getX() + getWidth() / 2) - (glyphLayout.width / 2), getY() - glyphLayout.height - 5);

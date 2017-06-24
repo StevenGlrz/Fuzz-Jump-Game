@@ -10,7 +10,7 @@ public class CloudActor extends Image {
     private boolean direction;
 
     public CloudActor(GameScreen screen) {
-        super(screen.getUI().getTextures().getTexture("cloud"));
+        super(screen.ui().getTextures().getTexture("cloud"));
         this.world = screen.getWorld();
         this.direction = screen.getRandom().nextBoolean();
     }

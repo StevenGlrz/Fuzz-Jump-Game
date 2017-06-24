@@ -78,6 +78,7 @@ public class UnlockableRepository {
                     def.setBounds(uBounds);
                 }
             }
+            //System.out.println(new GsonBuilder().setPrettyPrinting().create().toJson(definitions.values()));
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }

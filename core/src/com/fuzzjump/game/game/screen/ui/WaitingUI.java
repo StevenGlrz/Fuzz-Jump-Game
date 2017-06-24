@@ -227,7 +227,7 @@ public class WaitingUI extends StageUI {
         }
 
         public void profileChanged() {
-            nameLabel.setText(player.getName());
+            nameLabel.setText(player.getDisplayName());
             statusImage.setDrawable(player.isReady() ? checkDrawable : xDrawable);
         }
 

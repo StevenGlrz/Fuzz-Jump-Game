@@ -122,8 +122,9 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             questionMark.draw(batch, getX() + getWidth() / 2 - questionMarkWidth / 2, getY() + getHeight() / 2 - questionMarkHeight / 2, questionMarkWidth, questionMarkHeight);
             return;
         }
-        if (drawFrame)
+        if (drawFrame) {
             frameDrawable.draw(batch, getX(), getY(), getWidth(), getHeight());
+        }
         fuzzleDrawable.draw(batch, getX() + fuzzleBounds.x, getY() + fuzzleBounds.y, fuzzleBounds.width, fuzzleBounds.height);
         drawPart(batch, face, faceDrawable, faceBounds);
         drawPart(batch, eyes, eyesDrawable, eyesBounds);
@@ -147,8 +148,9 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
 
     public void updateBounds(Rectangle bounds, UnlockableDefinition definition, TextureRegionDrawable drawable) {
         try {
-            if (definition.getBounds() == null)
+            if (definition.getBounds() == null) {
                 return;
+            }
             Rectangle uBound = definition.getBounds()[fuzzle.getDefinition().getId()];
             bounds.x = fuzzleBounds.x + (uBound.x * fuzzleBounds.width);
             bounds.y = fuzzleBounds.y + (uBound.y * fuzzleBounds.height);
@@ -165,6 +167,7 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             bounds.y -= bounds.height / 2f;
             bounds.x -= bounds.width / 2f;
         } catch (Exception e) {
+            // ????
             e.printStackTrace();
             bounds.width = 0;
             bounds.height = 0;

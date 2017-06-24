@@ -115,7 +115,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
     public CharacterSelectionUI(MenuUI parent, UnlockableRepository definitions) {
         super(parent.getTextures(), parent.getGameSkin());
         this.parent = parent;
-        this.stage = parent.getStage();
+        this.stage = parent.getStageScreen().getStage();
         this.stageScreen = parent.getStageScreen();
         this.profile = parent.getProfile();
         this.definitions = definitions;
@@ -160,7 +160,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             buyingDialog.getButtonTable().add(cancelButton).size(Value.percentWidth(.475f, buyingDialog), Value.percentWidth(0.1315789473684211f, buyingDialog)).left().padLeft(padSide).padBottom(padBottom).expand();
             buyingDialog.getButtonTable().add(purchaseButton).size(Value.percentWidth(.475f, buyingDialog), Value.percentWidth(0.1315789473684211f, buyingDialog)).right().padRight(padSide).padBottom(padBottom).expand();
         });
-        loader.add(() -> initTopTable(loader));
+        loader.add(this::initTopTable);
         loader.add(() -> initMidtable(loader));
         loader.add(this::initLowMidTable);
         loader.add(this::initLowTable);
@@ -199,7 +199,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
 
     };
 
-    public void initTopTable(ScreenLoader loader) {
+    public void initTopTable() {
         topTable = new Table();
         topTable.setBackground(textures.getTextureRegionDrawable("ui-panel-character1"));
 
@@ -217,7 +217,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
             frame.addListener(frameClickListener);
             frame.setUserObject(index);
         }
-        loader.add(this::appearanceChanged);
+        appearanceChanged();
     }
 
     public void initMidtable(ScreenLoader loader) {
@@ -339,7 +339,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         unlockableImage.setDrawable(entry.accessoryImg);
         costLabel.setText(String.valueOf(entry.getUnlockableDefinition().getCost()));
 
-        //parent.context(Assets.MenuUI.SELECTED_UNLOCK, entry);
+        parent.register(Assets.MenuUI.SELECTED_UNLOCK, entry, false);
     }
 
     public void initLowTable() {
@@ -349,14 +349,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         TextButton backButton = new TextButton("Back", createDefaultTBStyle(parent));
         TextButton storeButton = new TextButton("Store", createDefaultTBStyle(parent));
 
-        backButton.addListener(new ClickListener() {
-
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                backPressed();
-            }
-
-        });
+        Helper.addClickAction(backButton, (e, x, y) -> backPressed());
 
         Value outerPad = Value.percentWidth(.025f, lowTable);
         Value upperPad = Value.percentHeight(.025f, lowTable);
@@ -404,7 +397,7 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         profile.getAppearance().snapshot();
     }
 
-    private class UnlockableEntry extends Actor {
+    public class UnlockableEntry extends Actor {
 
         private final UnlockableDefinition unlockableDefinition;
 

@@ -1,6 +1,8 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,47 +13,44 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
-import com.fuzzjump.game.service.user.IUserService;
-import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
-import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
+import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Created by Steven Galarza on 6/15/2017.
  */
 public class SplashScreen extends StageScreen<SplashUI> {
 
-    private final IUserService userService;
     private final Textures textures;
     private final Skin skin;
+    private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
+    private final Preferences preferences;
+    private final Gson gson;
 
     @Inject
-    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableRepository definitions, UnlockableColorizer colorizer) {
+    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, Preferences preferences, Gson gson) {
         super(ui);
-        this.userService = userService;
         this.textures = textures;
         this.skin = skin;
+        this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
+        this.preferences = preferences;
+        this.gson = gson;
     }
 
     @Override
@@ -98,27 +97,20 @@ public class SplashScreen extends StageScreen<SplashUI> {
         // Preload Fuzzles
         for (int i = 0; i < Assets.FUZZLE_COUNT; i++) {
             final int index = i;
-            loader.add(() -> colorizer.getColored(getUI().getTextures(), definitions.getDefinition(index), 0, false));
+            loader.add(() -> colorizer.getColored(ui().getTextures(), definitions.getDefinition(index), 0, false));
         }
 
         // Preload frames and help compiler optimize SVG loading code
         for (int i = 32, n = i + 2; i < n; i++) {
             // TODO Not necessary if Fuzzles haven't been cached, but that is only the case on first run, but we want to prevent this if fuzzles are cached in order to have a shorter first time start up
             final int index = i;
-            loader.add(() -> colorizer.getColored(getUI().getTextures(), definitions.getDefinition(index), 0, false));
+            loader.add(() -> colorizer.getColored(ui().getTextures(), definitions.getDefinition(index), 0, false));
         }
 
-        loader.onDone(() -> screenHandler.showScreen(MainScreen.class));
+        // Once we're done ...
+        loader.onDone(this::onLoadDone);
 
-        getUI().drawSplash();
-    }
-
-    @Override
-    public void onPostRender(float delta) {
-        ScreenLoader loader = getLoader();
-        if (!loader.process()) {
-            // Do animation ...
-        }
+        ui().drawSplash();
     }
 
     @Override
@@ -131,27 +123,21 @@ public class SplashScreen extends StageScreen<SplashUI> {
 
     }
 
+    private void onLoadDone() {
+        String profileData = preferences.getString(Assets.PROFILE_DATA, null);
+        if (profileData != null && profileData.length() > 0) {
+            profile.load(gson.fromJson(profileData, JsonObject.class));
+            screenHandler.showScreen(MenuScreen.class);
+        } else {
+            screenHandler.showScreen(MainScreen.class);
+        }
+    }
+
     private void loadTextures() {
-        try {
-            List<VectorGraphicsLoader.VectorDetail> vectorDetails = new ArrayList<>();
-
-            DocumentBuilder bldr = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = bldr.parse(Gdx.files.internal(Assets.SVG_RES).read());
-
-            NodeList vectors = document.getDocumentElement().getElementsByTagName("svginfo");
-            for (int i = 0, n = vectors.getLength(); i < n; i++) {
-                Element detail = (Element) vectors.item(i);
-
-                String svg = Helper.getNodeValue(detail, "svg");
-                String atlas = Helper.getNodeValue(detail, "atlas");
-                String width = Helper.getNodeValue(detail, "width");
-                String height = Helper.getNodeValue(detail, "height");
-
-                vectorDetails.add(new VectorGraphicsLoader.VectorDetail(Assets.SVG_DIR + svg, atlas, width, height));
-            }
-            textures.add(vectorDetails);
-        } catch (Exception e) {
-            e.printStackTrace();
+        FileHandle svgs = Gdx.files.internal(Assets.SVG_RESOURCE);
+        VectorGraphicsLoader.VectorDetail[] details = gson.fromJson(svgs.readString(), VectorGraphicsLoader.VectorDetail[].class);
+        for (int i = 0, n = details.length; i < n; i++) {
+            textures.add(details[i]);
         }
     }
 

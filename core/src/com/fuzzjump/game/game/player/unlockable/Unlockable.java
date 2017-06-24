@@ -7,6 +7,9 @@ public class Unlockable {
     private int colorIndex;
 
     public Unlockable(UnlockableDefinition definition, int id, int colorIndex) {
+        if (id == -1) {
+            throw new IllegalArgumentException("Unlockable ID not allowed to be less than zero!");
+        }
         this.definition = definition;
         this.id = id;
         this.colorIndex = colorIndex;

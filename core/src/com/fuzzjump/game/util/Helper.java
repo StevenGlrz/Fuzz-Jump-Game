@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.fuzzjump.game.game.event.GDXClickListener;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import org.w3c.dom.Element;
 
@@ -23,6 +25,10 @@ public class Helper {
                listener.clicked(e, x, y);
            }
         });
+    }
+
+    public static JsonObject getJsonObject(JsonElement element) {
+        return element.isJsonNull() ? null : element.getAsJsonObject();
     }
 
     public static <T> T fallback(T value, T fallback) {

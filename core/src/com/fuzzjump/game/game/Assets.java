@@ -17,6 +17,11 @@ public class Assets {
 
     public static final boolean DEBUG = false;
 
+    public static final String PREFERENCES_NAME = "FuzzJump";
+
+    public static final String USER_TOKEN = "FuzzUserToken";
+    public static final String PROFILE_DATA = "FuzzProfile";
+
     // Resources
     public static final String ATLAS = "main.pack";
     public static final String SKIN = "uiskin.json";
@@ -26,7 +31,7 @@ public class Assets {
     public static final String UNLOCKABLES_DIR = SVG_DIR + "unlockables/";
     public static final String SUNNY_DAY_DIR = MAP_DIR + "sunny_day_map/";
 
-    public static final String SVG_RES = "data/svgs.xml";
+    public static final String SVG_RESOURCE = "svgs.json";
 
     public static final String LOGO = SVG_DIR + "logo.svg";
 
@@ -49,6 +54,8 @@ public class Assets {
     public static final String UI_LOGO = "logo";
     public static final String UI_PROGRESS_SPINNER = "ui-progressspinner";
     public static final String UI_PANEL_WELCOME = "ui-panel-welcome";
+    public static final String UI_SEARCH = "ui-search";
+    public static final String UI_PANEL_FRIENDS = "ui-panel-friends";
 
     // Maps
     public final static String[] MAPS = {
@@ -72,14 +79,7 @@ public class Assets {
         public static final int LOGIN_DIALOG_OK = 4;
         public static final int LOGIN_DIALOG_MESSAGE = 5;
         public static final int LOGIN_REGISTER_DIALOG = 6;
-
-        //REGISTER
-        public static final int REGISTER_EMAIL_FIELD = 7;
-        public static final int REGISTER_USER_FIELD = 8;
-        public static final int REGISTER_PWD_FIELD = 9;
-        public static final int REGISTER_PWD_FIELD_2 = 10;
-        public static final int REGISTER_FACEBOOK = 11;
-        public static final int REGISTER_BUTTON = 13;
+        public static final int REGISTER_FACEBOOK = 7;
     }
 
     public class MenuUI {

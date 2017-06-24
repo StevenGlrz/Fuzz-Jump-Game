@@ -1,0 +1,16 @@
+package com.fuzzjump.game.service.user.model;
+
+import com.google.gson.annotations.SerializedName;
+
+/**
+ * Created by Steven Galarza on 6/21/2017.
+ */
+public class RegisterRequest {
+
+    @SerializedName("Username")
+    private String username;
+
+    public RegisterRequest(String username) {
+        this.username = username;
+    }
+}

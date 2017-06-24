@@ -1,5 +1,7 @@
 package com.fuzzjump.game.game.player;
 
+import com.google.gson.JsonObject;
+
 public class FriendProfile extends Profile {
 
     public static final int STATUS_NONE = -1;
@@ -9,12 +11,11 @@ public class FriendProfile extends Profile {
     private int status;
 
     public FriendProfile() {
-
     }
 
-    public FriendProfile(String displayName, int userId) {
-        this.setName(displayName);
-        this.setProfileId(userId);
+    @Override
+    public void load(JsonObject data) {
+
     }
 
     public void setStatus(int status) {

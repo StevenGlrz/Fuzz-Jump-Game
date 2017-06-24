@@ -15,6 +15,9 @@ public class ScreenLoader {
      */
     private final Queue<Runnable> load = new LinkedList<>();
 
+    /**
+     * Callback for when all tasks are done.
+     */
     private Runnable onDone;
 
     /**

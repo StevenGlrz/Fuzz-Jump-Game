@@ -79,9 +79,9 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
 
     @Override
     public void onReady() {
-        this.progressDialog = getUI().actor(Dialog.class, Assets.GameUI.PROGRESS_DIALOG);
-        this.image = getUI().actor(Image.class, Assets.GameUI.PROGRESS_IMAGE);
-        this.status = getUI().actor(Label.class, Assets.GameUI.PROGRESS_LABEL);
+        this.progressDialog = ui().actor(Dialog.class, Assets.GameUI.PROGRESS_DIALOG);
+        this.image = ui().actor(Image.class, Assets.GameUI.PROGRESS_IMAGE);
+        this.status = ui().actor(Label.class, Assets.GameUI.PROGRESS_LABEL);
         image.setVisible(true);
         status.setVisible(true);
         status.setText("Loading map");
@@ -251,9 +251,9 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
     }
 
     public GamePlayer addPlayer(Profile profile, float x) {
-        Fuzzle playerFuzzle = new Fuzzle(getUI(), colorizer, profile, false);
+        Fuzzle playerFuzzle = new Fuzzle(ui(), colorizer, profile, false);
         playerFuzzle.load(getLoader());
-        GamePlayer plr = new GamePlayer(getUI(), world, playerFuzzle, profile, x, 96, 128, getUI().getGameSkin().getFont("ingame-font"));
+        GamePlayer plr = new GamePlayer(ui(), world, playerFuzzle, profile, x, 96, 128, ui().getGameSkin().getFont("ingame-font"));
         players.put(profile.getPlayerIndex(), plr);
         worldStage.addGameActor(plr);
         world.getPhysicsActors().add(plr);

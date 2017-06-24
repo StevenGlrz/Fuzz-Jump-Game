@@ -2,7 +2,6 @@ package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -27,6 +26,7 @@ import com.fuzzjump.game.game.player.FriendProfile;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.game.screen.component.SearchField;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
@@ -68,30 +68,17 @@ public class FriendsUI extends StageUI {
 
     @Override
     public void init() {
-        setBackground(textures.getTextureRegionDrawable("ui-panel-friends"));
+        setBackground(textures.getTextureRegionDrawable(Assets.UI_PANEL_FRIENDS));
 
-        final Drawable search = textures.getTextureRegionDrawable("ui-search");
-        searchField = new TextField("", createETxtFieldStyle(this)) {
-            @Override
-            public void draw(Batch batch, float alpha) {
-                super.draw(batch, alpha);
+        final Drawable search = textures.getTextureRegionDrawable(Assets.UI_SEARCH);
 
-                float errorDrawableSize = searchField.getHeight() * .5f;
-                search.draw(batch, searchField.getX() + searchField.getWidth() - errorDrawableSize - searchField.getStyle().background.getRightWidth(), searchField.getY() + searchField.getHeight() / 2.0f - errorDrawableSize / 2f, errorDrawableSize, errorDrawableSize);
-            }
-        };
-        searchField.setMessageText("Search by email or name");
+        searchField = new SearchField(search, "", createETxtFieldStyle(this)) ;
+        searchField.setMessageText("Search by name");
         searchField.getStyle().messageFontColor = Color.WHITE;
-
         searchField.getStyle().background.setLeftWidth(Gdx.graphics.getWidth() / 35);
         searchField.getStyle().background.setRightWidth(Gdx.graphics.getWidth() / 35);
 
-        searchField.setTextFieldListener(new TextField.TextFieldListener() {
-            @Override
-            public void keyTyped(TextField textField, char c) {
-                updateSearch(textField.getText());
-            }
-        });
+        searchField.setTextFieldListener((textField, c) -> updateSearch(textField.getText()));
 
         add(searchField).top().center().padTop(Value.percentHeight(.025f, this)).padBottom(Value.percentHeight(.015f, this)).size(Value.percentWidth(.95f, this), Value.percentHeight(.15f, this));
         row();
@@ -105,7 +92,7 @@ public class FriendsUI extends StageUI {
         friendsListSwitcher = new ActorSwitcher();
         friendsListSwitcher.addWidget(holder, 1f, 1f);
 
-        Image progressImage = new Image(textures.getTextureRegionDrawable("ui-progressspinner")) {
+        Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER)) {
             @Override
             public void sizeChanged() {
                 super.sizeChanged();
@@ -293,7 +280,7 @@ public class FriendsUI extends StageUI {
             fuzzleTable.add(fuzzle).width(Value.percentWidth(.75f, fuzzleTable)).height(Value.percentHeight(.75f, fuzzleTable)).center().expand();
             fuzzleTable.setBackground(textures.getTextureRegionDrawable("ui-frame-friend"));
             add(fuzzleTable).width(Value.percentWidth(1f, this)).height(Value.percentWidth(1.068903558153523f, this)).padBottom(Value.percentHeight(.025f, this)).expand().row();
-            add(nameLabel = new Label(profile.getName(), getGameSkin(), "profile")).width(Value.percentWidth(1f, this)).center().expand().padBottom(Value.percentHeight(.025f, this)).row();
+            add(nameLabel = new Label(profile.getDisplayName(), getGameSkin(), "profile")).width(Value.percentWidth(1f, this)).center().expand().padBottom(Value.percentHeight(.025f, this)).row();
             add(button = new TextButton("Action", createSmallTBStyle(parent))).width(Value.percentWidth(1f, this)).height(Value.percentWidth(0.1842105263157895f, this));
             nameLabel.setAlignment(Align.center);
 
@@ -301,35 +288,27 @@ public class FriendsUI extends StageUI {
             addActor(closeButton);
             closeButton.setVisible(false);
 
-            button.addListener(new ClickListener() {
-
-                public void clicked(InputEvent e, float x, float y) {
-                    switch (status) {
-                        case FriendProfile.STATUS_NONE://send request
-                            changeStatus(FriendWidget.this, FriendProfile.STATUS_SENT);
-                            break;
-                        case FriendProfile.STATUS_SENT://cancel sent request
-                            changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
-                            break;
-                        case FriendProfile.STATUS_INCOMING://accept incoming
-                            changeStatus(FriendWidget.this, FriendProfile.STATUS_ACCEPTED);
-                            break;
-                        case FriendProfile.STATUS_ACCEPTED://remove friend
-                            changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
-                            break;
-                    }
+            Helper.addClickAction(button, (e, x, y) -> {
+                switch (status) {
+                    case FriendProfile.STATUS_NONE://send request
+                        changeStatus(FriendWidget.this, FriendProfile.STATUS_SENT);
+                        break;
+                    case FriendProfile.STATUS_SENT://cancel sent request
+                        changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
+                        break;
+                    case FriendProfile.STATUS_INCOMING://accept incoming
+                        changeStatus(FriendWidget.this, FriendProfile.STATUS_ACCEPTED);
+                        break;
+                    case FriendProfile.STATUS_ACCEPTED://remove friend
+                        changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
+                        break;
                 }
-
             });
+
+
 
             //close only visible when incoming
-            closeButton.addListener(new ClickListener() {
-
-                public void clicked(InputEvent e, float x, float y) {
-                    changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
-                }
-
-            });
+            Helper.addClickAction(closeButton, (e, x, y) -> changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE));
         }
 
         @Override

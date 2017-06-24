@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.fuzzjump.game.FuzzJump;
+import com.fuzzjump.game.game.screen.GameScreen;
 import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
@@ -58,6 +59,7 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
         screenHandler.addScreen(MainScreen.class, 0);
         screenHandler.addScreen(MenuScreen.class, 2);
         screenHandler.addScreen(WaitingScreen.class, 0);
+        screenHandler.addScreen(GameScreen.class, 0);
 
         screenHandler.showScreen(SplashScreen.class);
     }

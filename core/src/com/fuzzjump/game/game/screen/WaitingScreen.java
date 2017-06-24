@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
@@ -24,6 +25,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     public static final int MAX_PLAYERS = 4;
 
     private final FuzzJumpParams params;
+    private final UnlockableRepository unlockableDefinitions;
 
     private final Stage stage;
 
@@ -40,11 +42,12 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private List<Profile> players = new ArrayList<>();
 
     @Inject
-    public WaitingScreen(Stage stage, WaitingUI ui, FuzzJumpParams params, Profile profile) {
+    public WaitingScreen(Stage stage, WaitingUI ui, FuzzJumpParams params, Profile profile, UnlockableRepository unlockableDefinitions) {
         super(ui);
         this.stage = stage;
         this.params = params;
         this.profile = profile;
+        this.unlockableDefinitions = unlockableDefinitions;
     }
 
     @Override
@@ -52,7 +55,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
         gameSession.connect();
 
-        timeLabel = this.getUI().actor(Assets.WaitingUI.TIME_LABEL);
+        timeLabel = this.ui().actor(Assets.WaitingUI.TIME_LABEL);
         initPacketListeners();
     }
 
@@ -84,7 +87,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 }
                 Profile profile = findProfile(player);
                 if (profile == null || profile.getProfileId() != player.getProfileId()) {
-                    profile = new Profile();
+                    profile = new Profile(unlockableDefinitions);
                     profile.setPlayerIndex(player.getPlayerIndex());
                     profile.setProfileId(player.getProfileId());
                     profile.setReady(player.getReady());
@@ -92,9 +95,9 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 profile.setReady(player.getReady());
                 players.add(profile);
             }
-            getUI().update(players);
+            ui().update(players);
         }
-        getUI().setMapSlots(message.getMapSlotsList());
+        ui().setMapSlots(message.getMapSlotsList());
         int time = message.getTime().getTime();
         setTime(time);
     }

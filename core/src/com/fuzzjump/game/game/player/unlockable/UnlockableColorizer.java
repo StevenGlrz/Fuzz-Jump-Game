@@ -30,8 +30,9 @@ public class UnlockableColorizer {
     }
 
     public TextureRegion getColored(StageUITextures textures, Unlockable unlockable, boolean hardref) {
-        if (unlockable == null)
+        if (unlockable == null) {
             return null;
+        }
         return getColored(textures, unlockable.getDefinition(), unlockable.getColorIndex(), hardref);
     }
 

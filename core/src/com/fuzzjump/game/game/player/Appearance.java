@@ -4,7 +4,6 @@ import com.fuzzjump.game.game.player.unlockable.Unlockable;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.util.Helper;
-import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -28,15 +27,16 @@ public class Appearance {
     public static final int COUNT = 5;
 
     private LinkedList<AppearanceChangeListener> changeListeners = new LinkedList<>();
-    private long[] equips = new long[5];
+    private int[] equips = new int[5];
 
     private Map<Integer, Unlockable> unlockables = new HashMap<>();
     private Map<Integer, Integer> colorIndexSnapshot = new HashMap<>();
+    private final UnlockableRepository unlockableDefinitions;
 
-    private long[] equipSnapshot;
+    private int[] equipSnapshot;
 
-    public Appearance() {
-
+    public Appearance(UnlockableRepository unlockableDefinitions) {
+        this.unlockableDefinitions = unlockableDefinitions;
     }
 
     public void snapshot() {
@@ -93,34 +93,21 @@ public class Appearance {
         return diffs;
     }
 
-    public void createDummy(UnlockableRepository definitions) {
-        setEquip(0, 0);
-        setEquip(1, 32);
-        setEquip(2, 118);
-        setEquip(3, 0);
-        setEquip(4, 73);
-
-        for (int i = 0; i < equips.length; i++) {
-            unlockables.put((int) equips[i], new Unlockable(definitions.getDefinition((int) equips[i]), (int) equips[i], 0));
+    public Unlockable createUnlockable(int id, int color) {
+        if (id == -1) {
+            return null;
         }
-    }
-
-    public Unlockable createUnlockable(UnlockableRepository definitions, JsonObject unlockObj) {
-        int unlockableId = unlockObj.get("UnlockableId").getAsInt(); // was interpreted as long before, so need to test
-        int colorIndex = unlockObj.get("ColorIndex").getAsInt();
-        int definitionId = unlockObj.get("UnlockableDefinitionId").getAsInt();
-        UnlockableDefinition definition = definitions.getDefinition(definitionId);
-        Unlockable unlockable = new Unlockable(definition, unlockableId, colorIndex);
+        Unlockable unlockable = new Unlockable(unlockableDefinitions.getDefinition(id), id, color);
         unlockables.put(unlockable.getId(), unlockable);
         return unlockable;
     }
 
-    public void setEquip(int index, long id) {
+    public void setEquip(int index, int id) {
         this.equips[index] = id;
         raiseEvent();
     }
 
-    public long getDefinitionId(int id) {
+    public int getDefinitionId(int id) {
         return equips[id];
     }
 
@@ -128,22 +115,17 @@ public class Appearance {
         return getItem(equips[equip]);
     }
 
-    public int getColorIndex(long itemId) {
+    public int getColorIndex(int itemId) {
         Unlockable unlockable = getItem(itemId);
-        if (unlockable == null)
-            return -1;
-        return getItem(itemId).getColorIndex();
+        return unlockable == null ? -1 : getItem(itemId).getColorIndex();
     }
 
-    public long getItemId(UnlockableDefinition def) {
+    public int getItemId(UnlockableDefinition def) {
         for (int i = 0; i < unlockables.size(); i++) {
             Unlockable unlockable = unlockables.get(i);
-            if (unlockable == null)
-                continue;
-            if (unlockable.getDefinition().getId() == def.getId()) {
+            if (unlockable != null && unlockable.getDefinition().getId() == def.getId()) {
                 return unlockables.get(i).getId(); // TODO - Check if this is valid
             }
-
         }
         return -1;
     }
@@ -152,16 +134,16 @@ public class Appearance {
         return getItem(getItemId(def));
     }
 
-    public void setColorIndex(long itemId, int entryIndex) {
+    public void setColorIndex(int itemId, int entryIndex) {
         Unlockable unlockable = getItem(itemId);
-        if (unlockable == null)
-            return;
-        unlockable.setColorIndex(entryIndex);
-        raiseEvent();
+        if (unlockable != null) {
+            unlockable.setColorIndex(entryIndex);
+            raiseEvent();
+        }
     }
 
-    public Unlockable getItem(long itemId) {
-        return unlockables.get((int) itemId);
+    public Unlockable getItem(int itemId) {
+        return unlockables.get(itemId);
     }
 
     public void raiseEvent() {
@@ -175,14 +157,6 @@ public class Appearance {
 
     public void removeChangeListener(AppearanceChangeListener listener) {
         this.changeListeners.remove(listener);
-    }
-
-    public long[] getEquips() {
-        return equips.clone();
-    }
-
-    public boolean loaded() {
-        return unlockables.size() > 0;
     }
 
     public interface AppearanceChangeListener {

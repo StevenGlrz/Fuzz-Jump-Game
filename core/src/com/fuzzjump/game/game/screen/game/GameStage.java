@@ -68,7 +68,7 @@ public class GameStage extends Stage {
 
         addActor(gameActors);
 
-        TextureRegion winnerRegion = screen.getUI().getTextures().getTexture("winners-platform");
+        TextureRegion winnerRegion = screen.ui().getTextures().getTexture("winners-platform");
         Image winnersPlatform = new Image(winnerRegion);
         winnersPlatform.setSize(winnerRegion.getRegionWidth(), winnerRegion.getRegionHeight());
 
