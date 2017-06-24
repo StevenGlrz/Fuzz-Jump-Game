@@ -1,7 +1,6 @@
 package com.fuzzjump.game.service;
 
 import com.badlogic.gdx.Gdx;
-import com.fuzzjump.game.util.GraphicsScheduler;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -64,12 +63,6 @@ public class RetrofitModule {
                 .baseUrl("http://localhost:50086/")
                 .client(okHttpClient)
                 .build();
-    }
-
-    @Provides
-    @Singleton
-    GraphicsScheduler scheduler() {
-        return new GraphicsScheduler();
     }
 
 }

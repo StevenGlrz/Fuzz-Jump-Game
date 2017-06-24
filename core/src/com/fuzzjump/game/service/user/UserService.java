@@ -7,7 +7,6 @@ import com.fuzzjump.game.service.TokenInterceptor;
 import com.fuzzjump.game.service.model.Response;
 import com.fuzzjump.game.service.model.TokenResponse;
 import com.fuzzjump.game.service.user.model.RegisterRequest;
-import com.fuzzjump.game.util.GraphicsScheduler;
 
 import javax.inject.Inject;
 
@@ -25,20 +24,18 @@ public class UserService implements IUserService {
 
     private final UserRestService restService;
     private final TokenInterceptor tokenInterceptor;
-    private final GraphicsScheduler scheduler;
     private final Preferences preferences;
 
     @Inject
-    public UserService(Retrofit retrofit, TokenInterceptor tokenInterceptor, GraphicsScheduler scheduler, Preferences preferences) {
+    public UserService(Retrofit retrofit, TokenInterceptor tokenInterceptor, Preferences preferences) {
         this.restService = retrofit.create(UserRestService.class);
         this.tokenInterceptor = tokenInterceptor;
-        this.scheduler = scheduler;
         this.preferences = preferences;
     }
 
     @Override
     public Observable<Response> login(String username) {
-        return wrapForGame(restService.login(new RegisterRequest(username)));
+        return restService.login(new RegisterRequest(username));
     }
 
     @Override
@@ -56,10 +53,6 @@ public class UserService implements IUserService {
 
     private <T> Observable<T> wrapForIO(Observable<T> observable) {
         return observable.doOnError(Throwable::printStackTrace);
-    }
-
-    private <T> Observable<T> wrapForGame(Observable<T> observable) {
-        return observable.observeOn(scheduler).doOnError(Throwable::printStackTrace);
     }
 
     private interface UserRestService {

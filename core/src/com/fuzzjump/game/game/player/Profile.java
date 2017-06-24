@@ -16,6 +16,7 @@ public class Profile {
     private String userId;
     private String userName;
     private String displayName;
+    private int nameId;
     private int playerIndex;
     private int profileId = -1;
     private int coins;
@@ -43,6 +44,7 @@ public class Profile {
 
         userName = data.get("username").getAsString();
         displayName = data.get("displayName").getAsString();
+        nameId = data.get("nameId").getAsInt();
         userId = data.get("userId").getAsString();
         profileId = prof.get("id").getAsInt();
         coins = prof.get("coins").getAsInt();

@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 public class RegisterRequest {
 
     @SerializedName("Username")
-    private String username;
+    private final String username;
 
     public RegisterRequest(String username) {
         this.username = username;

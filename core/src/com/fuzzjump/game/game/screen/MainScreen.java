@@ -12,6 +12,7 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.service.user.IUserService;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.google.gson.JsonObject;
@@ -24,14 +25,16 @@ public class MainScreen extends StageScreen<MainUI> {
     private final Profile profile;
     private final UnlockableRepository unlockables;
     private final Preferences preferences;
+    private final GraphicsScheduler scheduler;
 
     @Inject
-    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences) {
+    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler) {
         super(ui);
         this.userService = userService;
         this.profile = profile;
         this.unlockables = unlockables;
         this.preferences = preferences;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class MainScreen extends StageScreen<MainUI> {
             waitingDialog.setName("Registering");
             showDialog(waitingDialog, getStage());
 
-            userService.login(userField.getText()).subscribe(r -> {
+            userService.login(userField.getText()).observeOn(scheduler).subscribe(r -> {
                 if (r != null && r.isSuccess()) {
                     JsonObject data = r.getBody();
 
@@ -87,6 +90,9 @@ public class MainScreen extends StageScreen<MainUI> {
                 } else {
                     // TODO Error handling
                 }
+            }, e -> {
+                e.printStackTrace();
+                // TODO Failed to register
             });
         }
     }
