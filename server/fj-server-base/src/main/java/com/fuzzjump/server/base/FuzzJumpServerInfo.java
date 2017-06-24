@@ -2,17 +2,83 @@ package com.fuzzjump.server.base;
 
 import com.steveadoo.server.base.ServerInfo;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
 public class FuzzJumpServerInfo extends ServerInfo {
 
     //the port that players use for direct connection
     public final int privatePort;
     //the ip of this machine
     public final String ip;
+    //api address
+    public final String apiAddress;
+    //api username
+    public final String apiUsername;
+    //api password
+    public final String apiPassword;
 
-    public FuzzJumpServerInfo(int port, int privatePort, String directIp) {
+    public FuzzJumpServerInfo(int port,
+                              int privatePort,
+                              String directIp,
+                              String apiAddress,
+                              String apiUsername,
+                              String apiPassword) {
         super(port);
         this.privatePort = privatePort;
         this.ip = directIp;
+        this.apiAddress = apiAddress;
+        this.apiUsername = apiUsername;
+        this.apiPassword = apiPassword;
+    }
+
+    public FuzzJumpServerInfo(FuzzJumpServerInfo info) {
+        this(info.port, info.privatePort, info.ip, info.apiAddress, info.apiUsername, info.apiPassword);
+    }
+
+    public static FuzzJumpServerInfo loadBaseInfo(String[] args) throws IOException {
+        String portStr = System.getenv("FUZZ_PORT");
+        String privatePortStr = System.getenv("FUZZ_PRIVATE_PORT");
+        String apiAddress = System.getenv("FUZZ_API");
+        String apiUsername = System.getenv("FUZZ_API_USERNAME");
+        String apiPassword = System.getenv("FUZZ_API_PASSWORD");
+        String onAwsStr = System.getenv("FUZZ_AWS");
+        if (onAwsStr == null || onAwsStr.equals("")) {
+            onAwsStr = "false";
+        }
+        boolean onAws = Boolean.parseBoolean(onAwsStr);
+        String directIp = getDirectIp(onAws);
+        return new FuzzJumpServerInfo(
+                Integer.parseInt(portStr),
+                Integer.parseInt(privatePortStr),
+                apiAddress,
+                apiUsername,
+                apiPassword,
+                directIp
+        );
+    }
+
+    public static String getDirectIp(boolean onAws) throws IOException {
+        if (!onAws) {
+            return InetAddress.getLocalHost().getHostAddress();
+        }
+        StringBuilder result = new StringBuilder();
+        URL url = new URL("http://169.254.169.254/latest/meta-data/public-hostname");
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String line;
+        while ((line = rd.readLine()) != null) {
+            result.append(line);
+        }
+        rd.close();
+        return result.toString();
     }
 
 }

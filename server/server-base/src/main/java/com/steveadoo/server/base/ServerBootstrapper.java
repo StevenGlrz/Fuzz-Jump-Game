@@ -38,7 +38,7 @@ public class ServerBootstrapper {
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
-        System.out.println("Listening on " + serverInfo.port);
+        System.out.println("Listening on port " + serverInfo.port);
         bootstrap.bind(new InetSocketAddress(serverInfo.port));
         return bootstrap;
     }

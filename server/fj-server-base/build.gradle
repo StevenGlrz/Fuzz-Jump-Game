@@ -4,6 +4,11 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'io.netty:netty-all:4.0.33.Final'
     compile 'com.google.protobuf:protobuf-java:2.6.1'
+    compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.1'
     compile project(':server-common')
     compile project(':server-base')
     compile project(':fj-server-common')
