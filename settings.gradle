@@ -1,4 +1,4 @@
-include ':libgdx-screens', ':server-common', ':server-base', ':fj-server-common', ':fj-server-matchmaking', ':fj-server-game', ':fj-server-base'
+include ':libgdx-screens', ':server-common', ':server-base', ':fj-server-common', ':fj-server-matchmaking', ':fj-server-game', ':fj-server-base', ':api'
 include 'desktop', 'android', 'ios', 'core', 'ios-moe'
 project(':server-base').projectDir = new File('server/server-base')
 project(':server-common').projectDir = new File('server/server-common')

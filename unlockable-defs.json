@@ -1,0 +1,685 @@
+[
+  {
+    "id": 0,
+    "name": "Blue",
+    "cost": 100,
+    "allowedTags": [
+      "*",
+      "Blue",
+      "Boy"
+    ],
+    "category": 0
+  },
+  {
+    "id": 128,
+    "name": "Wavy Wig",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 1,
+    "name": "Zoey",
+    "cost": 200,
+    "allowedTags": [
+      "*",
+      "Girl",
+      "Zoey"
+    ],
+    "category": 0
+  },
+  {
+    "id": 129,
+    "name": "Head Wrap",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 2,
+    "name": "Chunk",
+    "cost": 750,
+    "allowedTags": [
+      "*",
+      "Chunk",
+      "Boy"
+    ],
+    "category": 0
+  },
+  {
+    "id": 130,
+    "name": "Bronze Grill",
+    "cost": 100,
+    "allowedTags": [
+      "YF"
+    ],
+    "category": 4
+  },
+  {
+    "id": 3,
+    "name": "Fuzzbeard",
+    "cost": 1000,
+    "allowedTags": [
+      "*",
+      "Boy"
+    ],
+    "category": 0
+  },
+  {
+    "id": 131,
+    "name": "Silver Grill",
+    "cost": 500,
+    "allowedTags": [
+      "YF"
+    ],
+    "category": 4
+  },
+  {
+    "id": 4,
+    "name": "Yung Fuzz",
+    "cost": 1500,
+    "allowedTags": [
+      "YF"
+    ],
+    "category": 0
+  },
+  {
+    "id": 132,
+    "name": "Gold Grill",
+    "cost": 1000,
+    "allowedTags": [
+      "YF"
+    ],
+    "category": 4
+  },
+  {
+    "id": 5,
+    "name": "Mattie",
+    "cost": 500,
+    "allowedTags": [
+      "*",
+      "Girl"
+    ],
+    "category": 0
+  },
+  {
+    "id": 133,
+    "name": "Platinum Grill",
+    "cost": 10000,
+    "allowedTags": [
+      "YF"
+    ],
+    "category": 4
+  },
+  {
+    "id": 32,
+    "name": "Blue",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 33,
+    "name": "Green",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 34,
+    "name": "Orange",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 35,
+    "name": "Purple",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 36,
+    "name": "Red",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 37,
+    "name": "Hearts",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 38,
+    "name": "Ocean",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 39,
+    "name": "Admiral",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 1
+  },
+  {
+    "id": 73,
+    "name": "Big Bandage",
+    "cost": 100,
+    "allowedTags": [
+      "Blue"
+    ],
+    "category": 4
+  },
+  {
+    "id": 74,
+    "name": "Butterfly Bandage",
+    "cost": 100,
+    "allowedTags": [
+      "Blue"
+    ],
+    "category": 4
+  },
+  {
+    "id": 75,
+    "name": "Serrated Bandage",
+    "cost": 100,
+    "allowedTags": [
+      "Blue"
+    ],
+    "category": 4
+  },
+  {
+    "id": 76,
+    "name": "Bib",
+    "cost": 100,
+    "allowedTags": [
+      "Chunk"
+    ],
+    "category": 4
+  },
+  {
+    "id": 77,
+    "name": "Lollipop",
+    "cost": 100,
+    "allowedTags": [
+      "Chunk"
+    ],
+    "category": 4
+  },
+  {
+    "id": 78,
+    "name": "PB \u0026 J",
+    "cost": 100,
+    "allowedTags": [
+      "Chunk"
+    ],
+    "category": 4
+  },
+  {
+    "id": 79,
+    "name": "Butterfly",
+    "cost": 100,
+    "allowedTags": [
+      "Girl"
+    ],
+    "category": 2
+  },
+  {
+    "id": 80,
+    "name": "Heart",
+    "cost": 100,
+    "allowedTags": [
+      "Girl"
+    ],
+    "category": 2
+  },
+  {
+    "id": 81,
+    "name": "Panda Bow",
+    "cost": 1000,
+    "allowedTags": [
+      "Girl"
+    ],
+    "category": 2
+  },
+  {
+    "id": 82,
+    "name": "Skull Bow",
+    "cost": 1000,
+    "allowedTags": [
+      "Girl"
+    ],
+    "category": 2
+  },
+  {
+    "id": 83,
+    "name": "Wing",
+    "cost": 250,
+    "allowedTags": [
+      "Girl"
+    ],
+    "category": 2
+  },
+  {
+    "id": 84,
+    "name": "Eye Makeup",
+    "cost": 250,
+    "allowedTags": [
+      "Zoey"
+    ],
+    "category": 3
+  },
+  {
+    "id": 85,
+    "name": "Bullseye",
+    "cost": 250,
+    "allowedTags": [
+      "Fuzzbeard"
+    ],
+    "category": 3
+  },
+  {
+    "id": 86,
+    "name": "Rainbow",
+    "cost": 500,
+    "allowedTags": [
+      "Fuzzbeard"
+    ],
+    "category": 3
+  },
+  {
+    "id": 87,
+    "name": "Steampunk",
+    "cost": 750,
+    "allowedTags": [
+      "Fuzzbeard"
+    ],
+    "category": 3
+  },
+  {
+    "id": 88,
+    "name": "Cybervisor",
+    "cost": 1500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 3
+  },
+  {
+    "id": 89,
+    "name": "Eyeglasses",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 3
+  },
+  {
+    "id": 90,
+    "name": "Monocle",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 3
+  },
+  {
+    "id": 91,
+    "name": "Sunglasses",
+    "cost": 250,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 3
+  },
+  {
+    "id": 92,
+    "name": "Bandana",
+    "cost": 250,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 93,
+    "name": "Beard",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 94,
+    "name": "Goatee",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 95,
+    "name": "Mustache",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 96,
+    "name": "Mustache",
+    "cost": 250,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 97,
+    "name": "Gas Mask",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 98,
+    "name": "Hockey Mask",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 99,
+    "name": "Face Wrap",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 100,
+    "name": "Red Nose",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 101,
+    "name": "Pipe",
+    "cost": 750,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 102,
+    "name": "Surgical Mask",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 4
+  },
+  {
+    "id": 103,
+    "name": "Beanie",
+    "cost": 150,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 104,
+    "name": "Soda Guzzler",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 105,
+    "name": "Beret",
+    "cost": 300,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 106,
+    "name": "Bowler",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 107,
+    "name": "Cheese",
+    "cost": 250,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 108,
+    "name": "Chef Hat",
+    "cost": 300,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 109,
+    "name": "Circlet",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 110,
+    "name": "Cowboy Hat",
+    "cost": 1500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 111,
+    "name": "Fez",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 112,
+    "name": "Head Mirror",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 113,
+    "name": "Mohawk",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 114,
+    "name": "Nurse Hat",
+    "cost": 250,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 115,
+    "name": "Octopus",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 116,
+    "name": "Pirate Hat",
+    "cost": 750,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 117,
+    "name": "Safari Hat",
+    "cost": 750,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 118,
+    "name": "Santa Hat",
+    "cost": 750,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 119,
+    "name": "Sherlock Hat",
+    "cost": 1000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 120,
+    "name": "Sombrero",
+    "cost": 500,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 121,
+    "name": "Sunhat",
+    "cost": 750,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 122,
+    "name": "Tophat",
+    "cost": 2000,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 123,
+    "name": "Afro",
+    "cost": 250,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 124,
+    "name": "Bob Wig",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 125,
+    "name": "Curly Wig",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 126,
+    "name": "Pigtails",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  },
+  {
+    "id": 127,
+    "name": "Spikey Wig",
+    "cost": 100,
+    "allowedTags": [
+      "*"
+    ],
+    "category": 2
+  }
+]

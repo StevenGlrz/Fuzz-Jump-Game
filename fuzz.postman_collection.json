@@ -1,0 +1,164 @@
+{
+	"variables": [],
+	"info": {
+		"name": "fuzz",
+		"_postman_id": "3b5dc480-75b6-d89d-16f2-e7166873d2c2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"request": {
+				"url": "http://localhost:61807/connect/register",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Username\": \"Steveadoo\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Authorize",
+			"request": {
+				"url": "http://localhost:61807/connect/token",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Steveadoo-y5WOMzqsnS",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "LGbfyjFqT!",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get friends",
+			"request": {
+				"url": "http://localhost:61807/friends",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer CfDJ8HBmMRSZ3UREnkLJIfyix6CFsRObsZi2cO74-MoC7RW86P2EAwzhfqTTDZik1ZM9KniIsHAjutVB5zpeo3zM_9gNTd9nu8mqIXZ_ubcbivx1mboh5gJUvr2eVB_9Lx7V1JSPFdfZr4vntuGMHIqw70et_xWS0ggqDMJBcdPfBrdQUpXPRweUxL1n6zWNvCatz0Od_5eT4ePg7Cm0x3rhyh4XNJ0DLoThX6U5WX_cxQd5-cCWvIffEI11KhxXZSn_DYHL3AtxreiTadJ9EZ9reYUoZNxTAUuPqAZ2LEQdT_xP6oKoO5R2qwgLT3-3TjJd1mxuYa1lvdy6pvNPAKEVa90Viz4zeyUG0Q6bPmPRCeL3mb616jRr5IWVGQsB9zN1W_-wUn1oxqB1blLyfrbH1GKp_xZSWz7AAYIZ3E-zAMnXRPutbnm5d_IkAli4KxJ9cTb02-a2ctnlhhn3wUq_9ImzliPjf-TBqy6ZTQXNu6hPjZfK6el2el82NUDoZqoCACkVVbqLBOulTZoLq0WZopdQxTfvUZMwaoLKxdvA9q0xIBqt2qrAp-40qELWyDdbsexyfaU6AhhrYLxtVu1FqN6oaUFcP3s0-IjMgR_glxkSebFOGdeIUxiQuNK3UdQe1nf4k0ZPaSyjHzEUfn7JTAM3SfVuezyETEdCzmzfBfmohCRl2utuI4zZypAS7yG3cG77E3GW5nXX44R6wL2g4FM",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "Steveadoo-y5WOMzqsnS",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "password",
+							"value": "LGbfyjFqT!",
+							"type": "text",
+							"enabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text",
+							"enabled": true
+						}
+					]
+				},
+				"description": "get friends"
+			},
+			"response": []
+		},
+		{
+			"name": "Add friend",
+			"request": {
+				"url": "http://localhost:61807/friends",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer CfDJ8HBmMRSZ3UREnkLJIfyix6CFsRObsZi2cO74-MoC7RW86P2EAwzhfqTTDZik1ZM9KniIsHAjutVB5zpeo3zM_9gNTd9nu8mqIXZ_ubcbivx1mboh5gJUvr2eVB_9Lx7V1JSPFdfZr4vntuGMHIqw70et_xWS0ggqDMJBcdPfBrdQUpXPRweUxL1n6zWNvCatz0Od_5eT4ePg7Cm0x3rhyh4XNJ0DLoThX6U5WX_cxQd5-cCWvIffEI11KhxXZSn_DYHL3AtxreiTadJ9EZ9reYUoZNxTAUuPqAZ2LEQdT_xP6oKoO5R2qwgLT3-3TjJd1mxuYa1lvdy6pvNPAKEVa90Viz4zeyUG0Q6bPmPRCeL3mb616jRr5IWVGQsB9zN1W_-wUn1oxqB1blLyfrbH1GKp_xZSWz7AAYIZ3E-zAMnXRPutbnm5d_IkAli4KxJ9cTb02-a2ctnlhhn3wUq_9ImzliPjf-TBqy6ZTQXNu6hPjZfK6el2el82NUDoZqoCACkVVbqLBOulTZoLq0WZopdQxTfvUZMwaoLKxdvA9q0xIBqt2qrAp-40qELWyDdbsexyfaU6AhhrYLxtVu1FqN6oaUFcP3s0-IjMgR_glxkSebFOGdeIUxiQuNK3UdQe1nf4k0ZPaSyjHzEUfn7JTAM3SfVuezyETEdCzmzfBfmohCRl2utuI4zZypAS7yG3cG77E3GW5nXX44R6wL2g4FM",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": \"06ccc672-2412-4c03-90c2-dae8a8059192\"\n}"
+				},
+				"description": "add friends"
+			},
+			"response": []
+		},
+		{
+			"name": "Get profile",
+			"request": {
+				"url": "http://localhost:61807/profile",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer CfDJ8HBmMRSZ3UREnkLJIfyix6CFsRObsZi2cO74-MoC7RW86P2EAwzhfqTTDZik1ZM9KniIsHAjutVB5zpeo3zM_9gNTd9nu8mqIXZ_ubcbivx1mboh5gJUvr2eVB_9Lx7V1JSPFdfZr4vntuGMHIqw70et_xWS0ggqDMJBcdPfBrdQUpXPRweUxL1n6zWNvCatz0Od_5eT4ePg7Cm0x3rhyh4XNJ0DLoThX6U5WX_cxQd5-cCWvIffEI11KhxXZSn_DYHL3AtxreiTadJ9EZ9reYUoZNxTAUuPqAZ2LEQdT_xP6oKoO5R2qwgLT3-3TjJd1mxuYa1lvdy6pvNPAKEVa90Viz4zeyUG0Q6bPmPRCeL3mb616jRr5IWVGQsB9zN1W_-wUn1oxqB1blLyfrbH1GKp_xZSWz7AAYIZ3E-zAMnXRPutbnm5d_IkAli4KxJ9cTb02-a2ctnlhhn3wUq_9ImzliPjf-TBqy6ZTQXNu6hPjZfK6el2el82NUDoZqoCACkVVbqLBOulTZoLq0WZopdQxTfvUZMwaoLKxdvA9q0xIBqt2qrAp-40qELWyDdbsexyfaU6AhhrYLxtVu1FqN6oaUFcP3s0-IjMgR_glxkSebFOGdeIUxiQuNK3UdQe1nf4k0ZPaSyjHzEUfn7JTAM3SfVuezyETEdCzmzfBfmohCRl2utuI4zZypAS7yG3cG77E3GW5nXX44R6wL2g4FM",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"userId\": \"06ccc672-2412-4c03-90c2-dae8a8059192\"\n}"
+				},
+				"description": "get profile"
+			},
+			"response": []
+		}
+	]
+}
