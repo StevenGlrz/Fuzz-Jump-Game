@@ -14,6 +14,7 @@ import com.fuzzjump.game.game.map.GameMapParser;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.screen.ScreenHandler;
@@ -24,6 +25,12 @@ import dagger.Provides;
 
 @Module
 public class FuzzJumpGameModule {
+
+    @FuzzJumpScope
+    @Provides
+    public GraphicsScheduler provideGraphicsScheduler() {
+        return new GraphicsScheduler();
+    }
 
     @FuzzJumpScope
     @Provides

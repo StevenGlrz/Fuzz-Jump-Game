@@ -1,9 +1,9 @@
 package com.fuzzjump.game.di;
 
+import com.fuzzjump.api.ServiceModule;
 import com.fuzzjump.game.game.di.FuzzJumpGameComponent;
 import com.fuzzjump.game.game.di.FuzzJumpGameModule;
 import com.fuzzjump.game.platform.PlatformModule;
-import com.fuzzjump.game.service.ServiceModule;
 
 import javax.inject.Singleton;
 

@@ -80,12 +80,12 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         for (LobbyPlayer player : players) {
             readyCount += player.isReady() ? 1 : 0;
             if (!player.isSynced()) {
-                player.channel.write(stateBuilder.buildPartial());
+                player.getChannel().write(stateBuilder.buildPartial());
                 player.setSynced(true);
             } else {
-                player.channel.write(timeState);
+                player.getChannel().write(timeState);
             }
-            player.channel.flush();
+            player.getChannel().flush();
         }
         return remainingTime <= 0;
     }

@@ -7,11 +7,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.fuzzjump.api.user.IUserService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.MainUI;
-import com.fuzzjump.game.service.user.IUserService;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
@@ -82,7 +82,7 @@ public class MainScreen extends StageScreen<MainUI> {
                     preferences.putString(Assets.PROFILE_DATA, data.toString());
 
                     // Acquire token from API and persist preferences
-                    userService.retrieveToken(profile, password).subscribe();
+                    userService.retrieveToken(profile.getApiName(), password).subscribe();
 
                     // UI process
                     waitingDialog.setName("Loading game");

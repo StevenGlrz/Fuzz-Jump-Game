@@ -112,6 +112,12 @@ gradle-app.setting
 /ios/build/
 /ios-moe/build/
 
+/server/server-base/build/
+/server/server-common/build/
+/server/fj-server-common/server-common/build/
+/server/fj-server-matchmaking/server-common/build/
+/libgdx-screens/build/
+
 ## OS Specific
 .DS_Store
 Thumbs.db

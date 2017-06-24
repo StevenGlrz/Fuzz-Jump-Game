@@ -1,8 +1,5 @@
 package com.fuzzjump.api.user;
 
-import com.badlogic.gdx.Preferences;
-import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.api.TokenInterceptor;
 import com.fuzzjump.api.model.Response;
 import com.fuzzjump.api.model.TokenResponse;
@@ -24,13 +21,11 @@ public class UserService implements IUserService {
 
     private final UserRestService restService;
     private final TokenInterceptor tokenInterceptor;
-    private final Preferences preferences;
 
     @Inject
-    public UserService(Retrofit retrofit, TokenInterceptor tokenInterceptor, Preferences preferences) {
+    public UserService(Retrofit retrofit, TokenInterceptor tokenInterceptor) {
         this.restService = retrofit.create(UserRestService.class);
         this.tokenInterceptor = tokenInterceptor;
-        this.preferences = preferences;
     }
 
     @Override
@@ -39,15 +34,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Observable<TokenResponse> retrieveToken(Profile profile, String password) {
-        return wrapForIO(restService.retrieveToken(profile.getApiName(), password, "password"))
+    public Observable<TokenResponse> retrieveToken(String username, String password) {
+        return wrapForIO(restService.retrieveToken(username, password, "password"))
                 .doOnNext(e -> {
                     // Set the token for our interceptor
                     tokenInterceptor.setToken(e.getAccessToken());
-
-                    // Store preferences and flush. Profile data should already be set in preferences.
-                    preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
-                    preferences.flush();
                 });
     }
 

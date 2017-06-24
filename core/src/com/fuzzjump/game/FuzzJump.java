@@ -1,6 +1,8 @@
 package com.fuzzjump.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.fuzzjump.api.RetrofitModule;
 import com.fuzzjump.game.di.DaggerFuzzJumpComponent;
 import com.fuzzjump.game.di.FuzzJumpModule;
 import com.fuzzjump.game.di.FuzzJumpComponent;
@@ -12,6 +14,7 @@ import com.fuzzjump.game.platform.PlatformModule;
 public class FuzzJump extends Game {
 
     private final FuzzJumpModule fuzzJumpModule;
+    private final RetrofitModule retrofitModule;
     private final PlatformModule platformModule;
 
     private FuzzJumpGame game;
@@ -21,6 +24,7 @@ public class FuzzJump extends Game {
     public FuzzJump(FuzzJumpParams gameParams,
                     PlatformModule platformModule) {
         this.fuzzJumpModule = new FuzzJumpModule(this, gameParams);
+        this.retrofitModule = new RetrofitModule("./");
         this.platformModule = platformModule;
     }
 
@@ -29,6 +33,7 @@ public class FuzzJump extends Game {
         component = DaggerFuzzJumpComponent.builder()
                 .fuzzJumpModule(fuzzJumpModule)
                 .platformModule(platformModule)
+                .retrofitModule(retrofitModule)
                 .build();
         gameComponent = component.gameComponent(new FuzzJumpGameModule());
         game = gameComponent.provideGame();

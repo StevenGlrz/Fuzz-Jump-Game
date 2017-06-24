@@ -10,5 +10,5 @@ public interface IUserService {
 
     Observable<Response> login(String username);
 
-    Observable<TokenResponse> retrieveToken(String password);
+    Observable<TokenResponse> retrieveToken(String username, String password);
 }

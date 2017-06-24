@@ -1,8 +1,5 @@
 package com.fuzzjump.api;
 
-import com.badlogic.gdx.Gdx;
-import com.fuzzjump.game.game.Assets;
-
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -15,10 +12,6 @@ import okhttp3.Response;
 public class TokenInterceptor implements Interceptor {
 
     private String token;
-
-    public TokenInterceptor() {
-        this.token = Gdx.app.getPreferences(Assets.PREFERENCES_NAME).getString(Assets.USER_TOKEN, null);
-    }
 
     @Override
     public Response intercept(Chain chain) throws IOException {
@@ -34,4 +27,5 @@ public class TokenInterceptor implements Interceptor {
     public void setToken(String token) {
         this.token = token;
     }
+
 }
