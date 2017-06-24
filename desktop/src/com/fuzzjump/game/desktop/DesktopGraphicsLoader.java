@@ -8,10 +8,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 
 import org.apache.batik.anim.dom.SAXSVGDocumentFactory;
-import org.apache.batik.bridge.BridgeContext;
-import org.apache.batik.bridge.GVTBuilder;
-import org.apache.batik.bridge.UserAgentAdapter;
-import org.apache.batik.gvt.GraphicsNode;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.ImageTranscoder;
@@ -21,10 +17,7 @@ import org.w3c.dom.svg.SVGDocument;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 public class DesktopGraphicsLoader extends VectorGraphicsLoader {
 
@@ -37,10 +30,8 @@ public class DesktopGraphicsLoader extends VectorGraphicsLoader {
 
     @Override
     public TextureRegion load(VectorDetail vectorDetail, String svgMarkup, float targetWidth, float targetHeight, boolean cache) {
-
         ByteArrayInputStream is = new ByteArrayInputStream(svgMarkup.getBytes());
         SVGDocument document = null;
-
         try {
             document = factory.createSVGDocument(null, is);
         } catch (Exception e) {
@@ -52,46 +43,31 @@ public class DesktopGraphicsLoader extends VectorGraphicsLoader {
                 e.printStackTrace();
             }
         }
-
-        BridgeContext ctx = new BridgeContext(new UserAgentAdapter());
-        GraphicsNode gvtRoot = (new GVTBuilder()).build(ctx, document);
         //batik why :(
         float width = document.getRootElement().getWidth().getBaseVal().getValue();
         float height = document.getRootElement().getHeight().getBaseVal().getValue();
-        Vector2 size = calculateSize(targetWidth, targetHeight, (float) (width / height));
+        Vector2 size = calculateSize(targetWidth, targetHeight, width / height);
 
         final TranscoderInput input = new TranscoderInput(document);
         final ImageTranscoder transcoder = new PNGTranscoder();
         transcoder.addTranscodingHint(PNGTranscoder.KEY_WIDTH, size.x);
         transcoder.addTranscodingHint(PNGTranscoder.KEY_HEIGHT, size.y);
-        //transcoder.addTranscodingHint(PNGTranscoder.KEY_AOI, new Rectangle2D.Float(x, y, width, height));
 
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         final TranscoderOutput output = new TranscoderOutput(os);
-        Future<byte[]> future = workerService.submit(new Callable<byte[]>() {
-            public byte[] call() {
-                byte[] pngData;
-                try {
-                    transcoder.transcode(input, output);
-                    pngData = os.toByteArray();
-                    os.close();
-                } catch (Exception e) {
-                    return null;
-                }
-                return pngData;
-            }
-        });
-        byte[] pngData = null;
+
+        byte[] pngData;
         try {
-            pngData = future.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            transcoder.transcode(input, output);
+            pngData = os.toByteArray();
+            Pixmap pixmap = new Pixmap(pngData, 0, pngData.length);
+            if (cache && Gdx.files.isLocalStorageAvailable())
+                cache(pngData, vectorDetail);
+
+            os.close();
+            return new TextureRegion(new Texture(pixmap));
+        } catch (Exception e) {
+            return null;
         }
-        Pixmap pixmap = new Pixmap(pngData, 0, pngData.length);
-        if (cache && Gdx.files.isLocalStorageAvailable())
-            cache(pngData, vectorDetail);
-        return new TextureRegion(new Texture(pixmap));
     }
 }

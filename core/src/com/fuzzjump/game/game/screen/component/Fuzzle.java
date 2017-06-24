@@ -10,7 +10,8 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 /**
  * Created by stephen on 8/21/2015.
@@ -76,16 +77,21 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             this.profile.getAppearance().removeChangeListener(this);
         this.profile = profile;
         profile.getAppearance().addChangeListener(this);
-        appearanceChanged();
+    }
+
+    public void load(ScreenLoader loader) {
+        if (profile != null) {
+            setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE)); // fuzzles are cached
+            loader.add(() -> setFrame(profile.getAppearance().getEquip(Appearance.FRAME)));
+            loader.add(() -> setEyes(profile.getAppearance().getEquip(Appearance.EYES)));
+            loader.add(() -> setFace(profile.getAppearance().getEquip(Appearance.FACE)));
+            loader.add(() -> setHead(profile.getAppearance().getEquip(Appearance.HEAD)));
+        }
     }
 
     @Override
     public void appearanceChanged() {
-        setFuzzle(profile.getAppearance().getEquip(Appearance.FUZZLE));
-        setFrame(profile.getAppearance().getEquip(Appearance.FRAME));
-        setEyes(profile.getAppearance().getEquip(Appearance.EYES));
-        setFace(profile.getAppearance().getEquip(Appearance.FACE));
-        setHead(profile.getAppearance().getEquip(Appearance.HEAD));
+        // TODO
     }
 
     @Override
@@ -116,8 +122,9 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             questionMark.draw(batch, getX() + getWidth() / 2 - questionMarkWidth / 2, getY() + getHeight() / 2 - questionMarkHeight / 2, questionMarkWidth, questionMarkHeight);
             return;
         }
-        if (drawFrame)
+        if (drawFrame) {
             frameDrawable.draw(batch, getX(), getY(), getWidth(), getHeight());
+        }
         fuzzleDrawable.draw(batch, getX() + fuzzleBounds.x, getY() + fuzzleBounds.y, fuzzleBounds.width, fuzzleBounds.height);
         drawPart(batch, face, faceDrawable, faceBounds);
         drawPart(batch, eyes, eyesDrawable, eyesBounds);
@@ -141,8 +148,9 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
 
     public void updateBounds(Rectangle bounds, UnlockableDefinition definition, TextureRegionDrawable drawable) {
         try {
-            if (definition.getBounds() == null)
+            if (definition.getBounds() == null) {
                 return;
+            }
             Rectangle uBound = definition.getBounds()[fuzzle.getDefinition().getId()];
             bounds.x = fuzzleBounds.x + (uBound.x * fuzzleBounds.width);
             bounds.y = fuzzleBounds.y + (uBound.y * fuzzleBounds.height);
@@ -159,6 +167,7 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             bounds.y -= bounds.height / 2f;
             bounds.x -= bounds.width / 2f;
         } catch (Exception e) {
+            // ????
             e.printStackTrace();
             bounds.width = 0;
             bounds.height = 0;

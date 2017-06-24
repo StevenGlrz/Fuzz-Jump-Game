@@ -1,6 +1,5 @@
 package com.fuzzjump.game.game.screen.ui;
 
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 
 import static com.fuzzjump.game.game.Assets.createCheckBoxStyle;
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
@@ -22,7 +21,6 @@ public class SettingsUI extends StageUI {
 
     private MenuUI parent;
     private ScrollPane pane;
-
 
     public SettingsUI(MenuUI parent) {
         super(parent.getTextures(), parent.getGameSkin());
@@ -38,6 +36,8 @@ public class SettingsUI extends StageUI {
         TextButton logoutButton = new TextButton("Logout", createDefaultTBStyle(this));
         TextButton creditsButton = new TextButton("Credits", createDefaultTBStyle(this));
         TextButton backButton = new TextButton("Back", createDefaultTBStyle(this));
+
+        Value padOuterSides = Value.percentWidth(.15f, this);
 
         Table container = new Table();
         container.setBackground(textures.getTextureRegionDrawable(Assets.UI_PANEL_WELCOME));
@@ -58,8 +58,7 @@ public class SettingsUI extends StageUI {
         container.row();
         container.add(backButton).height(buttonHeight).colspan(2).padLeft(padSides).padRight(padSides).padTop(padTopBottom).center();
 
-        add(container).height(Value.percentHeight(.65f, this)).width(Value.percentWidth(1f, this)).center();
-        add(new Actor()).expand();
+        add(container).padLeft(padOuterSides).padRight(padOuterSides).height(Value.percentHeight(.65f, this)).width(Value.percentWidth(.9f, this)).center().expand();
 
         setFillParent(true);
 

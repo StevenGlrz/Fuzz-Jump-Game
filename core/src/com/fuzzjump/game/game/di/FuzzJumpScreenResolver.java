@@ -5,8 +5,8 @@ import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
 import com.fuzzjump.game.game.screen.WaitingScreen;
-import com.fuzzjump.libgdxscreens.ScreenResolver;
-import com.fuzzjump.libgdxscreens.StageScreen;
+import com.fuzzjump.libgdxscreens.screen.ScreenResolver;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
 
 public class FuzzJumpScreenResolver implements ScreenResolver {
 

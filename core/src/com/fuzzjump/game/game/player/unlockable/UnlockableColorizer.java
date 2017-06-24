@@ -2,24 +2,16 @@ package com.fuzzjump.game.game.player.unlockable;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.libgdxscreens.StageUITextures;
+import com.fuzzjump.libgdxscreens.screen.StageUITextures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
-/**
- * Created by stephen on 8/21/2015.
- */
-@Singleton
 public class UnlockableColorizer {
 
     private final VectorGraphicsLoader vectorGraphicsLoader;
 
-    @Inject
     public UnlockableColorizer(VectorGraphicsLoader vectorGraphicsLoader) {
         this.vectorGraphicsLoader = vectorGraphicsLoader;
     }
@@ -38,8 +30,9 @@ public class UnlockableColorizer {
     }
 
     public TextureRegion getColored(StageUITextures textures, Unlockable unlockable, boolean hardref) {
-        if (unlockable == null)
+        if (unlockable == null) {
             return null;
+        }
         return getColored(textures, unlockable.getDefinition(), unlockable.getColorIndex(), hardref);
     }
 
@@ -58,14 +51,13 @@ public class UnlockableColorizer {
         return regions;
     }
 
-
     public TextureRegion colorize(UnlockableDefinition definition, int colorIndex) {
         VectorGraphicsLoader.VectorDetail svgInfo = new VectorGraphicsLoader.VectorDetail(Assets.UNLOCKABLES_DIR + definition.getCategory() + "/" + definition.getId() + ".svg", "unlockable-" + definition.getCategory() + "-" + definition.getId(), "screen_width:.75", "asp");
         ColorGroup group = null;
         if (definition.getColorGroups() != null && definition.getColorGroups().length > colorIndex)
             group = definition.getColorGroups()[colorIndex];
-        //never cache unlockables
-        return vectorGraphicsLoader.load(svgInfo, group, definition.getReplaceGroup(), false);
+        //never cache unlockable (unless it is a fuzz)
+        return vectorGraphicsLoader.load(svgInfo, group, definition.getReplaceGroup(), definition.getId() < Assets.FUZZLE_COUNT);
     }
 
     public TextureRegion colorize(Unlockable unlockable) {

@@ -1,9 +1,5 @@
 package com.fuzzjump.game.game.player.unlockable;
 
-/**
- * Kerpow Games, LLC
- * Created by stephen on 4/7/2015.
- */
 public class Unlockable {
 
     private final UnlockableDefinition definition;
@@ -11,6 +7,9 @@ public class Unlockable {
     private int colorIndex;
 
     public Unlockable(UnlockableDefinition definition, int id, int colorIndex) {
+        if (id == -1) {
+            throw new IllegalArgumentException("Unlockable ID not allowed to be less than zero!");
+        }
         this.definition = definition;
         this.id = id;
         this.colorIndex = colorIndex;

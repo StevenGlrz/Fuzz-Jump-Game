@@ -1,6 +1,8 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -11,50 +13,49 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
-import com.fuzzjump.game.service.user.IUserService;
-import com.fuzzjump.libgdxscreens.StageScreen;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
+import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import org.jrenner.smartfont.SmartFontGenerator;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 
 import javax.inject.Inject;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 /**
  * Created by Steven Galarza on 6/15/2017.
  */
 public class SplashScreen extends StageScreen<SplashUI> {
 
-    private final IUserService userService;
     private final Textures textures;
     private final Skin skin;
+    private final Profile profile;
     private final UnlockableRepository definitions;
-
-    private final Queue<Runnable> load = new LinkedList<>();
+    private final UnlockableColorizer colorizer;
+    private final Preferences preferences;
+    private final Gson gson;
 
     @Inject
-    public SplashScreen(SplashUI ui, IUserService userService, Textures textures, Skin skin, UnlockableRepository definitions) {
+    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, Preferences preferences, Gson gson) {
         super(ui);
-        this.userService = userService;
         this.textures = textures;
         this.skin = skin;
+        this.profile = profile;
         this.definitions = definitions;
+        this.colorizer = colorizer;
+        this.preferences = preferences;
+        this.gson = gson;
     }
 
     @Override
-    public void initialize() {
+    public void onReady() {
+        ScreenLoader loader = getLoader();
         Color shadow = new Color(0, 0, 0, .4f);
         SmartFontGenerator smartGen = new SmartFontGenerator();
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("Grandstander-clean.ttf"));
@@ -73,44 +74,47 @@ public class SplashScreen extends StageScreen<SplashUI> {
         int screenHeight = Gdx.graphics.getHeight();
 
         // Load fonts.
-        load.add(() -> createFont(Assets.LARGE_FONT, smartGen, gen, param, screenHeight / 10));
-        load.add(() -> createFont(Assets.BIG_FONT, smartGen, gen, param, screenHeight / 20));
-        load.add(() -> createFont(Assets.DEFAULT_FONT, smartGen, gen, param, screenHeight / 30));
-        load.add(() -> {
+        loader.add(() -> createFont(Assets.LARGE_FONT, smartGen, gen, param, screenHeight / 10));
+        loader.add(() -> createFont(Assets.BIG_FONT, smartGen, gen, param, screenHeight / 20));
+        loader.add(() -> createFont(Assets.DEFAULT_FONT, smartGen, gen, param, screenHeight / 30));
+        loader.add(() -> {
             createFont(Assets.PROFILE_FONT, smartGen, gen, param, screenHeight / 45);
             Assets.DEBUG_FONT = skin.getFont(Assets.PROFILE_FONT);
         });
-        load.add(() -> createFont(Assets.INGAME_FONT, smartGen, gen, param, screenHeight / 60));
-        load.add(() -> createFont(Assets.SMALL_FONT, smartGen, gen, param, screenHeight / 70));
-        load.add(() -> createFont(Assets.SMALL_INGAME_FONT, smartGen, gen, param, 25));
+        loader.add(() -> createFont(Assets.INGAME_FONT, smartGen, gen, param, screenHeight / 60));
+        loader.add(() -> createFont(Assets.SMALL_FONT, smartGen, gen, param, screenHeight / 70));
+        loader.add(() -> createFont(Assets.SMALL_INGAME_FONT, smartGen, gen, param, 25));
 
         // Load skin
-        load.add(() -> skin.load(Gdx.files.internal(Assets.SKIN)));
+        loader.add(() -> skin.load(Gdx.files.internal(Assets.SKIN)));
 
         // Load textures
-        load.add(this::loadTextures);
+        loader.add(this::loadTextures);
 
-        load.add(definitions::init);
+        // Load unlockable definitions
+        loader.add(definitions::init);
 
-        getUI().drawSplash();
+        // Preload Fuzzles
+        for (int i = 0; i < Assets.FUZZLE_COUNT; i++) {
+            final int index = i;
+            loader.add(() -> colorizer.getColored(ui().getTextures(), definitions.getDefinition(index), 0, false));
+        }
+
+        // Preload frames and help compiler optimize SVG loading code
+        for (int i = 32, n = i + 2; i < n; i++) {
+            // TODO Not necessary if Fuzzles haven't been cached, but that is only the case on first run, but we want to prevent this if fuzzles are cached in order to have a shorter first time start up
+            final int index = i;
+            loader.add(() -> colorizer.getColored(ui().getTextures(), definitions.getDefinition(index), 0, false));
+        }
+
+        // Once we're done ...
+        loader.onDone(this::onLoadDone);
+
+        ui().drawSplash();
     }
 
     @Override
-    public void onPostRender(float delta) {
-        if (load.isEmpty()) {
-            screenHandler.showScreen(MainScreen.class);
-            return;
-        }
-        if (Gdx.graphics.getFrameId() % 2 == 0) {
-            Runnable loadTask = load.poll();
-            loadTask.run();
-        } else {
-            // Do load animation ...
-        }
-    }
-
-    @Override
-    public void showing() {
+    public void onShow() {
 
     }
 
@@ -119,28 +123,21 @@ public class SplashScreen extends StageScreen<SplashUI> {
 
     }
 
+    private void onLoadDone() {
+        String profileData = preferences.getString(Assets.PROFILE_DATA, null);
+        if (profileData != null && profileData.length() > 0) {
+            profile.load(gson.fromJson(profileData, JsonObject.class));
+            screenHandler.showScreen(MenuScreen.class);
+        } else {
+            screenHandler.showScreen(MainScreen.class);
+        }
+    }
+
     private void loadTextures() {
-        try {
-            List<VectorGraphicsLoader.VectorDetail> vectorDetails = new ArrayList<>();
-
-            DocumentBuilder bldr = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document document = bldr.parse(Gdx.files.internal(Assets.SVG_RES).read());
-
-            NodeList vectors = document.getDocumentElement().getElementsByTagName("svginfo");
-            for (int i = 0, n = vectors.getLength(); i < n; i++) {
-                Element detail = (Element) vectors.item(i);
-                NodeList info = detail.getChildNodes();
-
-                String svg = info.item(1).getTextContent();
-                String atlas = info.item(3).getTextContent();
-                String width = info.item(5).getTextContent();
-                String height = info.item(7).getTextContent();
-
-                vectorDetails.add(new VectorGraphicsLoader.VectorDetail(Assets.SVG_DIR + svg, atlas, width, height));
-            }
-            textures.add(vectorDetails);
-        } catch (Exception e) {
-            e.printStackTrace();
+        FileHandle svgs = Gdx.files.internal(Assets.SVG_RESOURCE);
+        VectorGraphicsLoader.VectorDetail[] details = gson.fromJson(svgs.readString(), VectorGraphicsLoader.VectorDetail[].class);
+        for (int i = 0, n = details.length; i < n; i++) {
+            textures.add(details[i]);
         }
     }
 

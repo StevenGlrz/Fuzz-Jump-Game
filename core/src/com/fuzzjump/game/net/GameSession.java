@@ -28,7 +28,7 @@ public class GameSession implements Client.ConnectionListener {
         this.port = port;
         this.watcher = watcher;
         this.runnablePool = Pools.get(ReceivedPacketRunnable.class);
-        this.client = new Client(packetProcessor, this, EVENT_TIMEOUT, 128);
+        this.client = new Client(packetProcessor, this, EVENT_TIMEOUT, 256);
     }
 
     public void connect() {
@@ -82,11 +82,6 @@ public class GameSession implements Client.ConnectionListener {
     @Override
     public void receivedMessage(Packet packet) {
         postOnUIThread(packet);
-    }
-
-    @Override
-    public void receivedMessages(List<Packet> packets) {
-        postOnUIThread(packets);
     }
 
     public void postOnUIThread(Packet packet) {

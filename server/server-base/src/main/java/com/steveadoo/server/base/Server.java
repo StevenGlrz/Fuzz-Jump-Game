@@ -4,13 +4,13 @@ import com.steveadoo.server.base.validation.Validator;
 import com.steveadoo.server.common.packets.Packet;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
-import io.netty.channel.Channel;
-import io.netty.util.AttributeKey;
-
 import java.util.LinkedList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import io.netty.channel.Channel;
+import io.netty.util.AttributeKey;
 
 public abstract class Server<TInfo extends ServerInfo> implements PacketProcessor.ProcessPipeline {
 
@@ -41,7 +41,7 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
     public final boolean checkMessage(Object sender, Packet packet, Object message) {
         Player player = (Player) sender;
         if (serverInfo.validate) {
-            Boolean validated = player.channel.attr(VALIDATED_ATTR_KEY).get();
+            Boolean validated = player.getChannel().attr(VALIDATED_ATTR_KEY).get();
             System.out.println(validated);
             if (validated == null || !validated) {
                 //trigger validators
@@ -60,10 +60,10 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
             System.out.println("Validating");
             executorService.schedule(() -> {
                 System.out.println("Checking if validated");
-                Boolean validated = player.channel.attr(VALIDATED_ATTR_KEY).get();
+                Boolean validated = player.getChannel().attr(VALIDATED_ATTR_KEY).get();
                 if (validated == null || !validated) {
-                    player.channel.attr(Server.PLAYER_ATTRIBUTE_KEY).remove();
-                    player.channel.close();
+                    player.getChannel().attr(Server.PLAYER_ATTRIBUTE_KEY).remove();
+                    player.getChannel().close();
                 }
             }, serverInfo.validationTimeout, TimeUnit.MILLISECONDS);
             System.out.println("Submitted");
@@ -96,7 +96,7 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
     }
 
     private void onValidated(Player player) {
-        player.channel.attr(VALIDATED_ATTR_KEY).set(true);
+        player.getChannel().attr(VALIDATED_ATTR_KEY).set(true);
         connected(player);
     }
 

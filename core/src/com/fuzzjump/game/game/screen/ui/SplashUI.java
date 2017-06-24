@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
 
 import javax.inject.Inject;

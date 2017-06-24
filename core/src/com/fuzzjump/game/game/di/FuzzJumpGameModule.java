@@ -1,17 +1,23 @@
 package com.fuzzjump.game.game.di;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.fuzzjump.game.FuzzJump;
+import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.FuzzContext;
+import com.fuzzjump.game.game.map.GameMapParser;
 import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
-import com.fuzzjump.libgdxscreens.ScreenHandler;
-import com.fuzzjump.libgdxscreens.ScreenResolver;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
+import com.fuzzjump.libgdxscreens.screen.ScreenHandler;
+import com.fuzzjump.libgdxscreens.screen.ScreenResolver;
 
 import dagger.Module;
 import dagger.Provides;
@@ -27,8 +33,38 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
+    public Preferences provideGamePreferences() {
+        return Gdx.app.getPreferences(Assets.PREFERENCES_NAME);
+    }
+
+    @FuzzJumpScope
+    @Provides
     public UnlockableRepository provideUnlockableDefinitions() {
         return new UnlockableRepository();
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public Profile provideProfile(UnlockableRepository definitions) {
+        return new Profile(definitions);
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public FuzzContext provideFuzzContext() {
+        return new FuzzContext();
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public GameMapParser provideGameMapParser() {
+        return new GameMapParser();
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public UnlockableColorizer provideUnlockableColorizer(VectorGraphicsLoader graphicsLoader) {
+        return new UnlockableColorizer(graphicsLoader);
     }
 
     @FuzzJumpScope

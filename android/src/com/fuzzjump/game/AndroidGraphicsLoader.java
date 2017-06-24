@@ -40,9 +40,7 @@ public class AndroidGraphicsLoader extends VectorGraphicsLoader {
         SVG svg = null;
         try {
             svg = future.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
 

@@ -1,0 +1,737 @@
+[
+  {
+    "filename": "data/svg/ui-votes-square.svg",
+    "atlas": "ui-votes-square",
+    "width": "screen_width:.10",
+    "height": "screen_width:.10",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-frame-itemslot.svg",
+    "atlas": "ui-frame-itemslot",
+    "width": "screen_width:.10",
+    "height": "screen_width:0.1068903258313739",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-frame-itemslot-s.svg",
+    "atlas": "ui-frame-itemslot-s",
+    "width": "screen_width:.10",
+    "height": "screen_width:0.1068903258313739",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-frame-friend.svg",
+    "atlas": "ui-frame-friend",
+    "width": "screen_width:.25",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-left-icon.svg",
+    "atlas": "ui-left-icon",
+    "width": "screen_width:.10",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-right-icon.svg",
+    "atlas": "ui-right-icon",
+    "width": "screen_width:.10",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-lobby.svg",
+    "atlas": "ui-panel-lobby",
+    "width": "screen_width:.95",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-lobby1.svg",
+    "atlas": "ui-panel-lobby1",
+    "width": "screen_width:.95",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-toppanel.svg",
+    "atlas": "toppanel",
+    "width": "screen_width:1",
+    "height": "screen_width:.154",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-toppanel-nodrag.svg",
+    "atlas": "toppanelnodrag",
+    "width": "screen_width:1",
+    "height": "screen_width:.154",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-background-01.svg",
+    "atlas": "uibackground",
+    "width": "screen_height:0.7727272727272724",
+    "height": "screen_height:1",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-login.svg",
+    "atlas": "ui-panel-login",
+    "width": "screen_width:1",
+    "height": "screen_width:0.7818199999999997",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-character1.svg",
+    "atlas": "ui-panel-character1",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2157697975873454",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-character2.svg",
+    "atlas": "ui-panel-character2",
+    "width": "screen_width:1",
+    "height": "screen_width:0.6704595716097392",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-character3.svg",
+    "atlas": "ui-panel-character3",
+    "width": "screen_width:1",
+    "height": "screen_width:0.21576796231076",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-character4.svg",
+    "atlas": "ui-panel-character4",
+    "width": "screen_width:1",
+    "height": "screen_width:0.1713983155831",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-welcome.svg",
+    "atlas": "ui-panel-welcome",
+    "width": "screen_width:1",
+    "height": "screen_width:1.175818666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-mainmenu.svg",
+    "atlas": "ui-panel-mainmenu",
+    "width": "screen_width:1",
+    "height": "screen_width:1.175819733333333",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-panel-friends.svg",
+    "atlas": "ui-panel-friends",
+    "width": "screen_width:.95",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-arrow-left.svg",
+    "atlas": "ui-arrow-left",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-arrow-left-p.svg",
+    "atlas": "ui-arrow-left-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-arrow-right.svg",
+    "atlas": "ui-arrow-right",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-arrow-right-p.svg",
+    "atlas": "ui-arrow-right-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-add-friend.svg",
+    "atlas": "ui-add-friend",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-add-friend-p.svg",
+    "atlas": "ui-add-friend-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-search.svg",
+    "atlas": "ui-search",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-sent.svg",
+    "atlas": "ui-sent",
+    "width": "screen_width:.5",
+    "height": "screen_width:.49",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-button.svg",
+    "atlas": "ui-button",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-button-p.svg",
+    "atlas": "ui-button-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-facebook-sq-btn.svg",
+    "atlas": "ui-facebook-sq-btn",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-facebook-sq-btn-p.svg",
+    "atlas": "ui-facebook-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-gplus-sq-btn.svg",
+    "atlas": "ui-gplus-sq-btn",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-gplus-sq-btn-p.svg",
+    "atlas": "ui-gplus-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-play-sq-btn.svg",
+    "atlas": "ui-play-sq-btn",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-play-sq-btn-p.svg",
+    "atlas": "ui-play-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-email-sq-btn.svg",
+    "atlas": "ui-email-sq-btn",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-email-sq-btn-p.svg",
+    "atlas": "ui-email-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-plus-sq-btn.svg",
+    "atlas": "ui-plus-sq-btn",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-plus-sq-btn-p.svg",
+    "atlas": "ui-plus-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-x-sq-btn.svg",
+    "atlas": "ui-x-sq-btn",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-x-sq-btn-p.svg",
+    "atlas": "ui-x-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-btn-sq-add.svg",
+    "atlas": "ui-btn-sq-add",
+    "width": "screen_width:.25",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-btn-sq-add-p.svg",
+    "atlas": "ui-btn-sq-add-p",
+    "width": "screen_width:.25",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-x-sq-btn-p.svg",
+    "atlas": "ui-x-sq-btn-p",
+    "width": "screen_width:1",
+    "height": "screen_width:0.2666666666666667",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-store.svg",
+    "atlas": "ui-store",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-store-p.svg",
+    "atlas": "ui-store-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-inputfield.svg",
+    "atlas": "ui-inputfield",
+    "width": "screen_width:.75",
+    "height": "screen_width:0.1046513733654563",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-progress.svg",
+    "atlas": "ui-progress",
+    "width": "screen_width:.75",
+    "height": "screen_width:.083",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-progress-fill.svg",
+    "atlas": "ui-progress-fill",
+    "width": "screen_width:.75",
+    "height": "screen_width:.083",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-check.svg",
+    "atlas": "ui-check",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-check-p.svg",
+    "atlas": "ui-check-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-checkbox-unchecked.svg",
+    "atlas": "ui-checkbox-unchecked",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-checkbox-checked.svg",
+    "atlas": "ui-checkbox-checked",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-close.svg",
+    "atlas": "ui-close",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-close-p.svg",
+    "atlas": "ui-close-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-login.svg",
+    "atlas": "ui-login",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-login-p.svg",
+    "atlas": "ui-login-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-twitter-button.svg",
+    "atlas": "ui-twitter-button",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-twitter-button-p.svg",
+    "atlas": "ui-twitter-button-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-profile.svg",
+    "atlas": "ui-profile",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-profile-p.svg",
+    "atlas": "ui-profile-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-settings.svg",
+    "atlas": "ui-settings",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-settings-p.svg",
+    "atlas": "ui-settings-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-leaderboard.svg",
+    "atlas": "ui-leaderboard",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-leaderboard-p.svg",
+    "atlas": "ui-leaderboard-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-help.svg",
+    "atlas": "ui-help",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-help-p.svg",
+    "atlas": "ui-help-p",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-gplus-btn.svg",
+    "atlas": "ui-gplus-btn",
+    "width": "screen_width:.75",
+    "height": "screen_width:.19",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-gplus-btn-p.svg",
+    "atlas": "ui-gplus-btn-p",
+    "width": "screen_width:.75",
+    "height": "screen_width:.19",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-facebook-btn.svg",
+    "atlas": "ui-facebook-btn",
+    "width": "screen_width:.75",
+    "height": "screen_width:.19",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-facebook-btn-p.svg",
+    "atlas": "ui-facebook-btn-p",
+    "width": "screen_width:.75",
+    "height": "screen_width:.19",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-star-icon.svg",
+    "atlas": "ui-star-icon",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-flag-icon.svg",
+    "atlas": "ui-flag-icon",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-question-mark.svg",
+    "atlas": "ui-question-mark",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-game-progress-bar.svg",
+    "atlas": "ui-game-progress-bar",
+    "width": "screen_height:.0069659442724458",
+    "height": "screen_height:.75",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/level-badge.svg",
+    "atlas": "level-badge",
+    "width": "screen_height:.25",
+    "height": "screen_height:.36",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/kerpow-coin.svg",
+    "atlas": "kerpow-coin",
+    "width": "screen_height:.15",
+    "height": "screen_height:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-online-green.svg",
+    "atlas": "ui-status-online",
+    "width": "screen_height:.15",
+    "height": "screen_height:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-online-red.svg",
+    "atlas": "ui-status-offline",
+    "width": "screen_height:.15",
+    "height": "screen_height:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-fuzzle-square.svg",
+    "atlas": "ui-fuzzle-square",
+    "width": "screen_height:.25",
+    "height": "screen_height:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-wait-square.svg",
+    "atlas": "ui-wait-square",
+    "width": "screen_height:.25",
+    "height": "screen_height:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/cloud.svg",
+    "atlas": "cloud",
+    "width": "absolute:245",
+    "height": "absolute:121",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-wait-square-p.svg",
+    "atlas": "ui-wait-square-p",
+    "width": "screen_height:.25",
+    "height": "screen_height:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-locked.svg",
+    "atlas": "ui-lock",
+    "width": "screen_height:.3",
+    "height": "screen_height:.5",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/snowflake1.svg",
+    "atlas": "snowflake1",
+    "width": "screen_width:.05",
+    "height": "screen_width:.05",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/snowflake2.svg",
+    "atlas": "snowflake2",
+    "width": "screen_width:.05",
+    "height": "screen_width:.05",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/snowflake3.svg",
+    "atlas": "snowflake3",
+    "width": "screen_width:.05",
+    "height": "screen_width:.05",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/snowflake4.svg",
+    "atlas": "snowflake4",
+    "width": "screen_width:.05",
+    "height": "screen_width:.05",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-mapselect-gray.svg",
+    "atlas": "ui-map-unselected",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-mapselect-green.svg",
+    "atlas": "ui-map-selected",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-frame-selected.svg",
+    "atlas": "ui-frame-selected",
+    "width": "screen_width:.25",
+    "height": "screen_width:.25",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-message-bubble.svg",
+    "atlas": "ui-message-bubble",
+    "width": "screen_width:.15",
+    "height": "screen_width:.1410891089108911",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-antigravity.svg",
+    "atlas": "item-icon-antigravity",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-shield.svg",
+    "atlas": "item-icon-shield",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-lightning.svg",
+    "atlas": "item-icon-lightning",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-gust.svg",
+    "atlas": "item-icon-gust",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-bomb.svg",
+    "atlas": "item-icon-bomb",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-guidedMissle.svg",
+    "atlas": "item-icon-guidedMissle",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-bomb.svg",
+    "atlas": "item-icon-bomb",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-jetpack.svg",
+    "atlas": "item-jetpack",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-icon-balloons.svg",
+    "atlas": "item-icon-balloons",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-progressspinner.svg",
+    "atlas": "ui-progressspinner",
+    "width": "screen_width:.15",
+    "height": "screen_width:.15",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-box.svg",
+    "atlas": "item-box",
+    "width": "absolute:108",
+    "height": "absolute:108",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/item-box2.svg",
+    "atlas": "item-box2",
+    "width": "absolute:108",
+    "height": "absolute:108",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/winners-platform.svg",
+    "atlas": "winners-platform",
+    "width": "absolute:983",
+    "height": "absolute:652",
+    "type": "svg"
+  }
+]

@@ -6,10 +6,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.File;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -33,39 +35,34 @@ public class RetrofitModule {
     @Provides
     @Singleton
     Gson gson() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
-        return gsonBuilder.create();
+        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
     }
 
 
     @Provides
     @Singleton
-    TokenInterceptor authenticator() {
+    TokenInterceptor interceptor() {
         return new TokenInterceptor();
     }
 
     @Provides
     @Singleton
-    OkHttpClient okHttpClient(Cache cache, TokenInterceptor authenticator) {
-        OkHttpClient client = new OkHttpClient.Builder()
+    OkHttpClient okHttpClient(Cache cache, TokenInterceptor interceptor) {
+        return new OkHttpClient.Builder()
                 .cache(cache)
-                .addInterceptor(authenticator)
-                //TODO interceptor
+                .addInterceptor(interceptor)
                 .build();
-        return client;
     }
 
     @Provides
     @Singleton
     Retrofit retrofit(Gson gson, OkHttpClient okHttpClient) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+        return new Retrofit.Builder()
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("http://www.fuzzjumpapi.com")//not even used atm.
+                .baseUrl("http://localhost:50086/")
                 .client(okHttpClient)
                 .build();
-        return retrofit;
     }
 
 }

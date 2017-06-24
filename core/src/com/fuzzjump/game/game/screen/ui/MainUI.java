@@ -2,7 +2,6 @@ package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,13 +15,14 @@ import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
-import com.fuzzjump.game.util.Helper;
-import com.fuzzjump.libgdxscreens.StageUI;
+import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.fuzzjump.libgdxscreens.Textures;
 
 import javax.inject.Inject;
 
-import static com.fuzzjump.game.game.Assets.*;
+import static com.fuzzjump.game.game.Assets.createDialogStyle;
+import static com.fuzzjump.game.game.Assets.createFbTBStyle;
+import static com.fuzzjump.game.game.Assets.createPlayTBStyle;
 
 public class MainUI extends StageUI {
 

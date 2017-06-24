@@ -9,22 +9,20 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public abstract class VectorGraphicsLoader {
 
-    protected final ExecutorService workerService;
     protected final ExecutorService cacheService;
+    protected final ExecutorService workerService;
+
     private final String cacheLocation;
 
     public VectorGraphicsLoader(ExecutorService workerService, String cacheLocation) {
         this.cacheLocation = cacheLocation;
-        this.workerService = workerService;
         this.cacheService = Executors.newSingleThreadExecutor();
+        this.workerService = workerService;
     }
 
     public TextureRegion load(final VectorDetail vectorDetails, ColorGroup replaceGroup, ColorGroup baseGroup, final boolean cache) {
@@ -49,22 +47,19 @@ public abstract class VectorGraphicsLoader {
 
         if (replaceGroup != null) {
             for (int i = 0; i < replaceGroup.colors.length; i++) {
-                svgString = svgString.replaceAll(baseGroup.colors[replaceGroup.colors[i].index].colorString, replaceGroup.colors[i].colorString);
-                svgString = svgString.replaceAll(baseGroup.colors[replaceGroup.colors[i].index].colorString.toUpperCase(), replaceGroup.colors[i].colorString);
+                ColorGroup.IndexColor colorToReplace = replaceGroup.colors[i];
+                ColorGroup.IndexColor baseColor = baseGroup.colors[colorToReplace.index];
+
+                svgString = svgString.replaceAll(baseColor.colorString, colorToReplace.colorString);
+                svgString = svgString.replaceAll(baseColor.colorString.toUpperCase(), colorToReplace.colorString);
             }
         }
-
-        Future<FileHandle> future = workerService.submit(new Callable<FileHandle>() {
-            public FileHandle call() {
-                return Gdx.files.internal(name);
-            }
-        });
-
+        FileHandle file = Gdx.files.internal(name);
         switch(vectorDetails.type) {
             case "svg":
                 TextureRegion region = null;
                 try {
-                    String svgMarkup = future.get().readString();
+                    String svgMarkup = file.readString();
                     region = load(vectorDetails, svgMarkup, targetWidth, targetHeight, cache);
                 } catch (Exception e) {
                     System.out.println("Failed to load " + vectorDetails.filename);
@@ -73,12 +68,7 @@ public abstract class VectorGraphicsLoader {
                 return new TextureRegion(region);
             case "png":
             case "jpg":
-                Texture texture = null;
-                try {
-                    texture = new Texture(future.get());
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
+                Texture texture = new Texture(file);
                 return new TextureRegion(texture);
             default:
                 throw new RuntimeException("Error loading TextureRegion, invalid file type");
@@ -86,47 +76,7 @@ public abstract class VectorGraphicsLoader {
     }
 
     public TextureRegion load(final VectorDetail vectorDetail, final boolean cache) {
-        if (cache) {
-            FileHandle file = Gdx.files.local(cacheLocation + "/pngcache/" + vectorDetail.atlas + ".png");
-            try {
-                if (file.exists())
-                    return new TextureRegion(new Texture(file));
-            } catch (Exception e) {
-                e.printStackTrace();
-                file.delete();
-            }
-        }
-
-        final String name = vectorDetail.filename;
-        float targetWidth = getValue(vectorDetail.width);
-        float targetHeight = getValue(vectorDetail.height);
-        Future<FileHandle> future = workerService.submit(new Callable<FileHandle>() {
-            public FileHandle call() {
-                return Gdx.files.internal(name);
-            }
-        });
-
-        switch(vectorDetail.type) {
-            case "svg":
-                String svgMarkup = null;
-                try {
-                    svgMarkup = future.get().readString();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                return new TextureRegion(load(vectorDetail, svgMarkup, targetWidth, targetHeight, cache));
-            case "png":
-            case "jpg":
-                Texture texture = null;
-                try {
-                    texture = new Texture(future.get());
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
-                return new TextureRegion(texture);
-            default:
-                throw new RuntimeException("Error loading TextureRegion, invalid file type");
-        }
+        return load(vectorDetail, null, null, cache);
     }
 
     public Vector2 calculateSize(float targetWidth, float targetHeight, float aspectRatio) {
