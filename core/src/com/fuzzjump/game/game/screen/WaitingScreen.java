@@ -13,6 +13,7 @@ import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
+import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
@@ -21,8 +22,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
-
-import io.reactivex.schedulers.Schedulers;
 
 public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
 
@@ -47,7 +46,8 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private List<Profile> players = new ArrayList<>();
 
-    private String matchmakingToken;
+    private String matchmakingKey;
+    private Join.JoinResponsePacket joinResponse;
 
     @Inject
     public WaitingScreen(Stage stage,
@@ -74,7 +74,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         sessionService.getSessionToken("MATCHMAKING")
                 .observeOn(scheduler)
                 .subscribe(response -> {
-                    WaitingScreen.this.matchmakingToken = response.getBody();
+                    WaitingScreen.this.matchmakingKey = response.getBody();
                     gameSession.connect();
                     initPacketListeners();
                 });
@@ -83,9 +83,14 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private void initPacketListeners() {
         PacketProcessor packetProcessor = gameSession.getPacketProcessor();
+        packetProcessor.addListener(Join.JoinResponsePacket.class, this::joinResponse);
         packetProcessor.addListener(Lobby.GameFound.class, this::gameFound);
         packetProcessor.addListener(Lobby.LobbyState.class, this::lobbyUpdate);
         packetProcessor.addListener(Lobby.TimeState.class, this::updateTime);
+    }
+
+    private void joinResponse(GameSession session, Join.JoinResponsePacket packet) {
+        this.joinResponse = packet;
     }
 
     private void updateTime(GameSession session, Lobby.TimeState message) {
@@ -160,8 +165,12 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void onConnect() {
-        Lobby.Loaded loadedMessage = Lobby.Loaded.newBuilder().buildPartial();
-        gameSession.send(loadedMessage);
+        Join.JoinPacket joinPacket = Join.JoinPacket.newBuilder()
+                .setUserId(profile.getUserId())
+                .setSessionKey(matchmakingKey)
+                .setVersion(1)
+                .build();
+        gameSession.send(joinPacket);
     }
 
     @Override
