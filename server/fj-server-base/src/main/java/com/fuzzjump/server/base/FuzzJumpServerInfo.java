@@ -13,6 +13,8 @@ import java.net.URL;
 
 public class FuzzJumpServerInfo extends ServerInfo {
 
+    private static final int VALIDATE_TIMEOUT = 5000;
+
     //the port that players use for direct connection
     public final int privatePort;
     //the ip of this machine
@@ -30,7 +32,7 @@ public class FuzzJumpServerInfo extends ServerInfo {
                               String apiAddress,
                               String apiUsername,
                               String apiPassword) {
-        super(port);
+        super(port, VALIDATE_TIMEOUT);
         this.privatePort = privatePort;
         this.ip = ip;
         this.apiAddress = apiAddress;

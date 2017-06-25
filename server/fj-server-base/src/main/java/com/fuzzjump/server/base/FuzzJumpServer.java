@@ -7,7 +7,6 @@ import com.steveadoo.server.common.packets.PacketProcessor;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
@@ -34,7 +33,6 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
 
     private Api initApi() {
         Api api = new Api.Builder()
-                .cachePath("./")
                 .url(getServerInfo().apiAddress)
                 .build();
 
@@ -79,6 +77,12 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
     @Override
     protected void disconnected(Player player) {
         FuzzJumpPlayer fjPlayer = (FuzzJumpPlayer) player;
+
+        if (fjPlayer.getUserId() == null ) {
+            disconnected(fjPlayer);
+            return;
+        }
+
         disconnectedPlayerKeys.put(fjPlayer.getUserId(), fjPlayer);
         getExecutorService().schedule(() -> {
             if (!disconnectedPlayerKeys.containsKey(fjPlayer.getUserId())) {

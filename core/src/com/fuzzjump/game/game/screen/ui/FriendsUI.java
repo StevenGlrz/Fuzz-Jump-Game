@@ -95,11 +95,15 @@ public class FriendsUI extends StageUI {
         friendsListSwitcher.addWidget(noneLabel);
         friendsListSwitcher.addWidget(nofriendsLabel);
 
-        TextButton backButton = new TextButton("Back", createDefaultTBStyle(this));
+        Table buttonsTable = new Table();
+        TextButton backBtn = new TextButton("Back", createDefaultTBStyle(this));
         TextButton addFriendBtn = new TextButton("Add Friend", createDefaultTBStyle(this));
+        Value sidePad = Value.percentWidth(0.05f, buttonsTable);
 
-        add(addFriendBtn).padLeft(Value.percentWidth(.05f, this)).size(Value.percentWidth(0.425f, this), Value.percentHeight(.10f, this));
-        add(backButton).padRight(Value.percentWidth(.05f, this)).size(Value.percentWidth(0.425f, this), Value.percentWidth(.10f, this));
+       // buttonsTable.defaults().size(Value.percentWidth(.95f, this), Value.percentWidth(0.25f, this));
+        buttonsTable.add(backBtn).left().expand().size(Value.percentWidth(0.4f, buttonsTable), Value.percentHeight(1f, buttonsTable)).padLeft(sidePad);
+        buttonsTable.add(addFriendBtn).right().expand().size(Value.percentWidth(0.4f, buttonsTable), Value.percentHeight(1f, buttonsTable)).padRight(sidePad);
+        add(buttonsTable).bottom().center().expand().size(Value.percentWidth(1.0f, this), Value.percentHeight(0.15f, this));
 
 
         friendSquareWidth = Value.percentWidth(.3f, friendsScroller);
@@ -107,7 +111,7 @@ public class FriendsUI extends StageUI {
         friendSquarePadBottom = Value.percentWidth(.033f, friendsScroller);
         friendSquarePadSides = Value.percentWidth(.025f, friendsScroller);
 
-        Helper.addClickAction(backButton, (e, x, y) -> backPressed());
+        Helper.addClickAction(backBtn, (e, x, y) -> backPressed());
 
         refreshDisplayUI(null);
     }

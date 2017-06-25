@@ -2,7 +2,6 @@ package com.fuzzjump.api.user.model;
 
 import com.fuzzjump.api.model.response.Response;
 import com.fuzzjump.api.model.user.Profile;
-import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by Steveadoo on 6/24/2017.
@@ -20,7 +19,6 @@ public class RegisterResponse extends Response<RegisterResponse.RegisterBody> {
     public static class RegisterBody {
 
         private String userId;
-        @SerializedName("displayName")
         private String displayName;
         private int nameId;
         private String username;
@@ -51,6 +49,9 @@ public class RegisterResponse extends Response<RegisterResponse.RegisterBody> {
             return profile;
         }
 
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 
 }

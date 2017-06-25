@@ -60,6 +60,7 @@ class MatchmakingValidator implements Validator {
                 .setRedirect(false)
                 .setServerIp(server.getServerInfo().ip)
                 .setServerPort(server.getServerInfo().port)
+                .setStatus(1)
                 .build();
     }
 }

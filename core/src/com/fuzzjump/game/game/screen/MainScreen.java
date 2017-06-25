@@ -17,8 +17,6 @@ import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 
 import javax.inject.Inject;
 
@@ -78,14 +76,16 @@ public class MainScreen extends StageScreen<MainUI> {
                 if (response != null && response.isSuccess()) {
                     RegisterResponse.RegisterBody body = response.getBody();
 
-                    // Retrieve password and remove it from the JSON object so it doesn't persist.
+                    // Retrieve the password and remove it since we don't want to persist it
                     String password = body.getPassword();
+                    body.setPassword(null);
 
                     // Load and store profile data
                     profile.load(body);
 
                     // Acquire token from API and persist preferences
                     userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {
+                        System.out.println(e.getAccessToken());
                         preferences.putString(Assets.PROFILE_DATA, gson.toJson(body));
                         preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
                         preferences.flush();

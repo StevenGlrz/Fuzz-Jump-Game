@@ -91,6 +91,9 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private void joinResponse(GameSession session, Join.JoinResponsePacket packet) {
         this.joinResponse = packet;
+        Lobby.Loaded loadedPacket = Lobby.Loaded.newBuilder()
+                .build();
+        gameSession.send(loadedPacket);
     }
 
     private void updateTime(GameSession session, Lobby.TimeState message) {
