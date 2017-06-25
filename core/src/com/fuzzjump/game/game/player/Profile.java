@@ -3,9 +3,7 @@ package com.fuzzjump.game.game.player;
 import com.fuzzjump.api.model.user.Equip;
 import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
-import com.fuzzjump.game.util.Helper;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +38,6 @@ public class Profile {
     }
 
     public void load(RegisterResponse.RegisterBody body) {
-
         userName = body.getUsername();
         displayName = body.getDisplayName();
         nameId = body.getNameId();

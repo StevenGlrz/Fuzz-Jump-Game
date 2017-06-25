@@ -30,13 +30,7 @@ public final class Api {
 
     public static class Builder {
 
-        private String cachePath;
         private String url;
-
-        public Builder cachePath(String cachePath) {
-            this.cachePath = cachePath;
-            return this;
-        }
 
         public Builder url(String url) {
             this.url = url;
@@ -46,7 +40,7 @@ public final class Api {
         public Api build() {
             ApiComponent component = DaggerApiComponent
                     .builder()
-                    .retrofitModule(new RetrofitModule(url, cachePath))
+                    .retrofitModule(new RetrofitModule(url))
                     .build();
             return component.provideApi();
         }
