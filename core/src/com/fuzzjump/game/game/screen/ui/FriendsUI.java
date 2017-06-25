@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.fuzzjump.api.friends.IFriendService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.FriendProfile;
 import com.fuzzjump.game.game.player.Profile;
@@ -37,6 +38,7 @@ public class FriendsUI extends StageUI {
 
     private final MenuUI parent;
     private final Profile profile;
+    private final IFriendService friendService;
 
     private Table friendsList;
     private ScrollPane friendsScroller;
@@ -50,11 +52,12 @@ public class FriendsUI extends StageUI {
 
     private final Map<Integer, FriendProfile> profileMap = new HashMap<>();
 
-    public FriendsUI(MenuUI parent) {
+    public FriendsUI(MenuUI parent, IFriendService friendService) {
         super(parent.getTextures(), parent.getGameSkin());
         this.stageScreen = parent.getStageScreen();
         this.parent = parent;
         this.profile = parent.getProfile();
+        this.friendService = friendService;
     }
 
     @Override
@@ -116,7 +119,7 @@ public class FriendsUI extends StageUI {
     private void refreshFriends() {
         friendsListSwitcher.setDisplayedChild(1);
 
-        parent.getUserService().retrieveFriendList().observeOn(parent.getScheduler()).subscribe(response -> {
+       friendService.retrieveFriendList().observeOn(parent.getScheduler()).subscribe(response -> {
             if (response.isGood()) {
                 profile.loadFriends(response.getBody().getAsJsonArray());
                 refreshDisplayUI(null);

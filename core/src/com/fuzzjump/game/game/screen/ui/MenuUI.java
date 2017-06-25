@@ -11,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
-import com.fuzzjump.api.user.IUserService;
+import com.fuzzjump.api.friends.IFriendService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
@@ -49,16 +49,16 @@ public class MenuUI extends StageUI {
 
     private FJDragDownBarTable dropdownTable;
 
-    private final IUserService userService;
     private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
+    private final IFriendService friendService;
     private final GraphicsScheduler scheduler;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, IUserService userService, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
+    public MenuUI(Textures textures, Skin skin, IFriendService friendService, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
         super(textures, skin);
-        this.userService = userService;
+        this.friendService = friendService;
         this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
@@ -99,7 +99,7 @@ public class MenuUI extends StageUI {
         // Doesn't require background loading
         this.profileUI = new CharacterSelectionUI(this, definitions);
         this.settingsUI = new SettingsUI(this);
-        this.friendsUI = new FriendsUI(this);
+        this.friendsUI = new FriendsUI(this, friendService);
 
 
         setFillParent(true);
@@ -216,10 +216,6 @@ public class MenuUI extends StageUI {
 
     Profile getProfile() {
         return profile;
-    }
-
-    IUserService getUserService() {
-        return userService;
     }
 
     GraphicsScheduler getScheduler() {
