@@ -1,21 +1,14 @@
 package com.fuzzjump.api.session;
 
-import com.fuzzjump.api.TokenInterceptor;
-import com.fuzzjump.api.model.response.Response;
-import com.fuzzjump.api.model.response.TokenResponse;
 import com.fuzzjump.api.session.model.SessionResponse;
 import com.fuzzjump.api.session.model.SessionVerifyRequest;
 import com.fuzzjump.api.session.model.SessionVerifyResponse;
-import com.fuzzjump.api.user.model.RegisterRequest;
-import com.fuzzjump.api.user.model.RegisterResponse;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -35,8 +28,18 @@ public class SessionService implements ISessionService {
     }
 
     @Override
+    public Observable<SessionResponse> getServerSessionToken(String machineName, String feature) {
+        return restService.getServer(machineName, feature);
+    }
+
+    @Override
     public Observable<SessionVerifyResponse> verify(String userId, String feature, String token) {
         return restService.verify(new SessionVerifyRequest(userId, feature, token));
+    }
+
+    @Override
+    public Observable<SessionVerifyResponse> verifyServer(String machineName, String feature, String token) {
+        return restService.verify(new SessionVerifyRequest(machineName, feature, token));
     }
 
     private interface SessionRestService {
@@ -44,8 +47,14 @@ public class SessionService implements ISessionService {
         @GET("session")
         Observable<SessionResponse> get(@Query("feature") String feature);
 
+        @GET("session/server")
+        Observable<SessionResponse> getServer(@Query("machineName") String machineName, @Query("feature") String feature);
+
         @POST("session")
         Observable<SessionVerifyResponse> verify(@Body SessionVerifyRequest request);
+
+        @POST("session/server")
+        Observable<SessionVerifyResponse> verifyServer(@Body SessionVerifyRequest request);
 
     }
 

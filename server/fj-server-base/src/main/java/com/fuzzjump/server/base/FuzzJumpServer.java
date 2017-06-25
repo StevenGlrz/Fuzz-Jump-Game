@@ -24,7 +24,7 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
 
     private final Api api;
 
-    private ConcurrentHashMap<String, FuzzJumpPlayer> disconnectedPlayerKeys = new ConcurrentHashMap<>();
+    private ConcurrentHashMap<String, T> disconnectedPlayerKeys = new ConcurrentHashMap<>();
 
     public FuzzJumpServer(E serverInfo, PacketProcessor packetProcessor) {
         super(serverInfo, packetProcessor);
@@ -69,22 +69,35 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
 
     @Override
     protected void connected(Player player) {
-        connected((T) player);
+        T fjPlayer = (T) player;
+        if (disconnectedPlayerKeys.containsKey(fjPlayer.getUserId())) {
+            disconnectedPlayerKeys.remove(fjPlayer.getUserId());
+            disconnected(disconnectedPlayerKeys.get(fjPlayer.getUserId()));
+        }
+        connected(fjPlayer);
     }
 
     protected abstract void connected(T player);
 
     @Override
     protected void disconnected(Player player) {
-        FuzzJumpPlayer fjPlayer = (FuzzJumpPlayer) player;
-        disconnectedPlayerKeys.put(fjPlayer.getUserId(), fjPlayer);
-        getExecutorService().schedule(() -> {
-            if (!disconnectedPlayerKeys.containsKey(fjPlayer.getUserId())) {
-                return;
-            }
-            disconnectedPlayerKeys.remove(fjPlayer.getUserId());
+        T fjPlayer = (T) player;
+
+        if (fjPlayer.getUserId() == null ) {
             disconnected(fjPlayer);
-        }, RECONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
+            return;
+        }
+
+//        disconnectedPlayerKeys.put(fjPlayer.getUserId(), fjPlayer);
+//        getExecutorService().schedule(() -> {
+//            if (!disconnectedPlayerKeys.containsKey(fjPlayer.getUserId())) {
+//                return;
+//            }
+//            disconnectedPlayerKeys.remove(fjPlayer.getUserId());
+//            disconnected(fjPlayer);
+//        }, RECONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
+
+        disconnected(fjPlayer);
     }
 
     protected abstract void disconnected(T player);

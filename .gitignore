@@ -115,6 +115,7 @@ gradle-app.setting
 /server/server-base/build/
 /server/server-common/build/
 /server/fj-server-common/server-common/build/
+/server/fj-server-common/build/
 /server/fj-server-matchmaking/server-common/build/
 /libgdx-screens/build/
 

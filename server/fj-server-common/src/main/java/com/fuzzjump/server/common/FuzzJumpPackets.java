@@ -4,6 +4,7 @@ public class FuzzJumpPackets {
 
     public static final int JOIN_PACKET = 0;
     public static final int JOIN_PACKET_RESPONSE = 1;
+    public static final int JOIN_SERVER_PACKET = 9;
 
     public static final int LOBBY_STATE = 2;
     public static final int TIME_STATE_UPDATE = 3;
@@ -13,4 +14,9 @@ public class FuzzJumpPackets {
     public static final int LOBBY_LOADED = 7;
 
     public static final int GAME_FOUND = 8;
+    public static final int GAME_SERVER_FOUND = 10;
+    public static final int GAME_SERVER_SETUP = 11;
+    public static final int GAME_SERVER_SETUP_RESPONSE = 12;
+    public static final int GAME_SERVER_SETUP_DATA = 13;
+
 }

@@ -103,8 +103,8 @@ public class ScreenHandler {
                     if (!fFromCache) {
                         screen.onReady();
                     }
-                    screen.onShow();
                     stage.addActor(screen.ui());
+                    screen.onShow();
                     if (screenChangeHandler != null) {
                         screenChangeHandler.changeScreen(screen);
                     }

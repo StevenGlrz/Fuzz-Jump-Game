@@ -20,7 +20,7 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
 
     private static final int TICK = 100;
 
-    private final GameServerValidator gameServerValidator;
+    private final GameServerPlayerValidator gameServerValidator;
     private final ScheduledExecutorService gameService = Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors());
 
     private final ConcurrentHashMap<String, GameSession> sessions = new ConcurrentHashMap<>();
@@ -28,13 +28,18 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
 
     public GameServer(GameServerInfo serverInfo) {
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
-        gameServerValidator = new GameServerValidator(this);
+        gameServerValidator = new GameServerPlayerValidator(this);
         addValidator(gameServerValidator);
+        addValidator(new GameServerMatchmakingValidator(this));
         getPacketProcessor().addListener(Lobby.GameServerSetup.class, this::onGameServerSetup);
         getPacketProcessor().addListener(Game.Loaded.class, this::onGameLoaded);
     }
 
     private void onGameLoaded(GamePlayer player, Game.Loaded message) {
+        if(player.isServer()) {
+            player.getChannel().disconnect();
+            return;
+        }
         try {
             String key = message.getGameId();
             if (!sessions.containsKey(key)) {
@@ -49,7 +54,11 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
         }
     }
 
-    private void onGameServerSetup(Channel channel, Lobby.GameServerSetup message) {
+    private void onGameServerSetup(GamePlayer player, Lobby.GameServerSetup message) {
+        if(!player.isServer()) {
+            player.getChannel().disconnect();
+            return;
+        }
         int keyCount = message.getPlayerCount();
         String[] keys = gameServerValidator.generateSessionKeys(keyCount);
         String gameId = UUID.randomUUID().toString();
@@ -61,9 +70,9 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
         builder.setSeed(session.seed);
         builder.setMapId(session.mapId);
         for (int i = 0; i < keys.length; i++) {
-            builder.setKeys(i, keys[i]);
+            builder.addKeys(keys[i]);
         }
-        channel.writeAndFlush(builder.buildPartial());
+        player.getChannel().writeAndFlush(builder.buildPartial());
     }
 
     private void processSession(GameSession session) {

@@ -18,11 +18,11 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
     private Lobby.Player.Builder playerBuilder = Lobby.Player.newBuilder();
     private Lobby.TimeState.Builder timeStateBuilder = Lobby.TimeState.newBuilder();
 
-    private float remainingTime = 60;
+    private float remainingTime = 10;
 
     public ScheduledFuture<?> future;
 
-    public LobbySession(String id, int maxPlayers, boolean timerFill) {
+    public LobbySession(String id, int maxPlayers) {
         super(id, maxPlayers);
         update = true;
         setMaps();
@@ -52,6 +52,8 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         lastTime = System.currentTimeMillis();
         remainingTime -= time / 1000f;
         if (update) {
+            update = false;
+            System.out.println("updating lobby");
             stateBuilder.clearPlayers();
             for (LobbyPlayer player : players) {
                 player.setSynced(false);
@@ -71,7 +73,6 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
                 }
                 stateBuilder.setMapSlots(i, bldr.buildPartial());
             }
-            update = false;
         }
         timeStateBuilder.setTime(Math.round(remainingTime));
         Lobby.TimeState timeState = timeStateBuilder.build();
@@ -87,7 +88,7 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
             }
             player.getChannel().flush();
         }
-        return remainingTime <= 0;
+        return readyCount == 4 || remainingTime <= 0;
     }
 
     @Override
@@ -126,6 +127,14 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
 
     public LobbySessionListener getListener() {
         return listener;
+    }
+
+    public boolean getUpdate() {
+        return update;
+    }
+
+    public float getRemainingTime() {
+        return remainingTime;
     }
 
     public interface LobbySessionListener {

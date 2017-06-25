@@ -12,7 +12,6 @@ import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
-import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
@@ -20,7 +19,7 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-public class MainScreen extends StageScreen<MainUI> {
+public class MainScreen extends StageScreen<com.fuzzjump.game.game.screen.ui.MainUI> {
 
     private final IUserService userService;
     private final Profile profile;
@@ -30,7 +29,7 @@ public class MainScreen extends StageScreen<MainUI> {
     private final Gson gson;
 
     @Inject
-    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler, Gson gson) {
+    public MainScreen(com.fuzzjump.game.game.screen.ui.MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler, Gson gson) {
         super(ui);
         this.userService = userService;
         this.profile = profile;
@@ -52,7 +51,7 @@ public class MainScreen extends StageScreen<MainUI> {
     @Override
     public void clicked(int id, Actor actor) {
         switch (id) {
-            case Assets.MainScreen.START_BUTTON:
+            case Assets.MainUI.START_BUTTON:
                 handleLogin();
                 Gdx.input.setOnscreenKeyboardVisible(false);
                 break;
@@ -61,14 +60,14 @@ public class MainScreen extends StageScreen<MainUI> {
 
     private void handleLogin() {
         StageUI ui = ui();
-        Dialog waitingDialog = ui.actor(Dialog.class, Assets.MainScreen.LOGIN_WAITING_MESSAGE_DIALOG);
-        TextField userField = ui.actor(TextField.class, Assets.MainScreen.LOGIN_USER_FIELD);
+        Dialog waitingDialog = ui.actor(Dialog.class, Assets.MainUI.LOGIN_WAITING_MESSAGE_DIALOG);
+        TextField userField = ui.actor(TextField.class, Assets.MainUI.LOGIN_USER_FIELD);
 
         if (userField.getText().isEmpty()) {
             userField.setMessageText("Please enter a username!");
         } else {
-            ui.actor(Label.class, Assets.MainScreen.LOGIN_DIALOG_MESSAGE).setText("Logging in...");
-            ui.actor(Button.class, Assets.MainScreen.LOGIN_DIALOG_OK).setVisible(false);
+            ui.actor(Label.class, Assets.MainUI.LOGIN_DIALOG_MESSAGE).setText("Logging in...");
+            ui.actor(Button.class, Assets.MainUI.LOGIN_DIALOG_OK).setVisible(false);
             waitingDialog.setName("Registering");
             showDialog(waitingDialog, getStage());
 

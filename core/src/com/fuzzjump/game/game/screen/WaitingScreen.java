@@ -1,8 +1,13 @@
 package com.fuzzjump.game.game.screen;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.fuzzjump.api.session.ISessionService;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
@@ -12,6 +17,7 @@ import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
+import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
@@ -37,13 +43,19 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private GameSession gameSession;
 
     private Label timeLabel;
+    private Dialog connectingDialog;
+    private TextButton connectingButton;
+    private Actor connectingProgress;
+    private Label connectingMessage;
+    private Table mapTable;
 
     private Profile[] newPlayers;
     private final Profile profile;
 
     private List<Profile> players = new ArrayList<>();
 
-    private String matchmakingToken;
+    private String matchmakingKey;
+    private Join.JoinResponsePacket joinResponse;
 
     @Inject
     public WaitingScreen(Stage stage,
@@ -63,23 +75,34 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     @Override
     public void onReady() {
         timeLabel = ui().actor(Assets.WaitingUI.TIME_LABEL);
-        gameSession = new GameSession(params.matchmakingIp, params.matchmakingPort, this);
-
-        sessionService.getSessionToken("MATCHMAKING")
-                .observeOn(scheduler)
-                .subscribe(response -> {
-                    WaitingScreen.this.matchmakingToken = response.getBody();
-                    gameSession.connect();
-                    initPacketListeners();
-                });
-
+        connectingDialog = ui().actor(Assets.WaitingUI.CONNECTING_DIALOG);
+        connectingButton = ui().actor(Assets.WaitingUI.CONNECTING_BUTTON);
+        connectingMessage = ui().actor(Assets.WaitingUI.CONNECTING_MESSAGE);
+        connectingProgress = ui().actor(Assets.WaitingUI.CONNECTING_PROGRESS);
+        mapTable = ui().actor(Assets.WaitingUI.MAP_TABLE);
     }
 
     private void initPacketListeners() {
         PacketProcessor packetProcessor = gameSession.getPacketProcessor();
+        packetProcessor.addListener(Join.JoinResponsePacket.class, this::joinResponse);
         packetProcessor.addListener(Lobby.GameFound.class, this::gameFound);
         packetProcessor.addListener(Lobby.LobbyState.class, this::lobbyUpdate);
         packetProcessor.addListener(Lobby.TimeState.class, this::updateTime);
+        packetProcessor.addListener(Lobby.GameServerSetupData.class, this::gameServerFound);
+    }
+
+    private void gameServerFound(GameSession sender, Lobby.GameServerSetupData message) {
+        gameSession.disconnect();
+        gameSession = null;
+        System.out.println("Game server details: " + message.toString());
+    }
+
+    private void joinResponse(GameSession session, Join.JoinResponsePacket packet) {
+        connectingMessage.setText("Finding game");
+        this.joinResponse = packet;
+        Lobby.Loaded loadedPacket = Lobby.Loaded.newBuilder()
+                .build();
+        gameSession.send(loadedPacket);
     }
 
     private void updateTime(GameSession session, Lobby.TimeState message) {
@@ -91,6 +114,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     private void lobbyUpdate(GameSession session, Lobby.LobbyState message) {
+        System.out.println("Lobby updated");
         if (message.getPlayersCount() > 0) {
             players.clear();
             for (int i = 0; i < message.getPlayersCount(); i++) {
@@ -116,6 +140,12 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         ui().setMapSlots(message.getMapSlotsList());
         int time = message.getTime().getTime();
         setTime(time);
+
+        if (!mapTable.isVisible()) {
+            mapTable.setVisible(true);
+            connectingDialog.setVisible(false);
+        }
+
     }
 
     private Profile findProfile(Lobby.Player player) {
@@ -129,19 +159,44 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     private void gameFound(GameSession session, Lobby.GameFound message) {
-        System.out.println("Game found message");
+        if (message.getFound()) {
+            connectingMessage.setText("Found game");
+        } else {
+            connectingMessage.setText("Bad game id");
+            connectingProgress.setVisible(false);
+        }
     }
 
     @Override
     public void onShow() {
+        mapTable.setVisible(false);
+        connectingButton.setText("Cancel");
+        connectingMessage.setText("Connecting");
+        connectingProgress.setVisible(true);
+        showDialog(connectingDialog, getStage());
+        gameSession = new GameSession(params.matchmakingIp, params.matchmakingPort, this);
+
+        sessionService.getSessionToken("MATCHMAKING")
+                .observeOn(scheduler)
+                .subscribe(response -> {
+                    synchronized (connectingDialog) {
+                        if (gameSession == null) {
+                            return;
+                        }
+                        WaitingScreen.this.matchmakingKey = response.getBody();
+                        gameSession.connect();
+                        initPacketListeners();
+                    }
+                });
+
     }
 
     @Override
     public void clicked(int id, Actor actor) {
         switch (id) {
+            case Assets.WaitingUI.CONNECTING_BUTTON:
             case Assets.WaitingUI.CANCEL_BUTTON:
-                gameSession.close(true);
-                screenHandler.showScreen(MenuScreen.class);
+                cancel();
                 break;
             case Assets.WaitingUI.READY_BUTTON:
                 gameSession.send(readySetBuilder.setReady(!profile.isReady()).build());
@@ -152,19 +207,64 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         }
     }
 
+    private void cancel() {
+        synchronized (connectingDialog) {
+            connectingButton.setVisible(false);
+            connectingMessage.setText("Leaving");
+            if (mapTable.isVisible()) {
+                connectingDialog.setVisible(true);
+            }
+            //let the dialog show up, then disconnect
+            Gdx.app.postRunnable(() -> {
+                if (gameSession != null) {
+                    gameSession.close(true);
+                }
+                gameSession = null;
+                screenHandler.showScreen(MenuScreen.class);
+            });
+        }
+    }
+
     @Override
     public void onConnect() {
-        Lobby.Loaded loadedMessage = Lobby.Loaded.newBuilder().buildPartial();
-        gameSession.send(loadedMessage);
+        connectingMessage.setText("Validating profile");
+        Join.JoinPacket joinPacket = Join.JoinPacket.newBuilder()
+                .setUserId(profile.getUserId())
+                .setSessionKey(matchmakingKey)
+                .setVersion(1)
+                .build();
+        gameSession.send(joinPacket);
     }
 
     @Override
     public void onDisconnect() {
-
+        if (gameSession == null) {
+            return;
+        }
+        synchronized (connectingDialog) {
+            if (!connectingDialog.isVisible()) {
+                connectingDialog.setVisible(true);
+            }
+            connectingMessage.setText("Network error");
+            connectingButton.setText("Leave");
+            connectingButton.setVisible(true);
+            connectingProgress.setVisible(false);
+        }
     }
 
     @Override
     public void onTimeout() {
-
+        if (gameSession == null) {
+            return;
+        }
+        synchronized (connectingDialog) {
+            if (!connectingDialog.isVisible()) {
+                connectingDialog.setVisible(true);
+            }
+            connectingMessage.setText("Network error");
+            connectingButton.setText("Leave");
+            connectingButton.setVisible(true);
+            connectingProgress.setVisible(false);
+        }
     }
 }
