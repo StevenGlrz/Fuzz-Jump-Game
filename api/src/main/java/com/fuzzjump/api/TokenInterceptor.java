@@ -18,7 +18,6 @@ public class TokenInterceptor implements Interceptor {
         if (token == null) {
             return chain.proceed(chain.request());
         }
-        System.out.println("Making request with token " + token);
         Request.Builder builder = chain.request().newBuilder();
         builder.addHeader("Authorization", "Bearer " + token);
         return chain.proceed(builder.build());

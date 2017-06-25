@@ -42,10 +42,9 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
         Player player = (Player) sender;
         if (serverInfo.validate) {
             Boolean validated = player.getChannel().attr(VALIDATED_ATTR_KEY).get();
-            System.out.println(validated);
             if (validated == null || !validated) {
+                System.out.println("Player is not validated. Trying validation.");
                 //trigger validators
-                System.out.println("Trying validate");
                 tryValidate(player, packet, message);
                 return false;
             }
@@ -57,16 +56,18 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
         Player player = createPlayer(channel);
         channel.attr(PLAYER_ATTRIBUTE_KEY).set(player);
         if (serverInfo.validate) {
-            System.out.println("Validating");
+            System.out.println("Validations are on. Waiting " + serverInfo.validationTimeout + "ms for validation packet until removing the player");
             executorService.schedule(() -> {
-                System.out.println("Checking if validated");
+                System.out.println("Checking if player sent validation packet.");
                 Boolean validated = player.getChannel().attr(VALIDATED_ATTR_KEY).get();
                 if (validated == null || !validated) {
+                    System.out.println("Player did not send validation packet. Disconnecting them.");
                     player.getChannel().attr(Server.PLAYER_ATTRIBUTE_KEY).remove();
                     player.getChannel().close();
+                } else {
+                    System.out.println("Player is validated.");
                 }
             }, serverInfo.validationTimeout, TimeUnit.MILLISECONDS);
-            System.out.println("Submitted");
         } else {
             connected(player);
         }
@@ -85,7 +86,9 @@ public abstract class Server<TInfo extends ServerInfo> implements PacketProcesso
             if (!validator.matches(message.getClass(), message)) {
                 continue;
             }
+            System.out.println(validator.getClass().getSimpleName() + " is validating player");
             validator.validate(player, message).thenAccept(validated -> {
+                System.out.println(validator.getClass().getSimpleName() + " validator validation complete. Player valid? " + validated);
                 if (!validated) {
                     return;
                 }

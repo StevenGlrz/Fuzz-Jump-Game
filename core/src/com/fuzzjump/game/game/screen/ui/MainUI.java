@@ -68,10 +68,10 @@ public class MainUI extends StageUI {
         loginDialog.setObject(okButton, okButton);
         loginDialog.setModal(true);
 
-        register(Assets.MainScreen.LOGIN_WAITING_MESSAGE_DIALOG, loginDialog);
-        register(Assets.MainScreen.LOGIN_DIALOG_MESSAGE, messageLabel);
-        register(Assets.MainScreen.LOGIN_DIALOG_OK, okButton);
-        register(Assets.MainScreen.LOGIN_WAITING_MESSAGE_DIALOG, loginDialog);
+        register(Assets.MainUI.LOGIN_WAITING_MESSAGE_DIALOG, loginDialog);
+        register(Assets.MainUI.LOGIN_DIALOG_MESSAGE, messageLabel);
+        register(Assets.MainUI.LOGIN_DIALOG_OK, okButton);
+        register(Assets.MainUI.LOGIN_WAITING_MESSAGE_DIALOG, loginDialog);
 
         loginDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, loginDialog)).row();
         loginDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, loginDialog));
@@ -97,12 +97,12 @@ public class MainUI extends StageUI {
 
         Value topBottomPadding = Value.percentHeight(.045f, welcomeTable);
 
-        register(Assets.MainScreen.LOGIN_USER_FIELD, new TextField("", editTextStyle));
+        register(Assets.MainUI.LOGIN_USER_FIELD, new TextField("", editTextStyle));
 
         final Label messageLabel = new Label("To begin, enter a display name\n or use your facebook account.", getGameSkin(), "profile");
         welcomeTable.add(messageLabel).align(Align.center).center().expand().colspan(2).row();
 
-        final TextField loginUserField = actor(TextField.class, Assets.MainScreen.LOGIN_USER_FIELD);
+        final TextField loginUserField = actor(TextField.class, Assets.MainUI.LOGIN_USER_FIELD);
         loginUserField.setMessageText("Enter display name");
         welcomeTable.add(loginUserField).padTop(0).colspan(2).size(Value.percentWidth(.95f, welcomeTable), Value.percentWidth(0.132558402f, welcomeTable)).row();
 
@@ -120,8 +120,8 @@ public class MainUI extends StageUI {
         welcomeTable.add(facebookButton).padLeft(Value.percentWidth(.025f, welcomeTable)).padTop(topBottomPadding).padBottom(topBottomPadding).left().size(Value.percentWidth(.45f, welcomeTable), Value.percentWidth(0.15957446808510638297872340425532f, welcomeTable));
         welcomeTable.add(startBtn).padRight(Value.percentWidth(.025f, welcomeTable)).padTop(topBottomPadding).padBottom(topBottomPadding).right().size(Value.percentWidth(.45f, welcomeTable), Value.percentWidth(0.15957446808510638297872340425532f, welcomeTable));
 
-        register(Assets.MainScreen.START_BUTTON, startBtn);
-        register(Assets.MainScreen.REGISTER_FACEBOOK, facebookButton);
+        register(Assets.MainUI.START_BUTTON, startBtn);
+        register(Assets.MainUI.REGISTER_FACEBOOK, facebookButton);
 
         switcher.addWidget(welcomeTable, Value.percentWidth(.8f, switcher), Value.percentWidth(0.5303984820512819f, switcher));
     }

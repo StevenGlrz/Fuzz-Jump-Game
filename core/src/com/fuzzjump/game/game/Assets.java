@@ -70,7 +70,7 @@ public class Assets {
     // Loaded resources
     public static BitmapFont DEBUG_FONT = null;
 
-    public class MainScreen {
+    public class MainUI {
 
         //LOGIN
         public static final int LOGIN_USER_FIELD = 0;
@@ -118,6 +118,11 @@ public class Assets {
         public static final int CANCEL_BUTTON = 7;
         public static final int MAP_BUTTON = 8;
 
+        public static final int CONNECTING_DIALOG = 9;
+        public static final int CONNECTING_MESSAGE = 10;
+        public static final int CONNECTING_BUTTON = 11;
+        public static final int MAP_TABLE = 12;
+        public static final int CONNECTING_PROGRESS = 13;
     }
 
     public class GameUI {

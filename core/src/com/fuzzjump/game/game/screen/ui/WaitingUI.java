@@ -1,10 +1,13 @@
 package com.fuzzjump.game.game.screen.ui;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -34,12 +37,13 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
+import static com.fuzzjump.game.game.Assets.createDialogStyle;
 import static com.fuzzjump.game.game.Assets.createPlusImageBtnStyle;
 import static com.fuzzjump.game.game.Assets.createXTBStyle;
 
 public class WaitingUI extends StageUI {
 
-    private final Profile mProfile;
+    private final Profile profile;
     private final UnlockableColorizer colorizer;
 
     private PlayerSlot[] playerSlots = new PlayerSlot[4];
@@ -52,7 +56,7 @@ public class WaitingUI extends StageUI {
     @Inject
     public WaitingUI(Textures textures, Skin skin, Profile profile, UnlockableColorizer colorizer) {
         super(textures, skin);
-        this.mProfile = profile;
+        this.profile = profile;
         this.colorizer = colorizer;
     }
 
@@ -60,7 +64,7 @@ public class WaitingUI extends StageUI {
     public void init() {
         setFillParent(true);
 
-        FJDragDownBarTable dropdownTable = new FJDragDownBarTable(this, mProfile);
+        FJDragDownBarTable dropdownTable = new FJDragDownBarTable(this, profile);
 
 
         Table contentTable = dropdownTable.getContentTable();
@@ -83,22 +87,59 @@ public class WaitingUI extends StageUI {
             playerTable.add(playerSlots[i] = new PlayerSlot()).size(width, height).center().expand();
         }
 
-        playerSlots[0].setPlayer(mProfile);
+        playerSlots[0].setPlayer(profile);
 
         Label selectLevelLabel = new Label("Select Level", getGameSkin(), "default");
         selectLevelLabel.setAlignment(Align.topLeft | Align.center);
-        mapTable.add(selectLevelLabel).expand(true, false).padLeft(Value.percentWidth(.025f, mapTable)).left();
+        mapTable.add(selectLevelLabel).expand(true, false).padTop(Value.percentHeight(.02f, mapTable)).padLeft(Value.percentWidth(.025f, mapTable)).left();
 
         timeLabel = new Label("Waiting", getGameSkin(), "default");
         register(Assets.WaitingUI.TIME_LABEL, timeLabel);
         selectLevelLabel.setAlignment(Align.topRight | Align.center);
-        mapTable.add(timeLabel).expand(true, false).padRight(Value.percentWidth(.025f, mapTable)).right();
+        mapTable.add(timeLabel).expand(true, false).padTop(Value.percentHeight(.02f, mapTable)).padRight(Value.percentWidth(.025f, mapTable)).right();
 
         mapTable.row();
 
         Value size = Value.percentWidth(.275f, mapTable);
 
+        Label messageLabel = new Label("Message", getGameSkin(), "default");
+        Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
+        progressImage.setOrigin(Align.center);
+        progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
+
+        Dialog connectingDialog = new Dialog("", createDialogStyle(this)) {
+            @Override
+            public float getPrefWidth() {
+                return Gdx.graphics.getWidth() * 0.65f;
+            }
+
+            @Override
+            public float getPrefHeight() {
+                return Gdx.graphics.getWidth() * 0.5081829277777778f;
+            }
+            @Override
+            public void result(Object obj) {
+                cancel();
+            }
+        };
+
+        final TextButton connectingButton = new TextButton("OK", Assets.createDefaultTBStyle(this));
+
+        connectingDialog.setObject(connectingButton, connectingButton);
+        connectingDialog.setModal(true);
+
+        register(Assets.WaitingUI.CONNECTING_DIALOG, connectingDialog);
+        register(Assets.WaitingUI.CONNECTING_MESSAGE, messageLabel);
+        register(Assets.WaitingUI.CONNECTING_BUTTON, connectingButton);
+        register(Assets.WaitingUI.CONNECTING_PROGRESS, progressImage);
+
+        connectingDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, connectingDialog)).row();
+        connectingDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, connectingDialog));
+        connectingDialog.getButtonTable().add(connectingButton).padBottom(Value.percentHeight(.025f, connectingDialog)).size(Value.percentWidth(.5f, connectingDialog), Value.percentWidth(0.1296749444444444f, connectingDialog));
+
         Table mapSlotTable = new Table();
+
+        register(Assets.WaitingUI.MAP_TABLE, mapSlotTable);
 
         mapTable.add(mapSlotTable).width(Value.percentHeight(1f, mapTable)).colspan(2).expand();
 
@@ -118,7 +159,7 @@ public class WaitingUI extends StageUI {
         mapTable.row();
 
         Value padBottom = Value.percentHeight(.05f, mapTable);
-        TextButton cancelBtn = new TextButton("Cancel", createXTBStyle(this));
+        TextButton cancelBtn = new TextButton("Leave", createXTBStyle(this));
         readyButton = new TextButton("Ready", createDefaultTBStyle(this));
         register(Assets.WaitingUI.CANCEL_BUTTON, cancelBtn);
         register(Assets.WaitingUI.READY_BUTTON, readyButton);
@@ -133,10 +174,8 @@ public class WaitingUI extends StageUI {
         for(int i = 0; i < WaitingScreen.MAX_PLAYERS; i++) {
             Profile profile = i < players.size() ? players.get(i) : null;
             playerSlots[i].setPlayer(profile);
-            if (profile != null) {
-                if (profile == mProfile) {
-                    readyButton.setText(profile.isReady() ? "Unready" : "Ready");
-                }
+            if (profile != null && profile == this.profile) {
+                readyButton.setText(profile.isReady() ? "Unready" : "Ready");
             }
         }
     }
@@ -215,13 +254,15 @@ public class WaitingUI extends StageUI {
                 nameLabel.setText("Invite");
                 return;
             }
-            if (newPlayer == player)
+            if (newPlayer == player) {
+                profileChanged();
                 return;
+            }
             this.player = newPlayer;
             switcher.setDisplayedChild(1);
             statusImage.setVisible(true);
-            this.fuzzle.setProfile(newPlayer);
-            this.fuzzle.load(stageScreen.getLoader());
+            fuzzle.setProfile(newPlayer);
+            fuzzle.load(stageScreen.getLoader());
 
             profileChanged();
         }
@@ -275,7 +316,7 @@ public class WaitingUI extends StageUI {
             float height = getImageHeight() + 10;
 
             outline.draw(batch, getX() + drawX, getY() + drawY, width, height);
-            font.draw(batch, votesLayout, getX() + getImageX() + ((size / 2) + (votesLayout.width / 2)), getY() + getImageY() + size * 1.65f);
+            font.draw(batch, votesLayout, getX() + getImageX() + ((size / 3f) + (votesLayout.width / 2f)), getY() + getImageY() + size * 1.35f);
         }
     }
 }

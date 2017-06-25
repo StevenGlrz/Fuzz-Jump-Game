@@ -52,6 +52,8 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         lastTime = System.currentTimeMillis();
         remainingTime -= time / 1000f;
         if (update) {
+            update = false;
+            System.out.println("updating lobby");
             stateBuilder.clearPlayers();
             for (LobbyPlayer player : players) {
                 player.setSynced(false);
@@ -71,7 +73,6 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
                 }
                 stateBuilder.setMapSlots(i, bldr.buildPartial());
             }
-            update = false;
         }
         timeStateBuilder.setTime(Math.round(remainingTime));
         Lobby.TimeState timeState = timeStateBuilder.build();
@@ -126,6 +127,10 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
 
     public LobbySessionListener getListener() {
         return listener;
+    }
+
+    public boolean getUpdate() {
+        return update;
     }
 
     public interface LobbySessionListener {

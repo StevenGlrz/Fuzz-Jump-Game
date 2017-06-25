@@ -94,7 +94,9 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
                     break;
                 }
             }
+            System.out.println("Found session for player " + player.getUserId());
             session.addPlayer(player);
+            System.out.println("Lobby should update? " + session.getUpdate());
             if (session.filled())
                 openSessions.remove(session);
             player.getChannel().writeAndFlush(Lobby.GameFound.newBuilder()
@@ -106,15 +108,24 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
     }
 
     private void updateSession(LobbySession lobbySession) {
-        if (lobbySession.update()) {
-            openSessions.remove(lobbySession);
-            sessions.remove(lobbySession.id);
-            //TODO send a status update to client
-            //gameServerTransferer.transfer(lobbySession);
-        }
-        if (lobbySession.end()) {
-            lobbySession.future.cancel(false);
-            lobbySession.getListener().ended();
+        try {
+            if (lobbySession.update()) {
+                openSessions.remove(lobbySession);
+                sessions.remove(lobbySession.id);
+                //TODO send a status update to client
+                //gameServerTransferer.transfer(lobbySession);
+            }
+            if (lobbySession.end()) {
+                lobbySession.future.cancel(true);
+                if (lobbySession.getListener() != null) {
+                    lobbySession.getListener().ended();
+                }
+                openSessions.remove(lobbySession);
+                sessions.remove(lobbySession.id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            //if this exception throws the whole tick will stop.
         }
     }
 
