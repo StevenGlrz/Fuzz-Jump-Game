@@ -1,8 +1,8 @@
 package com.fuzzjump.api.user;
 
 import com.fuzzjump.api.TokenInterceptor;
-import com.fuzzjump.api.model.Response;
-import com.fuzzjump.api.model.TokenResponse;
+import com.fuzzjump.api.model.response.TokenResponse;
+import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.api.user.model.RegisterRequest;
 
 import javax.inject.Inject;
@@ -29,8 +29,8 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public Observable<Response> login(String username) {
-        return restService.login(new RegisterRequest(username));
+    public Observable<RegisterResponse> register(String username) {
+        return restService.register(new RegisterRequest(username));
     }
 
     @Override
@@ -49,7 +49,7 @@ public class UserService implements IUserService {
     private interface UserRestService {
 
         @POST("connect/register/")
-        Observable<Response> login(@Body RegisterRequest request);
+        Observable<RegisterResponse> register(@Body RegisterRequest request);
 
         @FormUrlEncoded
         @POST("connect/token/")

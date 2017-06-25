@@ -26,13 +26,13 @@ public class FuzzJumpServerInfo extends ServerInfo {
 
     public FuzzJumpServerInfo(int port,
                               int privatePort,
-                              String directIp,
+                              String ip,
                               String apiAddress,
                               String apiUsername,
                               String apiPassword) {
         super(port);
         this.privatePort = privatePort;
-        this.ip = directIp;
+        this.ip = ip;
         this.apiAddress = apiAddress;
         this.apiUsername = apiUsername;
         this.apiPassword = apiPassword;
@@ -57,10 +57,10 @@ public class FuzzJumpServerInfo extends ServerInfo {
         return new FuzzJumpServerInfo(
                 Integer.parseInt(portStr),
                 Integer.parseInt(privatePortStr),
+                directIp,
                 apiAddress,
                 apiUsername,
-                apiPassword,
-                directIp
+                apiPassword
         );
     }
 

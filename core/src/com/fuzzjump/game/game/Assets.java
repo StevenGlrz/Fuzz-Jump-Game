@@ -151,8 +151,8 @@ public class Assets {
     private static final String BUTTON_ARROW_RIGHT_DOWN = "ui-arrow-right-p";
     private static final String BUTTON_HELP = "ui-help";
     private static final String BUTTON_HELP_DOWN = "ui-help-p";
-    private static final String BUTTON_LOGIN = "ui-login";
-    private static final String BUTTON_LOGIN_DOWN = "ui-login-p";
+    private static final String BUTTON_LOGIN = "ui-register";
+    private static final String BUTTON_LOGIN_DOWN = "ui-register-p";
 
     private static final String GPLUS = "ui-gplus-btn";
     private static final String GPLUS_DOWN = "ui-gplus-btn-p";
@@ -166,8 +166,8 @@ public class Assets {
     private static final String SETTINGS_DOWN = "ui-settings-p";
     private static final String PROFILE = "ui-profile";
     private static final String PROFILE_DOWN = "ui-profile-p";
-    private static final String PLAY = "ui-login";
-    private static final String PLAY_DOWN = "ui-login-p";
+    private static final String PLAY = "ui-register";
+    private static final String PLAY_DOWN = "ui-register-p";
     private static final String FRIENDS = "ui-friends";
     private static final String FRIENDS_DOWN = "ui-friends-p";
     private static final String CHECK = "ui-check";
@@ -470,7 +470,7 @@ public class Assets {
     public static Window.WindowStyle createDialogStyle(StageUI ui) {
         Window.WindowStyle style = new Window.WindowStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
                 ui.getGameSkin().getColor(FUZZ_YELLOW),
-                ui.getTextures().getTextureRegionDrawable("ui-panel-login"));
+                ui.getTextures().getTextureRegionDrawable("ui-panel-register"));
         style.stageBackground = ui.getGameSkin().getDrawable("dialogDim");
         return style;
     }

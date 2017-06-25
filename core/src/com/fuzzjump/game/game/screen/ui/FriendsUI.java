@@ -55,7 +55,7 @@ public class FriendsUI extends StageUI {
 
     private ActorSwitcher friendsListSwitcher;
 
-    private final Map<Integer, FriendProfile> profileMap = new HashMap<>();
+    private final Map<String, FriendProfile> profileMap = new HashMap<>();
 
     private Action waitSearchAction = null; // TODO Remove once implemented new API
 
@@ -174,8 +174,8 @@ public class FriendsUI extends StageUI {
         }
         for (int i = 0, n = profiles.size(); i < n; i++) {
             FriendProfile friend = profiles.get(i);
-            if (profileMap.containsKey(friend.getProfileId())) {
-                profiles.set(i, profileMap.get(friend.getProfileId()));
+            if (profileMap.containsKey(friend.getUserId())) {
+                profiles.set(i, profileMap.get(friend.getUserId()));
             }
         }
         profileMap.clear();
@@ -190,7 +190,7 @@ public class FriendsUI extends StageUI {
                     .padBottom(friendSquarePadBottom)
                     .padTop(friendSquarePadBottom)
                     .expand();
-            profileMap.put(friend.getProfileId(), friend);
+            profileMap.put(friend.getUserId(), friend);
             //if (column == 1)
             //    cell.padLeft(friendSquarePadSides).padRight(friendSquarePadSides);
             if (i == profiles.size() - 1 && column < 2) {

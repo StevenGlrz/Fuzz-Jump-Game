@@ -21,13 +21,16 @@ public class Main {
         MatchmakingServer server = new MatchmakingServer(serverInfo);
         ServerBootstrapper bootstrapper = new ServerBootstrapper();
         ServerBootstrap bootstrap = bootstrapper.bootstrap(server);
-        bootstrap.bind(new InetSocketAddress(serverInfo.privatePort));
-        System.out.println("Listening on port " + serverInfo.privatePort);
+        if (serverInfo.port != serverInfo.privatePort) {
+            bootstrap.bind(new InetSocketAddress(serverInfo.privatePort));
+            System.out.println("Listening on port " + serverInfo.privatePort);
+        }
     }
 
     private static MatchmakingServerInfo loadServerInfo(String[] args) throws IOException {
         String gameServerIp = System.getenv("FUZZ_MATCHMAKING_GAMESERVER_IP");
-        return new MatchmakingServerInfo(FuzzJumpServerInfo.loadBaseInfo(args), gameServerIp);
+        String gameServerPort = System.getenv("FUZZ_MATCHMAKING_GAMESERVER_PORT");
+        return new MatchmakingServerInfo(FuzzJumpServerInfo.loadBaseInfo(args), gameServerIp, gameServerPort);
     }
 
 }

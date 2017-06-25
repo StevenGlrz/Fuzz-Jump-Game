@@ -3,6 +3,7 @@ package com.fuzzjump.game.game.screen;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.fuzzjump.api.session.ISessionService;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
@@ -10,6 +11,7 @@ import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.steveadoo.server.common.packets.PacketProcessor;
@@ -20,12 +22,16 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
+import io.reactivex.schedulers.Schedulers;
+
 public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
 
     public static final int MAX_PLAYERS = 4;
 
     private final FuzzJumpParams params;
-    private final UnlockableRepository unlockableDefinitions;
+    private final UnlockableRepository unlockableRepository;
+    private final ISessionService sessionService;
+    private final GraphicsScheduler scheduler;
 
     private final Stage stage;
 
@@ -41,22 +47,38 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private List<Profile> players = new ArrayList<>();
 
+    private String matchmakingToken;
+
     @Inject
-    public WaitingScreen(Stage stage, WaitingUI ui, FuzzJumpParams params, Profile profile, UnlockableRepository unlockableDefinitions) {
+    public WaitingScreen(Stage stage,
+                         WaitingUI ui,
+                         FuzzJumpParams params,
+                         Profile profile,
+                         UnlockableRepository unlockableDefinitions,
+                         ISessionService sessionService,
+                         GraphicsScheduler scheduler) {
         super(ui);
         this.stage = stage;
         this.params = params;
         this.profile = profile;
-        this.unlockableDefinitions = unlockableDefinitions;
+        this.unlockableRepository = unlockableDefinitions;
+        this.sessionService = sessionService;
+        this.scheduler = scheduler;
     }
 
     @Override
     public void onReady() {
-        gameSession = new GameSession(params.gameServerIp, params.gameServerPort, this);
-        gameSession.connect();
+        timeLabel = ui().actor(Assets.WaitingUI.TIME_LABEL);
+        gameSession = new GameSession(params.matchmakingIp, params.matchmakingPort, this);
 
-        timeLabel = this.ui().actor(Assets.WaitingUI.TIME_LABEL);
-        initPacketListeners();
+        sessionService.getSessionToken("MATCHMAKING")
+                .observeOn(scheduler)
+                .subscribe(response -> {
+                    WaitingScreen.this.matchmakingToken = response.getBody();
+                    gameSession.connect();
+                    initPacketListeners();
+                });
+
     }
 
     private void initPacketListeners() {
@@ -79,17 +101,17 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
             players.clear();
             for (int i = 0; i < message.getPlayersCount(); i++) {
                 Lobby.Player player = message.getPlayers(i);
-                if (player.getProfileId() == profile.getProfileId()) {
+                if (player.getUserId().equals(profile.getUserId())) {
                     profile.setPlayerIndex(player.getPlayerIndex());
                     profile.setReady(player.getReady());
                     players.add(profile);
                     continue;
                 }
                 Profile profile = findProfile(player);
-                if (profile == null || profile.getProfileId() != player.getProfileId()) {
-                    profile = new Profile(unlockableDefinitions);
+                if (profile == null || !profile.getUserId().equals(player.getUserId())) {
+                    profile = new Profile(unlockableRepository);
                     profile.setPlayerIndex(player.getPlayerIndex());
-                    profile.setProfileId(player.getProfileId());
+                    profile.setUserId(player.getUserId());
                     profile.setReady(player.getReady());
                 }
                 profile.setReady(player.getReady());

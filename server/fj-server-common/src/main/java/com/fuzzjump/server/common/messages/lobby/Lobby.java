@@ -1281,13 +1281,18 @@ public final class Lobby {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 profileId = 1;</code>
+     * <code>optional string userId = 1;</code>
      */
-    boolean hasProfileId();
+    boolean hasUserId();
     /**
-     * <code>optional int32 profileId = 1;</code>
+     * <code>optional string userId = 1;</code>
      */
-    int getProfileId();
+    java.lang.String getUserId();
+    /**
+     * <code>optional string userId = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdBytes();
 
     /**
      * <code>required int32 playerIndex = 2;</code>
@@ -1359,9 +1364,10 @@ public final class Lobby {
               }
               break;
             }
-            case 8: {
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000001;
-              profileId_ = input.readInt32();
+              userId_ = bs;
               break;
             }
             case 16: {
@@ -1414,19 +1420,46 @@ public final class Lobby {
     }
 
     private int bitField0_;
-    public static final int PROFILEID_FIELD_NUMBER = 1;
-    private int profileId_;
+    public static final int USERID_FIELD_NUMBER = 1;
+    private java.lang.Object userId_;
     /**
-     * <code>optional int32 profileId = 1;</code>
+     * <code>optional string userId = 1;</code>
      */
-    public boolean hasProfileId() {
+    public boolean hasUserId() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int32 profileId = 1;</code>
+     * <code>optional string userId = 1;</code>
      */
-    public int getProfileId() {
-      return profileId_;
+    public java.lang.String getUserId() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          userId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string userId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdBytes() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
     }
 
     public static final int PLAYERINDEX_FIELD_NUMBER = 2;
@@ -1460,7 +1493,7 @@ public final class Lobby {
     }
 
     private void initFields() {
-      profileId_ = 0;
+      userId_ = "";
       playerIndex_ = 0;
       ready_ = false;
     }
@@ -1486,7 +1519,7 @@ public final class Lobby {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, profileId_);
+        output.writeBytes(1, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         output.writeInt32(2, playerIndex_);
@@ -1505,7 +1538,7 @@ public final class Lobby {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, profileId_);
+          .computeBytesSize(1, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
@@ -1632,7 +1665,7 @@ public final class Lobby {
 
       public Builder clear() {
         super.clear();
-        profileId_ = 0;
+        userId_ = "";
         bitField0_ = (bitField0_ & ~0x00000001);
         playerIndex_ = 0;
         bitField0_ = (bitField0_ & ~0x00000002);
@@ -1669,7 +1702,7 @@ public final class Lobby {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.profileId_ = profileId_;
+        result.userId_ = userId_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
@@ -1694,8 +1727,10 @@ public final class Lobby {
 
       public Builder mergeFrom(com.fuzzjump.server.common.messages.lobby.Lobby.Player other) {
         if (other == com.fuzzjump.server.common.messages.lobby.Lobby.Player.getDefaultInstance()) return this;
-        if (other.hasProfileId()) {
-          setProfileId(other.getProfileId());
+        if (other.hasUserId()) {
+          bitField0_ |= 0x00000001;
+          userId_ = other.userId_;
+          onChanged();
         }
         if (other.hasPlayerIndex()) {
           setPlayerIndex(other.getPlayerIndex());
@@ -1738,34 +1773,78 @@ public final class Lobby {
       }
       private int bitField0_;
 
-      private int profileId_ ;
+      private java.lang.Object userId_ = "";
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>optional string userId = 1;</code>
        */
-      public boolean hasProfileId() {
+      public boolean hasUserId() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>optional string userId = 1;</code>
        */
-      public int getProfileId() {
-        return profileId_;
+      public java.lang.String getUserId() {
+        java.lang.Object ref = userId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
       }
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>optional string userId = 1;</code>
        */
-      public Builder setProfileId(int value) {
-        bitField0_ |= 0x00000001;
-        profileId_ = value;
+      public com.google.protobuf.ByteString
+          getUserIdBytes() {
+        java.lang.Object ref = userId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string userId = 1;</code>
+       */
+      public Builder setUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userId_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>optional string userId = 1;</code>
        */
-      public Builder clearProfileId() {
+      public Builder clearUserId() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        profileId_ = 0;
+        userId_ = getDefaultInstance().getUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userId = 1;</code>
+       */
+      public Builder setUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userId_ = value;
         onChanged();
         return this;
       }
@@ -8274,24 +8353,24 @@ public final class Lobby {
       "essages.lobby.MapSlot\022B\n\007players\030\002 \003(\01321" +
       ".com.fuzzjump.server.common.messages.lob" +
       "by.Player\022B\n\004time\030\003 \002(\01324.com.fuzzjump.s" +
-      "erver.common.messages.lobby.TimeState\"?\n" +
-      "\006Player\022\021\n\tprofileId\030\001 \001(\005\022\023\n\013playerInde" +
-      "x\030\002 \002(\005\022\r\n\005ready\030\003 \002(\010\"\031\n\tTimeState\022\014\n\004t" +
-      "ime\030\001 \002(\005\"\'\n\007MapSlot\022\r\n\005mapId\030\001 \002(\005\022\r\n\005v",
-      "otes\030\002 \002(\005\"\033\n\nMapSlotSet\022\r\n\005mapId\030\001 \002(\005\"" +
-      "\031\n\010ReadySet\022\r\n\005ready\030\001 \002(\010\")\n\006Loaded\022\016\n\006" +
-      "gameId\030\001 \001(\t\022\017\n\007private\030\002 \001(\010\"<\n\tGameFou" +
-      "nd\022\r\n\005found\030\001 \002(\010\022\020\n\010gameName\030\002 \001(\t\022\016\n\006g" +
-      "ameId\030\003 \001(\t\" \n\017GameServerFound\022\r\n\005found\030" +
-      "\001 \002(\010\"5\n\017GameServerSetup\022\023\n\013playerCount\030" +
-      "\001 \002(\005\022\r\n\005mapId\030\002 \002(\005\"T\n\027GameServerSetupR" +
-      "esponse\022\016\n\006gameId\030\001 \002(\t\022\014\n\004keys\030\002 \003(\t\022\014\n" +
-      "\004seed\030\003 \002(\t\022\r\n\005mapId\030\004 \002(\005\"i\n\023GameServer" +
-      "SetupData\022\016\n\006gameId\030\001 \002(\t\022\013\n\003key\030\002 \002(\t\022\014",
-      "\n\004seed\030\003 \002(\t\022\r\n\005mapId\030\004 \002(\005\022\n\n\002ip\030\005 \002(\t\022" +
-      "\014\n\004port\030\006 \002(\005\"\036\n\013FindingGame\022\017\n\007finding\030" +
-      "\001 \002(\010B+\n)com.fuzzjump.server.common.mess" +
-      "ages.lobby"
+      "erver.common.messages.lobby.TimeState\"<\n" +
+      "\006Player\022\016\n\006userId\030\001 \001(\t\022\023\n\013playerIndex\030\002" +
+      " \002(\005\022\r\n\005ready\030\003 \002(\010\"\031\n\tTimeState\022\014\n\004time" +
+      "\030\001 \002(\005\"\'\n\007MapSlot\022\r\n\005mapId\030\001 \002(\005\022\r\n\005vote",
+      "s\030\002 \002(\005\"\033\n\nMapSlotSet\022\r\n\005mapId\030\001 \002(\005\"\031\n\010" +
+      "ReadySet\022\r\n\005ready\030\001 \002(\010\")\n\006Loaded\022\016\n\006gam" +
+      "eId\030\001 \001(\t\022\017\n\007private\030\002 \001(\010\"<\n\tGameFound\022" +
+      "\r\n\005found\030\001 \002(\010\022\020\n\010gameName\030\002 \001(\t\022\016\n\006game" +
+      "Id\030\003 \001(\t\" \n\017GameServerFound\022\r\n\005found\030\001 \002" +
+      "(\010\"5\n\017GameServerSetup\022\023\n\013playerCount\030\001 \002" +
+      "(\005\022\r\n\005mapId\030\002 \002(\005\"T\n\027GameServerSetupResp" +
+      "onse\022\016\n\006gameId\030\001 \002(\t\022\014\n\004keys\030\002 \003(\t\022\014\n\004se" +
+      "ed\030\003 \002(\t\022\r\n\005mapId\030\004 \002(\005\"i\n\023GameServerSet" +
+      "upData\022\016\n\006gameId\030\001 \002(\t\022\013\n\003key\030\002 \002(\t\022\014\n\004s",
+      "eed\030\003 \002(\t\022\r\n\005mapId\030\004 \002(\005\022\n\n\002ip\030\005 \002(\t\022\014\n\004" +
+      "port\030\006 \002(\005\"\036\n\013FindingGame\022\017\n\007finding\030\001 \002" +
+      "(\010B+\n)com.fuzzjump.server.common.message" +
+      "s.lobby"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -8316,7 +8395,7 @@ public final class Lobby {
     internal_static_com_fuzzjump_server_common_messages_lobby_Player_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_fuzzjump_server_common_messages_lobby_Player_descriptor,
-        new java.lang.String[] { "ProfileId", "PlayerIndex", "Ready", });
+        new java.lang.String[] { "UserId", "PlayerIndex", "Ready", });
     internal_static_com_fuzzjump_server_common_messages_lobby_TimeState_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_com_fuzzjump_server_common_messages_lobby_TimeState_fieldAccessorTable = new

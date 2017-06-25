@@ -175,10 +175,10 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
 //        }
   //  }
 
-    public Profile getProfile(long profileId) {
+    public Profile getProfile(String userId) {
         for (int i = 0; i < players.size(); i++) {
             Profile profile = players.get(i).getProfile();
-            if (profile.getProfileId() == profileId) {
+            if (profile.getUserId().equals(userId)) {
                 return profile;
             }
         }

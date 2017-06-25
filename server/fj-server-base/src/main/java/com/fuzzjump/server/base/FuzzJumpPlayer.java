@@ -11,20 +11,13 @@ import io.netty.channel.Channel;
 public class FuzzJumpPlayer extends Player {
 
     private int index;
+    private String serverSessionKey;
     private FuzzJumpSession session;
 
-    private int profileId;
+    private String userId;
 
     public FuzzJumpPlayer(Channel channel) {
         super(channel);
-    }
-
-    public int getProfileId() {
-        return profileId;
-    }
-
-    public void setProfileId(int profileId) {
-        this.profileId = profileId;
     }
 
     public int getIndex() {
@@ -41,5 +34,21 @@ public class FuzzJumpPlayer extends Player {
 
     public void setSession(FuzzJumpSession session) {
         this.session = session;
+    }
+
+    public String getServerSessionKey() {
+        return serverSessionKey;
+    }
+
+    public void setServerSessionKey(String serverSessionKey) {
+        this.serverSessionKey = serverSessionKey;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

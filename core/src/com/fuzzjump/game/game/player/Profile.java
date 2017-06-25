@@ -1,5 +1,7 @@
 package com.fuzzjump.game.game.player;
 
+import com.fuzzjump.api.model.user.Equip;
+import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.util.Helper;
 import com.google.gson.JsonArray;
@@ -18,7 +20,6 @@ public class Profile {
     private String displayName;
     private int nameId;
     private int playerIndex;
-    private int profileId = -1;
     private int coins;
     private int experience;
     private Appearance appearance;
@@ -38,40 +39,37 @@ public class Profile {
         this.appearance = new Appearance(definitions);
     }
 
-    public void load(JsonObject data) {
-        JsonObject prof = data.getAsJsonObject("profile");
-        JsonArray equips = prof.getAsJsonArray("equips");
+    public void load(RegisterResponse.RegisterBody body) {
 
-        userName = data.get("username").getAsString();
-        displayName = data.get("displayName").getAsString();
-        nameId = data.get("nameId").getAsInt();
-        userId = data.get("userId").getAsString();
-        profileId = prof.get("id").getAsInt();
-        coins = prof.get("coins").getAsInt();
-        experience = prof.get("experience").getAsInt();
-        for (int i = 0, n = equips.size(); i < n; i++) {
-            JsonObject equip = equips.get(i).getAsJsonObject();
-            JsonObject unlockable = Helper.getJsonObject(equip.get("unlockable"));
+        userName = body.getUsername();
+        displayName = body.getDisplayName();
+        nameId = body.getNameId();
+        userId = body.getUserId();
+        coins = body.getProfile().getCoins();
+        experience = body.getProfile().getExperience();
+        for (int i = 0, n = body.getProfile().getEquips().length; i < n; i++) {
+            Equip equip = body.getProfile().getEquips()[i];
 
-            int slot = equip.get("slot").getAsInt();
+            int slot = equip.getSlot();
 
-            if (unlockable != null) {
-                int unlockableId = unlockable.get("definitionId").getAsInt();
-                int unlockableColor = unlockable.get("color").getAsInt();
+            if (equip.getUnlockable() != null) {
+                int unlockableId = equip.getUnlockable().getDefinitionId();
+                int unlockableColor = equip.getUnlockable().getColor();
                 appearance.setEquip(slot, unlockableId);
                 appearance.createUnlockable(unlockableId, unlockableColor);
             } else {
                 appearance.setEquip(slot, -1);
             }
+
         }
     }
 
-    public int getProfileId() {
-        return profileId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setProfileId(int id) {
-        this.profileId = id;
+    public void setUserId(String id) {
+        this.userId = id;
     }
 
     public String getDisplayName() {

@@ -1,4 +1,4 @@
-package com.fuzzjump.api.model;
+package com.fuzzjump.api.model.response;
 
 /**
  * Created by Steven Galarza on 6/23/2017.

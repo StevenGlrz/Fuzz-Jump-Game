@@ -4,9 +4,9 @@ option java_package = "com.fuzzjump.server.common.messages.join";
 
 message JoinPacket {
 
-  optional int32 profileId = 1;
-  optional string sessionKey = 2;
-  required int32 version = 3;
+  required int32 version = 1;
+  optional string userId = 2;
+  optional string sessionKey = 3;
   optional string serverSessionKey = 4;
 
 }

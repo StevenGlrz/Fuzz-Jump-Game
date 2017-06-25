@@ -12,7 +12,7 @@ message LobbyState {
 
 message Player {
 
-  optional int32 profileId = 1;
+  optional string userId = 1;
   required int32 playerIndex = 2;
   required bool ready = 3;
 

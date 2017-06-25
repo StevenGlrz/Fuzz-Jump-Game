@@ -12,6 +12,7 @@ dependencies {
     compile project(':server-common')
     compile project(':server-base')
     compile project(':fj-server-common')
+    compile project(':api')
 }
 
 sourceCompatibility = "1.8"

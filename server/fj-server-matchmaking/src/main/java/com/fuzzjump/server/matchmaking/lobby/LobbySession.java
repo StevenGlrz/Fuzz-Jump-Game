@@ -57,7 +57,7 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
                 player.setSynced(false);
                 playerBuilder.clear();
                 playerBuilder.setPlayerIndex(player.getIndex());
-                playerBuilder.setProfileId(player.getProfileId());
+                playerBuilder.setUserId(player.getUserId());
                 playerBuilder.setReady(player.isReady());
                 stateBuilder.addPlayers(playerBuilder.buildPartial());
             }

@@ -4,7 +4,7 @@ import io.netty.channel.Channel;
 
 public abstract class Player {
 
-    private final Channel channel;
+    private Channel channel;
 
     public Player(Channel channel) {
         this.channel = channel;
@@ -12,6 +12,10 @@ public abstract class Player {
 
     public Channel getChannel() {
         return channel;
+    }
+
+    public void setChannel(Channel channel) {
+        this.channel = channel;
     }
 
 }
