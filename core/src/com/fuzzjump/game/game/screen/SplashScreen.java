@@ -17,6 +17,7 @@ import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
+import com.fuzzjump.api.TokenInterceptor;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
@@ -40,9 +41,10 @@ public class SplashScreen extends StageScreen<SplashUI> {
     private final UnlockableColorizer colorizer;
     private final Preferences preferences;
     private final Gson gson;
+    private final TokenInterceptor interceptor;
 
     @Inject
-    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, Preferences preferences, Gson gson) {
+    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, Preferences preferences, Gson gson, TokenInterceptor interceptor) {
         super(ui);
         this.textures = textures;
         this.skin = skin;
@@ -51,6 +53,7 @@ public class SplashScreen extends StageScreen<SplashUI> {
         this.colorizer = colorizer;
         this.preferences = preferences;
         this.gson = gson;
+        this.interceptor = interceptor;
     }
 
     @Override
@@ -125,7 +128,12 @@ public class SplashScreen extends StageScreen<SplashUI> {
 
     private void onLoadDone() {
         String profileData = preferences.getString(Assets.PROFILE_DATA, null);
+        String userToken = preferences.getString(Assets.USER_TOKEN, null);
         if (profileData != null && profileData.length() > 0) {
+            if (userToken == null) {
+                throw new IllegalStateException("Found user data but token wasn't available - this shouldn't happen.");
+            }
+            interceptor.setToken(userToken);
             profile.load(gson.fromJson(profileData, JsonObject.class));
             screenHandler.showScreen(MenuScreen.class);
         } else {

@@ -72,6 +72,10 @@ public abstract class StageUI extends Table {
         return textures;
     }
 
+    public void onShow() {
+
+    }
+
     public abstract void init();
     public abstract void backPressed();
 

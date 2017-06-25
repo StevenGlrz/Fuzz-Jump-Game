@@ -66,6 +66,11 @@ public class Profile {
         }
     }
 
+    public void loadFriends(JsonArray data) {
+        friends.clear();
+        System.out.println("Loading " + data.size() + " friends");
+    }
+
     public int getProfileId() {
         return profileId;
     }

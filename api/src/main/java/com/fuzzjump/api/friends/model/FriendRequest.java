@@ -1,4 +1,4 @@
-package com.fuzzjump.api.user.model;
+package com.fuzzjump.api.friends.model;
 
 /**
  * Created by Steven Galarza on 6/24/2017.

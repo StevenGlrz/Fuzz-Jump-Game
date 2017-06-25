@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
+import com.fuzzjump.api.user.IUserService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
@@ -19,6 +20,7 @@ import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
@@ -47,16 +49,20 @@ public class MenuUI extends StageUI {
 
     private FJDragDownBarTable dropdownTable;
 
+    private final IUserService userService;
     private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
+    private final GraphicsScheduler scheduler;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
+    public MenuUI(Textures textures, Skin skin, IUserService userService, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
         super(textures, skin);
+        this.userService = userService;
         this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -204,15 +210,23 @@ public class MenuUI extends StageUI {
 
     }
 
-    public void showMain() {
+    void showMain() {
         uiSwitcher.setDisplayedChild(0);
     }
 
-    public Profile getProfile() {
+    Profile getProfile() {
         return profile;
     }
 
-    public UnlockableColorizer getUnlockableColorizer() {
+    IUserService getUserService() {
+        return userService;
+    }
+
+    GraphicsScheduler getScheduler() {
+        return scheduler;
+    }
+
+    UnlockableColorizer getUnlockableColorizer() {
         return colorizer;
     }
 }

@@ -1,13 +1,13 @@
 package com.fuzzjump.api.model;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 
 public class Response {
 
     private boolean success;
-    private JsonObject body;
+    private JsonElement body;
 
-    public JsonObject getBody() {
+    public JsonElement getBody() {
         return body;
     }
 
@@ -15,5 +15,8 @@ public class Response {
         return success;
     }
 
+    public boolean isGood() {
+        return success && body != null;
+    }
 
 }

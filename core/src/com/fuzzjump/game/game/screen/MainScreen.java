@@ -71,7 +71,7 @@ public class MainScreen extends StageScreen<MainUI> {
 
             userService.login(userField.getText()).observeOn(scheduler).subscribe(r -> {
                 if (r != null && r.isSuccess()) {
-                    JsonObject data = r.getBody();
+                    final JsonObject data = r.getBody().getAsJsonObject();
 
                     // Retrieve password and remove it from the JSON object so it doesn't persist.
                     String password = data.get("password").getAsString();
@@ -79,10 +79,13 @@ public class MainScreen extends StageScreen<MainUI> {
 
                     // Load and store profile data
                     profile.load(data);
-                    preferences.putString(Assets.PROFILE_DATA, data.toString());
 
                     // Acquire token from API and persist preferences
-                    userService.retrieveToken(profile.getApiName(), password).subscribe();
+                    userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {
+                        preferences.putString(Assets.PROFILE_DATA, data.toString());
+                        preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
+                        preferences.flush();
+                    });
 
                     // UI process
                     waitingDialog.setName("Loading game");

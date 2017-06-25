@@ -35,15 +35,10 @@ public class UserService implements IUserService {
 
     @Override
     public Observable<TokenResponse> retrieveToken(String username, String password) {
-        return wrapForIO(restService.retrieveToken(username, password, "password"))
-                .doOnNext(e -> {
-                    // Set the token for our interceptor
-                    tokenInterceptor.setToken(e.getAccessToken());
-                });
-    }
-
-    private <T> Observable<T> wrapForIO(Observable<T> observable) {
-        return observable.doOnError(Throwable::printStackTrace);
+        return restService.retrieveToken(username, password, "password").doOnNext(e -> {
+            // Set the token for our interceptor
+            tokenInterceptor.setToken(e.getAccessToken());
+        });
     }
 
     private interface UserRestService {
@@ -54,6 +49,7 @@ public class UserService implements IUserService {
         @FormUrlEncoded
         @POST("connect/token/")
         Observable<TokenResponse> retrieveToken(@Field("username") String username, @Field("password") String password, @Field("grant_type") String grantType);
+
     }
 
 }
