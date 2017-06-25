@@ -11,6 +11,14 @@ message JoinPacket {
 
 }
 
+message JoinServerPacket {
+
+  required int32 version = 1;
+  required string sessionKey = 2;
+  required string machineName = 3;
+
+}
+
 message JoinResponsePacket {
 
   optional string serverIp = 1;

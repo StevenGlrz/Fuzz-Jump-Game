@@ -13,6 +13,7 @@ public class FuzzJumpPlayer extends Player {
     private int index;
     private String serverSessionKey;
     private FuzzJumpSession session;
+    private boolean isServer;
 
     private String userId;
 
@@ -51,4 +52,13 @@ public class FuzzJumpPlayer extends Player {
     public void setUserId(String userId) {
         this.userId = userId;
     }
+
+    public void setServer(boolean isServer) {
+        this.isServer = isServer;
+    }
+
+    public boolean isServer() {
+        return isServer;
+    }
+
 }

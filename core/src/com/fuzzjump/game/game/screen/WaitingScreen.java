@@ -92,6 +92,13 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         packetProcessor.addListener(Lobby.GameFound.class, this::gameFound);
         packetProcessor.addListener(Lobby.LobbyState.class, this::lobbyUpdate);
         packetProcessor.addListener(Lobby.TimeState.class, this::updateTime);
+        packetProcessor.addListener(Lobby.GameServerSetupData.class, this::gameServerFound);
+    }
+
+    private void gameServerFound(GameSession sender, Lobby.GameServerSetupData message) {
+        gameSession.disconnect();
+        gameSession = null;
+        System.out.println("Game server details: " + message.toString());
     }
 
     private void joinResponse(GameSession session, Join.JoinResponsePacket packet) {
@@ -235,11 +242,14 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void onDisconnect() {
+        if (gameSession == null) {
+            return;
+        }
         synchronized (connectingDialog) {
-            if (connectingDialog.isVisible()) {
+            if (!connectingDialog.isVisible()) {
                 connectingDialog.setVisible(true);
             }
-            connectingMessage.setText("Error connecting");
+            connectingMessage.setText("Network error");
             connectingButton.setText("Leave");
             connectingButton.setVisible(true);
             connectingProgress.setVisible(false);
@@ -248,11 +258,14 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void onTimeout() {
+        if (gameSession == null) {
+            return;
+        }
         synchronized (connectingDialog) {
-            if (connectingDialog.isVisible()) {
+            if (!connectingDialog.isVisible()) {
                 connectingDialog.setVisible(true);
             }
-            connectingMessage.setText("Error connecting");
+            connectingMessage.setText("Network error");
             connectingButton.setText("Leave");
             connectingButton.setVisible(true);
             connectingProgress.setVisible(false);

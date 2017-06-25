@@ -33,6 +33,11 @@ public class FuzzJumpMessageHandlers {
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.READY_UPDATE, Lobby.ReadySet.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.LOBBY_LOADED, Lobby.Loaded.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_FOUND, Lobby.GameFound.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.JOIN_SERVER_PACKET, Join.JoinServerPacket.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_FOUND, Lobby.GameServerFound.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP, Lobby.GameServerSetup.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP_RESPONSE, Lobby.GameServerSetupResponse.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP_DATA, Lobby.GameServerSetupData.getDefaultInstance()));
         HANDLERS = Collections.unmodifiableList(tempHandlerList);
     }
 

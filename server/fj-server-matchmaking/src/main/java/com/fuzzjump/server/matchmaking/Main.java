@@ -30,7 +30,7 @@ public class Main {
     private static MatchmakingServerInfo loadServerInfo(String[] args) throws IOException {
         String gameServerIp = System.getenv("FUZZ_MATCHMAKING_GAMESERVER_IP");
         String gameServerPort = System.getenv("FUZZ_MATCHMAKING_GAMESERVER_PORT");
-        return new MatchmakingServerInfo(FuzzJumpServerInfo.loadBaseInfo(args), gameServerIp, gameServerPort);
+        return new MatchmakingServerInfo(FuzzJumpServerInfo.loadBaseInfo(args), gameServerIp, Integer.parseInt(gameServerPort));
     }
 
 }

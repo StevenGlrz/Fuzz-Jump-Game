@@ -4,6 +4,7 @@ import com.fuzzjump.server.base.FuzzJumpPlayer;
 import com.fuzzjump.server.common.messages.join.Join;
 import com.steveadoo.server.base.Player;
 import com.steveadoo.server.base.validation.Validator;
+import com.steveadoo.server.common.packets.Validation;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -32,12 +33,15 @@ class MatchmakingValidator implements Validator {
     @Override
     public CompletableFuture<Boolean> validate(Player player, Object message) {
         Join.JoinPacket packet = (Join.JoinPacket) message;
+        FuzzJumpPlayer fjPlayer = (FuzzJumpPlayer) player;
         if (packet.hasServerSessionKey()) {
-            return CompletableFuture.completedFuture(server.validateServerSessionKey(player.getChannel(), packet.getUserId(), packet.getServerSessionKey()));
+            boolean sessionKeyValid = server.validateServerSessionKey(player.getChannel(), packet.getUserId(), packet.getServerSessionKey());
+            player.getChannel().writeAndFlush(getJoinResponse(fjPlayer, sessionKeyValid));
+            return CompletableFuture.completedFuture(sessionKeyValid);
         } else if (!packet.hasSessionKey()) {
+            player.getChannel().writeAndFlush(getJoinResponse(fjPlayer, true));
             return CompletableFuture.completedFuture(false);
         }
-        FuzzJumpPlayer fjPlayer = (FuzzJumpPlayer) player;
         String sessionKey = server.generateKey();
         fjPlayer.setServerSessionKey(sessionKey);
         fjPlayer.setUserId(packet.getUserId());
@@ -47,20 +51,21 @@ class MatchmakingValidator implements Validator {
                 .map(response -> response != null && response.getBody())
                 .onErrorReturn(err -> false)
                 .subscribe(validated -> {
+                    player.getChannel().writeAndFlush(getJoinResponse(fjPlayer, validated));
                     future.complete(validated);
-                    player.getChannel().writeAndFlush(getJoinResponse(fjPlayer));
                 });
 
         return future;
     }
 
-    private Join.JoinResponsePacket getJoinResponse(FuzzJumpPlayer fjPlayer) {
+    private Join.JoinResponsePacket getJoinResponse(FuzzJumpPlayer fjPlayer, boolean validated) {
         return Join.JoinResponsePacket.newBuilder()
                 .setServerSessionKey(fjPlayer.getServerSessionKey())
                 .setRedirect(false)
                 .setServerIp(server.getServerInfo().ip)
                 .setServerPort(server.getServerInfo().port)
-                .setStatus(1)
+                .setStatus(validated ? Validation.AUTHORIZED : Validation.UNAUTHORIZED)
                 .build();
     }
+
 }

@@ -18,11 +18,11 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
     private Lobby.Player.Builder playerBuilder = Lobby.Player.newBuilder();
     private Lobby.TimeState.Builder timeStateBuilder = Lobby.TimeState.newBuilder();
 
-    private float remainingTime = 60;
+    private float remainingTime = 10;
 
     public ScheduledFuture<?> future;
 
-    public LobbySession(String id, int maxPlayers, boolean timerFill) {
+    public LobbySession(String id, int maxPlayers) {
         super(id, maxPlayers);
         update = true;
         setMaps();
@@ -88,7 +88,7 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
             }
             player.getChannel().flush();
         }
-        return remainingTime <= 0;
+        return readyCount == 4 || remainingTime <= 0;
     }
 
     @Override
@@ -131,6 +131,10 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
 
     public boolean getUpdate() {
         return update;
+    }
+
+    public float getRemainingTime() {
+        return remainingTime;
     }
 
     public interface LobbySessionListener {

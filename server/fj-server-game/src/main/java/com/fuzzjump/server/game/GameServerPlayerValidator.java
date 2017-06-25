@@ -4,6 +4,7 @@ package com.fuzzjump.server.game;
 import com.fuzzjump.server.common.messages.join.Join;
 import com.steveadoo.server.base.Player;
 import com.steveadoo.server.base.validation.Validator;
+import com.steveadoo.server.common.packets.Validation;
 
 import java.math.BigInteger;
 import java.security.SecureRandom;
@@ -13,18 +14,16 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
-public class GameServerValidator implements Validator {
+public class GameServerPlayerValidator implements Validator {
 
     private static final long PURGE_RATE = 5000;
     private static final long KEY_DURATION = 30000;
-
-    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private final GameServer gameServer;
 
     private ConcurrentHashMap<String, Long> sessionKeys = new ConcurrentHashMap<>();
 
-    public GameServerValidator(GameServer gameServer) {
+    public GameServerPlayerValidator(GameServer gameServer) {
         this.gameServer = gameServer;
     }
 
@@ -59,9 +58,11 @@ public class GameServerValidator implements Validator {
     public CompletableFuture<Boolean> validate(Player player, Object message) {
         Join.JoinPacket joinPacket = (Join.JoinPacket) message;
         if (!sessionKeys.containsKey(joinPacket.getServerSessionKey())) {
+            player.getChannel().writeAndFlush(getJoinResponse(false));
             return CompletableFuture.completedFuture(false);
         }
         sessionKeys.remove(joinPacket.getServerSessionKey());
+        player.getChannel().writeAndFlush(getJoinResponse(true));
         return CompletableFuture.completedFuture(true);
     }
 
@@ -72,11 +73,20 @@ public class GameServerValidator implements Validator {
     public String[] generateSessionKeys(int keyCount) {
         String[] keys = new String[keyCount];
         for(int i = 0; i < keyCount; i++) {
-            String key = new BigInteger(130, SECURE_RANDOM).toString(32);
+            String key = gameServer.generateKey();
             keys[i] = key;
             sessionKeys.put(key, System.currentTimeMillis());
         }
         return keys;
+    }
+
+    private Join.JoinResponsePacket getJoinResponse(boolean valid) {
+        return Join.JoinResponsePacket.newBuilder()
+                .setRedirect(false)
+                .setServerIp(gameServer.getServerInfo().ip)
+                .setServerPort(gameServer.getServerInfo().port)
+                .setStatus(valid ? Validation.AUTHORIZED : Validation.UNAUTHORIZED)
+                .build();
     }
 
 }

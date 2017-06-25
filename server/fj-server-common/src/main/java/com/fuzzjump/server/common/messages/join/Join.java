@@ -884,6 +884,741 @@ public final class Join {
     // @@protoc_insertion_point(class_scope:com.steveadoo.server.common.JoinPacket)
   }
 
+  public interface JoinServerPacketOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.steveadoo.server.common.JoinServerPacket)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required int32 version = 1;</code>
+     */
+    boolean hasVersion();
+    /**
+     * <code>required int32 version = 1;</code>
+     */
+    int getVersion();
+
+    /**
+     * <code>required string sessionKey = 2;</code>
+     */
+    boolean hasSessionKey();
+    /**
+     * <code>required string sessionKey = 2;</code>
+     */
+    java.lang.String getSessionKey();
+    /**
+     * <code>required string sessionKey = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getSessionKeyBytes();
+
+    /**
+     * <code>required string machineName = 3;</code>
+     */
+    boolean hasMachineName();
+    /**
+     * <code>required string machineName = 3;</code>
+     */
+    java.lang.String getMachineName();
+    /**
+     * <code>required string machineName = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getMachineNameBytes();
+  }
+  /**
+   * Protobuf type {@code com.steveadoo.server.common.JoinServerPacket}
+   */
+  public static final class JoinServerPacket extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.steveadoo.server.common.JoinServerPacket)
+      JoinServerPacketOrBuilder {
+    // Use JoinServerPacket.newBuilder() to construct.
+    private JoinServerPacket(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private JoinServerPacket(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final JoinServerPacket defaultInstance;
+    public static JoinServerPacket getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public JoinServerPacket getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private JoinServerPacket(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              version_ = input.readInt32();
+              break;
+            }
+            case 18: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000002;
+              sessionKey_ = bs;
+              break;
+            }
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000004;
+              machineName_ = bs;
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.fuzzjump.server.common.messages.join.Join.internal_static_com_steveadoo_server_common_JoinServerPacket_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.fuzzjump.server.common.messages.join.Join.internal_static_com_steveadoo_server_common_JoinServerPacket_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.class, com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<JoinServerPacket> PARSER =
+        new com.google.protobuf.AbstractParser<JoinServerPacket>() {
+      public JoinServerPacket parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new JoinServerPacket(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<JoinServerPacket> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int VERSION_FIELD_NUMBER = 1;
+    private int version_;
+    /**
+     * <code>required int32 version = 1;</code>
+     */
+    public boolean hasVersion() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required int32 version = 1;</code>
+     */
+    public int getVersion() {
+      return version_;
+    }
+
+    public static final int SESSIONKEY_FIELD_NUMBER = 2;
+    private java.lang.Object sessionKey_;
+    /**
+     * <code>required string sessionKey = 2;</code>
+     */
+    public boolean hasSessionKey() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required string sessionKey = 2;</code>
+     */
+    public java.lang.String getSessionKey() {
+      java.lang.Object ref = sessionKey_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          sessionKey_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string sessionKey = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getSessionKeyBytes() {
+      java.lang.Object ref = sessionKey_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        sessionKey_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int MACHINENAME_FIELD_NUMBER = 3;
+    private java.lang.Object machineName_;
+    /**
+     * <code>required string machineName = 3;</code>
+     */
+    public boolean hasMachineName() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>required string machineName = 3;</code>
+     */
+    public java.lang.String getMachineName() {
+      java.lang.Object ref = machineName_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          machineName_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string machineName = 3;</code>
+     */
+    public com.google.protobuf.ByteString
+        getMachineNameBytes() {
+      java.lang.Object ref = machineName_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        machineName_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    private void initFields() {
+      version_ = 0;
+      sessionKey_ = "";
+      machineName_ = "";
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasVersion()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasSessionKey()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasMachineName()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeInt32(1, version_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeBytes(2, getSessionKeyBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        output.writeBytes(3, getMachineNameBytes());
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(1, version_);
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(2, getSessionKeyBytes());
+      }
+      if (((bitField0_ & 0x00000004) == 0x00000004)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(3, getMachineNameBytes());
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.fuzzjump.server.common.messages.join.Join.JoinServerPacket prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.steveadoo.server.common.JoinServerPacket}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.steveadoo.server.common.JoinServerPacket)
+        com.fuzzjump.server.common.messages.join.Join.JoinServerPacketOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.fuzzjump.server.common.messages.join.Join.internal_static_com_steveadoo_server_common_JoinServerPacket_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.fuzzjump.server.common.messages.join.Join.internal_static_com_steveadoo_server_common_JoinServerPacket_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.class, com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.Builder.class);
+      }
+
+      // Construct using com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        version_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        sessionKey_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        machineName_ = "";
+        bitField0_ = (bitField0_ & ~0x00000004);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.fuzzjump.server.common.messages.join.Join.internal_static_com_steveadoo_server_common_JoinServerPacket_descriptor;
+      }
+
+      public com.fuzzjump.server.common.messages.join.Join.JoinServerPacket getDefaultInstanceForType() {
+        return com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.getDefaultInstance();
+      }
+
+      public com.fuzzjump.server.common.messages.join.Join.JoinServerPacket build() {
+        com.fuzzjump.server.common.messages.join.Join.JoinServerPacket result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.fuzzjump.server.common.messages.join.Join.JoinServerPacket buildPartial() {
+        com.fuzzjump.server.common.messages.join.Join.JoinServerPacket result = new com.fuzzjump.server.common.messages.join.Join.JoinServerPacket(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.version_ = version_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.sessionKey_ = sessionKey_;
+        if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
+          to_bitField0_ |= 0x00000004;
+        }
+        result.machineName_ = machineName_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.fuzzjump.server.common.messages.join.Join.JoinServerPacket) {
+          return mergeFrom((com.fuzzjump.server.common.messages.join.Join.JoinServerPacket)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.fuzzjump.server.common.messages.join.Join.JoinServerPacket other) {
+        if (other == com.fuzzjump.server.common.messages.join.Join.JoinServerPacket.getDefaultInstance()) return this;
+        if (other.hasVersion()) {
+          setVersion(other.getVersion());
+        }
+        if (other.hasSessionKey()) {
+          bitField0_ |= 0x00000002;
+          sessionKey_ = other.sessionKey_;
+          onChanged();
+        }
+        if (other.hasMachineName()) {
+          bitField0_ |= 0x00000004;
+          machineName_ = other.machineName_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasVersion()) {
+          
+          return false;
+        }
+        if (!hasSessionKey()) {
+          
+          return false;
+        }
+        if (!hasMachineName()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.fuzzjump.server.common.messages.join.Join.JoinServerPacket parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.fuzzjump.server.common.messages.join.Join.JoinServerPacket) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private int version_ ;
+      /**
+       * <code>required int32 version = 1;</code>
+       */
+      public boolean hasVersion() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required int32 version = 1;</code>
+       */
+      public int getVersion() {
+        return version_;
+      }
+      /**
+       * <code>required int32 version = 1;</code>
+       */
+      public Builder setVersion(int value) {
+        bitField0_ |= 0x00000001;
+        version_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 version = 1;</code>
+       */
+      public Builder clearVersion() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        version_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object sessionKey_ = "";
+      /**
+       * <code>required string sessionKey = 2;</code>
+       */
+      public boolean hasSessionKey() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required string sessionKey = 2;</code>
+       */
+      public java.lang.String getSessionKey() {
+        java.lang.Object ref = sessionKey_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            sessionKey_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string sessionKey = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getSessionKeyBytes() {
+        java.lang.Object ref = sessionKey_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          sessionKey_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string sessionKey = 2;</code>
+       */
+      public Builder setSessionKey(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        sessionKey_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string sessionKey = 2;</code>
+       */
+      public Builder clearSessionKey() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sessionKey_ = getDefaultInstance().getSessionKey();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string sessionKey = 2;</code>
+       */
+      public Builder setSessionKeyBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        sessionKey_ = value;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object machineName_ = "";
+      /**
+       * <code>required string machineName = 3;</code>
+       */
+      public boolean hasMachineName() {
+        return ((bitField0_ & 0x00000004) == 0x00000004);
+      }
+      /**
+       * <code>required string machineName = 3;</code>
+       */
+      public java.lang.String getMachineName() {
+        java.lang.Object ref = machineName_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            machineName_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string machineName = 3;</code>
+       */
+      public com.google.protobuf.ByteString
+          getMachineNameBytes() {
+        java.lang.Object ref = machineName_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          machineName_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string machineName = 3;</code>
+       */
+      public Builder setMachineName(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        machineName_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string machineName = 3;</code>
+       */
+      public Builder clearMachineName() {
+        bitField0_ = (bitField0_ & ~0x00000004);
+        machineName_ = getDefaultInstance().getMachineName();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string machineName = 3;</code>
+       */
+      public Builder setMachineNameBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000004;
+        machineName_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.steveadoo.server.common.JoinServerPacket)
+    }
+
+    static {
+      defaultInstance = new JoinServerPacket(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.steveadoo.server.common.JoinServerPacket)
+  }
+
   public interface JoinResponsePacketOrBuilder extends
       // @@protoc_insertion_point(interface_extends:com.steveadoo.server.common.JoinResponsePacket)
       com.google.protobuf.MessageOrBuilder {
@@ -1773,6 +2508,11 @@ public final class Join {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_steveadoo_server_common_JoinPacket_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_steveadoo_server_common_JoinServerPacket_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_steveadoo_server_common_JoinServerPacket_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_steveadoo_server_common_JoinResponsePacket_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -1789,11 +2529,13 @@ public final class Join {
       "\n\nJoin.proto\022\033com.steveadoo.server.commo" +
       "n\"[\n\nJoinPacket\022\017\n\007version\030\001 \002(\005\022\016\n\006user" +
       "Id\030\002 \001(\t\022\022\n\nsessionKey\030\003 \001(\t\022\030\n\020serverSe" +
-      "ssionKey\030\004 \001(\t\"v\n\022JoinResponsePacket\022\020\n\010" +
-      "serverIp\030\001 \001(\t\022\022\n\nserverPort\030\002 \001(\005\022\016\n\006st" +
-      "atus\030\003 \002(\005\022\030\n\020serverSessionKey\030\004 \001(\t\022\020\n\010" +
-      "redirect\030\005 \002(\010B*\n(com.fuzzjump.server.co" +
-      "mmon.messages.join"
+      "ssionKey\030\004 \001(\t\"L\n\020JoinServerPacket\022\017\n\007ve" +
+      "rsion\030\001 \002(\005\022\022\n\nsessionKey\030\002 \002(\t\022\023\n\013machi" +
+      "neName\030\003 \002(\t\"v\n\022JoinResponsePacket\022\020\n\010se" +
+      "rverIp\030\001 \001(\t\022\022\n\nserverPort\030\002 \001(\005\022\016\n\006stat" +
+      "us\030\003 \002(\005\022\030\n\020serverSessionKey\030\004 \001(\t\022\020\n\010re" +
+      "direct\030\005 \002(\010B*\n(com.fuzzjump.server.comm" +
+      "on.messages.join"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1813,8 +2555,14 @@ public final class Join {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_steveadoo_server_common_JoinPacket_descriptor,
         new java.lang.String[] { "Version", "UserId", "SessionKey", "ServerSessionKey", });
-    internal_static_com_steveadoo_server_common_JoinResponsePacket_descriptor =
+    internal_static_com_steveadoo_server_common_JoinServerPacket_descriptor =
       getDescriptor().getMessageTypes().get(1);
+    internal_static_com_steveadoo_server_common_JoinServerPacket_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_steveadoo_server_common_JoinServerPacket_descriptor,
+        new java.lang.String[] { "Version", "SessionKey", "MachineName", });
+    internal_static_com_steveadoo_server_common_JoinResponsePacket_descriptor =
+      getDescriptor().getMessageTypes().get(2);
     internal_static_com_steveadoo_server_common_JoinResponsePacket_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_steveadoo_server_common_JoinResponsePacket_descriptor,
