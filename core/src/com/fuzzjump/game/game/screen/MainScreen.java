@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.fuzzjump.api.user.IUserService;
+import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
@@ -15,6 +16,8 @@ import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 import javax.inject.Inject;
@@ -26,15 +29,17 @@ public class MainScreen extends StageScreen<MainUI> {
     private final UnlockableRepository unlockables;
     private final Preferences preferences;
     private final GraphicsScheduler scheduler;
+    private final Gson gson;
 
     @Inject
-    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler) {
+    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler, Gson gson) {
         super(ui);
         this.userService = userService;
         this.profile = profile;
         this.unlockables = unlockables;
         this.preferences = preferences;
         this.scheduler = scheduler;
+        this.gson = gson;
     }
 
     @Override
@@ -69,20 +74,19 @@ public class MainScreen extends StageScreen<MainUI> {
             waitingDialog.setName("Registering");
             showDialog(waitingDialog, getStage());
 
-            userService.login(userField.getText()).observeOn(scheduler).subscribe(r -> {
-                if (r != null && r.isSuccess()) {
-                    final JsonObject data = r.getBody().getAsJsonObject();
+            userService.register(userField.getText()).observeOn(scheduler).subscribe(response -> {
+                if (response != null && response.isSuccess()) {
+                    RegisterResponse.RegisterBody body = response.getBody();
 
                     // Retrieve password and remove it from the JSON object so it doesn't persist.
-                    String password = data.get("password").getAsString();
-                    data.remove("password");
+                    String password = body.getPassword();
 
                     // Load and store profile data
-                    profile.load(data);
+                    profile.load(body);
 
                     // Acquire token from API and persist preferences
                     userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {
-                        preferences.putString(Assets.PROFILE_DATA, data.toString());
+                        preferences.putString(Assets.PROFILE_DATA, gson.toJson(body));
                         preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
                         preferences.flush();
                     });

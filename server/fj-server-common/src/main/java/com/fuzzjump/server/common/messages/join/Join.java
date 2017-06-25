@@ -13,36 +13,41 @@ public final class Join {
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional int32 profileId = 1;</code>
-     */
-    boolean hasProfileId();
-    /**
-     * <code>optional int32 profileId = 1;</code>
-     */
-    int getProfileId();
-
-    /**
-     * <code>optional string sessionKey = 2;</code>
-     */
-    boolean hasSessionKey();
-    /**
-     * <code>optional string sessionKey = 2;</code>
-     */
-    java.lang.String getSessionKey();
-    /**
-     * <code>optional string sessionKey = 2;</code>
-     */
-    com.google.protobuf.ByteString
-        getSessionKeyBytes();
-
-    /**
-     * <code>required int32 version = 3;</code>
+     * <code>required int32 version = 1;</code>
      */
     boolean hasVersion();
     /**
-     * <code>required int32 version = 3;</code>
+     * <code>required int32 version = 1;</code>
      */
     int getVersion();
+
+    /**
+     * <code>optional string userId = 2;</code>
+     */
+    boolean hasUserId();
+    /**
+     * <code>optional string userId = 2;</code>
+     */
+    java.lang.String getUserId();
+    /**
+     * <code>optional string userId = 2;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdBytes();
+
+    /**
+     * <code>optional string sessionKey = 3;</code>
+     */
+    boolean hasSessionKey();
+    /**
+     * <code>optional string sessionKey = 3;</code>
+     */
+    java.lang.String getSessionKey();
+    /**
+     * <code>optional string sessionKey = 3;</code>
+     */
+    com.google.protobuf.ByteString
+        getSessionKeyBytes();
 
     /**
      * <code>optional string serverSessionKey = 4;</code>
@@ -112,18 +117,19 @@ public final class Join {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              profileId_ = input.readInt32();
+              version_ = input.readInt32();
               break;
             }
             case 18: {
               com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000002;
-              sessionKey_ = bs;
+              userId_ = bs;
               break;
             }
-            case 24: {
+            case 26: {
+              com.google.protobuf.ByteString bs = input.readBytes();
               bitField0_ |= 0x00000004;
-              version_ = input.readInt32();
+              sessionKey_ = bs;
               break;
             }
             case 34: {
@@ -172,31 +178,73 @@ public final class Join {
     }
 
     private int bitField0_;
-    public static final int PROFILEID_FIELD_NUMBER = 1;
-    private int profileId_;
+    public static final int VERSION_FIELD_NUMBER = 1;
+    private int version_;
     /**
-     * <code>optional int32 profileId = 1;</code>
+     * <code>required int32 version = 1;</code>
      */
-    public boolean hasProfileId() {
+    public boolean hasVersion() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional int32 profileId = 1;</code>
+     * <code>required int32 version = 1;</code>
      */
-    public int getProfileId() {
-      return profileId_;
+    public int getVersion() {
+      return version_;
     }
 
-    public static final int SESSIONKEY_FIELD_NUMBER = 2;
-    private java.lang.Object sessionKey_;
+    public static final int USERID_FIELD_NUMBER = 2;
+    private java.lang.Object userId_;
     /**
-     * <code>optional string sessionKey = 2;</code>
+     * <code>optional string userId = 2;</code>
      */
-    public boolean hasSessionKey() {
+    public boolean hasUserId() {
       return ((bitField0_ & 0x00000002) == 0x00000002);
     }
     /**
-     * <code>optional string sessionKey = 2;</code>
+     * <code>optional string userId = 2;</code>
+     */
+    public java.lang.String getUserId() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          userId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>optional string userId = 2;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdBytes() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int SESSIONKEY_FIELD_NUMBER = 3;
+    private java.lang.Object sessionKey_;
+    /**
+     * <code>optional string sessionKey = 3;</code>
+     */
+    public boolean hasSessionKey() {
+      return ((bitField0_ & 0x00000004) == 0x00000004);
+    }
+    /**
+     * <code>optional string sessionKey = 3;</code>
      */
     public java.lang.String getSessionKey() {
       java.lang.Object ref = sessionKey_;
@@ -213,7 +261,7 @@ public final class Join {
       }
     }
     /**
-     * <code>optional string sessionKey = 2;</code>
+     * <code>optional string sessionKey = 3;</code>
      */
     public com.google.protobuf.ByteString
         getSessionKeyBytes() {
@@ -227,21 +275,6 @@ public final class Join {
       } else {
         return (com.google.protobuf.ByteString) ref;
       }
-    }
-
-    public static final int VERSION_FIELD_NUMBER = 3;
-    private int version_;
-    /**
-     * <code>required int32 version = 3;</code>
-     */
-    public boolean hasVersion() {
-      return ((bitField0_ & 0x00000004) == 0x00000004);
-    }
-    /**
-     * <code>required int32 version = 3;</code>
-     */
-    public int getVersion() {
-      return version_;
     }
 
     public static final int SERVERSESSIONKEY_FIELD_NUMBER = 4;
@@ -287,9 +320,9 @@ public final class Join {
     }
 
     private void initFields() {
-      profileId_ = 0;
-      sessionKey_ = "";
       version_ = 0;
+      userId_ = "";
+      sessionKey_ = "";
       serverSessionKey_ = "";
     }
     private byte memoizedIsInitialized = -1;
@@ -310,13 +343,13 @@ public final class Join {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeInt32(1, profileId_);
+        output.writeInt32(1, version_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
-        output.writeBytes(2, getSessionKeyBytes());
+        output.writeBytes(2, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
-        output.writeInt32(3, version_);
+        output.writeBytes(3, getSessionKeyBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         output.writeBytes(4, getServerSessionKeyBytes());
@@ -332,15 +365,15 @@ public final class Join {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(1, profileId_);
+          .computeInt32Size(1, version_);
       }
       if (((bitField0_ & 0x00000002) == 0x00000002)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBytesSize(2, getSessionKeyBytes());
+          .computeBytesSize(2, getUserIdBytes());
       }
       if (((bitField0_ & 0x00000004) == 0x00000004)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeInt32Size(3, version_);
+          .computeBytesSize(3, getSessionKeyBytes());
       }
       if (((bitField0_ & 0x00000008) == 0x00000008)) {
         size += com.google.protobuf.CodedOutputStream
@@ -463,11 +496,11 @@ public final class Join {
 
       public Builder clear() {
         super.clear();
-        profileId_ = 0;
-        bitField0_ = (bitField0_ & ~0x00000001);
-        sessionKey_ = "";
-        bitField0_ = (bitField0_ & ~0x00000002);
         version_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        userId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sessionKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000004);
         serverSessionKey_ = "";
         bitField0_ = (bitField0_ & ~0x00000008);
@@ -502,15 +535,15 @@ public final class Join {
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.profileId_ = profileId_;
+        result.version_ = version_;
         if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
           to_bitField0_ |= 0x00000002;
         }
-        result.sessionKey_ = sessionKey_;
+        result.userId_ = userId_;
         if (((from_bitField0_ & 0x00000004) == 0x00000004)) {
           to_bitField0_ |= 0x00000004;
         }
-        result.version_ = version_;
+        result.sessionKey_ = sessionKey_;
         if (((from_bitField0_ & 0x00000008) == 0x00000008)) {
           to_bitField0_ |= 0x00000008;
         }
@@ -531,16 +564,18 @@ public final class Join {
 
       public Builder mergeFrom(com.fuzzjump.server.common.messages.join.Join.JoinPacket other) {
         if (other == com.fuzzjump.server.common.messages.join.Join.JoinPacket.getDefaultInstance()) return this;
-        if (other.hasProfileId()) {
-          setProfileId(other.getProfileId());
-        }
-        if (other.hasSessionKey()) {
-          bitField0_ |= 0x00000002;
-          sessionKey_ = other.sessionKey_;
-          onChanged();
-        }
         if (other.hasVersion()) {
           setVersion(other.getVersion());
+        }
+        if (other.hasUserId()) {
+          bitField0_ |= 0x00000002;
+          userId_ = other.userId_;
+          onChanged();
+        }
+        if (other.hasSessionKey()) {
+          bitField0_ |= 0x00000004;
+          sessionKey_ = other.sessionKey_;
+          onChanged();
         }
         if (other.hasServerSessionKey()) {
           bitField0_ |= 0x00000008;
@@ -578,47 +613,123 @@ public final class Join {
       }
       private int bitField0_;
 
-      private int profileId_ ;
+      private int version_ ;
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>required int32 version = 1;</code>
        */
-      public boolean hasProfileId() {
+      public boolean hasVersion() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>required int32 version = 1;</code>
        */
-      public int getProfileId() {
-        return profileId_;
+      public int getVersion() {
+        return version_;
       }
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>required int32 version = 1;</code>
        */
-      public Builder setProfileId(int value) {
+      public Builder setVersion(int value) {
         bitField0_ |= 0x00000001;
-        profileId_ = value;
+        version_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional int32 profileId = 1;</code>
+       * <code>required int32 version = 1;</code>
        */
-      public Builder clearProfileId() {
+      public Builder clearVersion() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        profileId_ = 0;
+        version_ = 0;
+        onChanged();
+        return this;
+      }
+
+      private java.lang.Object userId_ = "";
+      /**
+       * <code>optional string userId = 2;</code>
+       */
+      public boolean hasUserId() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional string userId = 2;</code>
+       */
+      public java.lang.String getUserId() {
+        java.lang.Object ref = userId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string userId = 2;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIdBytes() {
+        java.lang.Object ref = userId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string userId = 2;</code>
+       */
+      public Builder setUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userId = 2;</code>
+       */
+      public Builder clearUserId() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        userId_ = getDefaultInstance().getUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string userId = 2;</code>
+       */
+      public Builder setUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000002;
+        userId_ = value;
         onChanged();
         return this;
       }
 
       private java.lang.Object sessionKey_ = "";
       /**
-       * <code>optional string sessionKey = 2;</code>
+       * <code>optional string sessionKey = 3;</code>
        */
       public boolean hasSessionKey() {
-        return ((bitField0_ & 0x00000002) == 0x00000002);
+        return ((bitField0_ & 0x00000004) == 0x00000004);
       }
       /**
-       * <code>optional string sessionKey = 2;</code>
+       * <code>optional string sessionKey = 3;</code>
        */
       public java.lang.String getSessionKey() {
         java.lang.Object ref = sessionKey_;
@@ -635,7 +746,7 @@ public final class Join {
         }
       }
       /**
-       * <code>optional string sessionKey = 2;</code>
+       * <code>optional string sessionKey = 3;</code>
        */
       public com.google.protobuf.ByteString
           getSessionKeyBytes() {
@@ -651,69 +762,37 @@ public final class Join {
         }
       }
       /**
-       * <code>optional string sessionKey = 2;</code>
+       * <code>optional string sessionKey = 3;</code>
        */
       public Builder setSessionKey(
           java.lang.String value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         sessionKey_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sessionKey = 2;</code>
+       * <code>optional string sessionKey = 3;</code>
        */
       public Builder clearSessionKey() {
-        bitField0_ = (bitField0_ & ~0x00000002);
+        bitField0_ = (bitField0_ & ~0x00000004);
         sessionKey_ = getDefaultInstance().getSessionKey();
         onChanged();
         return this;
       }
       /**
-       * <code>optional string sessionKey = 2;</code>
+       * <code>optional string sessionKey = 3;</code>
        */
       public Builder setSessionKeyBytes(
           com.google.protobuf.ByteString value) {
         if (value == null) {
     throw new NullPointerException();
   }
-  bitField0_ |= 0x00000002;
+  bitField0_ |= 0x00000004;
         sessionKey_ = value;
-        onChanged();
-        return this;
-      }
-
-      private int version_ ;
-      /**
-       * <code>required int32 version = 3;</code>
-       */
-      public boolean hasVersion() {
-        return ((bitField0_ & 0x00000004) == 0x00000004);
-      }
-      /**
-       * <code>required int32 version = 3;</code>
-       */
-      public int getVersion() {
-        return version_;
-      }
-      /**
-       * <code>required int32 version = 3;</code>
-       */
-      public Builder setVersion(int value) {
-        bitField0_ |= 0x00000004;
-        version_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>required int32 version = 3;</code>
-       */
-      public Builder clearVersion() {
-        bitField0_ = (bitField0_ & ~0x00000004);
-        version_ = 0;
         onChanged();
         return this;
       }
@@ -1708,13 +1787,13 @@ public final class Join {
   static {
     java.lang.String[] descriptorData = {
       "\n\nJoin.proto\022\033com.steveadoo.server.commo" +
-      "n\"^\n\nJoinPacket\022\021\n\tprofileId\030\001 \001(\005\022\022\n\nse" +
-      "ssionKey\030\002 \001(\t\022\017\n\007version\030\003 \002(\005\022\030\n\020serve" +
-      "rSessionKey\030\004 \001(\t\"v\n\022JoinResponsePacket\022" +
-      "\020\n\010serverIp\030\001 \001(\t\022\022\n\nserverPort\030\002 \001(\005\022\016\n" +
-      "\006status\030\003 \002(\005\022\030\n\020serverSessionKey\030\004 \001(\t\022" +
-      "\020\n\010redirect\030\005 \002(\010B*\n(com.fuzzjump.server" +
-      ".common.messages.join"
+      "n\"[\n\nJoinPacket\022\017\n\007version\030\001 \002(\005\022\016\n\006user" +
+      "Id\030\002 \001(\t\022\022\n\nsessionKey\030\003 \001(\t\022\030\n\020serverSe" +
+      "ssionKey\030\004 \001(\t\"v\n\022JoinResponsePacket\022\020\n\010" +
+      "serverIp\030\001 \001(\t\022\022\n\nserverPort\030\002 \001(\005\022\016\n\006st" +
+      "atus\030\003 \002(\005\022\030\n\020serverSessionKey\030\004 \001(\t\022\020\n\010" +
+      "redirect\030\005 \002(\010B*\n(com.fuzzjump.server.co" +
+      "mmon.messages.join"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -1733,7 +1812,7 @@ public final class Join {
     internal_static_com_steveadoo_server_common_JoinPacket_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_steveadoo_server_common_JoinPacket_descriptor,
-        new java.lang.String[] { "ProfileId", "SessionKey", "Version", "ServerSessionKey", });
+        new java.lang.String[] { "Version", "UserId", "SessionKey", "ServerSessionKey", });
     internal_static_com_steveadoo_server_common_JoinResponsePacket_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_com_steveadoo_server_common_JoinResponsePacket_fieldAccessorTable = new

@@ -16,8 +16,10 @@ public class Main {
         GameServer server = new GameServer(serverInfo);
         ServerBootstrapper bootstrapper = new ServerBootstrapper();
         ServerBootstrap bootstrap = bootstrapper.bootstrap(server);
-        bootstrap.bind(new InetSocketAddress(serverInfo.privatePort));
-        System.out.println("Listening on port " + serverInfo.privatePort);
+        if (serverInfo.port != serverInfo.privatePort) {
+            bootstrap.bind(new InetSocketAddress(serverInfo.privatePort));
+            System.out.println("Listening on port " + serverInfo.privatePort);
+        }
     }
 
     private static GameServerInfo loadServerInfo(String[] args) throws IOException {

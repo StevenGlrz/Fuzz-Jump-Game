@@ -2,12 +2,14 @@ package com.fuzzjump.game;
 
 public class FuzzJumpParams {
 
-    public final String gameServerIp;
-    public final int gameServerPort;
+    public final String apiUrl;
+    public final String matchmakingIp;
+    public final int matchmakingPort;
 
-    public FuzzJumpParams(String gameServerIp, int gameServerPort) {
-        this.gameServerIp = gameServerIp;
-        this.gameServerPort = gameServerPort;
+    public FuzzJumpParams(String apiUrl, String matchmakingIp, int matchmakingPort) {
+        this.apiUrl = apiUrl;
+        this.matchmakingIp = matchmakingIp;
+        this.matchmakingPort = matchmakingPort;
     }
 
 }

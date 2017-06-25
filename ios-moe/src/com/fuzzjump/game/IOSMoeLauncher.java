@@ -18,7 +18,8 @@ public class IOSMoeLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         config.useAccelerometer = false;
-        FuzzJumpParams params = new FuzzJumpParams("", 9);
+        //TODO
+        FuzzJumpParams params = new FuzzJumpParams("", "", 9);
         FuzzJump fuzzJump = new FuzzJump(params, new PlatformModule(null));
         return new IOSApplication(fuzzJump, config);
     }

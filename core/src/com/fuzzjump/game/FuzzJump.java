@@ -24,7 +24,7 @@ public class FuzzJump extends Game {
     public FuzzJump(FuzzJumpParams gameParams,
                     PlatformModule platformModule) {
         this.fuzzJumpModule = new FuzzJumpModule(this, gameParams);
-        this.retrofitModule = new RetrofitModule("./");
+        this.retrofitModule = new RetrofitModule(gameParams.apiUrl, "./");
         this.platformModule = platformModule;
     }
 

@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
@@ -130,11 +131,11 @@ public class SplashScreen extends StageScreen<SplashUI> {
         String profileData = preferences.getString(Assets.PROFILE_DATA, null);
         String userToken = preferences.getString(Assets.USER_TOKEN, null);
         if (profileData != null && profileData.length() > 0) {
+            profile.load(gson.fromJson(profileData, RegisterResponse.RegisterBody.class));
             if (userToken == null) {
                 throw new IllegalStateException("Found user data but token wasn't available - this shouldn't happen.");
             }
             interceptor.setToken(userToken);
-            profile.load(gson.fromJson(profileData, JsonObject.class));
             screenHandler.showScreen(MenuScreen.class);
         } else {
             screenHandler.showScreen(MainScreen.class);

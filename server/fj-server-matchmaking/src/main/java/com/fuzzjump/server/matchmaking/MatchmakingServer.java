@@ -1,7 +1,9 @@
 package com.fuzzjump.server.matchmaking;
 
+import com.fuzzjump.api.Api;
 import com.fuzzjump.server.base.FuzzJumpServer;
 import com.fuzzjump.server.common.FuzzJumpMessageHandlers;
+import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.fuzzjump.server.matchmaking.lobby.LobbyPlayer;
 import com.fuzzjump.server.matchmaking.lobby.LobbySession;
@@ -32,6 +34,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
 
     public MatchmakingServer(MatchmakingServerInfo serverInfo) {
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
+        addValidator(new MatchmakingValidator(this));
         //this.gameServerTransferer = new GameServerTransferer(gameServerAddress);
         getPacketProcessor().addListener(Lobby.Loaded.class, this::lobbyLoaded);
         getPacketProcessor().addListener(Lobby.ReadySet.class, this::readySet);

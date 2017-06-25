@@ -23,9 +23,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class RetrofitModule {
 
+    private final String apiUrl;
     private final String cachePath;
 
-    public RetrofitModule(String cachePath) {
+    public RetrofitModule(String apiUrl, String cachePath) {
+        this.apiUrl = apiUrl;
         this.cachePath = cachePath;
     }
 
@@ -65,7 +67,7 @@ public class RetrofitModule {
         return new Retrofit.Builder()
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl("http://localhost:50086/")
+                .baseUrl(apiUrl)
                 .client(okHttpClient)
                 .build();
     }
