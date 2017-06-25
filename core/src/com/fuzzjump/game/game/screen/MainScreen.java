@@ -81,7 +81,7 @@ public class MainScreen extends StageScreen<MainUI> {
                     body.setPassword(null);
 
                     // Load and store profile data
-                    profile.load(body);
+                    profile.loadUser(body);
 
                     // Acquire token from API and persist preferences
                     userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {

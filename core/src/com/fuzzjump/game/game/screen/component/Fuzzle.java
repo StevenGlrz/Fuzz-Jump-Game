@@ -105,11 +105,11 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             return;
         updateFuzzleBounds();
         if (head != null)
-            updateBounds(headBounds, head.getDefinition(), headDrawable);
+            updateBounds(headBounds, colorizer.definitionFor(head), headDrawable);
         if (eyes != null)
-            updateBounds(eyesBounds, eyes.getDefinition(), eyesDrawable);
+            updateBounds(eyesBounds, colorizer.definitionFor(eyes), eyesDrawable);
         if (face != null)
-            updateBounds(faceBounds, face.getDefinition(), faceDrawable);
+            updateBounds(faceBounds, colorizer.definitionFor(face), faceDrawable);
     }
 
     @Override
@@ -151,7 +151,7 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
             if (definition.getBounds() == null) {
                 return;
             }
-            Rectangle uBound = definition.getBounds()[fuzzle.getDefinition().getId()];
+            Rectangle uBound = definition.getBounds()[fuzzle.getId()];
             bounds.x = fuzzleBounds.x + (uBound.x * fuzzleBounds.width);
             bounds.y = fuzzleBounds.y + (uBound.y * fuzzleBounds.height);
             if (uBound.height == -1) {
@@ -226,7 +226,7 @@ public class Fuzzle extends Actor implements Appearance.AppearanceChangeListener
     private void update(Unlockable unlockable, Rectangle bounds, TextureRegionDrawable drawable) {
         if (ui != null && unlockable != null) {
             drawable.setRegion(colorizer.getColored(ui.getTextures(), unlockable, false));
-            updateBounds(bounds, unlockable.getDefinition(), drawable);
+            updateBounds(bounds, colorizer.definitionFor(unlockable), drawable);
         }
     }
 

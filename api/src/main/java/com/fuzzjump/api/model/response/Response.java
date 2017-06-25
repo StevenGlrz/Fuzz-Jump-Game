@@ -1,14 +1,11 @@
 package com.fuzzjump.api.model.response;
 
-public abstract class Response<T> {
+public class Response {
 
     private boolean success;
 
     public boolean isSuccess() {
         return success;
     }
-
-    public abstract T getBody();
-
 
 }

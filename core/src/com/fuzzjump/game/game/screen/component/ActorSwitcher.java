@@ -10,25 +10,25 @@ import java.util.List;
 
 public class ActorSwitcher extends Table {
 
-    private final List<Widget> actors = new ArrayList<>();
+    private final List<ScreenView> actors = new ArrayList<>();
     private int currentIdx;
 
     public void setDisplayedChild(final int idx) {
         if (idx < 0 || idx > actors.size()) {
             return;
         }
-        Widget info = actors.get(idx);
-        Actor newActor = info.actor;
+        ScreenView view = actors.get(idx);
+        Actor newActor = view.actor;
         if (actors.size() > 1) {
             clearChildren();
         }
-        add(newActor).align(info.align).size(info.width, info.height).expand().fill();
+        add(newActor).align(view.align).size(view.width, view.height).expand().fill();
         currentIdx = idx;
     }
 
 
     public void addWidget(Actor widget, Value width, Value height, int align) {
-        actors.add(new Widget(widget, width, height, align));
+        actors.add(new ScreenView(widget, width, height, align));
         if (actors.size() == 1) {
             setDisplayedChild(0);
         }
@@ -56,7 +56,7 @@ public class ActorSwitcher extends Table {
         return currentIdx;
     }
 
-    private class Widget {
+    private class ScreenView {
 
         public int align;
         public Actor actor;
@@ -64,7 +64,7 @@ public class ActorSwitcher extends Table {
         public Value width;
         public Value height;
 
-        public Widget(Actor actor, Value width, Value height, int align) {
+        public ScreenView(Actor actor, Value width, Value height, int align) {
             this.align = align;
             this.actor = actor;
             this.width = width;

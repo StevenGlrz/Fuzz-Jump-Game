@@ -279,11 +279,11 @@ public class CharacterSelectionUI extends StageUI implements Appearance.Appearan
         Value size = Value.percentHeight(.75f, lowMidTable);
         Value pad = Value.percentHeight(.05f, lowMidTable);
 
-        List<UnlockableDefinition> defs = definitions.getDefinitions(selectedCategory, profile.getAppearance().getEquip(Appearance.FUZZLE).getDefinition().getId());
+        List<UnlockableDefinition> defs = definitions.getDefinitions(selectedCategory, profile.getAppearance().getEquip(Appearance.FUZZLE).getId());
         boolean oneSelected = false;
         for (int i = 0; i < defs.size(); i++) {
             UnlockableDefinition def = defs.get(i);
-            Unlockable unlockable = profile.getAppearance().getItem(def);
+            Unlockable unlockable = profile.getAppearance().getItem(def.getId());
             UnlockableEntry entry = new UnlockableEntry(def, unlockable);
             if (unlockable != null) {
                 boolean selected = profile.getAppearance().getEquip(selectedCategory) == unlockable;

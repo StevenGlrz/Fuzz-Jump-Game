@@ -1,8 +1,10 @@
 package com.fuzzjump.api.friends;
 
-import com.fuzzjump.api.friends.model.AcceptFriendRequest;
 import com.fuzzjump.api.friends.model.FriendRequest;
-import com.fuzzjump.api.model.Response;
+import com.fuzzjump.api.friends.model.FriendRequestResponse;
+import com.fuzzjump.api.friends.model.FriendRetrieveResponse;
+import com.fuzzjump.api.friends.model.GenericFriendRequest;
+import com.fuzzjump.api.model.response.Response;
 
 import javax.inject.Inject;
 
@@ -10,6 +12,7 @@ import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 
@@ -26,31 +29,38 @@ public class FriendService implements IFriendService {
     }
 
     @Override
-    public Observable<Response> retrieveFriendList() {
+    public Observable<FriendRetrieveResponse> retrieveFriendList() {
         return restService.retrieveFriendList();
     }
 
     @Override
-    public Observable<Response> sendFriendRequest(FriendRequest request) {
+    public Observable<FriendRequestResponse> sendFriendRequest(FriendRequest request) {
         return restService.sendFriendRequest(request);
     }
 
     @Override
-    public Observable<Response> acceptFriendRequest(AcceptFriendRequest request) {
+    public Observable<FriendRequestResponse> acceptFriendRequest(GenericFriendRequest request) {
         return restService.acceptFriendRequest(request);
+    }
+
+    @Override
+    public Observable<Response> deleteFriend(GenericFriendRequest request) {
+        return restService.deleteFriend(request);
     }
 
     private interface FriendRestService {
 
         @GET("friends")
-        Observable<Response> retrieveFriendList();
+        Observable<FriendRetrieveResponse> retrieveFriendList();
 
         @POST("friends")
-        Observable<Response> sendFriendRequest(@Body FriendRequest request);
+        Observable<FriendRequestResponse> sendFriendRequest(@Body FriendRequest request);
 
         @PUT("friends")
-        Observable<Response> acceptFriendRequest(@Body AcceptFriendRequest request);
+        Observable<FriendRequestResponse> acceptFriendRequest(@Body GenericFriendRequest request);
 
+        @HTTP(method = "DELETE", path = "friends", hasBody = true)
+        Observable<Response> deleteFriend(@Body GenericFriendRequest request);
     }
 
 }

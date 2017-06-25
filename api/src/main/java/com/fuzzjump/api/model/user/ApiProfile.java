@@ -1,14 +1,14 @@
 package com.fuzzjump.api.model.user;
 
-import com.fuzzjump.api.model.unlockable.Unlockable;
+import com.fuzzjump.api.model.unlockable.ApiUnlockable;
 
-public class Profile {
+public class ApiProfile {
 
     private int coins;
     private int experience;
 
-    private Equip[] equips;
-    private Unlockable[] unlockables;
+    private ApiEquip[] equips;
+    private ApiUnlockable[] unlockables;
     private int id;
 
     public int getCoins() {
@@ -27,19 +27,19 @@ public class Profile {
         this.experience = experience;
     }
 
-    public Equip[] getEquips() {
+    public ApiEquip[] getEquips() {
         return equips;
     }
 
-    public void setEquips(Equip[] equips) {
+    public void setEquips(ApiEquip[] equips) {
         this.equips = equips;
     }
 
-    public Unlockable[] getUnlockables() {
+    public ApiUnlockable[] getUnlockables() {
         return unlockables;
     }
 
-    public void setUnlockables(Unlockable[] unlockables) {
+    public void setUnlockables(ApiUnlockable[] unlockables) {
         this.unlockables = unlockables;
     }
 

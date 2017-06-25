@@ -1,17 +1,17 @@
 package com.fuzzjump.api.model.user;
 
-import com.fuzzjump.api.model.unlockable.Unlockable;
+import com.fuzzjump.api.model.unlockable.ApiUnlockable;
 
-public class Equip {
+public class ApiEquip {
 
     private int slot;
-    private Unlockable unlockable;
+    private ApiUnlockable unlockable;
 
-    public Equip() {
+    public ApiEquip() {
 
     }
 
-    public Equip(int slot, Unlockable unlockable) {
+    public ApiEquip(int slot, ApiUnlockable unlockable) {
         this.slot = slot;
         this.unlockable = unlockable;
     }
@@ -24,11 +24,11 @@ public class Equip {
         this.slot = slot;
     }
 
-    public Unlockable getUnlockable() {
+    public ApiUnlockable getUnlockable() {
         return unlockable;
     }
 
-    public void setUnlockable(Unlockable unlockable) {
+    public void setUnlockable(ApiUnlockable unlockable) {
         this.unlockable = unlockable;
     }
 

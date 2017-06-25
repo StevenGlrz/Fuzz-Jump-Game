@@ -6,18 +6,15 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.IntMap;
 import com.fuzzjump.libgdxscreens.Textures;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 public abstract class StageUI extends Table {
 
     protected StageScreen stageScreen;
     protected StageUITextures textures;
 
-    private Map<Integer, Actor> actors = new HashMap<>();
+    private final IntMap<Actor> actors = new IntMap<>();
 
     public StageUI(Textures textures, Skin skin) {
         this(new StageUITextures(textures), skin);
@@ -79,7 +76,7 @@ public abstract class StageUI extends Table {
     public abstract void init();
     public abstract void backPressed();
 
-    public Collection<Actor> getActors() {
+    public Iterable<Actor> getActors() {
         return actors.values();
     }
 
@@ -98,8 +95,9 @@ public abstract class StageUI extends Table {
 
     public boolean remove() {
         boolean rem = super.remove();
-        if (rem)
+        if (rem) {
             textures.clearHardRefs();
+        }
         return rem;
     }
 }

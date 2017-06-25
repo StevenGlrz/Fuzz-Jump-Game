@@ -1,10 +1,9 @@
 package com.fuzzjump.api.model.response;
 
-public class BooleanResponse extends Response<Boolean> {
+public class BooleanResponse extends Response {
 
     private Boolean body;
 
-    @Override
     public Boolean getBody() {
         return body;
     }

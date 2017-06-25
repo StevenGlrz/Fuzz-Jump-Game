@@ -1,14 +1,11 @@
 package com.fuzzjump.game.game.player;
 
+import com.badlogic.gdx.utils.IntMap;
 import com.fuzzjump.game.game.player.unlockable.Unlockable;
-import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.util.Helper;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Steven Galarza on 6/16/2017.
@@ -29,14 +26,12 @@ public class Appearance {
     private LinkedList<AppearanceChangeListener> changeListeners = new LinkedList<>();
     private int[] equips = new int[5];
 
-    private Map<Integer, Unlockable> unlockables = new HashMap<>();
-    private Map<Integer, Integer> colorIndexSnapshot = new HashMap<>();
-    private final UnlockableRepository unlockableDefinitions;
+    private IntMap<Unlockable> unlockables = new IntMap<>();
+    private IntMap<Integer> colorIndexSnapshot = new IntMap<>();
 
     private int[] equipSnapshot;
 
-    public Appearance(UnlockableRepository unlockableDefinitions) {
-        this.unlockableDefinitions = unlockableDefinitions;
+    public Appearance() {
     }
 
     public void snapshot() {
@@ -51,11 +46,12 @@ public class Appearance {
     public boolean changed() {
         if (equipSnapshot != null) {
             for (int i = 0; i < equips.length; i++) {
-                if (equips[i] != equipSnapshot[i])
+                if (equips[i] != equipSnapshot[i]) {
                     return true;
+                }
             }
         }
-        if (colorIndexSnapshot.size() > 0) {
+        if (colorIndexSnapshot.size > 0) {
             for (Unlockable u : unlockables.values()) {
                 if (Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
                     return true;
@@ -70,9 +66,10 @@ public class Appearance {
             for (int i = 0; i < equips.length; i++) {
                 equips[i] = equipSnapshot[i];
             }
+            equipSnapshot = null;
         }
-        if (colorIndexSnapshot.size() > 0) {
-            for (int i = 0; i < unlockables.size(); i++) {
+        if (colorIndexSnapshot.size > 0) {
+            for (int i = 0; i < unlockables.size; i++) {
                 Unlockable u = unlockables.get(i);
                 u.setColorIndex(Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()));
             }
@@ -82,8 +79,8 @@ public class Appearance {
 
     public List<Unlockable> getDiffs() {
         List<Unlockable> diffs = new LinkedList<>();
-        if (colorIndexSnapshot.size() > 0) {
-            for (int i = 0; i < unlockables.size(); i++) {
+        if (colorIndexSnapshot.size > 0) {
+            for (int i = 0; i < unlockables.size; i++) {
                 Unlockable u = unlockables.get(i);
                 if (Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
                     diffs.add(u);
@@ -97,7 +94,7 @@ public class Appearance {
         if (id == -1) {
             return null;
         }
-        Unlockable unlockable = new Unlockable(unlockableDefinitions.getDefinition(id), id, color);
+        Unlockable unlockable = new Unlockable(id, color);
         unlockables.put(unlockable.getId(), unlockable);
         return unlockable;
     }
@@ -118,20 +115,6 @@ public class Appearance {
     public int getColorIndex(int itemId) {
         Unlockable unlockable = getItem(itemId);
         return unlockable == null ? -1 : getItem(itemId).getColorIndex();
-    }
-
-    public int getItemId(UnlockableDefinition def) {
-        for (int i = 0; i < unlockables.size(); i++) {
-            Unlockable unlockable = unlockables.get(i);
-            if (unlockable != null && unlockable.getDefinition().getId() == def.getId()) {
-                return unlockables.get(i).getId(); // TODO - Check if this is valid
-            }
-        }
-        return -1;
-    }
-
-    public Unlockable getItem(UnlockableDefinition def) {
-        return getItem(getItemId(def));
     }
 
     public void setColorIndex(int itemId, int entryIndex) {
