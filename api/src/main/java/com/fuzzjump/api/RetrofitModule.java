@@ -33,16 +33,8 @@ public class RetrofitModule {
 
     @Provides
     @Singleton
-    Cache okHttpCache() {
-        int cacheSize = 10 * 1024 * 1024; // 10 MiB
-        Cache cache = new Cache(new File(cachePath), cacheSize);
-        return cache;
-    }
-
-    @Provides
-    @Singleton
     Gson gson() {
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+        return new GsonBuilder().create();
     }
 
 
@@ -54,9 +46,8 @@ public class RetrofitModule {
 
     @Provides
     @Singleton
-    OkHttpClient okHttpClient(Cache cache, TokenInterceptor interceptor) {
+    OkHttpClient okHttpClient(TokenInterceptor interceptor) {
         return new OkHttpClient.Builder()
-                .cache(cache)
                 .addInterceptor(interceptor)
                 .build();
     }
