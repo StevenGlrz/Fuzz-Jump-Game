@@ -1,5 +1,7 @@
 package com.fuzzjump.api;
 
+import com.fuzzjump.api.friends.FriendService;
+import com.fuzzjump.api.friends.IFriendService;
 import com.fuzzjump.api.user.IUserService;
 import com.fuzzjump.api.user.UserService;
 
@@ -18,5 +20,8 @@ public abstract class ServiceModule {
 
     @Binds
     public abstract IUserService bindUserService(UserService impl);
+
+    @Binds
+    public abstract IFriendService bindFriendService(FriendService impl);
 
 }
