@@ -83,10 +83,13 @@ public class MainScreen extends StageScreen<MainUI> {
 
                     // Load and store profile data
                     profile.load(body);
-                    preferences.putString(Assets.PROFILE_DATA, gson.toJson(body));
 
                     // Acquire token from API and persist preferences
-                    userService.retrieveToken(profile.getApiName(), password).subscribe();
+                    userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {
+                        preferences.putString(Assets.PROFILE_DATA, gson.toJson(body));
+                        preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
+                        preferences.flush();
+                    });
 
                     // UI process
                     waitingDialog.setName("Loading game");

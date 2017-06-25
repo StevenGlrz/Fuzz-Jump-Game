@@ -470,7 +470,7 @@ public class Assets {
     public static Window.WindowStyle createDialogStyle(StageUI ui) {
         Window.WindowStyle style = new Window.WindowStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
                 ui.getGameSkin().getColor(FUZZ_YELLOW),
-                ui.getTextures().getTextureRegionDrawable("ui-panel-register"));
+                ui.getTextures().getTextureRegionDrawable("ui-panel-login"));
         style.stageBackground = ui.getGameSkin().getDrawable("dialogDim");
         return style;
     }

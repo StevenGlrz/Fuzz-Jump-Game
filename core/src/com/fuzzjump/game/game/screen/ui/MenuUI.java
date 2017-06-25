@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
+import com.fuzzjump.api.friends.IFriendService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
@@ -19,6 +20,7 @@ import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
@@ -50,13 +52,17 @@ public class MenuUI extends StageUI {
     private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
+    private final IFriendService friendService;
+    private final GraphicsScheduler scheduler;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer) {
+    public MenuUI(Textures textures, Skin skin, IFriendService friendService, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
         super(textures, skin);
+        this.friendService = friendService;
         this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -93,7 +99,7 @@ public class MenuUI extends StageUI {
         // Doesn't require background loading
         this.profileUI = new CharacterSelectionUI(this, definitions);
         this.settingsUI = new SettingsUI(this);
-        this.friendsUI = new FriendsUI(this);
+        this.friendsUI = new FriendsUI(this, friendService);
 
 
         setFillParent(true);
@@ -204,15 +210,19 @@ public class MenuUI extends StageUI {
 
     }
 
-    public void showMain() {
+    void showMain() {
         uiSwitcher.setDisplayedChild(0);
     }
 
-    public Profile getProfile() {
+    Profile getProfile() {
         return profile;
     }
 
-    public UnlockableColorizer getUnlockableColorizer() {
+    GraphicsScheduler getScheduler() {
+        return scheduler;
+    }
+
+    UnlockableColorizer getUnlockableColorizer() {
         return colorizer;
     }
 }
