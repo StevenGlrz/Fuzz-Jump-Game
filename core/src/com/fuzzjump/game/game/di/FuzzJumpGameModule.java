@@ -28,6 +28,12 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
+    public Profile provideProfile() {
+        return new Profile();
+    }
+
+    @FuzzJumpScope
+    @Provides
     public GraphicsScheduler provideGraphicsScheduler() {
         return new GraphicsScheduler();
     }
@@ -52,12 +58,6 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
-    public Profile provideProfile(UnlockableRepository definitions) {
-        return new Profile(definitions);
-    }
-
-    @FuzzJumpScope
-    @Provides
     public FuzzContext provideFuzzContext() {
         return new FuzzContext();
     }
@@ -70,8 +70,8 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
-    public UnlockableColorizer provideUnlockableColorizer(VectorGraphicsLoader graphicsLoader) {
-        return new UnlockableColorizer(graphicsLoader);
+    public UnlockableColorizer provideUnlockableColorizer(VectorGraphicsLoader graphicsLoader, UnlockableRepository definitions) {
+        return new UnlockableColorizer(graphicsLoader, definitions);
     }
 
     @FuzzJumpScope

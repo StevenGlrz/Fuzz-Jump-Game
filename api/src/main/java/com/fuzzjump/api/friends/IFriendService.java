@@ -1,9 +1,11 @@
 package com.fuzzjump.api.friends;
 
 
-import com.fuzzjump.api.friends.model.AcceptFriendRequest;
+import com.fuzzjump.api.friends.model.GenericFriendRequest;
 import com.fuzzjump.api.friends.model.FriendRequest;
-import com.fuzzjump.api.model.Response;
+import com.fuzzjump.api.friends.model.FriendRequestResponse;
+import com.fuzzjump.api.friends.model.FriendRetrieveResponse;
+import com.fuzzjump.api.model.response.Response;
 
 import io.reactivex.Observable;
 
@@ -12,9 +14,11 @@ import io.reactivex.Observable;
  */
 public interface IFriendService {
 
-    Observable<Response> retrieveFriendList();
+    Observable<FriendRetrieveResponse> retrieveFriendList();
 
-    Observable<Response> sendFriendRequest(FriendRequest request);
+    Observable<FriendRequestResponse> sendFriendRequest(FriendRequest request);
 
-    Observable<Response> acceptFriendRequest(AcceptFriendRequest request);
+    Observable<FriendRequestResponse> acceptFriendRequest(GenericFriendRequest request);
+
+    Observable<Response> deleteFriend(GenericFriendRequest request);
 }

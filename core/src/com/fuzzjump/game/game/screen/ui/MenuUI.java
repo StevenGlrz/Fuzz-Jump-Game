@@ -90,6 +90,7 @@ public class MenuUI extends StageUI {
             register(Assets.MenuUI.PROGRESS_LABEL, messageLabel);
             register(Assets.MenuUI.CLOSE_BUTTON, progressCloseButton);
             register(Assets.MenuUI.PROGRESS_IMAGE, progressImage);
+
             Helper.addClickAction(progressCloseButton, (e, x, y) -> {
                 progressDialog.hide();
                 progressCloseButton.setVisible(false);
@@ -99,7 +100,7 @@ public class MenuUI extends StageUI {
         // Doesn't require background loading
         this.profileUI = new CharacterSelectionUI(this, definitions);
         this.settingsUI = new SettingsUI(this);
-        this.friendsUI = new FriendsUI(this, friendService);
+        this.friendsUI = new FriendsUI(this, friendService, scheduler);
 
 
         setFillParent(true);
@@ -112,7 +113,7 @@ public class MenuUI extends StageUI {
 
         loader.add(() -> {
             Table menuTable = new Table();
-            menuTable.setBackground(textures.getTextureRegionDrawable("ui-panel-mainmenu"));
+            menuTable.setBackground(textures.getTextureRegionDrawable(Assets.UI_MAIN_MENU_PANEL));
 
             Value padSides = Value.percentWidth(.05f, menuTable);
             Value padTopBottom = Value.percentHeight(.15f, menuTable);

@@ -12,7 +12,6 @@ import com.fuzzjump.api.session.ISessionService;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
@@ -33,7 +32,6 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     public static final int MAX_PLAYERS = 4;
 
     private final FuzzJumpParams params;
-    private final UnlockableRepository unlockableRepository;
     private final ISessionService sessionService;
     private final GraphicsScheduler scheduler;
 
@@ -64,14 +62,12 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                          WaitingUI ui,
                          FuzzJumpParams params,
                          Profile profile,
-                         UnlockableRepository unlockableDefinitions,
                          ISessionService sessionService,
                          GraphicsScheduler scheduler) {
         super(ui);
         this.stage = stage;
         this.params = params;
         this.profile = profile;
-        this.unlockableRepository = unlockableDefinitions;
         this.sessionService = sessionService;
         this.scheduler = scheduler;
     }
@@ -131,7 +127,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 }
                 Profile profile = findProfile(player);
                 if (profile == null || !profile.getUserId().equals(player.getUserId())) {
-                    profile = new Profile(unlockableRepository);
+                    profile = new Profile();
                     profile.setPlayerIndex(player.getPlayerIndex());
                     profile.setUserId(player.getUserId());
                     profile.setReady(player.getReady());

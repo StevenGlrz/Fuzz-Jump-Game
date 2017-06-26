@@ -4,16 +4,16 @@ package com.fuzzjump.api.model.unlockable;
  * Created by Steveadoo on 6/24/2017.
  */
 
-public class Unlockable {
+public class ApiUnlockable {
 
     private int color;
     private int definitionId;
 
-    public Unlockable() {
+    public ApiUnlockable() {
 
     }
 
-    public Unlockable(int color, int definitionId) {
+    public ApiUnlockable(int color, int definitionId) {
         this.color = color;
         this.definitionId = definitionId;
     }

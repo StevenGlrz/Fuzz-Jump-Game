@@ -52,10 +52,12 @@ public class Assets {
     public static final String UI_BACKGROUND = "ui_background";
     public static final String UI_GROUND = "ui_ground";
     public static final String UI_LOGO = "logo";
+    public static final String UI_MAIN_MENU_PANEL = "ui-panel-mainmenu";
     public static final String UI_PROGRESS_SPINNER = "ui-progressspinner";
     public static final String UI_PANEL_WELCOME = "ui-panel-welcome";
     public static final String UI_SEARCH = "ui-search";
     public static final String UI_PANEL_FRIENDS = "ui-panel-friends";
+    public static final String UI_FRIEND_FRAME = "ui-frame-friend";
 
     // Maps
     public final static String[] MAPS = {
@@ -416,6 +418,14 @@ public class Assets {
     public static ImageButton.ImageButtonStyle createLeaderboardBtnStyle(StageUI ui) {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTextures().getTextureRegionDrawable(LEADERBOARD),
                 ui.getTextures().getTextureRegionDrawable(LEADERBOARD_DOWN),
+                null, null, null, null);
+        return style;
+    }
+
+    // TODO "Down" image
+    public static ImageButton.ImageButtonStyle createSearchBtnStyle(StageUI ui) {
+        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTextures().getTextureRegionDrawable(UI_SEARCH),
+                ui.getTextures().getTextureRegionDrawable(UI_SEARCH),
                 null, null, null, null);
         return style;
     }

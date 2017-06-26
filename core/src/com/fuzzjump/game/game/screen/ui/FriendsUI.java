@@ -1,10 +1,13 @@
 package com.fuzzjump.game.game.screen.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -13,16 +16,21 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.StringBuilder;
 import com.fuzzjump.api.friends.IFriendService;
+import com.fuzzjump.api.friends.model.FriendRequest;
+import com.fuzzjump.api.friends.model.GenericFriendRequest;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.FriendProfile;
+import com.fuzzjump.game.game.player.FriendProfile.FriendStatus;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
@@ -32,39 +40,71 @@ import java.util.Map;
 
 import static com.fuzzjump.game.game.Assets.createCloseBtnStyle;
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
+import static com.fuzzjump.game.game.Assets.createETxtFieldStyle;
+import static com.fuzzjump.game.game.Assets.createSearchBtnStyle;
 import static com.fuzzjump.game.game.Assets.createSmallTBStyle;
 
 public class FriendsUI extends StageUI {
 
+    private static final int FRIEND_DISPLAY_VIEW = 0;
+    private static final int LOADING_DISPLAY_VIEW = 1;
+    private static final int NO_FRIENDS_VIEW = 2;
+
     private final MenuUI parent;
     private final Profile profile;
     private final IFriendService friendService;
+    private final GraphicsScheduler scheduler;
 
     private Table friendsList;
     private ScrollPane friendsScroller;
+    private ActorSwitcher friendsListSwitcher;
 
+    private TextField searchField;
+    // From parent UI
+    private Label mProgressLabel;
+    private Image mProgressImage;
+    private Button mCloseButton;
+
+    private Dialog mProgressDialog;
+    // Calculated values for spacing
     private Value friendSquareWidth;
     private Value friendSquareHeight;
     private Value friendSquarePadBottom;
     private Value friendSquarePadSides;
 
-    private ActorSwitcher friendsListSwitcher;
-
     private final Map<String, FriendProfile> profileMap = new HashMap<>();
 
-    public FriendsUI(MenuUI parent, IFriendService friendService) {
+    public FriendsUI(MenuUI parent, IFriendService friendService, GraphicsScheduler scheduler) {
         super(parent.getTextures(), parent.getGameSkin());
         this.stageScreen = parent.getStageScreen();
         this.parent = parent;
         this.profile = parent.getProfile();
         this.friendService = friendService;
+        this.scheduler = scheduler;
     }
 
     @Override
     public void init() {
         setBackground(textures.getTextureRegionDrawable(Assets.UI_PANEL_FRIENDS));
 
-        final Drawable search = textures.getTextureRegionDrawable(Assets.UI_SEARCH);
+        Label nameLabel = new Label(profile.getDisplayName() + "#" + profile.getDisplayNameId(), getGameSkin(), "default");
+        Value nameSpacing = Value.percentHeight(0.015f, this);
+
+        add(nameLabel).center().top().expandX().padTop(nameSpacing).padBottom(nameSpacing).row();
+
+        Table searchTable = new Table();
+
+        ImageButton searchBtn = new ImageButton(createSearchBtnStyle(this));
+        searchField = new TextField("", createETxtFieldStyle(this));
+
+        searchField.setMessageText("Search by name#id");
+        searchField.getStyle().messageFontColor = Color.WHITE;
+        searchField.getStyle().background.setLeftWidth(Gdx.graphics.getWidth() / 35);
+        searchField.getStyle().background.setRightWidth(Gdx.graphics.getWidth() / 35);
+
+        searchTable.add(searchField).left().size(Value.percentWidth(.8f, this), Value.percentHeight(.15f, this)).padLeft(Value.percentWidth(.05f, this)).padRight(Value.percentWidth(.025f, this));
+        searchTable.add(searchBtn).right().size(Value.percentWidth(.085f, this), Value.percentHeight(.085f, this));
+        add(searchTable).left().expandX().row();
 
         friendsList = new Table();
         friendsScroller = new ScrollPane(friendsList);
@@ -88,65 +128,125 @@ public class FriendsUI extends StageUI {
         add(friendsListSwitcher).expand().fillY().top().width(Value.percentWidth(.95f, this)).padBottom(Value.percentHeight(.015f, this)).row();
 
         Label noneLabel = new Label("No profiles found", getGameSkin());
-        Label nofriendsLabel = new Label("No friends found! :(", getGameSkin());
+        Label noFriendsLabel = new Label("No friends found! :(", getGameSkin());
         noneLabel.setAlignment(Align.center);
-        nofriendsLabel.setAlignment(Align.center);
+        noFriendsLabel.setAlignment(Align.center);
 
         friendsListSwitcher.addWidget(noneLabel);
-        friendsListSwitcher.addWidget(nofriendsLabel);
+        friendsListSwitcher.addWidget(noFriendsLabel);
 
-        Table buttonsTable = new Table();
         TextButton backBtn = new TextButton("Back", createDefaultTBStyle(this));
-        TextButton addFriendBtn = new TextButton("Add Friend", createDefaultTBStyle(this));
-        Value sidePad = Value.percentWidth(0.05f, buttonsTable);
+        add(backBtn).size(Value.percentWidth(0.475f, this), Value.percentWidth(0.0875f, this)).padBottom(Value.percentHeight(.025f, this));
 
-       // buttonsTable.defaults().size(Value.percentWidth(.95f, this), Value.percentWidth(0.25f, this));
-        buttonsTable.add(backBtn).left().expand().size(Value.percentWidth(0.4f, buttonsTable), Value.percentHeight(1f, buttonsTable)).padLeft(sidePad);
-        buttonsTable.add(addFriendBtn).right().expand().size(Value.percentWidth(0.4f, buttonsTable), Value.percentHeight(1f, buttonsTable)).padRight(sidePad);
-        add(buttonsTable).bottom().center().expand().size(Value.percentWidth(1.0f, this), Value.percentHeight(0.15f, this));
 
+        mProgressLabel = parent.actor(Assets.MenuUI.PROGRESS_LABEL);
+        mProgressImage = parent.actor(Assets.MenuUI.PROGRESS_IMAGE);
+        mCloseButton = parent.actor(Assets.MenuUI.CLOSE_BUTTON);
+        mProgressDialog = parent.actor(Assets.MenuUI.PROGRESS_DIALOG);
 
         friendSquareWidth = Value.percentWidth(.3f, friendsScroller);
         friendSquareHeight = Value.percentWidth(.4f, friendsScroller);
         friendSquarePadBottom = Value.percentWidth(.033f, friendsScroller);
         friendSquarePadSides = Value.percentWidth(.025f, friendsScroller);
 
+        Helper.addClickAction(searchBtn, (e, x, y) -> searchFriend());
         Helper.addClickAction(backBtn, (e, x, y) -> backPressed());
 
-        refreshDisplayUI(null);
+        refreshDisplayUI();
     }
 
     public void onShow() {
         refreshFriends();
     }
 
-    private void refreshFriends() {
-        friendsListSwitcher.setDisplayedChild(1);
+    private void searchFriend() {
+        String[] searchRequest = searchField.getText().split("#");
 
-       friendService.retrieveFriendList().observeOn(parent.getScheduler()).subscribe(response -> {
-            if (response.isGood()) {
-                profile.loadFriends(response.getBody().getAsJsonArray());
-                refreshDisplayUI(null);
-            } else {
+        if (searchRequest.length != 2 || !Helper.isNumeric(searchRequest[1])) {
+            // TODO This is broken
+            displayMessage("Please search\n using the\n username#id format!", false);
+            return;
+        }
+        displayMessage("Sending friend request", true);
+        friendService.sendFriendRequest(new FriendRequest(searchRequest[0], Integer.parseInt(searchRequest[1])))
+                .observeOn(scheduler)
+                .subscribe(r -> {
+                    if (!r.isSuccess()) {
+                        throw new IllegalStateException("Error while sending friend request!");
+                    }
+                    // TODO Receive friend profile after add
+                    closeMessage(true);
+                });
+    }
+
+    private void acceptFriend(FriendWidget widget) {
+        displayMessage("Accepting request", true);
+        friendService.acceptFriendRequest(new GenericFriendRequest(widget.profile.getUserId()))
+                .observeOn(scheduler)
+                .subscribe(r -> {
+                    if (r.isSuccess()) {
+                        widget.profile.setStatus(FriendStatus.STATUS_ACCEPTED);
+                        widget.update();
+
+                        closeMessage(false);
+                    }
+                });
+    }
+
+    private void removeFriend(FriendWidget widget, String message) {
+        displayMessage(message, true);
+        friendService.deleteFriend(new GenericFriendRequest(widget.profile.getUserId()))
+                .observeOn(scheduler)
+                .subscribe(r -> {
+                    if (r.isSuccess()) {
+                        profile.getFriends().remove(widget.profile);
+                        widget.remove();
+
+                        // TODO A smart friend refresh system
+                        //refreshDisplayUI();
+
+                        closeMessage(false);
+                    }
+                });
+    }
+
+    private void handleFriendAction(FriendWidget widget, boolean decline) {
+        switch (widget.status) {
+            case STATUS_PENDING://cancel sent request
+                removeFriend(widget, "Canceling request");
+                break;
+            case STATUS_INCOMING://accept incoming
+                if (decline) {
+                    removeFriend(widget, "Declining request");
+                } else {
+                    acceptFriend(widget);
+                }
+                break;
+            case STATUS_ACCEPTED://remove friend
+                removeFriend(widget, "Removing friend");
+                break;
+        }
+    }
+
+    private void refreshFriends() {
+        friendsListSwitcher.setDisplayedChild(FriendsUI.LOADING_DISPLAY_VIEW);
+        friendService.retrieveFriendList().observeOn(parent.getScheduler()).subscribe(response -> {
+            if (!response.isSuccess()) {
                 throw new IllegalStateException("Error while loading friends!");
             }
-        }, e-> {
+            profile.loadFriends(response.getBody());
+            refreshDisplayUI();
+        }, e -> {
+            e.printStackTrace();
             // TODO Display error
         });
     }
 
+    private void refreshDisplayUI() {
+        List<FriendProfile> profiles = profile.getFriends();
 
-    private void refreshDisplayUI(List<FriendProfile> profiles) {
         friendsList.clear();
-        int index = 0;
-        if (profiles == null) {
-            profiles = profile.getFriends();
-            if (profiles.size() == 0) {
-                index = 3;
-            }
-        } else if (profiles.size() == 0) {
-            index = 2;
-        }
+        int index = profiles.size() == 0 ? FriendsUI.NO_FRIENDS_VIEW : FriendsUI.FRIEND_DISPLAY_VIEW;
         for (int i = 0, n = profiles.size(); i < n; i++) {
             FriendProfile friend = profiles.get(i);
             if (profileMap.containsKey(friend.getUserId())) {
@@ -185,34 +285,23 @@ public class FriendsUI extends StageUI {
         }
     }
 
-    private void changeStatus(final FriendWidget widget, int newStatus) {
-        final Dialog dialog = parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG);
-        final TextButton closeButton = parent.actor(Assets.MenuUI.CLOSE_BUTTON);
-        final Image progressImage = parent.actor(Assets.MenuUI.PROGRESS_IMAGE);
-        final Label messageLabel = parent.actor(Assets.MenuUI.PROGRESS_LABEL);
-        messageLabel.setText(getStatusLabel(newStatus));
-        progressImage.setVisible(true);
-        closeButton.setVisible(false);
-        dialog.show(getStage());
+    private void displayMessage(String message, boolean process) {
+        mProgressLabel.setText(message);
+        mProgressImage.setVisible(process);
+        mCloseButton.setVisible(!process);
+        mProgressDialog.show(getStage());
     }
 
-    private String getStatusLabel(int status) {
-        switch (status) {
-            case FriendProfile.STATUS_NONE:
-                return "Removing friend";
-            case FriendProfile.STATUS_ACCEPTED:
-                return "Accepting friend request";
-            case FriendProfile.STATUS_SENT:
-                return "Sending friend request";
-            default:
-                return "Processing";
+    private void closeMessage(boolean resetSearchField) {
+        parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG).hide();
+        if (resetSearchField) {
+            searchField.setMessageText("");
+            parent.getStageScreen().getStage().setKeyboardFocus(null);
         }
     }
 
-
     @Override
     public void backPressed() {
-
         final Dialog dialog = parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG);
         if (dialog.isVisible()) {
             final TextButton closeButton = parent.actor(Assets.MenuUI.CLOSE_BUTTON);
@@ -230,55 +319,42 @@ public class FriendsUI extends StageUI {
     public class FriendWidget extends Table {
 
         private final FriendProfile profile;
-
-        private int status;
+        private FriendStatus status;
         private TextButton button;
         private Label nameLabel;
+
         private ImageButton closeButton;
 
         public FriendWidget(FriendProfile profile) {
             this.profile = profile;
             this.status = profile.getStatus();
             build();
-            profileChanged();
+            update();
         }
 
         private void build() {
             Fuzzle fuzzle = new Fuzzle(parent, parent.getUnlockableColorizer(), parent.getProfile());
-            // TODO Load fuzzle
+            fuzzle.load(parent.getStageScreen().getLoader());
+
             Table fuzzleTable = new Table();
+            nameLabel = new Label(new StringBuilder().append(profile.getDisplayName()).append("#").append(profile.getDisplayNameId()), getGameSkin(), "profile");
+            closeButton = new ImageButton(createCloseBtnStyle(parent));
+
             fuzzleTable.add(fuzzle).width(Value.percentWidth(.75f, fuzzleTable)).height(Value.percentHeight(.75f, fuzzleTable)).center().expand();
-            fuzzleTable.setBackground(textures.getTextureRegionDrawable("ui-frame-friend"));
+            fuzzleTable.setBackground(textures.getTextureRegionDrawable(Assets.UI_FRIEND_FRAME));
             add(fuzzleTable).width(Value.percentWidth(1f, this)).height(Value.percentWidth(1.068903558153523f, this)).padBottom(Value.percentHeight(.025f, this)).expand().row();
-            add(nameLabel = new Label(profile.getDisplayName(), getGameSkin(), "profile")).width(Value.percentWidth(1f, this)).center().expand().padBottom(Value.percentHeight(.025f, this)).row();
+            add(nameLabel).width(Value.percentWidth(1f, this)).center().expand().padBottom(Value.percentHeight(.025f, this)).row();
             add(button = new TextButton("Action", createSmallTBStyle(parent))).width(Value.percentWidth(1f, this)).height(Value.percentWidth(0.1842105263157895f, this));
             nameLabel.setAlignment(Align.center);
 
-            closeButton = new ImageButton(createCloseBtnStyle(parent));
             addActor(closeButton);
             closeButton.setVisible(false);
 
-            Helper.addClickAction(button, (e, x, y) -> {
-                switch (status) {
-                    case FriendProfile.STATUS_NONE://send request
-                        changeStatus(FriendWidget.this, FriendProfile.STATUS_SENT);
-                        break;
-                    case FriendProfile.STATUS_SENT://cancel sent request
-                        changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
-                        break;
-                    case FriendProfile.STATUS_INCOMING://accept incoming
-                        changeStatus(FriendWidget.this, FriendProfile.STATUS_ACCEPTED);
-                        break;
-                    case FriendProfile.STATUS_ACCEPTED://remove friend
-                        changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE);
-                        break;
-                }
-            });
-
+            Helper.addClickAction(button, (e, x, y) -> handleFriendAction(this, false));
 
 
             //close only visible when incoming
-            Helper.addClickAction(closeButton, (e, x, y) -> changeStatus(FriendWidget.this, FriendProfile.STATUS_NONE));
+            Helper.addClickAction(closeButton, (e, x, y) -> handleFriendAction(this, true));
         }
 
         @Override
@@ -290,36 +366,12 @@ public class FriendsUI extends StageUI {
             closeButton.setSize(closeButtonWidth, closeButtonWidth);
         }
 
-        // TODO Re-add
-        public void profileChanged() {
-            boolean refresh = false;
-            //check if the status changed from pending to accepted because we will need to relayout then
-            if (status < 2 && profile.getStatus() == 2) {
-                refresh = true;
-            }
+        public void update() {
             status = profile.getStatus();
-            switch (status) {
-                case FriendProfile.STATUS_NONE:
-                    button.setText("Add");
-                    closeButton.setVisible(false);
-                    break;
-                case FriendProfile.STATUS_SENT:
-                    button.setText("Cancel");
-                    closeButton.setVisible(false);
-                    break;
-                case FriendProfile.STATUS_INCOMING:
-                    button.setText("Accept");
-                    closeButton.setVisible(true);
-                    break;
-                case FriendProfile.STATUS_ACCEPTED:
-                    button.setText("Remove");
-                    closeButton.setVisible(false);
-                    break;
-            }
-            if (refresh) {
-                refreshFriends();
-            }
+            closeButton.setVisible(status == FriendStatus.STATUS_INCOMING);
+            button.setText(status.getButtonLabel());
         }
+
     }
 
 

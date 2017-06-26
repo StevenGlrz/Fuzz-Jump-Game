@@ -80,7 +80,7 @@ public class MainScreen extends StageScreen<com.fuzzjump.game.game.screen.ui.Mai
                     body.setPassword(null);
 
                     // Load and store profile data
-                    profile.load(body);
+                    profile.loadUser(body);
 
                     // Acquire token from API and persist preferences
                     userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {

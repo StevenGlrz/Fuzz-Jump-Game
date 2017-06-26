@@ -3,11 +3,11 @@ package com.fuzzjump.api.friends.model;
 /**
  * Created by Steven Galarza on 6/24/2017.
  */
-public class AcceptFriendRequest {
+public class GenericFriendRequest {
 
     private final String userId;
 
-    public AcceptFriendRequest(String userId) {
+    public GenericFriendRequest(String userId) {
         this.userId = userId;
     }
 

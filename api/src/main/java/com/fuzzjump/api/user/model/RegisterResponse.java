@@ -1,17 +1,16 @@
 package com.fuzzjump.api.user.model;
 
 import com.fuzzjump.api.model.response.Response;
-import com.fuzzjump.api.model.user.Profile;
+import com.fuzzjump.api.model.user.ApiProfile;
 
 /**
  * Created by Steveadoo on 6/24/2017.
  */
 
-public class RegisterResponse extends Response<RegisterResponse.RegisterBody> {
+public class RegisterResponse extends Response {
 
     private RegisterBody body;
 
-    @Override
     public RegisterBody getBody() {
         return body;
     }
@@ -23,7 +22,7 @@ public class RegisterResponse extends Response<RegisterResponse.RegisterBody> {
         private int nameId;
         private String username;
         private String password;
-        private Profile profile;
+        private ApiProfile profile;
 
         public String getPassword() {
             return password;
@@ -45,7 +44,7 @@ public class RegisterResponse extends Response<RegisterResponse.RegisterBody> {
             return username;
         }
 
-        public Profile getProfile() {
+        public ApiProfile getProfile() {
             return profile;
         }
 

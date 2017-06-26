@@ -11,9 +11,11 @@ import java.util.Map;
 public class UnlockableColorizer {
 
     private final VectorGraphicsLoader vectorGraphicsLoader;
+    private final UnlockableRepository unlockableDefinitions;
 
-    public UnlockableColorizer(VectorGraphicsLoader vectorGraphicsLoader) {
+    public UnlockableColorizer(VectorGraphicsLoader vectorGraphicsLoader, UnlockableRepository unlockableDefinitions) {
         this.vectorGraphicsLoader = vectorGraphicsLoader;
+        this.unlockableDefinitions = unlockableDefinitions;
     }
 
     public TextureRegion getColored(StageUITextures textures, UnlockableDefinition definition, int colorIndex, boolean hardref) {
@@ -33,7 +35,7 @@ public class UnlockableColorizer {
         if (unlockable == null) {
             return null;
         }
-        return getColored(textures, unlockable.getDefinition(), unlockable.getColorIndex(), hardref);
+        return getColored(textures, definitionFor(unlockable), unlockable.getColorIndex(), hardref);
     }
 
     public TextureRegion getColorized(UnlockableDefinition unlockableDefinition, int colorIndex) {
@@ -61,6 +63,11 @@ public class UnlockableColorizer {
     }
 
     public TextureRegion colorize(Unlockable unlockable) {
-        return colorize(unlockable.getDefinition(), unlockable.getColorIndex());
+        return colorize(definitionFor(unlockable), unlockable.getColorIndex());
+    }
+
+    // This shouldn't be here. Need to come up with a better design later
+    public UnlockableDefinition definitionFor(Unlockable unlockable) {
+        return unlockableDefinitions.getDefinition(unlockable.getId());
     }
 }
