@@ -112,6 +112,7 @@ public class Assets {
         public static final int SELECTED_UNLOCK = 24;
         public static final int CLOSE_BUTTON = 25;
         public static final int PROGRESS_IMAGE = 26;
+        public static final int FRIEND_ADD_DIALOG = 27;
     }
 
     public class WaitingUI {
@@ -430,12 +431,12 @@ public class Assets {
         return style;
     }
 
-    public static ImageButton.ImageButtonStyle createAddBtnStyle(StageUI ui) {
-        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTextures().getTextureRegionDrawable(ADD),
-                ui.getTextures().getTextureRegionDrawable(ADD_DOWN),
-                null, null, null, null);
-        return style;
-    }
+//    public static ImageButton.ImageButtonStyle createAddBtnStyle(StageUI ui) {
+//        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTextures().getTextureRegionDrawable(ADD),
+//                ui.getTextures().getTextureRegionDrawable(ADD_DOWN),
+//                null, null, null, null);
+//        return style;
+//    }
 
     public static ImageButton.ImageButtonStyle createMailBtnStyle(StageUI ui) {
         ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTextures().getTextureRegionDrawable(EMAIL),
@@ -486,6 +487,14 @@ public class Assets {
         Window.WindowStyle style = new Window.WindowStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
                 ui.getGameSkin().getColor(FUZZ_YELLOW),
                 ui.getTextures().getTextureRegionDrawable("ui-panel-login"));
+        style.stageBackground = ui.getGameSkin().getDrawable("dialogDim");
+        return style;
+    }
+
+    public static Window.WindowStyle createInputDialogStyle(StageUI ui) {
+        Window.WindowStyle style = new Window.WindowStyle(ui.getGameSkin().getFont(DEFAULT_FONT),
+                ui.getGameSkin().getColor(FUZZ_YELLOW),
+                ui.getTextures().getTextureRegionDrawable("ui-panel-lobby"));
         style.stageBackground = ui.getGameSkin().getDrawable("dialogDim");
         return style;
     }
