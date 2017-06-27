@@ -1,8 +1,6 @@
 package com.fuzzjump.libgdxscreens.screen;
 
-import com.badlogic.gdx.Gdx;
-
-import java.util.LinkedList;
+import java.util.ArrayDeque;
 import java.util.Queue;
 
 /**
@@ -13,7 +11,7 @@ public class ScreenLoader {
     /**
      * The task queue
      */
-    private final Queue<Runnable> tasks = new LinkedList<>();
+    private final Queue<Runnable> tasks = new ArrayDeque<>();
 
     /**
      * Callback for when all tasks are done.
@@ -21,28 +19,48 @@ public class ScreenLoader {
     private Runnable onDone;
 
     /**
-     * Processes loading tasks every other frame.
-     * NOTE: This function is called on StageSCreen#onPostRender by default
-     * @return true if the frame was used for loading a task, false otherwise
+     * Flag on whether to skip loading on next frame
      */
-    public boolean process() {
+    private boolean skipNext;
+
+    /**
+     * Total time taken to run a set of tasks
+     */
+    private long timeTaken;
+
+    /**
+     * The timestamp for tracking the time each tasks takes to execute
+     */
+    private long timeStamp;
+
+    /**
+     * Processes loading tasks every other frame.
+     * NOTE: This function is called on StageScreen#onPostRender by default
+     */
+    public void process() {
         if (isDone()) {
             if (onDone != null) {
                 onDone.run();
                 onDone = null;
             }
-            return false;
+            skipNext = false;
+            return;
         }
+        if (!skipNext) {
+            timeTaken = 0L;
+            timeStamp = System.currentTimeMillis();
+            Runnable loadTask;
 
-        // This can be a bit smarter
-        if (Gdx.graphics.getFrameId() % 2 == 0) {
-            Runnable loadTask = tasks.poll();
-            loadTask.run();
-            return true;
-        } else {
-            // Do load animation ...
-            return false;
+            // 30 ms is enough for 1 frame
+            while (timeTaken < 30L && (loadTask = tasks.poll()) != null) {
+                loadTask.run();
+
+                long now = System.currentTimeMillis();
+                timeTaken += now - timeStamp;
+                timeStamp = now;
+            }
         }
+        skipNext = !skipNext;
     }
 
     public void onDone(Runnable onDone) {

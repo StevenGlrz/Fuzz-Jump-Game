@@ -251,8 +251,7 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
     }
 
     public GamePlayer addPlayer(Profile profile, float x) {
-        Fuzzle playerFuzzle = new Fuzzle(ui(), colorizer, profile, false);
-        playerFuzzle.load(getLoader());
+        Fuzzle playerFuzzle = new Fuzzle(ui(), colorizer, profile, false).load(getLoader());
         GamePlayer plr = new GamePlayer(ui(), world, playerFuzzle, profile, x, 96, 128, ui().getGameSkin().getFont("ingame-font"));
         players.put(profile.getPlayerIndex(), plr);
         worldStage.addGameActor(plr);

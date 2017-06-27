@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -43,7 +42,6 @@ import static com.fuzzjump.game.game.Assets.createDialogStyle;
 public class CharacterSelectionUI extends StageUI {
 
     private final MenuUI parent;
-    private final Stage stage;
     private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
@@ -56,21 +54,20 @@ public class CharacterSelectionUI extends StageUI {
     private Table itemsContainer;
 
     private CategoryFrame selectedCategory;
-
-    private Fuzzle displayFuzzle;
-
     private ColorSet colorSet;
+    private Fuzzle displayFuzzle;
 
     private Image unlockableImage;
     private Label buyingUnlockableLabel;
     private Label costLabel;
     private Dialog buyingDialog;
 
+    private TextButton backButton;
+
     public CharacterSelectionUI(MenuUI parent, UnlockableRepository definitions) {
         super(parent.getTextures(), parent.getGameSkin());
         this.parent = parent;
         this.definitions = definitions;
-        this.stage = parent.getStageScreen().getStage();
         this.stageScreen = parent.getStageScreen();
         this.profile = parent.getProfile();
         this.colorizer = parent.getUnlockableColorizer();
@@ -96,7 +93,7 @@ public class CharacterSelectionUI extends StageUI {
 
             Table costTable = new Table();
 
-            costTable.add(new Image(textures.getTextureRegionDrawable("kerpow-coin"))).size(Value.percentHeight(1f, costTable)).left();
+            costTable.add(new Image(textures.getTextureRegionDrawable(Assets.UI_KERPOW_COIN))).size(Value.percentHeight(1f, costTable)).left();
             costTable.add(costLabel = new Label("cost", getGameSkin(), "default")).padLeft(Value.percentWidth(.01f, buyingDialog)).expand().right();
 
             Value padBottom = Value.percentHeight(.035f, buyingDialog);
@@ -133,6 +130,8 @@ public class CharacterSelectionUI extends StageUI {
     }
 
     public void onShow() {
+        backButton.setText("Back");
+        profile.getAppearance().startTracking();
         populateItemsTable();
     }
 
@@ -180,8 +179,7 @@ public class CharacterSelectionUI extends StageUI {
         holder.add(scrollPane).fill().expand();
         midTable.add(holder).size(Value.percentWidth(.15f, midTable), Value.percentHeight(.85f, midTable)).padLeft(padOutside).padRight(padInside);
 
-        displayFuzzle = new Fuzzle(this, colorizer, profile);
-        displayFuzzle.load(loader);
+        displayFuzzle = new Fuzzle(this, colorizer, profile).load(loader);
 
         midTable.add(displayFuzzle).size(Value.percentWidth(.6f, midTable)).center().expand();
 
@@ -211,7 +209,7 @@ public class CharacterSelectionUI extends StageUI {
         lowTable = new Table();
         lowTable.setBackground(textures.getTextureRegionDrawable("ui-panel-character4"));
 
-        TextButton backButton = new TextButton("Back", createDefaultTBStyle(parent));
+        backButton = new TextButton("Back", createDefaultTBStyle(parent));
         TextButton storeButton = new TextButton("Store", createDefaultTBStyle(parent));
 
         Helper.addClickAction(backButton, (e, x, y) -> backPressed());
@@ -248,7 +246,7 @@ public class CharacterSelectionUI extends StageUI {
                 boolean selected = profile.getAppearance().getEquip(selectedCategory.getIndex()) == unlockable;
                 entry.setSelected(selected);
                 if (selected) {
-                    selectUnlockable(entry);
+                    selectUnlockable(entry, false);
                     oneSelected = true;
                 }
             }
@@ -270,7 +268,7 @@ public class CharacterSelectionUI extends StageUI {
             showBuyDialog(entry);
             return;
         }
-        selectUnlockable(entry);
+        selectUnlockable(entry, true);
     }
 
     private void handleUnlockableColorClick(InputEvent event, float x, float y) {
@@ -293,13 +291,16 @@ public class CharacterSelectionUI extends StageUI {
         profile.getAppearance().setColorIndex(unlockableEntry.unlockable.getId(), newIndex);
     }
 
-    private void selectUnlockable(UnlockableEntry entry) {
+    private void selectUnlockable(UnlockableEntry entry, boolean userSelected) {
         for (Actor actor : itemsContainer.getChildren()) {
             if (actor != entry) {
                 ((UnlockableEntry) actor).setSelected(false);
             }
         }
-        profile.getAppearance().setEquip(selectedCategory.getIndex(), entry.getUnlockable().getId());
+        if (userSelected) {
+            backButton.setText("Back/Save");
+            profile.getAppearance().setEquip(selectedCategory.getIndex(), entry.getUnlockable().getId());
+        }
         entry.setSelected(true);
         refreshColors(entry);
         refreshUnlockableUI();
@@ -325,7 +326,7 @@ public class CharacterSelectionUI extends StageUI {
     }
 
     private void showBuyDialog(UnlockableEntry entry) {
-        buyingDialog.show(stage);
+        buyingDialog.show(parent.getStage());
         buyingUnlockableLabel.setText(entry.getUnlockableDefinition().getName());
         unlockableImage.setDrawable(entry.accessoryImg);
         costLabel.setText(String.valueOf(entry.getUnlockableDefinition().getCost()));
@@ -344,7 +345,7 @@ public class CharacterSelectionUI extends StageUI {
             final Unlockable unlockable = profile.getAppearance().getEquip(i);
 
             // No need to update if unlockable is already being displayed
-            if (frame.getUnlockable() != unlockable) {
+            if (unlockable == null || frame.getUnlockable() != unlockable) {
                 loader.add(() -> {
                     frame.setCategoryDrawable(colorizer.getColored(textures, unlockable, false));
                     frame.setUnlockable(unlockable);
@@ -414,7 +415,7 @@ public class CharacterSelectionUI extends StageUI {
                 unlocked = true;
             }
             this.unlockable = unlockable;
-            selectUnlockable(this);
+            selectUnlockable(this, true);
 
             // Buying dialog should not be displayed once we select an unlockable
             buyingDialog.hide();
@@ -434,8 +435,9 @@ public class CharacterSelectionUI extends StageUI {
         }
 
         private void addActors() {
-            if (colors == null)
+            if (colors == null) {
                 return;
+            }
             for (int i = 0; i < colors.length; i++) {
                 add(colors[i]).size(size).padTop(pad).padBottom(pad).row();
             }

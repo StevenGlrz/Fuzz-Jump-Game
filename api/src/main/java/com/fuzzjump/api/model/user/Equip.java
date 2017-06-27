@@ -10,11 +10,20 @@ public class Equip {
         this.unlockableId = unlockableId;
     }
 
+    public void setUnlockableId(int unlockableId) {
+        this.unlockableId = unlockableId;
+    }
+
     public int getSlot() {
         return slot;
     }
 
     public int getUnlockableId() {
         return unlockableId;
+    }
+
+    @Override
+    public String toString() {
+        return "Equip{" + "slot=" + slot + ", unlockableId=" + unlockableId + "}";
     }
 }

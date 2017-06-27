@@ -230,8 +230,7 @@ public class WaitingUI extends StageUI {
             statusImage = new Image(xDrawable);
             addActor(statusImage);
 
-            this.fuzzle = new Fuzzle(WaitingUI.this, colorizer, player);
-            fuzzle.load(stageScreen.getLoader());
+            this.fuzzle = new Fuzzle(WaitingUI.this, colorizer, player).load(stageScreen.getLoader());
             ImageButton addButton = new ImageButton(createPlusImageBtnStyle(WaitingUI.this));
             addButton.addListener(new ClickListener() {
 

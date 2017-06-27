@@ -2,6 +2,7 @@ package com.fuzzjump.game.game.player;
 
 import com.badlogic.gdx.utils.IntMap;
 import com.fuzzjump.api.model.unlockable.Unlockable;
+import com.fuzzjump.api.model.user.Equip;
 
 /**
  * Created by Steven Galarza on 6/16/2017.
@@ -22,12 +23,36 @@ public class Appearance {
 
     private IntMap<Unlockable> unlockables = new IntMap<>();
 
+    private int[] equipSnapshot = new int[Appearance.COUNT];
+
+    private IntMap<Unlockable> unlockableChanges = new IntMap<>();
+
+    private boolean trackingChanges;
+
     public Appearance() {
     }
 
-    public void setUnlockables(Unlockable[] data) {
+    public boolean isTracking() {
+        return trackingChanges;
+    }
+
+    public void startTracking() {
+        trackingChanges = true;
+
+        System.arraycopy(equips, 0, equipSnapshot, 0, Appearance.COUNT);
+    }
+
+    public void stopTracking() {
+        trackingChanges = false;
+        for (int i = 0; i < equipSnapshot.length; i++) {
+            equipSnapshot[i] = -1;
+        }
+        unlockableChanges.clear();
+    }
+
+    public void createUnlockables(Unlockable[] data) {
         for (Unlockable unlockable : data) {
-            unlockables.put(unlockable.getId(), unlockable);
+            createUnlockable(unlockable);
         }
     }
 
@@ -38,6 +63,16 @@ public class Appearance {
 
     public void setEquip(int index, int id) {
         this.equips[index] = id;
+    }
+
+    public void setColorIndex(int itemId, int entryIndex) {
+        Unlockable unlockable = getItem(itemId);
+        if (unlockable != null) {
+            unlockable.setColor(entryIndex);
+            if (trackingChanges) {
+                unlockableChanges.put(unlockable.getId(), unlockable);
+            }
+        }
     }
 
     public int getEquipId(int id) {
@@ -53,13 +88,6 @@ public class Appearance {
         return unlockable == null ? -1 : getItem(itemId).getColor();
     }
 
-    public void setColorIndex(int itemId, int entryIndex) {
-        Unlockable unlockable = getItem(itemId);
-        if (unlockable != null) {
-            unlockable.setColor(entryIndex);
-        }
-    }
-
     /**
      * Retrieves an unlockable through its definition id
      * @param definitionId The definition id.
@@ -73,6 +101,31 @@ public class Appearance {
         }
         return null;
     }
+
+    public Unlockable[] getUnlockableChanges() {
+        return null;
+    }
+
+    public Equip[] getEquipChanges() {
+        int equipChanges = 0;
+        for (int slot = 0; slot < Appearance.COUNT; slot++) {
+            if (equips[slot] != equipSnapshot[slot]) {
+                equipChanges++;
+            }
+        }
+        if (equipChanges == 0) {
+            return null;
+        }
+        Equip[] changes = new Equip[equipChanges];
+        int index = 0;
+        for (int slot = 0; slot < Appearance.COUNT; slot++) {
+            if (equips[slot] != equipSnapshot[slot]) {
+                changes[index++] = new Equip(slot, equips[slot]);
+            }
+        }
+        return changes;
+    }
+
 
     public IntMap<Unlockable> getUnlockables() {
         return unlockables;
