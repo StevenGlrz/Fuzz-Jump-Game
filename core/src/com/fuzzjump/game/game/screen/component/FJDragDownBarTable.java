@@ -6,12 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Scaling;
-import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.libgdxscreens.graphics.component.DragDownBarTable;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.fuzzjump.libgdxscreens.screen.StageUITextures;
-import com.fuzzjump.libgdxscreens.graphics.component.DragDownBarTable;
 
 public class FJDragDownBarTable extends DragDownBarTable {
 
@@ -58,7 +58,7 @@ public class FJDragDownBarTable extends DragDownBarTable {
         titleBarTable.setBackground(textures.getTextureRegionDrawable(profile == null ? "toppanelnodrag" : "toppanel"));
         dragDownTable.setBackground(new ColorDrawable(Color.valueOf("73BB44"), 1f, 1f));
         if (profile == null) {
-            titleBarTable.add(new Label("Welcome!", ui.getSkin(), "big")).padBottom(Value.percentHeight(.0175f, titleBarTable));
+            titleBarTable.add(titleBarLabel = new Label("Welcome!", ui.getSkin(), "big")).padBottom(Value.percentHeight(.025f, titleBarTable));
         } else {
             Value padBottom = Value.percentHeight(.225f, titleBarTable);
 
@@ -71,15 +71,18 @@ public class FJDragDownBarTable extends DragDownBarTable {
 
             titleBarTable.defaults().padBottom(padBottom);
             titleBarTable.add(leftTable).size(leftRightWidth, Value.percentHeight(.65f, titleBarTable));
-            titleBarTable.add(new Label(profile.getDisplayName(), ui.getSkin(), "big")).padBottom(Value.percentHeight(.0175f, titleBarTable)).center().expand();
+            titleBarTable.add(titleBarLabel = new Label(profile.getDisplayName(), ui.getSkin(), "default")).padBottom(Value.percentHeight(.1f, titleBarTable)).center().expand();
             titleBarTable.add(rightTable).size(leftRightWidth, Value.percentHeight(.65f, titleBarTable));
 
             Value padSides = Value.percentWidth(.05f, leftTable);
 
             leftTable.add(new Image(ui.getTextures().getTextureRegionDrawable("level-badge"), Scaling.fit)).size(badgeWidth, imageHeight).padLeft(padSides).center().left();
-            leftTable.add(rankingLabel = new Label(String.valueOf(profile.getLevel()), ui.getSkin(), "default")).width(Value.percentWidth(.5f, leftTable)).center().expand().left();
-            rightTable.add(coinsLabel = new Label(String.valueOf(profile.getCoins()), ui.getSkin(), "default")).width(Value.percentWidth(.5f, rightTable)).center().expand().right();
-            rightTable.add(new Image(ui.getTextures().getTextureRegionDrawable(Assets.UI_KERPOW_COIN), Scaling.fit)).size(imageHeight, imageHeight).padRight(padSides).center().right();
+            rankingLabel = new Label(String.valueOf(profile.getLevel()), ui.getSkin(), "default");
+            leftTable.add(rankingLabel).width(Value.percentWidth(.5f, leftTable)).center().expand().left();
+            coinsLabel = new Label(String.valueOf(profile.getCoins()), ui.getSkin(), "default");
+            coinsLabel.setAlignment(Align.right);
+            rightTable.add(coinsLabel).width(Value.percentWidth(.5f, rightTable)).center().expand().right();
+            rightTable.add(new Image(ui.getTextures().getTextureRegionDrawable("kerpow-coin"), Scaling.fit)).size(imageHeight, imageHeight).padRight(padSides).center().right();
 
             currentCoins = profile.getCoins();
             currentRanking = profile.getLevel();
