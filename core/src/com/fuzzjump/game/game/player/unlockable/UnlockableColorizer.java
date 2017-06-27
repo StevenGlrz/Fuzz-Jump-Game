@@ -1,10 +1,11 @@
 package com.fuzzjump.game.game.player.unlockable;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.game.game.Assets;
-import com.fuzzjump.libgdxscreens.screen.StageUITextures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
+import com.fuzzjump.libgdxscreens.screen.StageUITextures;
 
 import java.util.Map;
 
@@ -35,7 +36,7 @@ public class UnlockableColorizer {
         if (unlockable == null) {
             return null;
         }
-        return getColored(textures, definitionFor(unlockable), unlockable.getColorIndex(), hardref);
+        return getColored(textures, definitionFor(unlockable), unlockable.getColor(), hardref);
     }
 
     public TextureRegion getColorized(UnlockableDefinition unlockableDefinition, int colorIndex) {
@@ -63,11 +64,11 @@ public class UnlockableColorizer {
     }
 
     public TextureRegion colorize(Unlockable unlockable) {
-        return colorize(definitionFor(unlockable), unlockable.getColorIndex());
+        return colorize(definitionFor(unlockable), unlockable.getColor());
     }
 
     // This shouldn't be here. Need to come up with a better design later
     public UnlockableDefinition definitionFor(Unlockable unlockable) {
-        return unlockableDefinitions.getDefinition(unlockable.getId());
+        return unlockableDefinitions.getDefinition(unlockable.getDefinitionId());
     }
 }

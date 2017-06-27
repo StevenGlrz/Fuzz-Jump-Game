@@ -58,6 +58,10 @@ public class Assets {
     public static final String UI_SEARCH = "ui-search";
     public static final String UI_PANEL_FRIENDS = "ui-panel-friends";
     public static final String UI_FRIEND_FRAME = "ui-frame-friend";
+    public static final String UI_FRAME_SELECTED = "ui-frame-selected";
+    public static final String UI_WAIT_SQUARE = "ui-wait-square";
+    public static final String UI_LOCK = "ui-lock";
+    public static final String UI_KERPOW_COIN = "kerpow-coin";
 
     // Maps
     public final static String[] MAPS = {

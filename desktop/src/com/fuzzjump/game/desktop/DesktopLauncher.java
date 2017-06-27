@@ -6,8 +6,6 @@ import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.platform.PlatformModule;
 
-import java.util.concurrent.Executors;
-
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
@@ -15,7 +13,7 @@ public class DesktopLauncher {
 		config.width = 560;
 		config.height = 940;
 		FuzzJumpParams params = new FuzzJumpParams(System.getenv("FUZZ_API"), arg[0], Integer.parseInt(arg[1]));
-		FuzzJump fuzzJump = new FuzzJump(params, new PlatformModule(new DesktopGraphicsLoader(Executors.newFixedThreadPool(2), "")));
+		FuzzJump fuzzJump = new FuzzJump(params, new PlatformModule(new DesktopGraphicsLoader("")));
 		new LwjglApplication(fuzzJump, config);
 	}
 }

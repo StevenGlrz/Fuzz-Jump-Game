@@ -17,14 +17,13 @@ import org.w3c.dom.svg.SVGDocument;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.concurrent.ExecutorService;
 
 public class DesktopGraphicsLoader extends VectorGraphicsLoader {
 
     private final SAXSVGDocumentFactory factory;
 
-    public DesktopGraphicsLoader(ExecutorService workerService, String cacheLocation) {
-        super(workerService, cacheLocation);
+    public DesktopGraphicsLoader(String cacheLocation) {
+        super(cacheLocation);
         this.factory = new SAXSVGDocumentFactory(XMLResourceDescriptor.getXMLParserClassName());
     }
 

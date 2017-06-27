@@ -2,6 +2,7 @@ package com.fuzzjump.game.game.screen.ui;
 
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -20,6 +21,7 @@ import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
+import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -54,15 +56,25 @@ public class MenuUI extends StageUI {
     private final UnlockableColorizer colorizer;
     private final IFriendService friendService;
     private final GraphicsScheduler scheduler;
+    private final FuzzPersistence persistence;
+
+    private Label mMessageLabel;
+    private Image mProgressImage;
+    private Button mMessageCloseBtn;
+    private Dialog mProgressDialog;
+    private Fuzzle fuzzle;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, IFriendService friendService, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
+    public MenuUI(Textures textures, Skin skin, IFriendService friendService, Profile profile,
+                  UnlockableRepository definitions, UnlockableColorizer colorizer,
+                  GraphicsScheduler scheduler, FuzzPersistence persistence) {
         super(textures, skin);
         this.friendService = friendService;
         this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
         this.scheduler = scheduler;
+        this.persistence = persistence;
     }
 
     @Override
@@ -71,36 +83,36 @@ public class MenuUI extends StageUI {
 
         // Load loading dialog
         loader.add(() -> {
-            Label messageLabel = new Label("Loading", getGameSkin(), "default");
-            final Image progressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
-            final TextButton progressCloseButton = new TextButton("Close", createDefaultTBStyle(this));
-            progressImage.setOrigin(Align.center);
-            progressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
+            mMessageLabel = new Label("Loading", getGameSkin(), "default");
+            mProgressImage = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
+            mMessageCloseBtn = new TextButton("Close", createDefaultTBStyle(this));
+            mProgressImage.setOrigin(Align.center);
+            mProgressImage.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
 
-            final Dialog progressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
-            progressDialog.setModal(true);
-            progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
-            progressDialog.getContentTable().add(progressImage).center().expand().size(Value.percentWidth(.25f, progressDialog));
-            progressCloseButton.setVisible(false);
+            mProgressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
+            mProgressDialog.setModal(true);
+            mProgressDialog.getContentTable().add(mMessageLabel).padTop(Value.percentHeight(.1f, mProgressDialog)).row();
+            mProgressDialog.getContentTable().add(mProgressImage).center().expand().size(Value.percentWidth(.25f, mProgressDialog));
+            mMessageCloseBtn.setVisible(false);
 
 
-            progressDialog.getButtonTable().add(progressCloseButton).size(Value.percentWidth(.475f, progressDialog), Value.percentWidth(0.1315789473684211f, progressDialog)).padBottom(Value.percentHeight(.035f, progressDialog)).center().expand();
+            mProgressDialog.getButtonTable().add(mMessageCloseBtn).size(Value.percentWidth(.475f, mProgressDialog), Value.percentWidth(0.1315789473684211f, mProgressDialog)).padBottom(Value.percentHeight(.035f, mProgressDialog)).center().expand();
 
-            register(Assets.MenuUI.PROGRESS_DIALOG, progressDialog);
-            register(Assets.MenuUI.PROGRESS_LABEL, messageLabel);
-            register(Assets.MenuUI.CLOSE_BUTTON, progressCloseButton);
-            register(Assets.MenuUI.PROGRESS_IMAGE, progressImage);
+            register(Assets.MenuUI.PROGRESS_DIALOG, mProgressDialog);
+            register(Assets.MenuUI.PROGRESS_LABEL, mMessageLabel);
+            register(Assets.MenuUI.CLOSE_BUTTON, mMessageCloseBtn);
+            register(Assets.MenuUI.PROGRESS_IMAGE, mProgressImage);
 
-            Helper.addClickAction(progressCloseButton, (e, x, y) -> {
-                progressDialog.hide();
-                progressCloseButton.setVisible(false);
+            Helper.addClickAction(mMessageCloseBtn, (e, x, y) -> {
+                mProgressDialog.hide();
+                mMessageCloseBtn.setVisible(false);
             });
         });
 
         // Doesn't require background loading
         this.profileUI = new CharacterSelectionUI(this, definitions);
-        this.settingsUI = new SettingsUI(this);
         this.friendsUI = new FriendsUI(this, friendService, scheduler);
+        this.settingsUI = new SettingsUI(this);
 
 
         setFillParent(true);
@@ -141,7 +153,7 @@ public class MenuUI extends StageUI {
 
             Table pictureTable = new Table();
 
-            Fuzzle fuzzle = new Fuzzle(this, colorizer, profile);
+            fuzzle = new Fuzzle(this, colorizer, profile);
             fuzzle.load(loader);
 
             TextButton profileButton = new TextButton("Customize", createSmallTBStyle(this));
@@ -206,13 +218,35 @@ public class MenuUI extends StageUI {
         loader.add(() -> friendsUI.init());
     }
 
+    public void displayMessage(String message, boolean process) {
+        mMessageLabel.setText(message);
+        mProgressImage.setVisible(process);
+        mMessageCloseBtn.setVisible(!process);
+
+        mProgressDialog.show(getStage());
+    }
+
+    public void closeMessage() {
+        mProgressDialog.hide();
+    }
+
     @Override
     public void backPressed() {
 
     }
 
-    void showMain() {
+    public void showMain() {
+        ScreenLoader loader = getStageScreen().getLoader();
         uiSwitcher.setDisplayedChild(0);
+
+        int previousSize = loader.getTaskSize();
+        fuzzle.load(loader);
+
+        // Only save when there have been changes made.
+        // This logic ensures that since new Fuzzle parts do not load unless new changes were made
+        if (previousSize != loader.getTaskSize()) {
+            persistence.saveProfile();
+        }
     }
 
     Profile getProfile() {

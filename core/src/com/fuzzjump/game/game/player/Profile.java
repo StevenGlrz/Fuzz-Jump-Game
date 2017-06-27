@@ -1,10 +1,11 @@
 package com.fuzzjump.game.game.player;
 
-import com.fuzzjump.api.model.unlockable.ApiUnlockable;
-import com.fuzzjump.api.model.user.ApiEquip;
+import com.badlogic.gdx.utils.IntMap;
+import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.user.ApiFriend;
 import com.fuzzjump.api.model.user.ApiProfile;
-import com.fuzzjump.api.user.model.RegisterResponse;
+import com.fuzzjump.api.model.user.ApiUser;
+import com.fuzzjump.api.model.user.Equip;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -15,14 +16,13 @@ import java.util.List;
 public class Profile {
 
     private String userId;
-    private String userName;
     private String displayName;
     private int displayNameId;
     private int playerIndex;
     private int coins;
     private int experience;
-    private Appearance appearance;
 
+    private final Appearance appearance;
     private final List<FriendProfile> friends = new LinkedList<>();
 
     private boolean ready;
@@ -31,43 +31,49 @@ public class Profile {
         this.appearance = new Appearance();
     }
 
-    public void loadUser(RegisterResponse.RegisterBody body) {
-        userName = body.getUsername();
-        displayName = body.getDisplayName();
-        displayNameId = body.getNameId();
-        userId = body.getUserId();
-        loadProfile(body.getProfile());
+    public void loadUser(ApiUser user) {
+        displayName = user.getDisplayName();
+        displayNameId = user.getNameId();
+        userId = user.getUserId();
+        loadProfile(user.getProfile());
     }
 
     public void loadProfile(ApiProfile profile) {
         coins = profile.getCoins();
         experience = profile.getExperience();
-        for (int i = 0, n = profile.getEquips().length; i < n; i++) {
-            ApiEquip equip = profile.getEquips()[i];
-            ApiUnlockable unlockable = equip.getUnlockable();
-
+        for (Equip equip : profile.getEquips()) {
+            int id = equip.getUnlockableId();
             int slot = equip.getSlot();
 
-            if (unlockable != null) {
-                int unlockableId = unlockable.getDefinitionId();
-                int unlockableColor = unlockable.getColor();
-                appearance.setEquip(slot, unlockableId);
-                appearance.createUnlockable(unlockableId, unlockableColor);
-            } else {
-                appearance.setEquip(slot, -1);
-            }
-
+            // id = 0 means there is no unlockable set for this equip slot
+            appearance.setEquip(slot, id == 0 ? -1 : id);
         }
+        appearance.setUnlockables(profile.getUnlockables());
     }
 
     public void loadFriends(ApiFriend[] mFriends) {
         friends.clear();
+        for (ApiFriend friend : mFriends) {
+            friends.add(new FriendProfile(friend));
+        }
+    }
 
-        for (int i = 0, n = mFriends.length; i < n; i++) {
-            friends.add(new FriendProfile(mFriends[i]));
+    // Not elegant, but sigh
+    public ApiUser save() {
+        Equip[] equips = new Equip[Appearance.COUNT];
+        for (int i = 0; i < Appearance.COUNT; i++) {
+            equips[i] = new Equip(i, appearance.getEquipId(i));
         }
 
-        System.out.println("Loaded " + friends.size() + " friends");
+        // Don't ask
+        IntMap<Unlockable> appUnlockables = appearance.getUnlockables();
+        Unlockable[] unlockables = new Unlockable[appUnlockables.size];
+        int index = 0;
+        for (Unlockable u : appUnlockables.values()) {
+            unlockables[index++] = u;
+        }
+        ApiProfile profile = new ApiProfile(coins, experience, equips, unlockables);
+        return new ApiUser(userId, displayName, displayNameId, profile);
     }
 
     public String getUserId() {
@@ -120,10 +126,6 @@ public class Profile {
 
     public int getLevel() {
         return experience;
-    }
-
-    public String getApiName() {
-        return userName;
     }
 
     public void setDisplayNameId(int displayNameId) {

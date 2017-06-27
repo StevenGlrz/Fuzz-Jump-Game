@@ -12,47 +12,50 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Scaling;
+import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.Appearance;
 
-/**
- * Created by Steveadoo on 9/30/2015.
- */
 public class CategoryFrame extends Table {
 
     private static final String NO_ITEM_TEXT = "N/A";
 
+    private final int index;
     private final CheckBox.CheckBoxStyle style;
     private final Skin skin;
     private final BitmapFont font;
     private final String title;
 
     private TextureRegionDrawable categoryDrawable;
+    private Unlockable unlockable;
     private Image checkboxImage;
     private boolean checked;
 
     private GlyphLayout glyphLayout = new GlyphLayout();
 
-    public CategoryFrame(String title, Skin skin, CheckBox.CheckBoxStyle style) {
+    public CategoryFrame(int index, Skin skin, CheckBox.CheckBoxStyle style) {
+        this.index = index;
+        this.title = Appearance.TITLES[index];
         this.font = skin.getFont(Assets.PROFILE_FONT);
-        this.title = title;
         this.skin = skin;
         this.style = style;
     }
 
-    public void init() {
+    public CategoryFrame init() {
         categoryDrawable = new TextureRegionDrawable();
         setTouchable(Touchable.enabled);
         checkboxImage = new Image(style.checkboxOff, Scaling.fit) {
             public void draw(Batch batch, float parentAlpha) {
                 super.draw(batch, parentAlpha);
-                drawCheckbox(batch, parentAlpha);
+                drawCheckbox(batch);
             }
         };
         add(checkboxImage).expand().row();
         add(new Label(title, skin, "small"));
+        return this;
     }
 
-    private void drawCheckbox(Batch batch, float parentAlpha) {
+    private void drawCheckbox(Batch batch) {
         float width, height;
         float x, y;
         if (categoryDrawable != null) {
@@ -71,6 +74,10 @@ public class CategoryFrame extends Table {
         } else {
             font.draw(batch, NO_ITEM_TEXT, x, y);
         }
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public boolean isChecked() {
@@ -94,4 +101,11 @@ public class CategoryFrame extends Table {
         }
     }
 
+    public Unlockable getUnlockable() {
+        return unlockable;
+    }
+
+    public void setUnlockable(Unlockable unlockable) {
+        this.unlockable = unlockable;
+    }
 }

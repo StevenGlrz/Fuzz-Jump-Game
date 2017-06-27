@@ -7,11 +7,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.fuzzjump.api.model.user.ApiUser;
 import com.fuzzjump.api.user.IUserService;
-import com.fuzzjump.api.user.model.RegisterResponse;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
@@ -19,7 +20,7 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-public class MainScreen extends StageScreen<com.fuzzjump.game.game.screen.ui.MainUI> {
+public class MainScreen extends StageScreen<MainUI> {
 
     private final IUserService userService;
     private final Profile profile;
@@ -29,7 +30,7 @@ public class MainScreen extends StageScreen<com.fuzzjump.game.game.screen.ui.Mai
     private final Gson gson;
 
     @Inject
-    public MainScreen(com.fuzzjump.game.game.screen.ui.MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler, Gson gson) {
+    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler, Gson gson) {
         super(ui);
         this.userService = userService;
         this.profile = profile;
@@ -65,42 +66,40 @@ public class MainScreen extends StageScreen<com.fuzzjump.game.game.screen.ui.Mai
 
         if (userField.getText().isEmpty()) {
             userField.setMessageText("Please enter a username!");
-        } else {
-            ui.actor(Label.class, Assets.MainUI.LOGIN_DIALOG_MESSAGE).setText("Logging in...");
-            ui.actor(Button.class, Assets.MainUI.LOGIN_DIALOG_OK).setVisible(false);
-            waitingDialog.setName("Registering");
-            showDialog(waitingDialog, getStage());
-
-            userService.register(userField.getText()).observeOn(scheduler).subscribe(response -> {
-                if (response != null && response.isSuccess()) {
-                    RegisterResponse.RegisterBody body = response.getBody();
-
-                    // Retrieve the password and remove it since we don't want to persist it
-                    String password = body.getPassword();
-                    body.setPassword(null);
-
-                    // Load and store profile data
-                    profile.loadUser(body);
-
-                    // Acquire token from API and persist preferences
-                    userService.retrieveToken(profile.getApiName(), password).subscribe(e -> {
-                        System.out.println(e.getAccessToken());
-                        preferences.putString(Assets.PROFILE_DATA, gson.toJson(body));
-                        preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
-                        preferences.flush();
-                    });
-
-                    // UI process
-                    waitingDialog.setName("Loading game");
-                    screenHandler.showScreen(MenuScreen.class);
-                } else {
-                    // TODO Error handling
-                }
-            }, e -> {
-                e.printStackTrace();
-                // TODO Failed to register
-            });
+            return;
         }
+        ui.actor(Label.class, Assets.MainUI.LOGIN_DIALOG_MESSAGE).setText("Logging in...");
+        ui.actor(Button.class, Assets.MainUI.LOGIN_DIALOG_OK).setVisible(false);
+        waitingDialog.setName("Registering");
+        showDialog(waitingDialog, getStage());
+
+        userService.register(userField.getText()).observeOn(scheduler).subscribe(response -> {
+            if (response != null && response.isSuccess()) {
+                final ApiUser user = response.getBody();
+
+                // Retrieve nd remove since we don't want to persist username and password
+                String username = user.getUsername();
+                String password = user.getPassword();
+                user.setUsername(null);
+                user.setPassword(null);
+
+                // Load and store profile data
+                profile.loadUser(user);
+
+                // Acquire token from API and persist preferences
+                userService.retrieveToken(username, password).subscribe(e -> {
+                    preferences.putString(Assets.PROFILE_DATA, gson.toJson(user));
+                    preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
+                    preferences.flush();
+                });
+
+                // UI process
+                waitingDialog.setName("Loading game");
+                screenHandler.showScreen(MenuScreen.class);
+            }
+        }, e -> {
+            // TODO Close on error
+        });
     }
 
 }

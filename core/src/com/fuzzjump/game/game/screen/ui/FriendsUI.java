@@ -164,10 +164,10 @@ public class FriendsUI extends StageUI {
 
         if (searchRequest.length != 2 || !Helper.isNumeric(searchRequest[1])) {
             // TODO This is broken
-            displayMessage("Please search\n using the\n username#id format!", false);
+            parent.displayMessage("Please search\n using the\n username#id format!", false);
             return;
         }
-        displayMessage("Sending friend request", true);
+        parent.displayMessage("Sending friend request", true);
         friendService.sendFriendRequest(new FriendRequest(searchRequest[0], Integer.parseInt(searchRequest[1])))
                 .observeOn(scheduler)
                 .subscribe(r -> {
@@ -180,7 +180,7 @@ public class FriendsUI extends StageUI {
     }
 
     private void acceptFriend(FriendWidget widget) {
-        displayMessage("Accepting request", true);
+        parent.displayMessage("Accepting request", true);
         friendService.acceptFriendRequest(new GenericFriendRequest(widget.profile.getUserId()))
                 .observeOn(scheduler)
                 .subscribe(r -> {
@@ -194,7 +194,7 @@ public class FriendsUI extends StageUI {
     }
 
     private void removeFriend(FriendWidget widget, String message) {
-        displayMessage(message, true);
+        parent.displayMessage(message, true);
         friendService.deleteFriend(new GenericFriendRequest(widget.profile.getUserId()))
                 .observeOn(scheduler)
                 .subscribe(r -> {
@@ -285,15 +285,8 @@ public class FriendsUI extends StageUI {
         }
     }
 
-    private void displayMessage(String message, boolean process) {
-        mProgressLabel.setText(message);
-        mProgressImage.setVisible(process);
-        mCloseButton.setVisible(!process);
-        mProgressDialog.show(getStage());
-    }
-
     private void closeMessage(boolean resetSearchField) {
-        parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG).hide();
+        parent.closeMessage();
         if (resetSearchField) {
             searchField.setMessageText("");
             parent.getStageScreen().getStage().setKeyboardFocus(null);

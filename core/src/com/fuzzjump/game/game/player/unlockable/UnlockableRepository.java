@@ -2,6 +2,7 @@ package com.fuzzjump.game.game.player.unlockable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.IntMap;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.graphics.ColorGroup;
 
@@ -12,9 +13,7 @@ import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,7 +24,7 @@ public class UnlockableRepository {
     private static final String DEFINITIONS_PATH = "data/unlockable-definitions.xml";
     public static final int FUZZLE_COUNT = 6;
 
-    private Map<Integer, UnlockableDefinition> definitions = new HashMap<>();
+    private IntMap<UnlockableDefinition> definitions = new IntMap<>();
 
     public void init() {
         try {
@@ -109,8 +108,9 @@ public class UnlockableRepository {
         NodeList cElements = node.getElementsByTagName("c");
         ColorGroup group = new ColorGroup();
         group.colors = new ColorGroup.IndexColor[cElements.getLength()];
-        for (int i = 0; i < cElements.getLength(); i++)
+        for (int i = 0; i < cElements.getLength(); i++) {
             group.colors[i] = readIndexColor((Element) cElements.item(i));
+        }
         return group;
     }
 
@@ -124,9 +124,9 @@ public class UnlockableRepository {
         return color;
     }
 
-    public List<UnlockableDefinition> getDefinitions(int category, int fuzz) {
+    public List<UnlockableDefinition> getDefinitions(int category, int definitionId) {
         List<UnlockableDefinition> defs = new ArrayList<>();
-        UnlockableDefinition fuzzDef = definitions.get(fuzz);
+        UnlockableDefinition fuzzDef = definitions.get(definitionId);
         for (UnlockableDefinition check : definitions.values()) {
             if (check.getCategory() == category && check.validFuzzle(fuzzDef.getAllowedTags())) {
                 defs.add(check);

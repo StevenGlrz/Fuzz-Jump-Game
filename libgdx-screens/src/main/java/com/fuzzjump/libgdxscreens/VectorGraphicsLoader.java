@@ -15,14 +15,12 @@ import java.util.concurrent.Executors;
 public abstract class VectorGraphicsLoader {
 
     protected final ExecutorService cacheService;
-    protected final ExecutorService workerService;
 
     private final String cacheLocation;
 
-    public VectorGraphicsLoader(ExecutorService workerService, String cacheLocation) {
+    public VectorGraphicsLoader(String cacheLocation) {
         this.cacheLocation = cacheLocation;
         this.cacheService = Executors.newSingleThreadExecutor();
-        this.workerService = workerService;
     }
 
     public TextureRegion load(final VectorDetail vectorDetails, ColorGroup replaceGroup, ColorGroup baseGroup, final boolean cache) {

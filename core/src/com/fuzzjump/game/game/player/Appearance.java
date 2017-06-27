@@ -1,17 +1,12 @@
 package com.fuzzjump.game.game.player;
 
 import com.badlogic.gdx.utils.IntMap;
-import com.fuzzjump.game.game.player.unlockable.Unlockable;
-import com.fuzzjump.game.util.Helper;
-
-import java.util.LinkedList;
-import java.util.List;
+import com.fuzzjump.api.model.unlockable.Unlockable;
 
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
 public class Appearance {
-    // TODO Clean up house
 
     public static final String[] TITLES = {"Fuzzle", "Frame", "Head", "Eyes", "Face"};
 
@@ -23,128 +18,64 @@ public class Appearance {
 
     public static final int COUNT = 5;
 
-    private LinkedList<AppearanceChangeListener> changeListeners = new LinkedList<>();
     private int[] equips = new int[5];
 
     private IntMap<Unlockable> unlockables = new IntMap<>();
-    private IntMap<Integer> colorIndexSnapshot = new IntMap<>();
-
-    private int[] equipSnapshot;
 
     public Appearance() {
     }
 
-    public void snapshot() {
-        equipSnapshot = equips.clone();
-        colorIndexSnapshot.clear();
-
-        for (Unlockable u : unlockables.values()) {
-            colorIndexSnapshot.put(u.getId(), u.getColorIndex());
+    public void setUnlockables(Unlockable[] data) {
+        for (Unlockable unlockable : data) {
+            unlockables.put(unlockable.getId(), unlockable);
         }
     }
 
-    public boolean changed() {
-        if (equipSnapshot != null) {
-            for (int i = 0; i < equips.length; i++) {
-                if (equips[i] != equipSnapshot[i]) {
-                    return true;
-                }
-            }
-        }
-        if (colorIndexSnapshot.size > 0) {
-            for (Unlockable u : unlockables.values()) {
-                if (Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    public void reset() {
-        if (equipSnapshot != null) {
-            for (int i = 0; i < equips.length; i++) {
-                equips[i] = equipSnapshot[i];
-            }
-            equipSnapshot = null;
-        }
-        if (colorIndexSnapshot.size > 0) {
-            for (int i = 0; i < unlockables.size; i++) {
-                Unlockable u = unlockables.get(i);
-                u.setColorIndex(Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()));
-            }
-        }
-        raiseEvent();
-    }
-
-    public List<Unlockable> getDiffs() {
-        List<Unlockable> diffs = new LinkedList<>();
-        if (colorIndexSnapshot.size > 0) {
-            for (int i = 0; i < unlockables.size; i++) {
-                Unlockable u = unlockables.get(i);
-                if (Helper.fallback(colorIndexSnapshot.get(u.getId()), u.getColorIndex()) != u.getColorIndex()) {
-                    diffs.add(u);
-                }
-            }
-        }
-        return diffs;
-    }
-
-    public Unlockable createUnlockable(int id, int color) {
-        if (id == -1) {
-            return null;
-        }
-        Unlockable unlockable = new Unlockable(id, color);
+    public Unlockable createUnlockable(Unlockable unlockable) {
         unlockables.put(unlockable.getId(), unlockable);
         return unlockable;
     }
 
     public void setEquip(int index, int id) {
         this.equips[index] = id;
-        raiseEvent();
     }
 
-    public int getDefinitionId(int id) {
+    public int getEquipId(int id) {
         return equips[id];
     }
 
     public Unlockable getEquip(int equip) {
-        return getItem(equips[equip]);
+        return unlockables.get(equips[equip]);
     }
 
     public int getColorIndex(int itemId) {
         Unlockable unlockable = getItem(itemId);
-        return unlockable == null ? -1 : getItem(itemId).getColorIndex();
+        return unlockable == null ? -1 : getItem(itemId).getColor();
     }
 
     public void setColorIndex(int itemId, int entryIndex) {
         Unlockable unlockable = getItem(itemId);
         if (unlockable != null) {
-            unlockable.setColorIndex(entryIndex);
-            raiseEvent();
+            unlockable.setColor(entryIndex);
         }
     }
 
-    public Unlockable getItem(int itemId) {
-        return unlockables.get(itemId);
+    /**
+     * Retrieves an unlockable through its definition id
+     * @param definitionId The definition id.
+     * @return The unlockable with the requested definition id.
+     */
+    public Unlockable getItem(int definitionId) {
+        for (Unlockable unlockable : unlockables.values()) {
+            if (unlockable != null && unlockable.getDefinitionId() == definitionId) {
+                return unlockable;
+            }
+        }
+        return null;
     }
 
-    public void raiseEvent() {
-        for (AppearanceChangeListener listener : changeListeners)
-            listener.appearanceChanged();
+    public IntMap<Unlockable> getUnlockables() {
+        return unlockables;
     }
 
-    public void addChangeListener(AppearanceChangeListener listener) {
-        this.changeListeners.add(listener);
-    }
-
-    public void removeChangeListener(AppearanceChangeListener listener) {
-        this.changeListeners.remove(listener);
-    }
-
-    public interface AppearanceChangeListener {
-
-        void appearanceChanged();
-
-    }
 }

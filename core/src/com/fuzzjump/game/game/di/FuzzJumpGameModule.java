@@ -14,11 +14,13 @@ import com.fuzzjump.game.game.map.GameMapParser;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.screen.ScreenHandler;
 import com.fuzzjump.libgdxscreens.screen.ScreenResolver;
+import com.google.gson.Gson;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,6 +32,12 @@ public class FuzzJumpGameModule {
     @Provides
     public Profile provideProfile() {
         return new Profile();
+    }
+
+    @FuzzJumpScope
+    @Provides
+    public FuzzPersistence providePersistence(Preferences preferences, Gson gson, Profile profile) {
+        return new FuzzPersistence(preferences, gson, profile);
     }
 
     @FuzzJumpScope
