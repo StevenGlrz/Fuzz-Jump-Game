@@ -425,7 +425,7 @@ public class FriendsUI extends StageUI {
     }
 
     private void closeMessage(boolean resetSearchField) {
-        parent.actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG).hide();
+        parent.closeMessage();
         if (resetSearchField) {
             searchField.setMessageText("");
             parent.getStageScreen().getStage().setKeyboardFocus(null);

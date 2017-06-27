@@ -1,14 +1,17 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.fuzzjump.api.model.unlockable.Unlockable;
+import com.fuzzjump.api.model.unlockable.UnlockablePurchase;
+import com.fuzzjump.api.unlockable.UnlockableService;
+import com.fuzzjump.api.unlockable.model.UnlockablePurchaseRequest;
+import com.fuzzjump.api.unlockable.model.UnlockableResponse;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.ui.CharacterSelectionUI;
 import com.fuzzjump.game.game.screen.ui.MenuUI;
+import com.fuzzjump.game.io.FuzzPersistence;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 
 import javax.inject.Inject;
@@ -22,11 +25,18 @@ import static com.fuzzjump.game.game.Assets.MenuUI.SELECT_BUY_BUTTON;
 public class MenuScreen extends StageScreen<MenuUI> {
 
     private final Profile profile;
+    private final UnlockableService unlockableService;
+    private final GraphicsScheduler scheduler;
+    private final FuzzPersistence persistence;
 
     @Inject
-    public MenuScreen(MenuUI ui, Profile profile) {
+    public MenuScreen(MenuUI ui, Profile profile, UnlockableService unlockableService,
+                      GraphicsScheduler scheduler, FuzzPersistence persistence) {
         super(ui);
         this.profile = profile;
+        this.unlockableService = unlockableService;
+        this.scheduler = scheduler;
+        this.persistence = persistence;
     }
 
     @Override
@@ -52,27 +62,49 @@ public class MenuScreen extends StageScreen<MenuUI> {
     }
 
     private void buySelectedUnlockable() {
-        final Dialog progressDialog = ui().actor(Dialog.class, Assets.MenuUI.PROGRESS_DIALOG);
-        final Image image = ui().actor(Assets.MenuUI.PROGRESS_IMAGE);
-        final Label status = ui().actor(Assets.MenuUI.PROGRESS_LABEL);
-        final Button closeButton = ui().actor(Assets.MenuUI.CLOSE_BUTTON);
-        final CharacterSelectionUI.UnlockableEntry buyEntry = ui().actor(Assets.MenuUI.SELECTED_UNLOCK);
-
+        final MenuUI ui = ui();
+        final CharacterSelectionUI.UnlockableEntry buyEntry = ui.actor(Assets.MenuUI.SELECTED_UNLOCK);
         if (buyEntry.getUnlockableDefinition().getCost() > profile.getCoins()) {
-            image.setVisible(false);
-            status.setVisible(true);
-            closeButton.setVisible(true);
-            status.setText("Not enough coins!");
-            progressDialog.show(getStage());
+            ui.displayMessage("Not enough coins!", false);
             return;
         }
-        //ui().actor(Dialog.class, Assets.MenuUI.BUYING_DIALOG).hide();
-
-        image.setVisible(true);
-        status.setVisible(true);
-        closeButton.setVisible(false);
-        progressDialog.show(getStage());
-        status.setText("Purchasing...");
-        ;
+        ui.displayMessage("Purchasing", true);
+        unlockableService.purchaseUnlockable(new UnlockablePurchaseRequest(buyEntry.getUnlockableDefinition().getId()))
+                .observeOn(scheduler)
+                .subscribe(this::handleUnlockablePurchase, e -> {
+                    ui.displayMessage("Purchase failed", false); // on error
+                });
     }
+
+    private void handleUnlockablePurchase(UnlockableResponse response) {
+        final MenuUI ui = ui();
+        final CharacterSelectionUI.UnlockableEntry purchaseSelection = ui.actor(Assets.MenuUI.SELECTED_UNLOCK);
+        if (response.isSuccess()) {
+            UnlockablePurchase purchase = response.getBody();
+
+            switch (purchase.getPurchaseStatus()) {
+                case UnlockablePurchase.PURCHASE_NOT_ENOUGH_COINS:
+                    ui.displayMessage("Not enough coins!", false);
+                    break;
+                case UnlockablePurchase.PURCHASE_ALREADY_PURCHASED:
+                    ui.displayMessage("Already purchased!", false);
+                    break;
+                case UnlockablePurchase.PURCHASE_SUCCESS:
+                    Unlockable unlockable = purchase.getUnlockable();
+                    if (unlockable != null) { // Shouldn't be null, but you know ...
+                        purchaseSelection.setSelected(true);
+                        purchaseSelection.setUnlockable(profile.getAppearance().createUnlockable(unlockable));
+                        profile.setCoins(profile.getCoins() - purchaseSelection.getUnlockableDefinition().getCost());
+
+                        persistence.saveProfile();
+                        ui.closeMessage();
+                    }
+                    break;
+                default:
+                    ui.displayMessage("Purchase failed", false);
+                    break;
+            }
+        }
+    }
+
 }

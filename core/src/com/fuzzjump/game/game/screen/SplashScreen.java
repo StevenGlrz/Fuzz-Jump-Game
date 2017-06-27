@@ -1,7 +1,6 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,13 +11,13 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.fuzzjump.api.user.model.RegisterResponse;
+import com.fuzzjump.api.TokenInterceptor;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
-import com.fuzzjump.api.TokenInterceptor;
+import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
@@ -39,19 +38,19 @@ public class SplashScreen extends StageScreen<SplashUI> {
     private final Profile profile;
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
-    private final Preferences preferences;
+    private final FuzzPersistence persistence;
     private final Gson gson;
     private final TokenInterceptor interceptor;
 
     @Inject
-    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, Preferences preferences, Gson gson, TokenInterceptor interceptor) {
+    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, FuzzPersistence persistence, Gson gson, TokenInterceptor interceptor) {
         super(ui);
         this.textures = textures;
         this.skin = skin;
         this.profile = profile;
         this.definitions = definitions;
         this.colorizer = colorizer;
-        this.preferences = preferences;
+        this.persistence = persistence;
         this.gson = gson;
         this.interceptor = interceptor;
     }
@@ -127,10 +126,8 @@ public class SplashScreen extends StageScreen<SplashUI> {
     }
 
     private void onLoadDone() {
-        String profileData = preferences.getString(Assets.PROFILE_DATA, null);
-        String userToken = preferences.getString(Assets.USER_TOKEN, null);
-        if (profileData != null && profileData.length() > 0) {
-            profile.loadUser(gson.fromJson(profileData, RegisterResponse.RegisterBody.class));
+        if (persistence.loadProfile()) {
+            String userToken = persistence.loadToken();
             if (userToken == null) {
                 throw new IllegalStateException("Found user data but token wasn't available - this shouldn't happen.");
             }

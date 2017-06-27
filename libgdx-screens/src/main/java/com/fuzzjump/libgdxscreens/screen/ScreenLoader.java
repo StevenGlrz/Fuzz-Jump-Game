@@ -13,7 +13,7 @@ public class ScreenLoader {
     /**
      * The task queue
      */
-    private final Queue<Runnable> load = new LinkedList<>();
+    private final Queue<Runnable> tasks = new LinkedList<>();
 
     /**
      * Callback for when all tasks are done.
@@ -36,7 +36,7 @@ public class ScreenLoader {
 
         // This can be a bit smarter
         if (Gdx.graphics.getFrameId() % 2 == 0) {
-            Runnable loadTask = load.poll();
+            Runnable loadTask = tasks.poll();
             loadTask.run();
             return true;
         } else {
@@ -54,10 +54,14 @@ public class ScreenLoader {
     }
 
     public boolean isDone() {
-        return load.isEmpty();
+        return tasks.isEmpty();
     }
 
     public void add(Runnable task) {
-        load.add(task);
+        tasks.add(task);
+    }
+
+    public int getTaskSize() {
+        return tasks.size();
     }
 }

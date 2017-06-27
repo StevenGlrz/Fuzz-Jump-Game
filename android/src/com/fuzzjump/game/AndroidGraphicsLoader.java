@@ -11,37 +11,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.caverock.androidsvg.SVG;
+import com.caverock.androidsvg.SVGParseException;
 import com.fuzzjump.libgdxscreens.VectorGraphicsLoader;
 
 import java.io.ByteArrayOutputStream;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 public class AndroidGraphicsLoader extends VectorGraphicsLoader {
 
-    public AndroidGraphicsLoader(ExecutorService workerService, String cacheLocation) {
-        super(workerService, cacheLocation);
+    public AndroidGraphicsLoader(String cacheLocation) {
+        super(cacheLocation);
     }
 
     public TextureRegion load(VectorDetail vectorDetail, final String svgMarkup, float targetWidth, float targetHeight, boolean cache) {
-        Future<SVG> future = workerService.submit(new Callable<SVG>() {
-            public SVG call() {
-                SVG svg;
-                try {
-                    svg = SVG.getFromString(svgMarkup);
-                } catch (Exception e) {
-                    return null;
-                }
-                return svg;
-            }
-        });
         SVG svg = null;
         try {
-            svg = future.get();
-        } catch (InterruptedException | ExecutionException e) {
+            svg = SVG.getFromString(svgMarkup);
+        } catch (SVGParseException e) {
             e.printStackTrace();
+            return null;
         }
 
         Vector2 size = calculateSize(targetWidth, targetHeight, svg.getDocumentAspectRatio());
