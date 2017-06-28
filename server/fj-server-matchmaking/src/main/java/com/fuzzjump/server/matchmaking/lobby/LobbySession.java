@@ -67,7 +67,7 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
                 Lobby.MapSlot.Builder bldr = stateBuilder.getMapSlotsBuilder(i);
                 bldr.setVotes(0);
                 for (LobbyPlayer player : players) {
-                    if (player.getMapId() == bldr.getMapId()) {
+                    if (player.getSelectedMap() == bldr.getMapId()) {
                         bldr.setVotes(bldr.getVotes() + 1);
                     }
                 }
@@ -100,8 +100,8 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         int[] maps = new int[Maps.MAP_COUNT];
         for(int i = 0; i < players.size(); i++) {
             LobbyPlayer player = players.get(i);
-            if (player.getMapId() != -1)
-                maps[player.getMapId()]++;
+            if (player.getSelectedMap() != -1)
+                maps[player.getSelectedMap()]++;
         }
         int mapId = -1;
         int votes = 0;

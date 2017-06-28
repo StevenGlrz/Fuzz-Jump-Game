@@ -13,12 +13,9 @@ import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.map.GameMap;
 import com.fuzzjump.game.game.map.GameMapParser;
-import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.GameScreen;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.SnowActor;
-import com.fuzzjump.game.game.screen.game.GameStage;
-import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
@@ -28,7 +25,6 @@ import static com.fuzzjump.game.game.Assets.createDialogStyle;
 
 public class GameUI extends StageUI {
 
-    private final Profile profile;
     private final FuzzContext context;
     private final GameMapParser mapParser;
 
@@ -38,9 +34,8 @@ public class GameUI extends StageUI {
     private SnowActor snowActor;
 
     @Inject
-    public GameUI(Textures textures, Skin skin, Profile profile, FuzzContext context, GameMapParser parser) {
+    public GameUI(Textures textures, Skin skin, FuzzContext context, GameMapParser parser) {
         super(textures, skin);
-        this.profile = profile;
         this.context = context;
         this.mapParser = parser;
     }
@@ -76,18 +71,6 @@ public class GameUI extends StageUI {
             }
         });
         screen.getScreenLoader().add(() -> mapTextures = Textures.atlasFromFolder(Assets.MAP_DIR + GameMap.MAPS[context.getGameMap()] + "/"));
-        screen.getScreenLoader().add(() -> {
-            GameMap map = screen.getMap();
-            World world = new World(screen, context.getGameSeed(), map.getWidth(), map.getHeight());
-            screen.setWorld(world);
-
-            GameStage worldStage = new GameStage(screen.getStage().getViewport(), screen.getStage().getBatch(), screen, world);
-            worldStage.init();
-            worldStage.addGameActors(world.getPhysicsActors());
-            screen.setWorldStage(worldStage);
-        });
-
-        screen.getScreenLoader().add(() -> screen.addPlayer(profile, screen.getWorld().getWidth() / 2));
     }
 
 

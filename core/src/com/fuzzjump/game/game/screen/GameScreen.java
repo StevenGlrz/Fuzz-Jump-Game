@@ -111,6 +111,15 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
                 .addListener(Game.Countdown.class, this::countdown);
 
         gameSession.connect();
+
+        // We can do this here since GameSessionWatcher#onConnect is called on the next frame (the earliest, which is unlikely)
+        world = new World(this, context.getGameSeed(), map.getWidth(), map.getHeight());
+
+        worldStage = new GameStage(getStage().getViewport(), getStage().getBatch(), this, world);
+        worldStage.init();
+        worldStage.addGameActors(world.getPhysicsActors());
+
+        addPlayer(me, world.getWidth() / 2);
     }
 
 
@@ -303,14 +312,6 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
 
     public Random getRandom() {
         return random;
-    }
-
-    public void setWorld(World world) {
-        this.world = world;
-    }
-
-    public void setWorldStage(GameStage worldStage) {
-        this.worldStage = worldStage;
     }
 
     public World getWorld() {

@@ -37,22 +37,25 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
         addValidator(new MatchmakingValidator(this));
         this.gameServerTransferer = new GameServerTransferer(this);
-        getPacketProcessor().addListener(Lobby.Loaded.class, this::lobbyLoaded);
-        getPacketProcessor().addListener(Lobby.ReadySet.class, this::readySet);
-        getPacketProcessor().addListener(Lobby.MapSlotSet.class, this::mapSlotSet);
+
+        getPacketProcessor().addListener(Lobby.Loaded.class, this::lobbyLoaded)
+                .addListener(Lobby.ReadySet.class, this::readySet)
+                .addListener(Lobby.MapSlotSet.class, this::mapSlotSet);
     }
 
     private void readySet(LobbyPlayer player, Lobby.ReadySet message) {
-        if (!checkSession(player))
+        if (!checkSession(player)) {
             return;
+        }
         player.setReady(message.getReady());
         player.getSession().setUpdate(true);
     }
 
     private void mapSlotSet(LobbyPlayer player, Lobby.MapSlotSet message) {
-        if (!checkSession(player))
+        if (!checkSession(player)) {
             return;
-        player.setMapId(message.getMapId());
+        }
+        player.setSelectedMap(message.getMapId());
         player.getSession().setUpdate(true);
     }
 
@@ -100,7 +103,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
                 }
             }
 
-            for(int i = 0; i < sessionsToRemove.size(); i++) {
+            for (int i = 0; i < sessionsToRemove.size(); i++) {
                 LobbySession sessionToRemove = sessionsToRemove.get(i);
                 openSessions.remove(sessionToRemove);
                 sessions.remove(sessionToRemove.id);
@@ -174,7 +177,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
         LobbySession session = (LobbySession) player.getSession();
         session.removePlayer(player);
         if (session.getRemainingTime() > 0 && !player.getSession().filled() && !openSessions.contains(player.getSession())) {
-            openSessions.offer((LobbySession)player.getSession());
+            openSessions.offer((LobbySession) player.getSession());
         }
     }
 
