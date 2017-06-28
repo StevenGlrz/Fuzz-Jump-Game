@@ -191,8 +191,9 @@ public class Fuzzle extends Actor {
     }
 
     public void setAppearance(int index, Unlockable unlockable) {
-        if (appearance[index] == unlockable) {
-            return; // No need to redraw and recalculate when fuzzle is loaded
+        Unlockable fuzzUnlockable = appearance[index];
+        if (fuzzUnlockable == unlockable && fuzzUnlockable.getColor() == unlockable.getColor()) {
+            return; // No need to redraw and recalculate when fuzzle component is already drawn
         }
         appearance[index] = unlockable;
         if (ui != null && unlockable != null) {

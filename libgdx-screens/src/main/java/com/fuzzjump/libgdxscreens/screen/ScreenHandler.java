@@ -1,6 +1,5 @@
 package com.fuzzjump.libgdxscreens.screen;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -39,19 +38,6 @@ public class ScreenHandler {
     public void addScreen(Class<? extends StageScreen> type, int cacheDistance) {
         ScreenSession info = new ScreenSession(type, cacheDistance, screens.size());
         screens.put(type.getName(), info);
-    }
-
-    public <T extends StageScreen> void showScreenOnThread(final Class<T> clazz) {
-        Gdx.app.postRunnable(new Runnable() {
-            @Override
-            public void run() {
-                showScreen(clazz);
-            }
-        });
-    }
-
-    public <T extends StageScreen> void loadScreen(Class<T> clazz) {
-
     }
 
     public <T extends StageScreen> T showScreen(Class<T> clazz) {
@@ -192,8 +178,8 @@ public class ScreenHandler {
 
     private class ScreenSession {
 
-        public final Class<? extends StageScreen> type;
-        public final int cacheDistance;
+        private final Class<? extends StageScreen> type;
+        private final int cacheDistance;
         private final int index;
 
         public ScreenSession(Class<? extends StageScreen> type, int cacheDistance, int index) {

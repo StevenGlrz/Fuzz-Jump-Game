@@ -48,7 +48,7 @@ public class Profile {
             // id = 0 means there is no unlockable set for this equip slot
             appearance.setEquip(slot, id == 0 ? -1 : id);
         }
-        appearance.setUnlockables(profile.getUnlockables());
+        appearance.createUnlockables(profile.getUnlockables());
     }
 
     public void loadFriends(ApiFriend[] mFriends) {
@@ -61,8 +61,8 @@ public class Profile {
     // Not elegant, but sigh
     public ApiUser save() {
         Equip[] equips = new Equip[Appearance.COUNT];
-        for (int i = 0; i < Appearance.COUNT; i++) {
-            equips[i] = new Equip(i, appearance.getEquipId(i));
+        for (int slot = 0; slot < Appearance.COUNT; slot++) {
+            equips[slot] = new Equip(slot, appearance.getEquipId(slot));
         }
 
         // Don't ask

@@ -13,7 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.api.friends.IFriendService;
+import com.fuzzjump.api.model.unlockable.Unlockable;
+import com.fuzzjump.api.model.user.Equip;
+import com.fuzzjump.api.profile.IProfileService;
+import com.fuzzjump.api.profile.model.SaveProfileRequest;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.player.Appearance;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
@@ -55,6 +60,7 @@ public class MenuUI extends StageUI {
     private final UnlockableRepository definitions;
     private final UnlockableColorizer colorizer;
     private final IFriendService friendService;
+    private final IProfileService profileService;
     private final GraphicsScheduler scheduler;
     private final FuzzPersistence persistence;
 
@@ -65,10 +71,11 @@ public class MenuUI extends StageUI {
     private Fuzzle fuzzle;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, IFriendService friendService, Profile profile,
-                  UnlockableRepository definitions, UnlockableColorizer colorizer,
+    public MenuUI(Textures textures, Skin skin, IProfileService profileService, IFriendService friendService,
+                  Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer,
                   GraphicsScheduler scheduler, FuzzPersistence persistence) {
         super(textures, skin);
+        this.profileService = profileService;
         this.friendService = friendService;
         this.profile = profile;
         this.definitions = definitions;
@@ -153,8 +160,7 @@ public class MenuUI extends StageUI {
 
             Table pictureTable = new Table();
 
-            fuzzle = new Fuzzle(this, colorizer, profile);
-            fuzzle.load(loader);
+            fuzzle = new Fuzzle(this, colorizer, profile).load(loader);
 
             TextButton profileButton = new TextButton("Customize", createSmallTBStyle(this));
             pictureTable.add(fuzzle).size(Value.percentWidth(0.75f, pictureTable)).expand().row();
@@ -236,17 +242,33 @@ public class MenuUI extends StageUI {
     }
 
     public void showMain() {
-        ScreenLoader loader = getStageScreen().getLoader();
-        uiSwitcher.setDisplayedChild(0);
 
-        int previousSize = loader.getTaskSize();
-        fuzzle.load(loader);
+        Appearance appearance = profile.getAppearance();
+        if (appearance.isTracking()) {
+            fuzzle.load(getStageScreen().getLoader());
 
-        // Only save when there have been changes made.
-        // This logic ensures that since new Fuzzle parts do not load unless new changes were made
-        if (previousSize != loader.getTaskSize()) {
-            persistence.saveProfile();
+            Equip[] equipChanges = appearance.getEquipChanges();
+            Unlockable[] unlockableChanges = appearance.getUnlockableChanges();
+
+            if (equipChanges != null || unlockableChanges != null) {
+                displayMessage("Saving profile", true);
+                profileService
+                        .requestProfileSave(new SaveProfileRequest(equipChanges, unlockableChanges))
+                        .observeOn(scheduler)
+                        .subscribe(r -> {
+                            if (r.isSuccess()) {
+                                profile.loadProfile(r.getBody());
+                                persistence.saveProfile();
+                                closeMessage();
+                            }
+                        }, e -> {
+                            e.printStackTrace();
+                            closeMessage();
+                        });
+            }
+            appearance.stopTracking();
         }
+        uiSwitcher.setDisplayedChild(0);
     }
 
     Profile getProfile() {

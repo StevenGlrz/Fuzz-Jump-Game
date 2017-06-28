@@ -28,6 +28,7 @@ import com.fuzzjump.game.game.player.FriendProfile;
 import com.fuzzjump.game.game.player.FriendProfile.FriendStatus;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
+import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.game.util.Helper;
@@ -126,16 +127,7 @@ public class FriendsUI extends StageUI {
 
     private void initAddDialog() {
         addFriendCloseButton = new ImageButton(createCloseBtnStyle(this));
-        Dialog addDialog = new Dialog("", createInputDialogStyle(this)) {
-            @Override
-            public float getPrefWidth() {
-                return Gdx.graphics.getWidth() * 0.9f;
-            }
-
-            @Override
-            public float getPrefHeight() {
-                return Gdx.graphics.getWidth() * 0.3548957887917666f;
-            }
+        Dialog addDialog = new FuzzDialog("", createInputDialogStyle(this), 0.9f, 0.3548957887917666f) {
             @Override
             public void result(Object obj) {
                 cancel();
@@ -259,9 +251,7 @@ public class FriendsUI extends StageUI {
         TextButton addButton = new TextButton("Add friend", createDefaultTBStyle(parent));
 
         Helper.addClickAction(backButton, (e, x, y) -> backPressed());
-        Helper.addClickAction(addButton, (e, x, y) -> {
-            actor(Dialog.class, Assets.MenuUI.FRIEND_ADD_DIALOG).show(getStage());
-        });
+        Helper.addClickAction(addButton, (e, x, y) -> actor(Dialog.class, Assets.MenuUI.FRIEND_ADD_DIALOG).show(getStage()));
 
         Value outerPad = Value.percentWidth(.025f, buttonTable);
         Value upperPad = Value.percentHeight(.025f, buttonTable);
@@ -338,7 +328,6 @@ public class FriendsUI extends StageUI {
         errorAddLabel.setVisible(false);
         String[] searchRequest = searchField.getText().split("#");
         if (searchRequest.length != 2 || !Helper.isNumeric(searchRequest[1])) {
-            // TODO This is broken
             errorAddLabel.setText("Please use the format username#id");
             errorAddLabel.setVisible(true);
             return;
@@ -469,8 +458,7 @@ public class FriendsUI extends StageUI {
         }
 
         private void build() {
-            Fuzzle fuzzle = new Fuzzle(parent, parent.getUnlockableColorizer(), parent.getProfile());
-            fuzzle.load(parent.getStageScreen().getLoader());
+            Fuzzle fuzzle = new Fuzzle(parent, parent.getUnlockableColorizer(), profile).load(parent.getStageScreen().getLoader());
 
             Table fuzzleTable = new Table();
             nameLabel = new Label(new StringBuilder().append(profile.getDisplayName()).append("#").append(profile.getDisplayNameId()), getGameSkin(), "profile");
