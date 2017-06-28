@@ -230,7 +230,7 @@ public class WaitingUI extends StageUI {
             statusImage = new Image(xDrawable);
             addActor(statusImage);
 
-            this.fuzzle = new Fuzzle(WaitingUI.this, colorizer, player).load(stageScreen.getLoader());
+            this.fuzzle = new Fuzzle(WaitingUI.this, colorizer, player).load(stageScreen.getScreenLoader());
             ImageButton addButton = new ImageButton(createPlusImageBtnStyle(WaitingUI.this));
             addButton.addListener(new ClickListener() {
 
@@ -261,7 +261,7 @@ public class WaitingUI extends StageUI {
             switcher.setDisplayedChild(1);
             statusImage.setVisible(true);
             fuzzle.setProfile(newPlayer);
-            fuzzle.load(stageScreen.getLoader());
+            fuzzle.load(stageScreen.getScreenLoader());
 
             profileChanged();
         }
@@ -288,8 +288,8 @@ public class WaitingUI extends StageUI {
 
         private GlyphLayout votesLayout = new GlyphLayout();
 
-        public boolean selected;
-        public int votes = 0;
+        private boolean selected;
+        private int votes = 0;
 
         MapSlot() {
             super(WaitingUI.this.textures.getTextureRegionDrawable("ui-question-mark"), Scaling.fillX);

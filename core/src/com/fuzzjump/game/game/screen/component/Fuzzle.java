@@ -68,7 +68,11 @@ public class Fuzzle extends Actor {
                 final int index = i;
                 final Unlockable equippedUnlockable = profile.getAppearance().getEquip(index);
                 if (appearance[i] != equippedUnlockable) { // Don't update if nothing has changed
-                    loader.add(() -> setAppearance(index, profile.getAppearance().getEquip(index)));
+                    if (i == Appearance.FUZZLE) {
+                        setAppearance(index, equippedUnlockable); // fuzzle's are cached, no need to defer loading
+                    } else {
+                        loader.add(() -> setAppearance(index, equippedUnlockable));
+                    }
                 }
             }
         }

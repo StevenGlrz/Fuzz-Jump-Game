@@ -86,7 +86,7 @@ public class MenuUI extends StageUI {
 
     @Override
     public void init() {
-        ScreenLoader loader = getStageScreen().getLoader();
+        ScreenLoader loader = getStageScreen().getScreenLoader();
 
         // Load loading dialog
         loader.add(() -> {
@@ -242,31 +242,28 @@ public class MenuUI extends StageUI {
     }
 
     public void showMain() {
-
         Appearance appearance = profile.getAppearance();
         if (appearance.isTracking()) {
-            fuzzle.load(getStageScreen().getLoader());
-
             Equip[] equipChanges = appearance.getEquipChanges();
             Unlockable[] unlockableChanges = appearance.getUnlockableChanges();
 
+            appearance.stopTracking();
             if (equipChanges != null || unlockableChanges != null) {
                 displayMessage("Saving profile", true);
+                fuzzle.load(getStageScreen().getScreenLoader());
                 profileService
                         .requestProfileSave(new SaveProfileRequest(equipChanges, unlockableChanges))
                         .observeOn(scheduler)
-                        .subscribe(r -> {
-                            if (r.isSuccess()) {
-                                profile.loadProfile(r.getBody());
-                                persistence.saveProfile();
-                                closeMessage();
-                            }
-                        }, e -> {
-                            e.printStackTrace();
+                        .doFinally(() -> {
                             closeMessage();
+                            persistence.saveProfile();
+                        })
+                        .subscribe(response -> {
+                            if (response.isSuccess()) {
+                                profile.loadProfile(response.getBody());
+                            }
                         });
             }
-            appearance.stopTracking();
         }
         uiSwitcher.setDisplayedChild(0);
     }

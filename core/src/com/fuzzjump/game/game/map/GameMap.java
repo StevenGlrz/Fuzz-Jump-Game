@@ -19,8 +19,8 @@ public class GameMap {
 
 	public static final int PLATFORM_GAP = 475; // TODO Maybe this should change between maps
 
-	private List<GameMapPlatform> platforms = new LinkedList<GameMapPlatform>();
-	private List<GameMapBackground> background = new LinkedList<GameMapBackground>();
+	private List<GameMapPlatform> platforms = new LinkedList<>();
+	private List<GameMapBackground> background = new LinkedList<>();
 
 	private boolean clouds, snow;
 

@@ -10,13 +10,12 @@ import java.security.SecureRandom;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
 
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 import io.reactivex.schedulers.Schedulers;
 
-public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJumpServerInfo> extends Server<E> {
+public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJumpServerConfig> extends Server<E> {
 
     private static final SecureRandom SECURE_RANDOM = new SecureRandom();
     private static final long RECONNECT_TIMEOUT = 5000;

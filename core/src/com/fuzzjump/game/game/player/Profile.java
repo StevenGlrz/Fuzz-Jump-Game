@@ -15,6 +15,7 @@ import java.util.List;
  */
 public class Profile {
 
+    public static final int MAX_RANK = 100;
     private String userId;
     private String displayName;
     private int displayNameId;

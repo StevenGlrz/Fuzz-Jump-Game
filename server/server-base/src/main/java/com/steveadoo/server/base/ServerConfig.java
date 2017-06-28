@@ -1,6 +1,6 @@
 package com.steveadoo.server.base;
 
-public class ServerInfo {
+public class ServerConfig {
 
     public final int port;
     public final boolean validate;
@@ -10,12 +10,13 @@ public class ServerInfo {
      * Constructs a ServerInfo that will tell the server listen on the provided port
      * @param port The port to listen on
      */
-    public ServerInfo(int port) {
+    public ServerConfig(int port) {
         this.port = port;
         this.validate = false;
         this.validationTimeout = 0;
     }
-    public ServerInfo(int port, int validationTimeout) {
+
+    public ServerConfig(int port, int validationTimeout) {
         this.port = port;
         this.validate = true;
         this.validationTimeout = validationTimeout;

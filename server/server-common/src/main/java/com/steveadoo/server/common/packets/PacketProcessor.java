@@ -59,8 +59,9 @@ public class PacketProcessor {
         }
     }
 
-    public <TSender, TMessage> void addListener(Class<TMessage> mClass, PacketListener<TSender, TMessage> listener) {
+    public <TSender, TMessage> PacketProcessor addListener(Class<TMessage> mClass, PacketListener<TSender, TMessage> listener) {
         listeners.add(new ListenerWrapper(mClass, listener));
+        return this;
     }
 
     /**

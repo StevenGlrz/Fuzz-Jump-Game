@@ -4,12 +4,16 @@ import com.steveadoo.server.base.net.GamePacketDecoder;
 import com.steveadoo.server.base.net.GamePacketEncoder;
 import com.steveadoo.server.base.net.GameServerHandler;
 
+import java.net.InetSocketAddress;
+
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-
-import java.net.*;
 
 public class ServerBootstrapper {
 
@@ -18,7 +22,7 @@ public class ServerBootstrapper {
     }
 
     public ServerBootstrap bootstrap(final Server server) {
-        ServerInfo serverInfo = server.getServerInfo();
+        ServerConfig serverConfig = server.getServerInfo();
         ServerBootstrap bootstrap = new ServerBootstrap();
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
@@ -38,8 +42,8 @@ public class ServerBootstrapper {
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.SO_KEEPALIVE, true);
 
-        System.out.println("Listening on port " + serverInfo.port);
-        bootstrap.bind(new InetSocketAddress(serverInfo.port));
+        System.out.println("Listening on port " + serverConfig.port);
+        bootstrap.bind(new InetSocketAddress(serverConfig.port));
         return bootstrap;
     }
 

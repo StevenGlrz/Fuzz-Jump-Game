@@ -1,17 +1,15 @@
 package com.fuzzjump.server.base;
 
-import com.steveadoo.server.base.ServerInfo;
+import com.steveadoo.server.base.ServerConfig;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URL;
 
-public class FuzzJumpServerInfo extends ServerInfo {
+public class FuzzJumpServerConfig extends ServerConfig {
 
     private static final int VALIDATE_TIMEOUT = 5000;
 
@@ -26,12 +24,12 @@ public class FuzzJumpServerInfo extends ServerInfo {
     //api password
     public final String apiPassword;
 
-    public FuzzJumpServerInfo(int port,
-                              int privatePort,
-                              String ip,
-                              String apiAddress,
-                              String apiUsername,
-                              String apiPassword) {
+    public FuzzJumpServerConfig(int port,
+                                int privatePort,
+                                String ip,
+                                String apiAddress,
+                                String apiUsername,
+                                String apiPassword) {
         super(port, VALIDATE_TIMEOUT);
         this.privatePort = privatePort;
         this.ip = ip;
@@ -40,11 +38,11 @@ public class FuzzJumpServerInfo extends ServerInfo {
         this.apiPassword = apiPassword;
     }
 
-    public FuzzJumpServerInfo(FuzzJumpServerInfo info) {
-        this(info.port, info.privatePort, info.ip, info.apiAddress, info.apiUsername, info.apiPassword);
+    public FuzzJumpServerConfig(FuzzJumpServerConfig config) {
+        this(config.port, config.privatePort, config.ip, config.apiAddress, config.apiUsername, config.apiPassword);
     }
 
-    public static FuzzJumpServerInfo loadBaseInfo(String[] args) throws IOException {
+    public static FuzzJumpServerConfig loadConfig(String[] args) throws IOException {
         String portStr = System.getenv("FUZZ_PORT");
         String privatePortStr = System.getenv("FUZZ_PRIVATE_PORT");
         String apiAddress = System.getenv("FUZZ_API");
@@ -56,7 +54,7 @@ public class FuzzJumpServerInfo extends ServerInfo {
         }
         boolean onAws = Boolean.parseBoolean(onAwsStr);
         String directIp = getDirectIp(onAws);
-        return new FuzzJumpServerInfo(
+        return new FuzzJumpServerConfig(
                 Integer.parseInt(portStr),
                 Integer.parseInt(privatePortStr),
                 directIp,

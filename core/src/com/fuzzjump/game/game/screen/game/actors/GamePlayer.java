@@ -1,6 +1,5 @@
 package com.fuzzjump.game.game.screen.game.actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -34,6 +33,7 @@ public class GamePlayer extends PhysicActor {
         this.fuzzle = fuzzle;
         this.font = font;
         this.velocity.x = 0;
+
         float height = width / (fuzzle.getFuzzleDrawable().getRegion().getRegionWidth() / fuzzle.getFuzzleDrawable().getRegion().getRegionHeight());
         hitbox.setWidth(width);
         hitbox.setHeight(height);

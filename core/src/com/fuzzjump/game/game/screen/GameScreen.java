@@ -2,16 +2,15 @@ package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.IntMap;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.map.GameMap;
-import com.fuzzjump.game.game.map.GameMapParser;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
@@ -23,29 +22,29 @@ import com.fuzzjump.game.game.screen.ui.GameUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
-import com.fuzzjump.libgdxscreens.Textures;
+import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.game.Game;
 import com.fuzzjump.server.common.messages.join.Join;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
 
-public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher {
+public class GameScreen extends StageScreen<GameUI> implements GameSessionWatcher {
 
-    private static final int LOADING_MAP = 0;
-    private static final int WAITING = 1;
-    private static final int LOADING_PLAYERS = 2;
-    private static final int GAME_STARTED = 3;
+    public enum GameState {
+        NOT_LOADED,
+        CONNECTING,
+        AUTHORIZING,
+        GAME_INITIATING,
+        GAME_STARTED;
+    }
 
     private final Object updateLock = new Object();
 
     private final FuzzContext context;
-    private final GameMapParser mapParser;
     private final UnlockableColorizer colorizer;
     private final GraphicsScheduler scheduler;
 
@@ -54,32 +53,29 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
     private GameStage worldStage;
     private World world;
 
-    private TextureAtlas mapTextures;
     private GameMap map;
     private Profile me;
-    private Random random;
+    private final Random random;
 
     private GamePlatform[] winnerPlatforms = new GamePlatform[4];
-    private Map<Integer, GamePlayer> players = new HashMap<>(4);
-
-    private String mapName;
+    private IntMap<GamePlayer> players = new IntMap<>(4, 1.0f);
 
     private Dialog progressDialog;
     private Image image;
     private Label status;
     private String gameId;
 
-    private int state = 0;
+    private GameState state = GameState.NOT_LOADED;
     private int updateCounter;
 
     @Inject
-    public GameScreen(GameUI ui, Profile profile, FuzzContext context, GameMapParser mapParser, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
+    public GameScreen(GameUI ui, Profile profile, FuzzContext context, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
         super(ui);
         this.me = profile;
         this.context = context;
-        this.mapParser = mapParser;
         this.colorizer = colorizer;
         this.scheduler = scheduler;
+        this.random = new Random(context.getGameSeed().hashCode());
     }
 
     @Override
@@ -96,53 +92,25 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
 
     @Override
     public void onShow() {
-        gameSession = new GameSession(context.getIp(), context.getPort(), this);
-
-        //send join -> send join game -> get back game ready -> send loaded -> wait for countdown.
-
-        gameSession.getPacketProcessor().addListener(Join.JoinResponsePacket.class, this::joinResponse);
-        gameSession.getPacketProcessor().addListener(Game.JoinGameResponse.class, this::joinGameResponse);
-        gameSession.getPacketProcessor().addListener(Game.GameReady.class, this::gameReady);
-        gameSession.getPacketProcessor().addListener(Game.Countdown.class, this::countdown);
-
-        gameSession.connect();
-
-        status.setText("Loading map");
-
+        System.out.println("Show");
         if (context.getIp() == null) {
             screenHandler.showScreen(MenuScreen.class);
             return;
         }
-
-        state = LOADING_MAP;
-
-        world = null;
-        worldStage = null;
-
         gameId = context.getGameId();
-        random = new Random(context.getGameSeed().hashCode());
-        mapName = GameMap.MAPS[context.getGameMap()];
+        state = GameState.CONNECTING;
+        status.setText("Connecting");
 
-        getLoader().add(() -> {
-            map = mapParser.parse(mapName);
-            snowActor.setEnabled(map.snowing());
-        });
-        getLoader().add(() -> mapTextures = Textures.atlasFromFolder(Assets.MAP_DIR + mapName + "/"));
+        gameSession = new GameSession(context.getIp(), context.getPort(), this);
 
-        getLoader().add(() -> {
-            world = new World(this, context.getGameSeed(), map.getWidth(), map.getHeight());
-            worldStage = new GameStage(getStage().getViewport(), getStage().getBatch(), this, world);
-            worldStage.init();
-            worldStage.addGameActors(world.getPhysicsActors());
-            addPlayer(me, world.getWidth() / 2);
-            getLoader().add(() -> {
-                synchronized (gameSession) {
-                    state = WAITING;
-                }
-            });
-        });
+        //send join -> send join game -> get back game ready -> send loaded -> wait for countdown.
+        gameSession.getPacketProcessor()
+                .addListener(Join.JoinResponsePacket.class, this::joinResponse)
+                .addListener(Game.JoinGameResponse.class, this::joinGameResponse)
+                .addListener(Game.GameReady.class, this::gameReady)
+                .addListener(Game.Countdown.class, this::countdown);
 
-
+        gameSession.connect();
     }
 
 
@@ -157,6 +125,7 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
             this.gameSession.disconnected();
             screenHandler.showScreen(MenuScreen.class);
         }
+        state = GameState.GAME_INITIATING;
         System.out.println("Join game response");
         status.setText("Waiting for players");
     }
@@ -165,7 +134,7 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
         status.setText("Starting: " + message.getTime());
         if (message.getTime() <= 0) {
             progressDialog.hide();
-            state = GAME_STARTED;
+            state = GameState.GAME_STARTED;
         }
     }
 
@@ -178,19 +147,6 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
             updateCounter++;
         }
         final int thisUpdate = updateCounter;
-        synchronized (gameSession) {
-            //wait for the map to load before handling players
-            //what if we receive another packet while waiting for this??
-            if (state == LOADING_MAP) {
-                getLoader().add(() -> {
-                    if (updateCounter != thisUpdate) {
-                        return;
-                    }
-                    gameReady(session, message);
-                });
-                return;
-            }
-        }
         System.out.println("Doing it.");
         for (int i = 0; i < message.getPlayersCount(); i++) {
             Game.Player player = message.getPlayers(i);
@@ -233,8 +189,8 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
 
     public void playerFinished(GamePlayer player) {
         int place = 0;
-        for (int i = 0; i < getPlayers().size(); i++) {
-            if (getPlayers().get(i).isFinished()) {
+        for (int i = 0; i < players.size; i++) {
+            if (players.get(i).isFinished()) {
                 place++;
             }
         }
@@ -249,8 +205,7 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
 
     @Override
     public void render(float delta) {
-
-        getLoader().process();
+        getScreenLoader().process();
 
         final Stage stage = getStage();
 
@@ -260,7 +215,7 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
             stage.getBatch().enableBlending();
         }
 
-        if (state == GAME_STARTED) {
+        if (state == GameState.GAME_STARTED) {
             GamePlayer player = getPlayer();
 
             if (player.getStun() <= 0 && !player.isFinished()) {
@@ -273,8 +228,9 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
             world.act(worldStage);
         }
 
-        if (worldStage != null)
+        if (worldStage != null) {
             worldStage.draw();
+        }
 
         stage.act(delta);
         stage.draw();
@@ -282,8 +238,8 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
         //if (gameStarted)
         //    gameSession.sendPosition(player.position.x, player.position.y, player.velocity.x, player.velocity.y);
 
-        if (worldStage != null && getPlayer() != null && getMap().snowing()) {
-            snowActor.draw(getStage().getBatch(), 1, getPlayer().velocity.y);
+        if (worldStage != null && getMap().snowing()) {
+            ui().getSnowActor().setVelocity(getPlayer().velocity.y);
         }
 
         if (Assets.DEBUG) {
@@ -291,22 +247,18 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
             Assets.DEBUG_FONT.draw(stage.getBatch(), "FPS: " + Gdx.graphics.getFramesPerSecond(), 10, 50);
             stage.getBatch().end();
         }
-
     }
 
     public void addPlayer(Profile profile, float x) {
-        Fuzzle playerFuzzle = new Fuzzle(ui(), colorizer, profile, false);
-        playerFuzzle.load(getLoader());
-        getLoader().add(() -> {
-            GamePlayer plr = new GamePlayer(ui(), world, playerFuzzle, profile, x, 96, 128, ui().getGameSkin().getFont("ingame-font"));
-            players.put(profile.getPlayerIndex(), plr);
-            worldStage.addGameActor(plr);
-            world.getPhysicsActors().add(plr);
-        });
+        Fuzzle playerFuzzle = new Fuzzle(ui(), colorizer, profile, false).load(getScreenLoader());
+        GamePlayer plr = new GamePlayer(ui(), world, playerFuzzle, profile, x, 96, 128, ui().getGameSkin().getFont("ingame-font"));
+        players.put(profile.getPlayerIndex(), plr);
+        worldStage.addGameActor(plr);
+        world.getPhysicsActors().add(plr);
     }
 
     public void removePlayers() {
-        for (int i = 0, n = players.size(); i < n; i++) {
+        for (int i = 0, n = players.size; i < n; i++) {
             GamePlayer player = players.get(i);
             worldStage.removeGameActor(player);
             world.getPhysicsActors().remove(player);
@@ -321,6 +273,7 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
 
     @Override
     public void onConnect() {
+        state = GameState.AUTHORIZING;
         authorize();
     }
 
@@ -335,14 +288,13 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
 
     @Override
     public void onDisconnect() {
-        if (mapTextures != null) {
-            mapTextures.dispose();
-        }
+        ui().disposeMaps();
+
         screenHandler.showScreen(MenuScreen.class);
     }
 
-    public TextureAtlas getMapTextures() {
-        return mapTextures;
+    public void setMap(GameMap map) {
+        this.map = map;
     }
 
     public GameMap getMap() {
@@ -353,11 +305,19 @@ public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher
         return random;
     }
 
+    public void setWorld(World world) {
+        this.world = world;
+    }
+
+    public void setWorldStage(GameStage worldStage) {
+        this.worldStage = worldStage;
+    }
+
     public World getWorld() {
         return world;
     }
 
-    public Map<Integer, GamePlayer> getPlayers() {
+    public IntMap<GamePlayer> getPlayers() {
         return players;
     }
 

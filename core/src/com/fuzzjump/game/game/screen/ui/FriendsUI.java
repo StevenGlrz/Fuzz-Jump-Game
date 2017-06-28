@@ -458,7 +458,7 @@ public class FriendsUI extends StageUI {
         }
 
         private void build() {
-            Fuzzle fuzzle = new Fuzzle(parent, parent.getUnlockableColorizer(), profile).load(parent.getStageScreen().getLoader());
+            Fuzzle fuzzle = new Fuzzle(parent, parent.getUnlockableColorizer(), profile).load(parent.getStageScreen().getScreenLoader());
 
             Table fuzzleTable = new Table();
             nameLabel = new Label(new StringBuilder().append(profile.getDisplayName()).append("#").append(profile.getDisplayNameId()), getGameSkin(), "profile");

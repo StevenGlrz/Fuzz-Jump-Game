@@ -3,7 +3,6 @@ package com.fuzzjump.game.game.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -28,7 +27,7 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionWatcher {
+public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
 
     public static final int MAX_PLAYERS = 4;
 
@@ -85,6 +84,44 @@ public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionW
         mapTable = ui().actor(Assets.WaitingUI.MAP_TABLE);
     }
 
+    @Override
+    public void onShow() {
+        mapTable.setVisible(false);
+        connectingButton.setText("Cancel");
+        connectingMessage.setText("Connecting");
+        connectingProgress.setVisible(true);
+        showDialog(connectingDialog, getStage());
+        gameSession = new GameSession(params.matchmakingIp, params.matchmakingPort, this);
+
+        sessionService.getSessionToken("MATCHMAKING")
+                .observeOn(scheduler)
+                .subscribe(response -> {
+                    if (gameSession == null) {
+                        return;
+                    }
+                    matchmakingKey = response.getBody();
+                    gameSession.connect();
+                    initPacketListeners();
+                });
+
+    }
+
+    @Override
+    public void clicked(int id, Actor actor) {
+        switch (id) {
+            case Assets.WaitingUI.CONNECTING_BUTTON:
+            case Assets.WaitingUI.CANCEL_BUTTON:
+                cancel();
+                break;
+            case Assets.WaitingUI.READY_BUTTON:
+                gameSession.send(readySetBuilder.setReady(!profile.isReady()).build());
+                break;
+            case Assets.WaitingUI.MAP_BUTTON:
+                gameSession.send(mapSlotSetBuilder.setMapId((int) actor.getUserObject()).build());
+                break;
+        }
+    }
+
     private void initPacketListeners() {
         PacketProcessor packetProcessor = gameSession.getPacketProcessor();
         packetProcessor.addListener(Join.JoinResponsePacket.class, this::joinResponse);
@@ -110,8 +147,7 @@ public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionW
     private void joinResponse(GameSession session, Join.JoinResponsePacket packet) {
         connectingMessage.setText("Finding game");
         this.joinResponse = packet;
-        Lobby.Loaded loadedPacket = Lobby.Loaded.newBuilder()
-                .build();
+        Lobby.Loaded loadedPacket = Lobby.Loaded.newBuilder().build();
         gameSession.send(loadedPacket);
     }
 
@@ -124,7 +160,6 @@ public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionW
     }
 
     private void lobbyUpdate(GameSession session, Lobby.LobbyState message) {
-        System.out.println("Lobby updated");
         if (message.getPlayersCount() > 0) {
             players.clear();
             for (int i = 0; i < message.getPlayersCount(); i++) {
@@ -177,67 +212,27 @@ public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionW
         }
     }
 
-    @Override
-    public void onShow() {
-        mapTable.setVisible(false);
-        connectingButton.setText("Cancel");
-        connectingMessage.setText("Connecting");
-        connectingProgress.setVisible(true);
-        showDialog(connectingDialog, getStage());
-        gameSession = new GameSession(params.matchmakingIp, params.matchmakingPort, this);
-
-        sessionService.getSessionToken("MATCHMAKING")
-                .observeOn(scheduler)
-                .subscribe(response -> {
-                    synchronized (connectingDialog) {
-                        if (gameSession == null) {
-                            return;
-                        }
-                        WaitingScreen.this.matchmakingKey = response.getBody();
-                        gameSession.connect();
-                        initPacketListeners();
-                    }
-                });
-
-    }
-
-    @Override
-    public void clicked(int id, Actor actor) {
-        switch (id) {
-            case Assets.WaitingUI.CONNECTING_BUTTON:
-            case Assets.WaitingUI.CANCEL_BUTTON:
-                cancel();
-                break;
-            case Assets.WaitingUI.READY_BUTTON:
-                gameSession.send(readySetBuilder.setReady(!profile.isReady()).build());
-                break;
-            case Assets.WaitingUI.MAP_BUTTON:
-                gameSession.send(mapSlotSetBuilder.setMapId((int) actor.getUserObject()).build());
-                break;
-        }
-    }
-
     private void cancel() {
-        synchronized (connectingDialog) {
-            connectingButton.setVisible(false);
-            connectingMessage.setText("Leaving");
-            if (mapTable.isVisible()) {
-                connectingDialog.setVisible(true);
-            }
-            //let the dialog show up, then disconnect
-            Gdx.app.postRunnable(() -> {
-                if (gameSession != null) {
-                    gameSession.close(true);
-                }
-                gameSession = null;
-                screenHandler.showScreen(MenuScreen.class);
-            });
+        connectingButton.setVisible(false);
+        connectingMessage.setText("Leaving");
+        if (mapTable.isVisible()) {
+            connectingDialog.setVisible(true);
         }
+        //let the dialog show up, then disconnect
+        Gdx.app.postRunnable(() -> {
+            if (gameSession != null) {
+                gameSession.close(true);
+            }
+            gameSession = null;
+            screenHandler.showScreen(MenuScreen.class);
+        });
     }
 
     @Override
     public void onConnect() {
         connectingMessage.setText("Validating profile");
+
+        System.out.println(matchmakingKey + ", " + profile.getUserId());
         Join.JoinPacket joinPacket = Join.JoinPacket.newBuilder()
                 .setUserId(profile.getUserId())
                 .setSessionKey(matchmakingKey)
@@ -251,15 +246,13 @@ public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionW
         if (gameSession == null) {
             return;
         }
-        synchronized (connectingDialog) {
-            if (!connectingDialog.isVisible()) {
-                connectingDialog.setVisible(true);
-            }
-            connectingMessage.setText("Network error");
-            connectingButton.setText("Leave");
-            connectingButton.setVisible(true);
-            connectingProgress.setVisible(false);
+        if (!connectingDialog.isVisible()) {
+            connectingDialog.setVisible(true);
         }
+        connectingMessage.setText("Network error");
+        connectingButton.setText("Leave");
+        connectingButton.setVisible(true);
+        connectingProgress.setVisible(false);
     }
 
 }

@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.netty.channel.Channel;
 
-public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingServerInfo> {
+public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingServerConfig> {
 
     private static final int MAX_PLAYERS = 4;
     private static final int TICK = 500;
@@ -33,7 +33,7 @@ public class MatchmakingServer extends FuzzJumpServer<LobbyPlayer, MatchmakingSe
 
     private List<LobbySession> sessionsToRemove = new ArrayList<>();
 
-    public MatchmakingServer(MatchmakingServerInfo serverInfo) {
+    public MatchmakingServer(MatchmakingServerConfig serverInfo) {
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
         addValidator(new MatchmakingValidator(this));
         this.gameServerTransferer = new GameServerTransferer(this);

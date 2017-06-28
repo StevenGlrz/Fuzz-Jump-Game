@@ -31,7 +31,7 @@ import javax.inject.Inject;
 /**
  * Created by Steven Galarza on 6/15/2017.
  */
-public class SplashScreen extends SnowScreen<SplashUI> {
+public class SplashScreen extends StageScreen<SplashUI> {
 
     private final Textures textures;
     private final Skin skin;
@@ -57,7 +57,7 @@ public class SplashScreen extends SnowScreen<SplashUI> {
 
     @Override
     public void onReady() {
-        ScreenLoader loader = getLoader();
+        ScreenLoader loader = getScreenLoader();
         Color shadow = new Color(0, 0, 0, .4f);
         SmartFontGenerator smartGen = new SmartFontGenerator();
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(Gdx.files.internal("Grandstander-clean.ttf"));

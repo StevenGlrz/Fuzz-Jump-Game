@@ -22,7 +22,7 @@ import static com.fuzzjump.game.game.Assets.MenuUI.SELECT_BUY_BUTTON;
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
-public class MenuScreen extends SnowScreen<MenuUI> {
+public class MenuScreen extends StageScreen<MenuUI> {
 
     private final Profile profile;
     private final UnlockableService unlockableService;

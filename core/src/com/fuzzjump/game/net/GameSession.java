@@ -8,7 +8,6 @@ import com.steveadoo.server.common.packets.Packet;
 import com.steveadoo.server.common.packets.PacketProcessor;
 
 import java.io.IOException;
-import java.util.List;
 
 public class GameSession implements Client.ConnectionListener {
 
@@ -24,12 +23,11 @@ public class GameSession implements Client.ConnectionListener {
     private boolean connected;
 
     public GameSession(String ip, int port, GameSessionWatcher watcher) {
-        PacketProcessor packetProcessor = new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS);
         this.ip = ip;
         this.port = port;
         this.watcher = watcher;
         this.runnablePool = Pools.get(ReceivedPacketRunnable.class);
-        this.client = new Client(packetProcessor, this, EVENT_TIMEOUT, 256);
+        this.client = new Client(new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS), this, EVENT_TIMEOUT, 256);
     }
 
     public void connect() {
@@ -90,12 +88,6 @@ public class GameSession implements Client.ConnectionListener {
     public void postOnUIThread(Packet packet) {
         ReceivedPacketRunnable runnable = runnablePool.obtain();
         runnable.init(this, getPacketProcessor(), packet);
-        Gdx.app.postRunnable(runnable);
-    }
-
-    public void postOnUIThread(List<Packet> packets) {
-        ReceivedPacketRunnable runnable = runnablePool.obtain();
-        runnable.init(this, getPacketProcessor(), packets);
         Gdx.app.postRunnable(runnable);
     }
 

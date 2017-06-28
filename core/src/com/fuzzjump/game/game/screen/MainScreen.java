@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
-public class MainScreen extends SnowScreen<MainUI> {
+public class MainScreen extends StageScreen<MainUI> {
 
     private final IUserService userService;
     private final Profile profile;

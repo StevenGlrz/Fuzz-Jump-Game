@@ -81,9 +81,9 @@ public class ScreenHandler {
         //update the screen on the next draw
         if (screen != null) {
             if (currentScreenExists) {
-                currentScreen.setLoader(screen.getLoader());
+                currentScreen.setLoader(screen.getScreenLoader());
             }
-            screen.getLoader().onDone(new Runnable() {
+            screen.getScreenLoader().onDone(new Runnable() {
                 @Override
                 public void run() {
                     if (!fFromCache) {

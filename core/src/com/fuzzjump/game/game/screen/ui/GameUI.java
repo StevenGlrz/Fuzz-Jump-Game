@@ -1,6 +1,6 @@
 package com.fuzzjump.game.game.screen.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -10,6 +10,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.FuzzContext;
+import com.fuzzjump.game.game.map.GameMap;
+import com.fuzzjump.game.game.map.GameMapParser;
+import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.screen.GameScreen;
+import com.fuzzjump.game.game.screen.component.FuzzDialog;
+import com.fuzzjump.game.game.screen.component.SnowActor;
+import com.fuzzjump.game.game.screen.game.GameStage;
+import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
@@ -19,39 +28,34 @@ import static com.fuzzjump.game.game.Assets.createDialogStyle;
 
 public class GameUI extends StageUI {
 
+    private final Profile profile;
+    private final FuzzContext context;
+    private final GameMapParser mapParser;
 
     private Table uiComponents;
 
+    private TextureAtlas mapTextures;
+    private SnowActor snowActor;
+
     @Inject
-    public GameUI(Textures textures, Skin skin) {
+    public GameUI(Textures textures, Skin skin, Profile profile, FuzzContext context, GameMapParser parser) {
         super(textures, skin);
+        this.profile = profile;
+        this.context = context;
+        this.mapParser = parser;
     }
 
     @Override
     public void init() {
-
         uiComponents = new Table();
         uiComponents.setFillParent(true);
 
         Label messageLabel = new Label("Loading", getGameSkin(), "default");
-        final Image spinner = new Image(textures.getTextureRegionDrawable("ui-progressspinner"));
+        final Image spinner = new Image(textures.getTextureRegionDrawable(Assets.UI_PROGRESS_SPINNER));
         spinner.setOrigin(Align.center);
         spinner.addAction(Actions.forever(Actions.rotateBy(5f, .01f)));
 
-        final Dialog progressDialog = new Dialog("", createDialogStyle(this)) {
-
-            @Override
-            public float getPrefWidth() {
-                return Gdx.graphics.getWidth() * 0.65f;
-            }
-
-            @Override
-            public float getPrefHeight() {
-                return Gdx.graphics.getWidth() * 0.5081829277777778f;
-            }
-
-
-        };
+        final Dialog progressDialog = new FuzzDialog("", createDialogStyle(this), 0.65f, 0.5081829277777778f);
         progressDialog.setModal(true);
         progressDialog.getContentTable().add(messageLabel).padTop(Value.percentHeight(.1f, progressDialog)).row();
         progressDialog.getContentTable().add(spinner).center().expand().size(Value.percentWidth(.25f, progressDialog));
@@ -60,6 +64,30 @@ public class GameUI extends StageUI {
         register(Assets.GameUI.PROGRESS_LABEL, messageLabel);
         register(Assets.GameUI.PROGRESS_IMAGE, spinner);
 
+
+        final GameScreen screen = (GameScreen) getStageScreen();
+        final String mapName = GameMap.MAPS[context.getGameMap()];
+
+        screen.getScreenLoader().add(() -> {
+            screen.setMap(mapParser.parse(mapName));
+            if (screen.getMap().snowing()) {
+                snowActor = new SnowActor(this);
+                add(snowActor);
+            }
+        });
+        screen.getScreenLoader().add(() -> mapTextures = Textures.atlasFromFolder(Assets.MAP_DIR + GameMap.MAPS[context.getGameMap()] + "/"));
+        screen.getScreenLoader().add(() -> {
+            GameMap map = screen.getMap();
+            World world = new World(screen, context.getGameSeed(), map.getWidth(), map.getHeight());
+            screen.setWorld(world);
+
+            GameStage worldStage = new GameStage(screen.getStage().getViewport(), screen.getStage().getBatch(), screen, world);
+            worldStage.init();
+            worldStage.addGameActors(world.getPhysicsActors());
+            screen.setWorldStage(worldStage);
+        });
+
+        screen.getScreenLoader().add(() -> screen.addPlayer(profile, screen.getWorld().getWidth() / 2));
     }
 
 
@@ -87,9 +115,21 @@ public class GameUI extends StageUI {
         batch.draw(currentSpecial, table.getX() + x, table.getY() + y, width, height);
     }*/
 
+    public TextureAtlas getMapTextures() {
+        return mapTextures;
+    }
+
+    public SnowActor getSnowActor() {
+        return snowActor;
+    }
+
+    public void disposeMaps() {
+        if (mapTextures != null) {
+            mapTextures.dispose();
+        }
+    }
 
     @Override
     public void backPressed() {
     }
-
 }

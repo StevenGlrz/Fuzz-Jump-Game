@@ -8,14 +8,12 @@ package com.fuzzjump.game.game;
  */
 public class FuzzContext {
 
-
     private String gameId;
     private String gameSeed;
     private int gameMap;
     private String ip;
     private int port;
     private String sessionKey;
-
 
     public String getGameId() {
         return gameId;

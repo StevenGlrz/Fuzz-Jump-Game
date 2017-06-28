@@ -54,7 +54,6 @@ class MatchmakingValidator implements Validator {
                     player.getChannel().writeAndFlush(getJoinResponse(fjPlayer, validated));
                     future.complete(validated);
                 });
-
         return future;
     }
 

@@ -71,7 +71,7 @@ public class CharacterSelectionUI extends StageUI {
         this.stageScreen = parent.getStageScreen();
         this.profile = parent.getProfile();
         this.colorizer = parent.getUnlockableColorizer();
-        this.loader = stageScreen.getLoader();
+        this.loader = stageScreen.getScreenLoader();
     }
 
     @Override

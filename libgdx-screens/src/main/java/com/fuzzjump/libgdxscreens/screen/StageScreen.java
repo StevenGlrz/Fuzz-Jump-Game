@@ -15,9 +15,6 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
     private ScreenLoader loader;
 
     private Stage stage;
-    private boolean cleared;
-
-    private boolean rendered;
 
     public StageScreen(TUI ui) {
         this.ui = ui;
@@ -41,7 +38,6 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
     }
 
     protected final void clear() {
-        cleared = true;
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
     }
@@ -53,30 +49,17 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
 
     @Override
     public void render(float delta) {
-        if (!cleared) {
-            clear();
-        }
+        clear();
 
         onPreRender(delta);
         stage.act(delta);
         stage.draw();
         onPostRender(delta);
-
-        if (!rendered) {
-            rendered = true;
-            rendered();
-        }
-        cleared = false;
     }
 
     @Override
     public void resume() {
         super.resume();
-    }
-
-    //called after the screen has been drawn once
-    public void rendered() {
-
     }
 
     public TUI ui() {
@@ -145,7 +128,7 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
         this.loader = loader;
     }
 
-    public ScreenLoader getLoader() {
+    public ScreenLoader getScreenLoader() {
         return loader;
     }
 }

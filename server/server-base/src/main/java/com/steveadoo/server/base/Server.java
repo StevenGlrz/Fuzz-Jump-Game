@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
 import io.netty.channel.Channel;
 import io.netty.util.AttributeKey;
 
-public abstract class Server<TInfo extends ServerInfo> implements PacketProcessor.ProcessPipeline {
+public abstract class Server<TInfo extends ServerConfig> implements PacketProcessor.ProcessPipeline {
 
     public static final AttributeKey<Player> PLAYER_ATTRIBUTE_KEY = AttributeKey.newInstance("Channel.player");
     public static final AttributeKey<Boolean> VALIDATED_ATTR_KEY = AttributeKey.newInstance("Channel.validated");

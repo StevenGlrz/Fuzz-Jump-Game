@@ -29,7 +29,7 @@ public class GameStage extends Stage {
     private final GameScreen screen;
     private final Random random;
     private final GameMap map;
-    private final TextureAtlas textures;
+    private final TextureAtlas mapTextures;
     private final World world;
 
     private TextureRegion borderTexture;
@@ -44,7 +44,7 @@ public class GameStage extends Stage {
         this.mainViewport = viewport;
         this.batch = batch;
         this.screen = screen;
-        this.textures = screen.getMapTextures();
+        this.mapTextures = screen.ui().getMapTextures();
         this.map = screen.getMap();
         this.random = screen.getRandom();
         this.world = world;
@@ -52,24 +52,29 @@ public class GameStage extends Stage {
 
     public void init() {
 
-        for (GameMapBackground background : map.getBackgrounds()) {
-            background.setTexture(textures.findRegion(background.getName()));
+        List<GameMapBackground> backgrounds = map.getBackgrounds();
+        for (int i = 0, n = backgrounds.size(); i < n; i++) {
+            GameMapBackground background = backgrounds.get(i);
+            background.setTexture(mapTextures.findRegion(background.getName()));
         }
 
-        gameCamera = new ParallaxCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        getViewport().setCamera(gameCamera);
-        ((ScreenViewport) getViewport()).setUnitsPerPixel(screen.getWorld().getWidth() / Gdx.graphics.getWidth());
+        ScreenViewport viewport = (ScreenViewport) getViewport();
 
-        getViewport().update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+        gameCamera = new ParallaxCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        viewport.setCamera(gameCamera);
+        viewport.setUnitsPerPixel(world.getWidth() / Gdx.graphics.getWidth());
+        viewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
+
         mainViewport.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), true);
 
-        borderTexture = textures.findRegion("border");
+        borderTexture = mapTextures.findRegion("border");
 
         gameActors = new Group();
         clouds = new Group();
 
-        if (map.isCloudEnabled())
+        if (map.isCloudEnabled()) {
             createClouds();
+        }
 
         addActor(gameActors);
 
@@ -78,12 +83,12 @@ public class GameStage extends Stage {
         winnersPlatform.setSize(winnerRegion.getRegionWidth(), winnerRegion.getRegionHeight());
 
         winnersPlatform.setX(getViewport().getWorldWidth() / 2 - winnersPlatform.getWidth() / 2);
-        winnersPlatform.setY(screen.getWorld().getHeight() + GameMap.PLATFORM_GAP / 4);
+        winnersPlatform.setY(world.getHeight() + GameMap.PLATFORM_GAP / 4);
 
         addGameActor(winnersPlatform);
 
         GameMapGround ground = map.getGround();
-        GamePlatform platform = new GamePlatform(world, 0, ground.getY(), world.getWidth(), ground.getHeight(), ground.getHeight() * .85f, ground.getRealHeight(), screen.getMapTextures().findRegion(ground.getName())) {
+        GamePlatform platform = new GamePlatform(world, 0, ground.getY(), world.getWidth(), ground.getHeight(), ground.getHeight() * .85f, ground.getRealHeight(), mapTextures.findRegion(ground.getName())) {
 
             @Override
             public void draw(Batch batch, float parentAlpha) {
@@ -123,8 +128,9 @@ public class GameStage extends Stage {
     public void act(float delta) {
         super.act(delta);
         GamePlayer player = screen.getPlayer();
-        if (player.getX() - getViewport().getWorldWidth() / 2 > 0 && player.getX() + getViewport().getWorldWidth() / 2 < screen.getWorld().getWidth())
+        if (player.getX() - getViewport().getWorldWidth() / 2 > 0 && player.getX() + getViewport().getWorldWidth() / 2 < screen.getWorld().getWidth()) {
             gameCamera.position.x = player.getX();
+        }
         gameCamera.position.y = player.getY();
     }
 
@@ -158,11 +164,7 @@ public class GameStage extends Stage {
     }
 
     private void drawBorders() {
-        GamePlayer player = screen.getPlayer();
-        float playerY = 0;
-        if (player != null) {
-            playerY = player.getY();
-        }
+        float playerY = screen.getPlayer().getY();
         if (playerY - getViewport().getWorldHeight() / 2 < map.getGround().getY()) {
             //determine how many blocks to draw
             int xBlocks = (int) (1 + getViewport().getWorldWidth() / borderTexture.getRegionWidth()); //+ 1 to be gratuitous

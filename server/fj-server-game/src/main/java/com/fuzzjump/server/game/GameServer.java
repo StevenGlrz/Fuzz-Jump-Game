@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import io.netty.channel.Channel;
 
-public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
+public class GameServer extends FuzzJumpServer<GamePlayer, GameServerConfig> {
 
     private static final int TICK = 100;
 
@@ -26,7 +26,7 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
     private final ConcurrentHashMap<String, GameSession> sessions = new ConcurrentHashMap<>();
 
 
-    public GameServer(GameServerInfo serverInfo) {
+    public GameServer(GameServerConfig serverInfo) {
         super(serverInfo, new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS));
         gameServerValidator = new GameServerPlayerValidator(this);
         addValidator(gameServerValidator);
