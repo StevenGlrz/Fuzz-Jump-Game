@@ -22,7 +22,13 @@ public class Textures {
 	public void add(VectorGraphicsLoader.VectorDetail detail) {
 		details.put(detail.getAtlasName(), detail);
 	}
-	
+
+	public TextureRegion getTextureIgnoreMissing(String name) {
+		if (!details.containsKey(name))
+			return null;
+		return vectorGraphicsLoader.load(details.get(name), true);
+	}
+
 	public TextureRegion getTexture(String name) {
         if (!details.containsKey(name))
             throw new IllegalArgumentException("No svg definition for " + name);

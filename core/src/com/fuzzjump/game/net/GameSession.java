@@ -21,6 +21,7 @@ public class GameSession implements Client.ConnectionListener {
     private Client client;
 
     private GameSessionWatcher watcher;
+    private boolean connected;
 
     public GameSession(String ip, int port, GameSessionWatcher watcher) {
         PacketProcessor packetProcessor = new PacketProcessor(FuzzJumpMessageHandlers.HANDLERS);
@@ -32,15 +33,8 @@ public class GameSession implements Client.ConnectionListener {
     }
 
     public void connect() {
+        connected = false;
         client.connect(ip, port);
-    }
-
-    public void disconnect() {
-        try {
-            client.disconnect();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public void send(Object message) {
@@ -53,6 +47,7 @@ public class GameSession implements Client.ConnectionListener {
 
     public void close(boolean ignoreDisconnection) {
         try {
+            connected = false;
             if (ignoreDisconnection) {
                 watcher = null;
             }
@@ -64,17 +59,25 @@ public class GameSession implements Client.ConnectionListener {
 
     @Override
     public void connected() {
+        connected = true;
         if (watcher != null) {
-            Gdx.app.postRunnable(watcher::onConnect);
+            Gdx.app.postRunnable(() -> {
+                if (watcher != null) {
+                    watcher.onConnect();
+                }
+            });
         }
     }
 
     @Override
     public void disconnected() {
+        connected = false;
         if (watcher != null) {
             Gdx.app.postRunnable(() -> {
-                watcher.onDisconnect();
-                watcher = null;
+                if (watcher != null) {
+                    watcher.onDisconnect();
+                    watcher = null;
+                }
             });
         }
     }
@@ -102,6 +105,10 @@ public class GameSession implements Client.ConnectionListener {
 
     public void setGameWatcher(GameSessionWatcher watcher) {
         this.watcher = watcher;
+    }
+
+    public boolean isConnected() {
+        return connected;
     }
 
 }

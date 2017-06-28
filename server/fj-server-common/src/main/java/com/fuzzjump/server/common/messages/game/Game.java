@@ -8,8 +8,8 @@ public final class Game {
   public static void registerAllExtensions(
       com.google.protobuf.ExtensionRegistry registry) {
   }
-  public interface LoadedOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.Loaded)
+  public interface JoinGameOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.JoinGame)
       com.google.protobuf.MessageOrBuilder {
 
     /**
@@ -27,25 +27,25 @@ public final class Game {
         getGameIdBytes();
   }
   /**
-   * Protobuf type {@code com.fuzzjump.server.common.messages.game.Loaded}
+   * Protobuf type {@code com.fuzzjump.server.common.messages.game.JoinGame}
    */
-  public static final class Loaded extends
+  public static final class JoinGame extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.Loaded)
-      LoadedOrBuilder {
-    // Use Loaded.newBuilder() to construct.
-    private Loaded(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.JoinGame)
+      JoinGameOrBuilder {
+    // Use JoinGame.newBuilder() to construct.
+    private JoinGame(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private Loaded(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private JoinGame(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final Loaded defaultInstance;
-    public static Loaded getDefaultInstance() {
+    private static final JoinGame defaultInstance;
+    public static JoinGame getDefaultInstance() {
       return defaultInstance;
     }
 
-    public Loaded getDefaultInstanceForType() {
+    public JoinGame getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -55,7 +55,7 @@ public final class Game {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private Loaded(
+    private JoinGame(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -98,28 +98,28 @@ public final class Game {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Loaded_descriptor;
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGame_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Loaded_fieldAccessorTable
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGame_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.fuzzjump.server.common.messages.game.Game.Loaded.class, com.fuzzjump.server.common.messages.game.Game.Loaded.Builder.class);
+              com.fuzzjump.server.common.messages.game.Game.JoinGame.class, com.fuzzjump.server.common.messages.game.Game.JoinGame.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<Loaded> PARSER =
-        new com.google.protobuf.AbstractParser<Loaded>() {
-      public Loaded parsePartialFrom(
+    public static com.google.protobuf.Parser<JoinGame> PARSER =
+        new com.google.protobuf.AbstractParser<JoinGame>() {
+      public JoinGame parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new Loaded(input, extensionRegistry);
+        return new JoinGame(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<Loaded> getParserForType() {
+    public com.google.protobuf.Parser<JoinGame> getParserForType() {
       return PARSER;
     }
 
@@ -198,6 +198,2146 @@ public final class Game {
         size += com.google.protobuf.CodedOutputStream
           .computeBytesSize(1, getGameIdBytes());
       }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGame parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.fuzzjump.server.common.messages.game.Game.JoinGame prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.fuzzjump.server.common.messages.game.JoinGame}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.fuzzjump.server.common.messages.game.JoinGame)
+        com.fuzzjump.server.common.messages.game.Game.JoinGameOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGame_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGame_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.fuzzjump.server.common.messages.game.Game.JoinGame.class, com.fuzzjump.server.common.messages.game.Game.JoinGame.Builder.class);
+      }
+
+      // Construct using com.fuzzjump.server.common.messages.game.Game.JoinGame.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        gameId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGame_descriptor;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.JoinGame getDefaultInstanceForType() {
+        return com.fuzzjump.server.common.messages.game.Game.JoinGame.getDefaultInstance();
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.JoinGame build() {
+        com.fuzzjump.server.common.messages.game.Game.JoinGame result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.JoinGame buildPartial() {
+        com.fuzzjump.server.common.messages.game.Game.JoinGame result = new com.fuzzjump.server.common.messages.game.Game.JoinGame(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.gameId_ = gameId_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.fuzzjump.server.common.messages.game.Game.JoinGame) {
+          return mergeFrom((com.fuzzjump.server.common.messages.game.Game.JoinGame)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.JoinGame other) {
+        if (other == com.fuzzjump.server.common.messages.game.Game.JoinGame.getDefaultInstance()) return this;
+        if (other.hasGameId()) {
+          bitField0_ |= 0x00000001;
+          gameId_ = other.gameId_;
+          onChanged();
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.fuzzjump.server.common.messages.game.Game.JoinGame parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.fuzzjump.server.common.messages.game.Game.JoinGame) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object gameId_ = "";
+      /**
+       * <code>optional string gameId = 1;</code>
+       */
+      public boolean hasGameId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional string gameId = 1;</code>
+       */
+      public java.lang.String getGameId() {
+        java.lang.Object ref = gameId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            gameId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>optional string gameId = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getGameIdBytes() {
+        java.lang.Object ref = gameId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          gameId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>optional string gameId = 1;</code>
+       */
+      public Builder setGameId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        gameId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gameId = 1;</code>
+       */
+      public Builder clearGameId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        gameId_ = getDefaultInstance().getGameId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional string gameId = 1;</code>
+       */
+      public Builder setGameIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        gameId_ = value;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.JoinGame)
+    }
+
+    static {
+      defaultInstance = new JoinGame(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.JoinGame)
+  }
+
+  public interface JoinGameResponseOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.JoinGameResponse)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>optional bool found = 1;</code>
+     */
+    boolean hasFound();
+    /**
+     * <code>optional bool found = 1;</code>
+     */
+    boolean getFound();
+  }
+  /**
+   * Protobuf type {@code com.fuzzjump.server.common.messages.game.JoinGameResponse}
+   */
+  public static final class JoinGameResponse extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.JoinGameResponse)
+      JoinGameResponseOrBuilder {
+    // Use JoinGameResponse.newBuilder() to construct.
+    private JoinGameResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private JoinGameResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final JoinGameResponse defaultInstance;
+    public static JoinGameResponse getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public JoinGameResponse getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private JoinGameResponse(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 8: {
+              bitField0_ |= 0x00000001;
+              found_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.class, com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<JoinGameResponse> PARSER =
+        new com.google.protobuf.AbstractParser<JoinGameResponse>() {
+      public JoinGameResponse parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new JoinGameResponse(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<JoinGameResponse> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int FOUND_FIELD_NUMBER = 1;
+    private boolean found_;
+    /**
+     * <code>optional bool found = 1;</code>
+     */
+    public boolean hasFound() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional bool found = 1;</code>
+     */
+    public boolean getFound() {
+      return found_;
+    }
+
+    private void initFields() {
+      found_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(1, found_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(1, found_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.fuzzjump.server.common.messages.game.Game.JoinGameResponse prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.fuzzjump.server.common.messages.game.JoinGameResponse}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.fuzzjump.server.common.messages.game.JoinGameResponse)
+        com.fuzzjump.server.common.messages.game.Game.JoinGameResponseOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.class, com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.Builder.class);
+      }
+
+      // Construct using com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        found_ = false;
+        bitField0_ = (bitField0_ & ~0x00000001);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_descriptor;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.JoinGameResponse getDefaultInstanceForType() {
+        return com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.getDefaultInstance();
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.JoinGameResponse build() {
+        com.fuzzjump.server.common.messages.game.Game.JoinGameResponse result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.JoinGameResponse buildPartial() {
+        com.fuzzjump.server.common.messages.game.Game.JoinGameResponse result = new com.fuzzjump.server.common.messages.game.Game.JoinGameResponse(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.found_ = found_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.fuzzjump.server.common.messages.game.Game.JoinGameResponse) {
+          return mergeFrom((com.fuzzjump.server.common.messages.game.Game.JoinGameResponse)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.JoinGameResponse other) {
+        if (other == com.fuzzjump.server.common.messages.game.Game.JoinGameResponse.getDefaultInstance()) return this;
+        if (other.hasFound()) {
+          setFound(other.getFound());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.fuzzjump.server.common.messages.game.Game.JoinGameResponse parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.fuzzjump.server.common.messages.game.Game.JoinGameResponse) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private boolean found_ ;
+      /**
+       * <code>optional bool found = 1;</code>
+       */
+      public boolean hasFound() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>optional bool found = 1;</code>
+       */
+      public boolean getFound() {
+        return found_;
+      }
+      /**
+       * <code>optional bool found = 1;</code>
+       */
+      public Builder setFound(boolean value) {
+        bitField0_ |= 0x00000001;
+        found_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool found = 1;</code>
+       */
+      public Builder clearFound() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        found_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.JoinGameResponse)
+    }
+
+    static {
+      defaultInstance = new JoinGameResponse(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.JoinGameResponse)
+  }
+
+  public interface PlayerOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.Player)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>required string userId = 1;</code>
+     */
+    boolean hasUserId();
+    /**
+     * <code>required string userId = 1;</code>
+     */
+    java.lang.String getUserId();
+    /**
+     * <code>required string userId = 1;</code>
+     */
+    com.google.protobuf.ByteString
+        getUserIdBytes();
+
+    /**
+     * <code>required int32 playerIndex = 2;</code>
+     */
+    boolean hasPlayerIndex();
+    /**
+     * <code>required int32 playerIndex = 2;</code>
+     */
+    int getPlayerIndex();
+  }
+  /**
+   * Protobuf type {@code com.fuzzjump.server.common.messages.game.Player}
+   */
+  public static final class Player extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.Player)
+      PlayerOrBuilder {
+    // Use Player.newBuilder() to construct.
+    private Player(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Player(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Player defaultInstance;
+    public static Player getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Player getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Player(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              com.google.protobuf.ByteString bs = input.readBytes();
+              bitField0_ |= 0x00000001;
+              userId_ = bs;
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000002;
+              playerIndex_ = input.readInt32();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Player_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Player_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.fuzzjump.server.common.messages.game.Game.Player.class, com.fuzzjump.server.common.messages.game.Game.Player.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Player> PARSER =
+        new com.google.protobuf.AbstractParser<Player>() {
+      public Player parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Player(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Player> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int USERID_FIELD_NUMBER = 1;
+    private java.lang.Object userId_;
+    /**
+     * <code>required string userId = 1;</code>
+     */
+    public boolean hasUserId() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>required string userId = 1;</code>
+     */
+    public java.lang.String getUserId() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof java.lang.String) {
+        return (java.lang.String) ref;
+      } else {
+        com.google.protobuf.ByteString bs = 
+            (com.google.protobuf.ByteString) ref;
+        java.lang.String s = bs.toStringUtf8();
+        if (bs.isValidUtf8()) {
+          userId_ = s;
+        }
+        return s;
+      }
+    }
+    /**
+     * <code>required string userId = 1;</code>
+     */
+    public com.google.protobuf.ByteString
+        getUserIdBytes() {
+      java.lang.Object ref = userId_;
+      if (ref instanceof java.lang.String) {
+        com.google.protobuf.ByteString b = 
+            com.google.protobuf.ByteString.copyFromUtf8(
+                (java.lang.String) ref);
+        userId_ = b;
+        return b;
+      } else {
+        return (com.google.protobuf.ByteString) ref;
+      }
+    }
+
+    public static final int PLAYERINDEX_FIELD_NUMBER = 2;
+    private int playerIndex_;
+    /**
+     * <code>required int32 playerIndex = 2;</code>
+     */
+    public boolean hasPlayerIndex() {
+      return ((bitField0_ & 0x00000002) == 0x00000002);
+    }
+    /**
+     * <code>required int32 playerIndex = 2;</code>
+     */
+    public int getPlayerIndex() {
+      return playerIndex_;
+    }
+
+    private void initFields() {
+      userId_ = "";
+      playerIndex_ = 0;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      if (!hasUserId()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      if (!hasPlayerIndex()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBytes(1, getUserIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        output.writeInt32(2, playerIndex_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBytesSize(1, getUserIdBytes());
+      }
+      if (((bitField0_ & 0x00000002) == 0x00000002)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeInt32Size(2, playerIndex_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.Player parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.fuzzjump.server.common.messages.game.Game.Player prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.fuzzjump.server.common.messages.game.Player}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.fuzzjump.server.common.messages.game.Player)
+        com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Player_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Player_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.fuzzjump.server.common.messages.game.Game.Player.class, com.fuzzjump.server.common.messages.game.Game.Player.Builder.class);
+      }
+
+      // Construct using com.fuzzjump.server.common.messages.game.Game.Player.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        userId_ = "";
+        bitField0_ = (bitField0_ & ~0x00000001);
+        playerIndex_ = 0;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Player_descriptor;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.Player getDefaultInstanceForType() {
+        return com.fuzzjump.server.common.messages.game.Game.Player.getDefaultInstance();
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.Player build() {
+        com.fuzzjump.server.common.messages.game.Game.Player result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.Player buildPartial() {
+        com.fuzzjump.server.common.messages.game.Game.Player result = new com.fuzzjump.server.common.messages.game.Game.Player(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.userId_ = userId_;
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000002;
+        }
+        result.playerIndex_ = playerIndex_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.fuzzjump.server.common.messages.game.Game.Player) {
+          return mergeFrom((com.fuzzjump.server.common.messages.game.Game.Player)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.Player other) {
+        if (other == com.fuzzjump.server.common.messages.game.Game.Player.getDefaultInstance()) return this;
+        if (other.hasUserId()) {
+          bitField0_ |= 0x00000001;
+          userId_ = other.userId_;
+          onChanged();
+        }
+        if (other.hasPlayerIndex()) {
+          setPlayerIndex(other.getPlayerIndex());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        if (!hasUserId()) {
+          
+          return false;
+        }
+        if (!hasPlayerIndex()) {
+          
+          return false;
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.fuzzjump.server.common.messages.game.Game.Player parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.fuzzjump.server.common.messages.game.Game.Player) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.lang.Object userId_ = "";
+      /**
+       * <code>required string userId = 1;</code>
+       */
+      public boolean hasUserId() {
+        return ((bitField0_ & 0x00000001) == 0x00000001);
+      }
+      /**
+       * <code>required string userId = 1;</code>
+       */
+      public java.lang.String getUserId() {
+        java.lang.Object ref = userId_;
+        if (!(ref instanceof java.lang.String)) {
+          com.google.protobuf.ByteString bs =
+              (com.google.protobuf.ByteString) ref;
+          java.lang.String s = bs.toStringUtf8();
+          if (bs.isValidUtf8()) {
+            userId_ = s;
+          }
+          return s;
+        } else {
+          return (java.lang.String) ref;
+        }
+      }
+      /**
+       * <code>required string userId = 1;</code>
+       */
+      public com.google.protobuf.ByteString
+          getUserIdBytes() {
+        java.lang.Object ref = userId_;
+        if (ref instanceof String) {
+          com.google.protobuf.ByteString b = 
+              com.google.protobuf.ByteString.copyFromUtf8(
+                  (java.lang.String) ref);
+          userId_ = b;
+          return b;
+        } else {
+          return (com.google.protobuf.ByteString) ref;
+        }
+      }
+      /**
+       * <code>required string userId = 1;</code>
+       */
+      public Builder setUserId(
+          java.lang.String value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string userId = 1;</code>
+       */
+      public Builder clearUserId() {
+        bitField0_ = (bitField0_ & ~0x00000001);
+        userId_ = getDefaultInstance().getUserId();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required string userId = 1;</code>
+       */
+      public Builder setUserIdBytes(
+          com.google.protobuf.ByteString value) {
+        if (value == null) {
+    throw new NullPointerException();
+  }
+  bitField0_ |= 0x00000001;
+        userId_ = value;
+        onChanged();
+        return this;
+      }
+
+      private int playerIndex_ ;
+      /**
+       * <code>required int32 playerIndex = 2;</code>
+       */
+      public boolean hasPlayerIndex() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>required int32 playerIndex = 2;</code>
+       */
+      public int getPlayerIndex() {
+        return playerIndex_;
+      }
+      /**
+       * <code>required int32 playerIndex = 2;</code>
+       */
+      public Builder setPlayerIndex(int value) {
+        bitField0_ |= 0x00000002;
+        playerIndex_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>required int32 playerIndex = 2;</code>
+       */
+      public Builder clearPlayerIndex() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        playerIndex_ = 0;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.Player)
+    }
+
+    static {
+      defaultInstance = new Player(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.Player)
+  }
+
+  public interface GameReadyOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.GameReady)
+      com.google.protobuf.MessageOrBuilder {
+
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    java.util.List<com.fuzzjump.server.common.messages.game.Game.Player> 
+        getPlayersList();
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    com.fuzzjump.server.common.messages.game.Game.Player getPlayers(int index);
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    int getPlayersCount();
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    java.util.List<? extends com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder> 
+        getPlayersOrBuilderList();
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder getPlayersOrBuilder(
+        int index);
+
+    /**
+     * <code>optional bool sendLoaded = 2;</code>
+     */
+    boolean hasSendLoaded();
+    /**
+     * <code>optional bool sendLoaded = 2;</code>
+     */
+    boolean getSendLoaded();
+  }
+  /**
+   * Protobuf type {@code com.fuzzjump.server.common.messages.game.GameReady}
+   */
+  public static final class GameReady extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.GameReady)
+      GameReadyOrBuilder {
+    // Use GameReady.newBuilder() to construct.
+    private GameReady(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private GameReady(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final GameReady defaultInstance;
+    public static GameReady getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public GameReady getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private GameReady(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      int mutable_bitField0_ = 0;
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+            case 10: {
+              if (!((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+                players_ = new java.util.ArrayList<com.fuzzjump.server.common.messages.game.Game.Player>();
+                mutable_bitField0_ |= 0x00000001;
+              }
+              players_.add(input.readMessage(com.fuzzjump.server.common.messages.game.Game.Player.PARSER, extensionRegistry));
+              break;
+            }
+            case 16: {
+              bitField0_ |= 0x00000001;
+              sendLoaded_ = input.readBool();
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        if (((mutable_bitField0_ & 0x00000001) == 0x00000001)) {
+          players_ = java.util.Collections.unmodifiableList(players_);
+        }
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_GameReady_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_GameReady_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.fuzzjump.server.common.messages.game.Game.GameReady.class, com.fuzzjump.server.common.messages.game.Game.GameReady.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<GameReady> PARSER =
+        new com.google.protobuf.AbstractParser<GameReady>() {
+      public GameReady parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new GameReady(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<GameReady> getParserForType() {
+      return PARSER;
+    }
+
+    private int bitField0_;
+    public static final int PLAYERS_FIELD_NUMBER = 1;
+    private java.util.List<com.fuzzjump.server.common.messages.game.Game.Player> players_;
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    public java.util.List<com.fuzzjump.server.common.messages.game.Game.Player> getPlayersList() {
+      return players_;
+    }
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    public java.util.List<? extends com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder> 
+        getPlayersOrBuilderList() {
+      return players_;
+    }
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    public int getPlayersCount() {
+      return players_.size();
+    }
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    public com.fuzzjump.server.common.messages.game.Game.Player getPlayers(int index) {
+      return players_.get(index);
+    }
+    /**
+     * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+     */
+    public com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder getPlayersOrBuilder(
+        int index) {
+      return players_.get(index);
+    }
+
+    public static final int SENDLOADED_FIELD_NUMBER = 2;
+    private boolean sendLoaded_;
+    /**
+     * <code>optional bool sendLoaded = 2;</code>
+     */
+    public boolean hasSendLoaded() {
+      return ((bitField0_ & 0x00000001) == 0x00000001);
+    }
+    /**
+     * <code>optional bool sendLoaded = 2;</code>
+     */
+    public boolean getSendLoaded() {
+      return sendLoaded_;
+    }
+
+    private void initFields() {
+      players_ = java.util.Collections.emptyList();
+      sendLoaded_ = false;
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      for (int i = 0; i < getPlayersCount(); i++) {
+        if (!getPlayers(i).isInitialized()) {
+          memoizedIsInitialized = 0;
+          return false;
+        }
+      }
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      for (int i = 0; i < players_.size(); i++) {
+        output.writeMessage(1, players_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        output.writeBool(2, sendLoaded_);
+      }
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
+      for (int i = 0; i < players_.size(); i++) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeMessageSize(1, players_.get(i));
+      }
+      if (((bitField0_ & 0x00000001) == 0x00000001)) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(2, sendLoaded_);
+      }
+      size += getUnknownFields().getSerializedSize();
+      memoizedSerializedSize = size;
+      return size;
+    }
+
+    private static final long serialVersionUID = 0L;
+    @java.lang.Override
+    protected java.lang.Object writeReplace()
+        throws java.io.ObjectStreamException {
+      return super.writeReplace();
+    }
+
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(
+        com.google.protobuf.ByteString data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(
+        com.google.protobuf.ByteString data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(byte[] data)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(
+        byte[] data,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      return PARSER.parseFrom(data, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseDelimitedFrom(java.io.InputStream input)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseDelimitedFrom(
+        java.io.InputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseDelimitedFrom(input, extensionRegistry);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(
+        com.google.protobuf.CodedInputStream input)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input);
+    }
+    public static com.fuzzjump.server.common.messages.game.Game.GameReady parseFrom(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws java.io.IOException {
+      return PARSER.parseFrom(input, extensionRegistry);
+    }
+
+    public static Builder newBuilder() { return Builder.create(); }
+    public Builder newBuilderForType() { return newBuilder(); }
+    public static Builder newBuilder(com.fuzzjump.server.common.messages.game.Game.GameReady prototype) {
+      return newBuilder().mergeFrom(prototype);
+    }
+    public Builder toBuilder() { return newBuilder(this); }
+
+    @java.lang.Override
+    protected Builder newBuilderForType(
+        com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+      Builder builder = new Builder(parent);
+      return builder;
+    }
+    /**
+     * Protobuf type {@code com.fuzzjump.server.common.messages.game.GameReady}
+     */
+    public static final class Builder extends
+        com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+        // @@protoc_insertion_point(builder_implements:com.fuzzjump.server.common.messages.game.GameReady)
+        com.fuzzjump.server.common.messages.game.Game.GameReadyOrBuilder {
+      public static final com.google.protobuf.Descriptors.Descriptor
+          getDescriptor() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_GameReady_descriptor;
+      }
+
+      protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+          internalGetFieldAccessorTable() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_GameReady_fieldAccessorTable
+            .ensureFieldAccessorsInitialized(
+                com.fuzzjump.server.common.messages.game.Game.GameReady.class, com.fuzzjump.server.common.messages.game.Game.GameReady.Builder.class);
+      }
+
+      // Construct using com.fuzzjump.server.common.messages.game.Game.GameReady.newBuilder()
+      private Builder() {
+        maybeForceBuilderInitialization();
+      }
+
+      private Builder(
+          com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+        super(parent);
+        maybeForceBuilderInitialization();
+      }
+      private void maybeForceBuilderInitialization() {
+        if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+          getPlayersFieldBuilder();
+        }
+      }
+      private static Builder create() {
+        return new Builder();
+      }
+
+      public Builder clear() {
+        super.clear();
+        if (playersBuilder_ == null) {
+          players_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+        } else {
+          playersBuilder_.clear();
+        }
+        sendLoaded_ = false;
+        bitField0_ = (bitField0_ & ~0x00000002);
+        return this;
+      }
+
+      public Builder clone() {
+        return create().mergeFrom(buildPartial());
+      }
+
+      public com.google.protobuf.Descriptors.Descriptor
+          getDescriptorForType() {
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_GameReady_descriptor;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.GameReady getDefaultInstanceForType() {
+        return com.fuzzjump.server.common.messages.game.Game.GameReady.getDefaultInstance();
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.GameReady build() {
+        com.fuzzjump.server.common.messages.game.Game.GameReady result = buildPartial();
+        if (!result.isInitialized()) {
+          throw newUninitializedMessageException(result);
+        }
+        return result;
+      }
+
+      public com.fuzzjump.server.common.messages.game.Game.GameReady buildPartial() {
+        com.fuzzjump.server.common.messages.game.Game.GameReady result = new com.fuzzjump.server.common.messages.game.Game.GameReady(this);
+        int from_bitField0_ = bitField0_;
+        int to_bitField0_ = 0;
+        if (playersBuilder_ == null) {
+          if (((bitField0_ & 0x00000001) == 0x00000001)) {
+            players_ = java.util.Collections.unmodifiableList(players_);
+            bitField0_ = (bitField0_ & ~0x00000001);
+          }
+          result.players_ = players_;
+        } else {
+          result.players_ = playersBuilder_.build();
+        }
+        if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+          to_bitField0_ |= 0x00000001;
+        }
+        result.sendLoaded_ = sendLoaded_;
+        result.bitField0_ = to_bitField0_;
+        onBuilt();
+        return result;
+      }
+
+      public Builder mergeFrom(com.google.protobuf.Message other) {
+        if (other instanceof com.fuzzjump.server.common.messages.game.Game.GameReady) {
+          return mergeFrom((com.fuzzjump.server.common.messages.game.Game.GameReady)other);
+        } else {
+          super.mergeFrom(other);
+          return this;
+        }
+      }
+
+      public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.GameReady other) {
+        if (other == com.fuzzjump.server.common.messages.game.Game.GameReady.getDefaultInstance()) return this;
+        if (playersBuilder_ == null) {
+          if (!other.players_.isEmpty()) {
+            if (players_.isEmpty()) {
+              players_ = other.players_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+            } else {
+              ensurePlayersIsMutable();
+              players_.addAll(other.players_);
+            }
+            onChanged();
+          }
+        } else {
+          if (!other.players_.isEmpty()) {
+            if (playersBuilder_.isEmpty()) {
+              playersBuilder_.dispose();
+              playersBuilder_ = null;
+              players_ = other.players_;
+              bitField0_ = (bitField0_ & ~0x00000001);
+              playersBuilder_ = 
+                com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                   getPlayersFieldBuilder() : null;
+            } else {
+              playersBuilder_.addAllMessages(other.players_);
+            }
+          }
+        }
+        if (other.hasSendLoaded()) {
+          setSendLoaded(other.getSendLoaded());
+        }
+        this.mergeUnknownFields(other.getUnknownFields());
+        return this;
+      }
+
+      public final boolean isInitialized() {
+        for (int i = 0; i < getPlayersCount(); i++) {
+          if (!getPlayers(i).isInitialized()) {
+            
+            return false;
+          }
+        }
+        return true;
+      }
+
+      public Builder mergeFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws java.io.IOException {
+        com.fuzzjump.server.common.messages.game.Game.GameReady parsedMessage = null;
+        try {
+          parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+        } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+          parsedMessage = (com.fuzzjump.server.common.messages.game.Game.GameReady) e.getUnfinishedMessage();
+          throw e;
+        } finally {
+          if (parsedMessage != null) {
+            mergeFrom(parsedMessage);
+          }
+        }
+        return this;
+      }
+      private int bitField0_;
+
+      private java.util.List<com.fuzzjump.server.common.messages.game.Game.Player> players_ =
+        java.util.Collections.emptyList();
+      private void ensurePlayersIsMutable() {
+        if (!((bitField0_ & 0x00000001) == 0x00000001)) {
+          players_ = new java.util.ArrayList<com.fuzzjump.server.common.messages.game.Game.Player>(players_);
+          bitField0_ |= 0x00000001;
+         }
+      }
+
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.fuzzjump.server.common.messages.game.Game.Player, com.fuzzjump.server.common.messages.game.Game.Player.Builder, com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder> playersBuilder_;
+
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public java.util.List<com.fuzzjump.server.common.messages.game.Game.Player> getPlayersList() {
+        if (playersBuilder_ == null) {
+          return java.util.Collections.unmodifiableList(players_);
+        } else {
+          return playersBuilder_.getMessageList();
+        }
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public int getPlayersCount() {
+        if (playersBuilder_ == null) {
+          return players_.size();
+        } else {
+          return playersBuilder_.getCount();
+        }
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public com.fuzzjump.server.common.messages.game.Game.Player getPlayers(int index) {
+        if (playersBuilder_ == null) {
+          return players_.get(index);
+        } else {
+          return playersBuilder_.getMessage(index);
+        }
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder setPlayers(
+          int index, com.fuzzjump.server.common.messages.game.Game.Player value) {
+        if (playersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayersIsMutable();
+          players_.set(index, value);
+          onChanged();
+        } else {
+          playersBuilder_.setMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder setPlayers(
+          int index, com.fuzzjump.server.common.messages.game.Game.Player.Builder builderForValue) {
+        if (playersBuilder_ == null) {
+          ensurePlayersIsMutable();
+          players_.set(index, builderForValue.build());
+          onChanged();
+        } else {
+          playersBuilder_.setMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder addPlayers(com.fuzzjump.server.common.messages.game.Game.Player value) {
+        if (playersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayersIsMutable();
+          players_.add(value);
+          onChanged();
+        } else {
+          playersBuilder_.addMessage(value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder addPlayers(
+          int index, com.fuzzjump.server.common.messages.game.Game.Player value) {
+        if (playersBuilder_ == null) {
+          if (value == null) {
+            throw new NullPointerException();
+          }
+          ensurePlayersIsMutable();
+          players_.add(index, value);
+          onChanged();
+        } else {
+          playersBuilder_.addMessage(index, value);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder addPlayers(
+          com.fuzzjump.server.common.messages.game.Game.Player.Builder builderForValue) {
+        if (playersBuilder_ == null) {
+          ensurePlayersIsMutable();
+          players_.add(builderForValue.build());
+          onChanged();
+        } else {
+          playersBuilder_.addMessage(builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder addPlayers(
+          int index, com.fuzzjump.server.common.messages.game.Game.Player.Builder builderForValue) {
+        if (playersBuilder_ == null) {
+          ensurePlayersIsMutable();
+          players_.add(index, builderForValue.build());
+          onChanged();
+        } else {
+          playersBuilder_.addMessage(index, builderForValue.build());
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder addAllPlayers(
+          java.lang.Iterable<? extends com.fuzzjump.server.common.messages.game.Game.Player> values) {
+        if (playersBuilder_ == null) {
+          ensurePlayersIsMutable();
+          com.google.protobuf.AbstractMessageLite.Builder.addAll(
+              values, players_);
+          onChanged();
+        } else {
+          playersBuilder_.addAllMessages(values);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder clearPlayers() {
+        if (playersBuilder_ == null) {
+          players_ = java.util.Collections.emptyList();
+          bitField0_ = (bitField0_ & ~0x00000001);
+          onChanged();
+        } else {
+          playersBuilder_.clear();
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public Builder removePlayers(int index) {
+        if (playersBuilder_ == null) {
+          ensurePlayersIsMutable();
+          players_.remove(index);
+          onChanged();
+        } else {
+          playersBuilder_.remove(index);
+        }
+        return this;
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public com.fuzzjump.server.common.messages.game.Game.Player.Builder getPlayersBuilder(
+          int index) {
+        return getPlayersFieldBuilder().getBuilder(index);
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder getPlayersOrBuilder(
+          int index) {
+        if (playersBuilder_ == null) {
+          return players_.get(index);  } else {
+          return playersBuilder_.getMessageOrBuilder(index);
+        }
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public java.util.List<? extends com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder> 
+           getPlayersOrBuilderList() {
+        if (playersBuilder_ != null) {
+          return playersBuilder_.getMessageOrBuilderList();
+        } else {
+          return java.util.Collections.unmodifiableList(players_);
+        }
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public com.fuzzjump.server.common.messages.game.Game.Player.Builder addPlayersBuilder() {
+        return getPlayersFieldBuilder().addBuilder(
+            com.fuzzjump.server.common.messages.game.Game.Player.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public com.fuzzjump.server.common.messages.game.Game.Player.Builder addPlayersBuilder(
+          int index) {
+        return getPlayersFieldBuilder().addBuilder(
+            index, com.fuzzjump.server.common.messages.game.Game.Player.getDefaultInstance());
+      }
+      /**
+       * <code>repeated .com.fuzzjump.server.common.messages.game.Player players = 1;</code>
+       */
+      public java.util.List<com.fuzzjump.server.common.messages.game.Game.Player.Builder> 
+           getPlayersBuilderList() {
+        return getPlayersFieldBuilder().getBuilderList();
+      }
+      private com.google.protobuf.RepeatedFieldBuilder<
+          com.fuzzjump.server.common.messages.game.Game.Player, com.fuzzjump.server.common.messages.game.Game.Player.Builder, com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder> 
+          getPlayersFieldBuilder() {
+        if (playersBuilder_ == null) {
+          playersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+              com.fuzzjump.server.common.messages.game.Game.Player, com.fuzzjump.server.common.messages.game.Game.Player.Builder, com.fuzzjump.server.common.messages.game.Game.PlayerOrBuilder>(
+                  players_,
+                  ((bitField0_ & 0x00000001) == 0x00000001),
+                  getParentForChildren(),
+                  isClean());
+          players_ = null;
+        }
+        return playersBuilder_;
+      }
+
+      private boolean sendLoaded_ ;
+      /**
+       * <code>optional bool sendLoaded = 2;</code>
+       */
+      public boolean hasSendLoaded() {
+        return ((bitField0_ & 0x00000002) == 0x00000002);
+      }
+      /**
+       * <code>optional bool sendLoaded = 2;</code>
+       */
+      public boolean getSendLoaded() {
+        return sendLoaded_;
+      }
+      /**
+       * <code>optional bool sendLoaded = 2;</code>
+       */
+      public Builder setSendLoaded(boolean value) {
+        bitField0_ |= 0x00000002;
+        sendLoaded_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>optional bool sendLoaded = 2;</code>
+       */
+      public Builder clearSendLoaded() {
+        bitField0_ = (bitField0_ & ~0x00000002);
+        sendLoaded_ = false;
+        onChanged();
+        return this;
+      }
+
+      // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.GameReady)
+    }
+
+    static {
+      defaultInstance = new GameReady(true);
+      defaultInstance.initFields();
+    }
+
+    // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.GameReady)
+  }
+
+  public interface LoadedOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.Loaded)
+      com.google.protobuf.MessageOrBuilder {
+  }
+  /**
+   * Protobuf type {@code com.fuzzjump.server.common.messages.game.Loaded}
+   */
+  public static final class Loaded extends
+      com.google.protobuf.GeneratedMessage implements
+      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.Loaded)
+      LoadedOrBuilder {
+    // Use Loaded.newBuilder() to construct.
+    private Loaded(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      super(builder);
+      this.unknownFields = builder.getUnknownFields();
+    }
+    private Loaded(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+
+    private static final Loaded defaultInstance;
+    public static Loaded getDefaultInstance() {
+      return defaultInstance;
+    }
+
+    public Loaded getDefaultInstanceForType() {
+      return defaultInstance;
+    }
+
+    private final com.google.protobuf.UnknownFieldSet unknownFields;
+    @java.lang.Override
+    public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+      return this.unknownFields;
+    }
+    private Loaded(
+        com.google.protobuf.CodedInputStream input,
+        com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+        throws com.google.protobuf.InvalidProtocolBufferException {
+      initFields();
+      com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+          com.google.protobuf.UnknownFieldSet.newBuilder();
+      try {
+        boolean done = false;
+        while (!done) {
+          int tag = input.readTag();
+          switch (tag) {
+            case 0:
+              done = true;
+              break;
+            default: {
+              if (!parseUnknownField(input, unknownFields,
+                                     extensionRegistry, tag)) {
+                done = true;
+              }
+              break;
+            }
+          }
+        }
+      } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+        throw e.setUnfinishedMessage(this);
+      } catch (java.io.IOException e) {
+        throw new com.google.protobuf.InvalidProtocolBufferException(
+            e.getMessage()).setUnfinishedMessage(this);
+      } finally {
+        this.unknownFields = unknownFields.build();
+        makeExtensionsImmutable();
+      }
+    }
+    public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Loaded_descriptor;
+    }
+
+    protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Loaded_fieldAccessorTable
+          .ensureFieldAccessorsInitialized(
+              com.fuzzjump.server.common.messages.game.Game.Loaded.class, com.fuzzjump.server.common.messages.game.Game.Loaded.Builder.class);
+    }
+
+    public static com.google.protobuf.Parser<Loaded> PARSER =
+        new com.google.protobuf.AbstractParser<Loaded>() {
+      public Loaded parsePartialFrom(
+          com.google.protobuf.CodedInputStream input,
+          com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+          throws com.google.protobuf.InvalidProtocolBufferException {
+        return new Loaded(input, extensionRegistry);
+      }
+    };
+
+    @java.lang.Override
+    public com.google.protobuf.Parser<Loaded> getParserForType() {
+      return PARSER;
+    }
+
+    private void initFields() {
+    }
+    private byte memoizedIsInitialized = -1;
+    public final boolean isInitialized() {
+      byte isInitialized = memoizedIsInitialized;
+      if (isInitialized == 1) return true;
+      if (isInitialized == 0) return false;
+
+      memoizedIsInitialized = 1;
+      return true;
+    }
+
+    public void writeTo(com.google.protobuf.CodedOutputStream output)
+                        throws java.io.IOException {
+      getSerializedSize();
+      getUnknownFields().writeTo(output);
+    }
+
+    private int memoizedSerializedSize = -1;
+    public int getSerializedSize() {
+      int size = memoizedSerializedSize;
+      if (size != -1) return size;
+
+      size = 0;
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
       return size;
@@ -315,8 +2455,6 @@ public final class Game {
 
       public Builder clear() {
         super.clear();
-        gameId_ = "";
-        bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
 
@@ -343,13 +2481,6 @@ public final class Game {
 
       public com.fuzzjump.server.common.messages.game.Game.Loaded buildPartial() {
         com.fuzzjump.server.common.messages.game.Game.Loaded result = new com.fuzzjump.server.common.messages.game.Game.Loaded(this);
-        int from_bitField0_ = bitField0_;
-        int to_bitField0_ = 0;
-        if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
-          to_bitField0_ |= 0x00000001;
-        }
-        result.gameId_ = gameId_;
-        result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
@@ -365,11 +2496,6 @@ public final class Game {
 
       public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.Loaded other) {
         if (other == com.fuzzjump.server.common.messages.game.Game.Loaded.getDefaultInstance()) return this;
-        if (other.hasGameId()) {
-          bitField0_ |= 0x00000001;
-          gameId_ = other.gameId_;
-          onChanged();
-        }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
@@ -395,83 +2521,6 @@ public final class Game {
         }
         return this;
       }
-      private int bitField0_;
-
-      private java.lang.Object gameId_ = "";
-      /**
-       * <code>optional string gameId = 1;</code>
-       */
-      public boolean hasGameId() {
-        return ((bitField0_ & 0x00000001) == 0x00000001);
-      }
-      /**
-       * <code>optional string gameId = 1;</code>
-       */
-      public java.lang.String getGameId() {
-        java.lang.Object ref = gameId_;
-        if (!(ref instanceof java.lang.String)) {
-          com.google.protobuf.ByteString bs =
-              (com.google.protobuf.ByteString) ref;
-          java.lang.String s = bs.toStringUtf8();
-          if (bs.isValidUtf8()) {
-            gameId_ = s;
-          }
-          return s;
-        } else {
-          return (java.lang.String) ref;
-        }
-      }
-      /**
-       * <code>optional string gameId = 1;</code>
-       */
-      public com.google.protobuf.ByteString
-          getGameIdBytes() {
-        java.lang.Object ref = gameId_;
-        if (ref instanceof String) {
-          com.google.protobuf.ByteString b = 
-              com.google.protobuf.ByteString.copyFromUtf8(
-                  (java.lang.String) ref);
-          gameId_ = b;
-          return b;
-        } else {
-          return (com.google.protobuf.ByteString) ref;
-        }
-      }
-      /**
-       * <code>optional string gameId = 1;</code>
-       */
-      public Builder setGameId(
-          java.lang.String value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        gameId_ = value;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string gameId = 1;</code>
-       */
-      public Builder clearGameId() {
-        bitField0_ = (bitField0_ & ~0x00000001);
-        gameId_ = getDefaultInstance().getGameId();
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>optional string gameId = 1;</code>
-       */
-      public Builder setGameIdBytes(
-          com.google.protobuf.ByteString value) {
-        if (value == null) {
-    throw new NullPointerException();
-  }
-  bitField0_ |= 0x00000001;
-        gameId_ = value;
-        onChanged();
-        return this;
-      }
 
       // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.Loaded)
     }
@@ -484,39 +2533,39 @@ public final class Game {
     // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.Loaded)
   }
 
-  public interface LoadedResponseOrBuilder extends
-      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.LoadedResponse)
+  public interface CountdownOrBuilder extends
+      // @@protoc_insertion_point(interface_extends:com.fuzzjump.server.common.messages.game.Countdown)
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>optional bool found = 1;</code>
+     * <code>required int32 time = 1;</code>
      */
-    boolean hasFound();
+    boolean hasTime();
     /**
-     * <code>optional bool found = 1;</code>
+     * <code>required int32 time = 1;</code>
      */
-    boolean getFound();
+    int getTime();
   }
   /**
-   * Protobuf type {@code com.fuzzjump.server.common.messages.game.LoadedResponse}
+   * Protobuf type {@code com.fuzzjump.server.common.messages.game.Countdown}
    */
-  public static final class LoadedResponse extends
+  public static final class Countdown extends
       com.google.protobuf.GeneratedMessage implements
-      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.LoadedResponse)
-      LoadedResponseOrBuilder {
-    // Use LoadedResponse.newBuilder() to construct.
-    private LoadedResponse(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+      // @@protoc_insertion_point(message_implements:com.fuzzjump.server.common.messages.game.Countdown)
+      CountdownOrBuilder {
+    // Use Countdown.newBuilder() to construct.
+    private Countdown(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
       super(builder);
       this.unknownFields = builder.getUnknownFields();
     }
-    private LoadedResponse(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
+    private Countdown(boolean noInit) { this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance(); }
 
-    private static final LoadedResponse defaultInstance;
-    public static LoadedResponse getDefaultInstance() {
+    private static final Countdown defaultInstance;
+    public static Countdown getDefaultInstance() {
       return defaultInstance;
     }
 
-    public LoadedResponse getDefaultInstanceForType() {
+    public Countdown getDefaultInstanceForType() {
       return defaultInstance;
     }
 
@@ -526,7 +2575,7 @@ public final class Game {
         getUnknownFields() {
       return this.unknownFields;
     }
-    private LoadedResponse(
+    private Countdown(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
@@ -551,7 +2600,7 @@ public final class Game {
             }
             case 8: {
               bitField0_ |= 0x00000001;
-              found_ = input.readBool();
+              time_ = input.readInt32();
               break;
             }
           }
@@ -568,49 +2617,49 @@ public final class Game {
     }
     public static final com.google.protobuf.Descriptors.Descriptor
         getDescriptor() {
-      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_descriptor;
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Countdown_descriptor;
     }
 
     protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
         internalGetFieldAccessorTable() {
-      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_fieldAccessorTable
+      return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Countdown_fieldAccessorTable
           .ensureFieldAccessorsInitialized(
-              com.fuzzjump.server.common.messages.game.Game.LoadedResponse.class, com.fuzzjump.server.common.messages.game.Game.LoadedResponse.Builder.class);
+              com.fuzzjump.server.common.messages.game.Game.Countdown.class, com.fuzzjump.server.common.messages.game.Game.Countdown.Builder.class);
     }
 
-    public static com.google.protobuf.Parser<LoadedResponse> PARSER =
-        new com.google.protobuf.AbstractParser<LoadedResponse>() {
-      public LoadedResponse parsePartialFrom(
+    public static com.google.protobuf.Parser<Countdown> PARSER =
+        new com.google.protobuf.AbstractParser<Countdown>() {
+      public Countdown parsePartialFrom(
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws com.google.protobuf.InvalidProtocolBufferException {
-        return new LoadedResponse(input, extensionRegistry);
+        return new Countdown(input, extensionRegistry);
       }
     };
 
     @java.lang.Override
-    public com.google.protobuf.Parser<LoadedResponse> getParserForType() {
+    public com.google.protobuf.Parser<Countdown> getParserForType() {
       return PARSER;
     }
 
     private int bitField0_;
-    public static final int FOUND_FIELD_NUMBER = 1;
-    private boolean found_;
+    public static final int TIME_FIELD_NUMBER = 1;
+    private int time_;
     /**
-     * <code>optional bool found = 1;</code>
+     * <code>required int32 time = 1;</code>
      */
-    public boolean hasFound() {
+    public boolean hasTime() {
       return ((bitField0_ & 0x00000001) == 0x00000001);
     }
     /**
-     * <code>optional bool found = 1;</code>
+     * <code>required int32 time = 1;</code>
      */
-    public boolean getFound() {
-      return found_;
+    public int getTime() {
+      return time_;
     }
 
     private void initFields() {
-      found_ = false;
+      time_ = 0;
     }
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
@@ -618,6 +2667,10 @@ public final class Game {
       if (isInitialized == 1) return true;
       if (isInitialized == 0) return false;
 
+      if (!hasTime()) {
+        memoizedIsInitialized = 0;
+        return false;
+      }
       memoizedIsInitialized = 1;
       return true;
     }
@@ -626,7 +2679,7 @@ public final class Game {
                         throws java.io.IOException {
       getSerializedSize();
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
-        output.writeBool(1, found_);
+        output.writeInt32(1, time_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -639,7 +2692,7 @@ public final class Game {
       size = 0;
       if (((bitField0_ & 0x00000001) == 0x00000001)) {
         size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(1, found_);
+          .computeInt32Size(1, time_);
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSerializedSize = size;
@@ -653,53 +2706,53 @@ public final class Game {
       return super.writeReplace();
     }
 
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(
         com.google.protobuf.ByteString data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(
         com.google.protobuf.ByteString data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(byte[] data)
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(byte[] data)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(
         byte[] data,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws com.google.protobuf.InvalidProtocolBufferException {
       return PARSER.parseFrom(data, extensionRegistry);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(java.io.InputStream input)
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseFrom(input, extensionRegistry);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseDelimitedFrom(java.io.InputStream input)
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseDelimitedFrom(java.io.InputStream input)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseDelimitedFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseDelimitedFrom(
         java.io.InputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
       return PARSER.parseDelimitedFrom(input, extensionRegistry);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(
         com.google.protobuf.CodedInputStream input)
         throws java.io.IOException {
       return PARSER.parseFrom(input);
     }
-    public static com.fuzzjump.server.common.messages.game.Game.LoadedResponse parseFrom(
+    public static com.fuzzjump.server.common.messages.game.Game.Countdown parseFrom(
         com.google.protobuf.CodedInputStream input,
         com.google.protobuf.ExtensionRegistryLite extensionRegistry)
         throws java.io.IOException {
@@ -708,7 +2761,7 @@ public final class Game {
 
     public static Builder newBuilder() { return Builder.create(); }
     public Builder newBuilderForType() { return newBuilder(); }
-    public static Builder newBuilder(com.fuzzjump.server.common.messages.game.Game.LoadedResponse prototype) {
+    public static Builder newBuilder(com.fuzzjump.server.common.messages.game.Game.Countdown prototype) {
       return newBuilder().mergeFrom(prototype);
     }
     public Builder toBuilder() { return newBuilder(this); }
@@ -720,25 +2773,25 @@ public final class Game {
       return builder;
     }
     /**
-     * Protobuf type {@code com.fuzzjump.server.common.messages.game.LoadedResponse}
+     * Protobuf type {@code com.fuzzjump.server.common.messages.game.Countdown}
      */
     public static final class Builder extends
         com.google.protobuf.GeneratedMessage.Builder<Builder> implements
-        // @@protoc_insertion_point(builder_implements:com.fuzzjump.server.common.messages.game.LoadedResponse)
-        com.fuzzjump.server.common.messages.game.Game.LoadedResponseOrBuilder {
+        // @@protoc_insertion_point(builder_implements:com.fuzzjump.server.common.messages.game.Countdown)
+        com.fuzzjump.server.common.messages.game.Game.CountdownOrBuilder {
       public static final com.google.protobuf.Descriptors.Descriptor
           getDescriptor() {
-        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_descriptor;
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Countdown_descriptor;
       }
 
       protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
           internalGetFieldAccessorTable() {
-        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_fieldAccessorTable
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Countdown_fieldAccessorTable
             .ensureFieldAccessorsInitialized(
-                com.fuzzjump.server.common.messages.game.Game.LoadedResponse.class, com.fuzzjump.server.common.messages.game.Game.LoadedResponse.Builder.class);
+                com.fuzzjump.server.common.messages.game.Game.Countdown.class, com.fuzzjump.server.common.messages.game.Game.Countdown.Builder.class);
       }
 
-      // Construct using com.fuzzjump.server.common.messages.game.Game.LoadedResponse.newBuilder()
+      // Construct using com.fuzzjump.server.common.messages.game.Game.Countdown.newBuilder()
       private Builder() {
         maybeForceBuilderInitialization();
       }
@@ -758,7 +2811,7 @@ public final class Game {
 
       public Builder clear() {
         super.clear();
-        found_ = false;
+        time_ = 0;
         bitField0_ = (bitField0_ & ~0x00000001);
         return this;
       }
@@ -769,53 +2822,57 @@ public final class Game {
 
       public com.google.protobuf.Descriptors.Descriptor
           getDescriptorForType() {
-        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_descriptor;
+        return com.fuzzjump.server.common.messages.game.Game.internal_static_com_fuzzjump_server_common_messages_game_Countdown_descriptor;
       }
 
-      public com.fuzzjump.server.common.messages.game.Game.LoadedResponse getDefaultInstanceForType() {
-        return com.fuzzjump.server.common.messages.game.Game.LoadedResponse.getDefaultInstance();
+      public com.fuzzjump.server.common.messages.game.Game.Countdown getDefaultInstanceForType() {
+        return com.fuzzjump.server.common.messages.game.Game.Countdown.getDefaultInstance();
       }
 
-      public com.fuzzjump.server.common.messages.game.Game.LoadedResponse build() {
-        com.fuzzjump.server.common.messages.game.Game.LoadedResponse result = buildPartial();
+      public com.fuzzjump.server.common.messages.game.Game.Countdown build() {
+        com.fuzzjump.server.common.messages.game.Game.Countdown result = buildPartial();
         if (!result.isInitialized()) {
           throw newUninitializedMessageException(result);
         }
         return result;
       }
 
-      public com.fuzzjump.server.common.messages.game.Game.LoadedResponse buildPartial() {
-        com.fuzzjump.server.common.messages.game.Game.LoadedResponse result = new com.fuzzjump.server.common.messages.game.Game.LoadedResponse(this);
+      public com.fuzzjump.server.common.messages.game.Game.Countdown buildPartial() {
+        com.fuzzjump.server.common.messages.game.Game.Countdown result = new com.fuzzjump.server.common.messages.game.Game.Countdown(this);
         int from_bitField0_ = bitField0_;
         int to_bitField0_ = 0;
         if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
           to_bitField0_ |= 0x00000001;
         }
-        result.found_ = found_;
+        result.time_ = time_;
         result.bitField0_ = to_bitField0_;
         onBuilt();
         return result;
       }
 
       public Builder mergeFrom(com.google.protobuf.Message other) {
-        if (other instanceof com.fuzzjump.server.common.messages.game.Game.LoadedResponse) {
-          return mergeFrom((com.fuzzjump.server.common.messages.game.Game.LoadedResponse)other);
+        if (other instanceof com.fuzzjump.server.common.messages.game.Game.Countdown) {
+          return mergeFrom((com.fuzzjump.server.common.messages.game.Game.Countdown)other);
         } else {
           super.mergeFrom(other);
           return this;
         }
       }
 
-      public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.LoadedResponse other) {
-        if (other == com.fuzzjump.server.common.messages.game.Game.LoadedResponse.getDefaultInstance()) return this;
-        if (other.hasFound()) {
-          setFound(other.getFound());
+      public Builder mergeFrom(com.fuzzjump.server.common.messages.game.Game.Countdown other) {
+        if (other == com.fuzzjump.server.common.messages.game.Game.Countdown.getDefaultInstance()) return this;
+        if (other.hasTime()) {
+          setTime(other.getTime());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         return this;
       }
 
       public final boolean isInitialized() {
+        if (!hasTime()) {
+          
+          return false;
+        }
         return true;
       }
 
@@ -823,11 +2880,11 @@ public final class Game {
           com.google.protobuf.CodedInputStream input,
           com.google.protobuf.ExtensionRegistryLite extensionRegistry)
           throws java.io.IOException {
-        com.fuzzjump.server.common.messages.game.Game.LoadedResponse parsedMessage = null;
+        com.fuzzjump.server.common.messages.game.Game.Countdown parsedMessage = null;
         try {
           parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
         } catch (com.google.protobuf.InvalidProtocolBufferException e) {
-          parsedMessage = (com.fuzzjump.server.common.messages.game.Game.LoadedResponse) e.getUnfinishedMessage();
+          parsedMessage = (com.fuzzjump.server.common.messages.game.Game.Countdown) e.getUnfinishedMessage();
           throw e;
         } finally {
           if (parsedMessage != null) {
@@ -838,59 +2895,79 @@ public final class Game {
       }
       private int bitField0_;
 
-      private boolean found_ ;
+      private int time_ ;
       /**
-       * <code>optional bool found = 1;</code>
+       * <code>required int32 time = 1;</code>
        */
-      public boolean hasFound() {
+      public boolean hasTime() {
         return ((bitField0_ & 0x00000001) == 0x00000001);
       }
       /**
-       * <code>optional bool found = 1;</code>
+       * <code>required int32 time = 1;</code>
        */
-      public boolean getFound() {
-        return found_;
+      public int getTime() {
+        return time_;
       }
       /**
-       * <code>optional bool found = 1;</code>
+       * <code>required int32 time = 1;</code>
        */
-      public Builder setFound(boolean value) {
+      public Builder setTime(int value) {
         bitField0_ |= 0x00000001;
-        found_ = value;
+        time_ = value;
         onChanged();
         return this;
       }
       /**
-       * <code>optional bool found = 1;</code>
+       * <code>required int32 time = 1;</code>
        */
-      public Builder clearFound() {
+      public Builder clearTime() {
         bitField0_ = (bitField0_ & ~0x00000001);
-        found_ = false;
+        time_ = 0;
         onChanged();
         return this;
       }
 
-      // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.LoadedResponse)
+      // @@protoc_insertion_point(builder_scope:com.fuzzjump.server.common.messages.game.Countdown)
     }
 
     static {
-      defaultInstance = new LoadedResponse(true);
+      defaultInstance = new Countdown(true);
       defaultInstance.initFields();
     }
 
-    // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.LoadedResponse)
+    // @@protoc_insertion_point(class_scope:com.fuzzjump.server.common.messages.game.Countdown)
   }
 
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_fuzzjump_server_common_messages_game_JoinGame_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_fuzzjump_server_common_messages_game_JoinGame_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_fuzzjump_server_common_messages_game_Player_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_fuzzjump_server_common_messages_game_Player_fieldAccessorTable;
+  private static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_com_fuzzjump_server_common_messages_game_GameReady_descriptor;
+  private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_com_fuzzjump_server_common_messages_game_GameReady_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
     internal_static_com_fuzzjump_server_common_messages_game_Loaded_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_com_fuzzjump_server_common_messages_game_Loaded_fieldAccessorTable;
   private static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_descriptor;
+    internal_static_com_fuzzjump_server_common_messages_game_Countdown_descriptor;
   private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_fieldAccessorTable;
+      internal_static_com_fuzzjump_server_common_messages_game_Countdown_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -901,9 +2978,14 @@ public final class Game {
   static {
     java.lang.String[] descriptorData = {
       "\n\nGame.proto\022(com.fuzzjump.server.common" +
-      ".messages.game\"\030\n\006Loaded\022\016\n\006gameId\030\001 \001(\t" +
-      "\"\037\n\016LoadedResponse\022\r\n\005found\030\001 \001(\010B*\n(com" +
-      ".fuzzjump.server.common.messages.game"
+      ".messages.game\"\032\n\010JoinGame\022\016\n\006gameId\030\001 \001" +
+      "(\t\"!\n\020JoinGameResponse\022\r\n\005found\030\001 \001(\010\"-\n" +
+      "\006Player\022\016\n\006userId\030\001 \002(\t\022\023\n\013playerIndex\030\002" +
+      " \002(\005\"b\n\tGameReady\022A\n\007players\030\001 \003(\01320.com" +
+      ".fuzzjump.server.common.messages.game.Pl" +
+      "ayer\022\022\n\nsendLoaded\030\002 \001(\010\"\010\n\006Loaded\"\031\n\tCo" +
+      "untdown\022\014\n\004time\030\001 \002(\005B*\n(com.fuzzjump.se" +
+      "rver.common.messages.game"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -917,18 +2999,42 @@ public final class Game {
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
         }, assigner);
-    internal_static_com_fuzzjump_server_common_messages_game_Loaded_descriptor =
+    internal_static_com_fuzzjump_server_common_messages_game_JoinGame_descriptor =
       getDescriptor().getMessageTypes().get(0);
+    internal_static_com_fuzzjump_server_common_messages_game_JoinGame_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_fuzzjump_server_common_messages_game_JoinGame_descriptor,
+        new java.lang.String[] { "GameId", });
+    internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_descriptor =
+      getDescriptor().getMessageTypes().get(1);
+    internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_fuzzjump_server_common_messages_game_JoinGameResponse_descriptor,
+        new java.lang.String[] { "Found", });
+    internal_static_com_fuzzjump_server_common_messages_game_Player_descriptor =
+      getDescriptor().getMessageTypes().get(2);
+    internal_static_com_fuzzjump_server_common_messages_game_Player_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_fuzzjump_server_common_messages_game_Player_descriptor,
+        new java.lang.String[] { "UserId", "PlayerIndex", });
+    internal_static_com_fuzzjump_server_common_messages_game_GameReady_descriptor =
+      getDescriptor().getMessageTypes().get(3);
+    internal_static_com_fuzzjump_server_common_messages_game_GameReady_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_com_fuzzjump_server_common_messages_game_GameReady_descriptor,
+        new java.lang.String[] { "Players", "SendLoaded", });
+    internal_static_com_fuzzjump_server_common_messages_game_Loaded_descriptor =
+      getDescriptor().getMessageTypes().get(4);
     internal_static_com_fuzzjump_server_common_messages_game_Loaded_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_com_fuzzjump_server_common_messages_game_Loaded_descriptor,
-        new java.lang.String[] { "GameId", });
-    internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_descriptor =
-      getDescriptor().getMessageTypes().get(1);
-    internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_fieldAccessorTable = new
+        new java.lang.String[] { });
+    internal_static_com_fuzzjump_server_common_messages_game_Countdown_descriptor =
+      getDescriptor().getMessageTypes().get(5);
+    internal_static_com_fuzzjump_server_common_messages_game_Countdown_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_com_fuzzjump_server_common_messages_game_LoadedResponse_descriptor,
-        new java.lang.String[] { "Found", });
+        internal_static_com_fuzzjump_server_common_messages_game_Countdown_descriptor,
+        new java.lang.String[] { "Time", });
   }
 
   // @@protoc_insertion_point(outer_class_scope)

@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.fuzzjump.api.session.ISessionService;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
 import com.fuzzjump.game.net.GameSession;
@@ -27,13 +28,14 @@ import java.util.Locale;
 
 import javax.inject.Inject;
 
-public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
+public class WaitingScreen extends SnowScreen<WaitingUI> implements GameSessionWatcher {
 
     public static final int MAX_PLAYERS = 4;
 
     private final FuzzJumpParams params;
     private final ISessionService sessionService;
     private final GraphicsScheduler scheduler;
+    private final FuzzContext context;
 
     private final Stage stage;
 
@@ -49,7 +51,6 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private Label connectingMessage;
     private Table mapTable;
 
-    private Profile[] newPlayers;
     private final Profile profile;
 
     private List<Profile> players = new ArrayList<>();
@@ -59,6 +60,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Inject
     public WaitingScreen(Stage stage,
+                         FuzzContext context,
                          WaitingUI ui,
                          FuzzJumpParams params,
                          Profile profile,
@@ -66,6 +68,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                          GraphicsScheduler scheduler) {
         super(ui);
         this.stage = stage;
+        this.context = context;
         this.params = params;
         this.profile = profile;
         this.sessionService = sessionService;
@@ -92,9 +95,16 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     private void gameServerFound(GameSession sender, Lobby.GameServerSetupData message) {
-        gameSession.disconnect();
+        gameSession.close(true);
         gameSession = null;
         System.out.println("Game server details: " + message.toString());
+        context.setGameId(message.getGameId());
+        context.setGameMap(message.getMapId());
+        context.setGameSeed(message.getSeed());
+        context.setSessionKey(message.getKey());
+        context.setIp(message.getIp());
+        context.setPort(message.getPort());
+        screenHandler.showScreen(GameScreen.class);
     }
 
     private void joinResponse(GameSession session, Join.JoinResponsePacket packet) {
@@ -252,19 +262,4 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         }
     }
 
-    @Override
-    public void onTimeout() {
-        if (gameSession == null) {
-            return;
-        }
-        synchronized (connectingDialog) {
-            if (!connectingDialog.isVisible()) {
-                connectingDialog.setVisible(true);
-            }
-            connectingMessage.setText("Network error");
-            connectingButton.setText("Leave");
-            connectingButton.setVisible(true);
-            connectingProgress.setVisible(false);
-        }
-    }
 }

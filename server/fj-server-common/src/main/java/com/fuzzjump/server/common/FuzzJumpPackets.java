@@ -19,4 +19,10 @@ public class FuzzJumpPackets {
     public static final int GAME_SERVER_SETUP_RESPONSE = 12;
     public static final int GAME_SERVER_SETUP_DATA = 13;
 
+    public static final int GAME_COUNTDOWN = 14;
+    public static final int GAME_JOIN = 15;
+    public static final int GAME_JOIN_RESPONSE = 16;
+    public static final int GAME_LOADED = 17;
+    public static final int GAME_READY = 18;
+
 }

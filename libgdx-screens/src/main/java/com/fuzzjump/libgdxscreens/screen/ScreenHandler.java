@@ -64,18 +64,18 @@ public class ScreenHandler {
                 HashMap<String, Integer> referenceCounts = null;
                 if (currentScreenExists) {
                     referenceCounts = new HashMap<>();
-                    for (Map.Entry<String, StageUITextures.TextureReferenceCounter> entry : currentScreen.ui().getTextures().getTextures().entrySet()) {
+                    for (Map.Entry<String, StageUITextures.TextureReferenceCounter> entry : currentScreen.ui().getTextures().getTexturesMap().entrySet()) {
                         referenceCounts.put(entry.getKey(), entry.getValue().references);
                     }
                 }
                 show = initScreen(clazz.getName());
                 if (currentScreenExists) {
                     // pass the loaded textures to the new ui
-                    currentScreen.ui().getTextures().getTextures().putAll(currentScreen.ui().getTextures().getTextures());
+                    currentScreen.ui().getTextures().getTexturesMap().putAll(currentScreen.ui().getTextures().getTexturesMap());
                 }
                 show.init(stage, this);
                 if (currentScreenExists) {
-                    Map<String, StageUITextures.TextureReferenceCounter> newTextures = show.ui().getTextures().getTextures();
+                    Map<String, StageUITextures.TextureReferenceCounter> newTextures = show.ui().getTextures().getTexturesMap();
                     for (Map.Entry<String, Integer> entry : referenceCounts.entrySet()) {
                         //the loaded texture isn't used on this screen so remove it from the screens map
                         StageUITextures.TextureReferenceCounter referenceCounter = newTextures.get(entry.getKey());
@@ -145,7 +145,7 @@ public class ScreenHandler {
         ScreenSession current = screens.get(currentScreen.getClass().getName());
         Map<String, StageUITextures.TextureReferenceCounter> disposing = new HashMap<>();
         Map<String, StageUITextures.TextureReferenceCounter> loadedTextures = new HashMap<>();
-        loadedTextures.putAll(currentScreen.ui().getTextures().getTextures());
+        loadedTextures.putAll(currentScreen.ui().getTextures().getTexturesMap());
 
         for (StageScreen screen : new ArrayList<>(cachedScreens)) {
             if (screen.getClass().getName().equals(current.type.getName())) {
@@ -153,11 +153,11 @@ public class ScreenHandler {
                 continue;
             }
             if (remove(current, screens.get(screen.getClass().getName()))) {
-                disposing.putAll(screen.ui().getTextures().getTextures());
+                disposing.putAll(screen.ui().getTextures().getTexturesMap());
                 screen.dispose();
                 cachedScreens.remove(screen);
             } else {
-                loadedTextures.putAll(screen.ui().getTextures().getTextures());
+                loadedTextures.putAll(screen.ui().getTextures().getTexturesMap());
             }
         }
         for (Map.Entry<String, StageUITextures.TextureReferenceCounter> entry : disposing.entrySet()) {

@@ -27,7 +27,7 @@ public class StageUITextures {
         }
     }
 
-    public Map<String, TextureReferenceCounter> getTextures() {
+    public Map<String, TextureReferenceCounter> getTexturesMap() {
         return textureMap;
     }
 
@@ -67,6 +67,10 @@ public class StageUITextures {
             textureMap.put(path, counter = new TextureReferenceCounter(textures.getTextureFromPath(path)));
         counter.references++;
         return counter;
+    }
+
+    public Textures getTextures() {
+        return textures;
     }
 
     public static class TextureReferenceCounter {

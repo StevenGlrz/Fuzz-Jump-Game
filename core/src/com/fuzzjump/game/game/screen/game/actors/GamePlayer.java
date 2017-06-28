@@ -65,7 +65,7 @@ public class GamePlayer extends PhysicActor {
 //            SpecialType.BALLOONS.getSpecial().onPreDraw(this, batch, 0);
         fuzzle.setX(getX());
         fuzzle.setY(getY());
-        colorDrawable.draw(batch, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
+        //colorDrawable.draw(batch, hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         fuzzle.draw(batch, alpha);
 
         glyphLayout.setText(font, profile.getDisplayName());
@@ -91,9 +91,10 @@ public class GamePlayer extends PhysicActor {
         if (stun > 0) {
             stun -= delta;
         }
-        if (!hit && !Gdx.input.isTouched())
-            velocity.y = 1250;
-        hit = false;
+        if (hit) {
+            setDefaultVelocity();
+            hit = false;
+        }
         setZIndex(Integer.MAX_VALUE);
     }
 

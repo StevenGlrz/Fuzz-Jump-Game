@@ -74,7 +74,7 @@ public class Client {
 
     private void connect() {
         try {
-            address = new InetSocketAddress(ip, port);
+            address = new InetSocketAddress("127.0.0.1", port);
             initSocket();
             connected = false;
             while (!Thread.interrupted()) {
@@ -96,6 +96,7 @@ public class Client {
                     keys.remove();
                     handleKey(key);
                 }
+
             }
 
         } catch (Exception e) {
@@ -110,8 +111,8 @@ public class Client {
         selector = Selector.open();
         socket = SocketChannel.open();
         socket.socket().setTcpNoDelay(true);
-        socket.socket().setSendBufferSize(512);
-        socket.socket().setReceiveBufferSize(512);
+        socket.socket().setSendBufferSize(256);
+        socket.socket().setReceiveBufferSize(256);
         socket.socket().setKeepAlive(true);
         socket.configureBlocking(false);
         socket.register(selector, SelectionKey.OP_CONNECT);

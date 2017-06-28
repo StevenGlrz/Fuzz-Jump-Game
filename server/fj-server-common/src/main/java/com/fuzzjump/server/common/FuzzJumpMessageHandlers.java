@@ -1,5 +1,6 @@
 package com.fuzzjump.server.common;
 
+import com.fuzzjump.server.common.messages.game.Game;
 import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.google.protobuf.GeneratedMessage;
@@ -38,6 +39,14 @@ public class FuzzJumpMessageHandlers {
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP, Lobby.GameServerSetup.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP_RESPONSE, Lobby.GameServerSetupResponse.getDefaultInstance()));
         tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP_DATA, Lobby.GameServerSetupData.getDefaultInstance()));
+
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_COUNTDOWN, Game.Countdown.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_JOIN, Game.JoinGame.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_JOIN_RESPONSE, Game.JoinGameResponse.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_LOADED, Game.Loaded.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_READY, Game.GameReady.getDefaultInstance()));
+        tempHandlerList.add(createProtoMessageHandler(FuzzJumpPackets.GAME_SERVER_SETUP_DATA, Lobby.GameServerSetupData.getDefaultInstance()));
+
         HANDLERS = Collections.unmodifiableList(tempHandlerList);
     }
 

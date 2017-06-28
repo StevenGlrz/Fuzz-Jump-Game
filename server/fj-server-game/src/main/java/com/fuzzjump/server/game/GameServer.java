@@ -32,21 +32,20 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
         addValidator(gameServerValidator);
         addValidator(new GameServerMatchmakingValidator(this));
         getPacketProcessor().addListener(Lobby.GameServerSetup.class, this::onGameServerSetup);
+        getPacketProcessor().addListener(Game.JoinGame.class, this::onJoinGame);
         getPacketProcessor().addListener(Game.Loaded.class, this::onGameLoaded);
     }
 
-    private void onGameLoaded(GamePlayer player, Game.Loaded message) {
-        if(player.isServer()) {
-            player.getChannel().disconnect();
-            return;
-        }
+    private void onJoinGame(GamePlayer player, Game.JoinGame message) {
         try {
             String key = message.getGameId();
             if (!sessions.containsKey(key)) {
-                player.getChannel().writeAndFlush(Game.LoadedResponse.newBuilder().setFound(false).buildPartial());
+                player.getChannel().writeAndFlush(Game.JoinGameResponse.newBuilder().setFound(false).buildPartial());
             } else {
-                player.getChannel().writeAndFlush(Game.LoadedResponse.newBuilder().setFound(true).buildPartial());
-                sessions.get(key).addPlayer(player);
+                player.getChannel().writeAndFlush(Game.JoinGameResponse.newBuilder().setFound(true).buildPartial());
+                GameSession session = sessions.get(key);
+                session.addPlayer(player);
+                checkSessionStart(session, false);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,8 +53,18 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
         }
     }
 
+    private void onGameLoaded(GamePlayer player, Game.Loaded message) {
+        try {
+            player.setLoaded(true);
+            checkSessionLoaded((GameSession) player.getSession(), false);
+        } catch (Exception e) {
+            e.printStackTrace();
+            player.getChannel().disconnect();
+        }
+    }
+
     private void onGameServerSetup(GamePlayer player, Lobby.GameServerSetup message) {
-        if(!player.isServer()) {
+        if (!player.isServer()) {
             player.getChannel().disconnect();
             return;
         }
@@ -64,7 +73,6 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
         String gameId = UUID.randomUUID().toString();
         GameSession session = new GameSession(message.getMapId(), gameId, message.getPlayerCount());
         sessions.put(gameId, session);
-        session.setTickFuture(gameService.scheduleAtFixedRate(() -> processSession(session), 0, TICK, TimeUnit.MILLISECONDS));
         Lobby.GameServerSetupResponse.Builder builder = Lobby.GameServerSetupResponse.newBuilder();
         builder.setGameId(gameId);
         builder.setSeed(session.seed);
@@ -73,13 +81,57 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
             builder.addKeys(keys[i]);
         }
         player.getChannel().writeAndFlush(builder.buildPartial());
+
+        //everybody has 10 seconds to connect. it will force start then
+        getExecutorService().schedule(() -> {
+            checkSessionStart(session, true);
+        }, 10000, TimeUnit.MILLISECONDS);
+    }
+
+    private void checkSessionStart(GameSession session, boolean forceStart) {
+        synchronized (session) {
+            if (session.isStarted()) {
+                session.sendPlayers();
+                return;
+            }
+            if (session.isDestroyed() || !session.checkStart(forceStart)) {
+                return;
+            }
+            if (session.getPlayers().size() <= 0) {
+                session.destroy();
+                sessions.remove(session.id);
+            } else {
+                session.sendPlayers();
+                getExecutorService().schedule(() -> {
+                    checkSessionLoaded(session, true);
+                }, 5000, TimeUnit.MILLISECONDS);
+            }
+        }
+    }
+
+    private void checkSessionLoaded(GameSession session, boolean forceStart) {
+        synchronized (session) {
+            if (session.isDestroyed() || session.isLoaded() || !session.checkLoaded(forceStart)) {
+                return;
+            }
+            if (session.getPlayers().size() <= 0) {
+                session.destroy();
+                sessions.remove(session.id);
+            } else {
+                session.setFuture(gameService.scheduleAtFixedRate(() -> processSession(session), TICK, TICK, TimeUnit.MILLISECONDS));
+            }
+        }
     }
 
     private void processSession(GameSession session) {
-        if (!session.update()) {
-            session.getTickFuture().cancel(true);
-            session.destroy();
-            sessions.remove(session.id);
+        try {
+            if (session.update()) {
+                session.getFuture().cancel(true);
+                session.destroy();
+                sessions.remove(session.id);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -91,12 +143,19 @@ public class GameServer extends FuzzJumpServer<GamePlayer, GameServerInfo> {
     @Override
     public void connected(GamePlayer player) {
         System.out.println("Channel connected");
+        //TODO add timer to remove player in 10 seconds if they havent send the game id packet.
+        //check player count
     }
 
     @Override
     public void disconnected(GamePlayer player) {
         if (player.getSession() == null)
             return;
-        player.getSession().removePlayer(player);
+        GameSession session = (GameSession) player.getSession();
+        session.removePlayer(player);
+        if (!session.isStarted() && !session.isLoaded()) {
+            session.destroy();
+            sessions.remove(session.id);
+        }
     }
 }

@@ -160,7 +160,6 @@ public class GameServerTransferer {
         for(int i = 0; i < session.getPlayers().size(); i++) {
             LobbyPlayer player = session.getPlayers().get(i);
             player.getChannel().writeAndFlush(builder.setKey(message.getKeys(i)).buildPartial());
-            player.getChannel().disconnect();
         }
         channel.attr(SESSION_ATTRIBUTE_KEY).set(null);
         channel.disconnect();
@@ -200,13 +199,28 @@ public class GameServerTransferer {
             if (attrib == null)
                 return;
             LobbySession session = attrib.get();
-            if (session == null)
+            //if the session is null, then disconnect in 5 seconds. it means we found a server
+            if (session == null) {
+                matchmakingServer.getExecutorService().schedule(() -> {
+                    for(FuzzJumpPlayer player : session.getPlayers()) {
+                        if (player.getChannel().isOpen()) {
+                            player.getChannel().disconnect();
+                        }
+                    }
+                }, 5000, TimeUnit.MILLISECONDS);
                 return;
+            }
             Lobby.GameServerFound serverFoundMessage = Lobby.GameServerFound.newBuilder().setFound(false).build();
             for(FuzzJumpPlayer player : session.getPlayers()) {
                 player.getChannel().writeAndFlush(serverFoundMessage);
-                player.getChannel().disconnect();
             }
+            matchmakingServer.getExecutorService().schedule(() -> {
+                for(FuzzJumpPlayer player : session.getPlayers()) {
+                    if (player.getChannel().isOpen()) {
+                        player.getChannel().disconnect();
+                    }
+                }
+            }, 5000, TimeUnit.MILLISECONDS);
         }
 
     }

@@ -2,14 +2,38 @@ package com.fuzzjump.server.common.messages.game;
 
 option java_package = "com.fuzzjump.server.common.messages.game";
 
-message Loaded {
+message JoinGame {
 
   optional string gameId = 1;
 
 }
 
-message LoadedResponse {
+message JoinGameResponse {
 
   optional bool found = 1;
+
+}
+
+message Player {
+
+  required string userId = 1;
+  required int32 playerIndex = 2;
+
+}
+
+message GameReady {
+
+  repeated Player players = 1;
+  optional bool sendLoaded = 2;
+
+}
+
+message Loaded {
+
+}
+
+message Countdown {
+
+  required int32 time = 1;
 
 }

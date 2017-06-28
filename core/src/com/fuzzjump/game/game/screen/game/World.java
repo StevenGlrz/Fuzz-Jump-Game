@@ -23,11 +23,11 @@ public class World {
 	private float width;
 	private float height;
 
-	public World(GameScreen screen, long seed, float width, float height) {
+	public World(GameScreen screen, String seed, float width, float height) {
 		this.width = width;
 		this.height = height;
         this.screen = screen;
-		this.random = new Random(seed);
+		this.random = new Random(seed.hashCode());
 	}
 
     float t = 0.0f;
@@ -38,7 +38,7 @@ public class World {
 
     private ArrayList<PhysicActor> remove = new ArrayList<PhysicActor>();
 
-	public void act(Stage gameStage) {
+	public void act(Stage worldStage) {
 
         long newTime = System.currentTimeMillis();
         float frameTime = (newTime - currentTime) / 1000f;
@@ -87,7 +87,7 @@ public class World {
         }
         remove.clear();
 
-        gameStage.act(FRAME_DT);
+        worldStage.act(FRAME_DT);
 	}
 
     private float[] a = new float[4], b = new float[4], c = new float [4], d = new float[4];

@@ -9,7 +9,7 @@
         <layer parallaxY=".5" height="704" yOffset="1.4">bg-city-BGbuildings2-B</layer>
         <layer parallaxY=".5" height="1280" yOffset=".8">bg-city-BGbuildings2-A</layer>
         <layer parallaxY=".75" height="978" yOffset=".9">bg-city-BGbuildings3</layer>
-        <layer parallaxY="1" height="598" yOffset="1.120">bg-city-FGBuildings-B</layer>
+        <layer parallaxY="1" height="598" yOffset="1.075">bg-city-FGBuildings-B</layer>
         <layer parallaxY="1" height="1280" yOffset=".520">bg-city-FGBuildings-A</layer>
     </background>
 

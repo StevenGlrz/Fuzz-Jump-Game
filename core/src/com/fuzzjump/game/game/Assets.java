@@ -436,8 +436,8 @@ public class Assets {
     }
 
 //    public static ImageButton.ImageButtonStyle createAddBtnStyle(StageUI ui) {
-//        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTextures().getTextureRegionDrawable(ADD),
-//                ui.getTextures().getTextureRegionDrawable(ADD_DOWN),
+//        ImageButton.ImageButtonStyle style = new ImageButton.ImageButtonStyle(ui.getTexturesMap().getTextureRegionDrawable(ADD),
+//                ui.getTexturesMap().getTextureRegionDrawable(ADD_DOWN),
 //                null, null, null, null);
 //        return style;
 //    }

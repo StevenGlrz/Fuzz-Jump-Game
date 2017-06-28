@@ -10,8 +10,11 @@ public class FuzzContext {
 
 
     private String gameId;
-    private int gameSeed;
+    private String gameSeed;
     private int gameMap;
+    private String ip;
+    private int port;
+    private String sessionKey;
 
 
     public String getGameId() {
@@ -22,11 +25,11 @@ public class FuzzContext {
         this.gameId = gameId;
     }
 
-    public int getGameSeed() {
+    public String getGameSeed() {
         return gameSeed;
     }
 
-    public void setGameSeed(int gameSeed) {
+    public void setGameSeed(String gameSeed) {
         this.gameSeed = gameSeed;
     }
 
@@ -36,5 +39,29 @@ public class FuzzContext {
 
     public void setGameMap(int gameMap) {
         this.gameMap = gameMap;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
+    }
+
+    public String getSessionKey() {
+        return sessionKey;
     }
 }

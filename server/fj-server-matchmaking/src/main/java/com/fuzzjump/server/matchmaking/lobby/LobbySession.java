@@ -18,7 +18,7 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
     private Lobby.Player.Builder playerBuilder = Lobby.Player.newBuilder();
     private Lobby.TimeState.Builder timeStateBuilder = Lobby.TimeState.newBuilder();
 
-    private float remainingTime = 10;
+    private float remainingTime = 2;
 
     public ScheduledFuture<?> future;
 

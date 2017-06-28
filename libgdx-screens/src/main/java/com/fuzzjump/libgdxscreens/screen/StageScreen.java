@@ -25,7 +25,7 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
     }
 
     //init -> add -> showScreen.
-    public final void init(Stage stage, ScreenHandler handler) {
+    public void init(Stage stage, ScreenHandler handler) {
         this.stage = stage;
         this.screenHandler = handler;
         if (this.ui != null) {

@@ -12,6 +12,7 @@ import com.fuzzjump.game.game.screen.MainScreen;
 import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.SplashScreen;
 import com.fuzzjump.game.game.screen.WaitingScreen;
+import com.fuzzjump.game.game.screen.game.actors.SnowActor;
 import com.fuzzjump.libgdxscreens.screen.ScreenHandler;
 import com.fuzzjump.libgdxscreens.Textures;
 
@@ -68,4 +69,5 @@ public class FuzzJumpGame implements ScreenHandler.ScreenChangeHandler {
     public void changeScreen(Screen screen) {
         fuzzJump.setScreen(screen);
     }
+
 }

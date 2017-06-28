@@ -1,6 +1,7 @@
 package com.fuzzjump.server.game;
 
 
+import com.fuzzjump.server.base.FuzzJumpPlayer;
 import com.fuzzjump.server.common.messages.join.Join;
 import com.steveadoo.server.base.Player;
 import com.steveadoo.server.base.validation.Validator;
@@ -56,11 +57,13 @@ public class GameServerPlayerValidator implements Validator {
      */
     @Override
     public CompletableFuture<Boolean> validate(Player player, Object message) {
+        FuzzJumpPlayer fuzzJumpPlayer = (FuzzJumpPlayer) player;
         Join.JoinPacket joinPacket = (Join.JoinPacket) message;
         if (!sessionKeys.containsKey(joinPacket.getServerSessionKey())) {
             player.getChannel().writeAndFlush(getJoinResponse(false));
             return CompletableFuture.completedFuture(false);
         }
+        fuzzJumpPlayer.setUserId(joinPacket.getUserId());
         sessionKeys.remove(joinPacket.getServerSessionKey());
         player.getChannel().writeAndFlush(getJoinResponse(true));
         return CompletableFuture.completedFuture(true);

@@ -41,6 +41,7 @@ public abstract class PhysicActor extends Image {
     };
 
     public PhysicActor(World world, TextureRegion texture) {
+        this.world = world;
         velocityModifier.set(1, 1);
         if (texture != null) {
             setSize(texture.getRegionWidth(), texture.getRegionHeight());

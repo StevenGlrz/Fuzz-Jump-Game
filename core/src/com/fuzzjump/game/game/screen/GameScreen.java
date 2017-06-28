@@ -1,20 +1,16 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.DelayAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.map.GameMap;
-import com.fuzzjump.game.game.map.GameMapGround;
 import com.fuzzjump.game.game.map.GameMapParser;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
@@ -26,9 +22,10 @@ import com.fuzzjump.game.game.screen.game.actors.GamePlayer;
 import com.fuzzjump.game.game.screen.ui.GameUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
+import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.Textures;
-import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.game.Game;
+import com.fuzzjump.server.common.messages.join.Join;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,15 +33,23 @@ import java.util.Random;
 
 import javax.inject.Inject;
 
-public class GameScreen extends StageScreen<GameUI> implements GameSessionWatcher {
+import io.reactivex.Observable;
 
-    private GameSession session;
+public class GameScreen extends SnowScreen<GameUI> implements GameSessionWatcher {
+
+    private static final int LOADING_MAP = 0;
+    private static final int WAITING = 1;
+    private static final int LOADING_PLAYERS = 2;
+    private static final int GAME_STARTED = 3;
+
+    private final Object updateLock = new Object();
+
     private final FuzzContext context;
     private final GameMapParser mapParser;
     private final UnlockableColorizer colorizer;
+    private final GraphicsScheduler scheduler;
 
-    private long totalTime = 0, lastTime = 0;
-    private int totalPackets = 0;
+    private GameSession gameSession;
 
     private GameStage worldStage;
     private World world;
@@ -58,23 +63,23 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
     private Map<Integer, GamePlayer> players = new HashMap<>(4);
 
     private String mapName;
-    private boolean gameStarted;
-    private long currentTime;
-    private float gameTime = 0;
-    private DelayAction delayAction;
 
     private Dialog progressDialog;
     private Image image;
     private Label status;
     private String gameId;
 
+    private int state = 0;
+    private int updateCounter;
+
     @Inject
-    public GameScreen(GameUI ui, Profile profile, FuzzContext context, GameMapParser mapParser, UnlockableColorizer colorizer) {
+    public GameScreen(GameUI ui, Profile profile, FuzzContext context, GameMapParser mapParser, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
         super(ui);
         this.me = profile;
         this.context = context;
         this.mapParser = mapParser;
         this.colorizer = colorizer;
+        this.scheduler = scheduler;
     }
 
     @Override
@@ -84,105 +89,146 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
         this.status = ui().actor(Label.class, Assets.GameUI.PROGRESS_LABEL);
         image.setVisible(true);
         status.setVisible(true);
-        status.setText("Loading map");
-        //progressDialog.show(game.getStage());
 
-        Gdx.app.postRunnable(this::initScreen);
+        status.setText("Loading map");
+        progressDialog.show(getStage());
     }
 
-    private void initScreen() {
+    @Override
+    public void onShow() {
+        gameSession = new GameSession(context.getIp(), context.getPort(), this);
+
+        //send join -> send join game -> get back game ready -> send loaded -> wait for countdown.
+
+        gameSession.getPacketProcessor().addListener(Join.JoinResponsePacket.class, this::joinResponse);
+        gameSession.getPacketProcessor().addListener(Game.JoinGameResponse.class, this::joinGameResponse);
+        gameSession.getPacketProcessor().addListener(Game.GameReady.class, this::gameReady);
+        gameSession.getPacketProcessor().addListener(Game.Countdown.class, this::countdown);
+
+        gameSession.connect();
+
+        status.setText("Loading map");
+
+        if (context.getIp() == null) {
+            screenHandler.showScreen(MenuScreen.class);
+            return;
+        }
+
+        state = LOADING_MAP;
+
+        world = null;
+        worldStage = null;
+
         gameId = context.getGameId();
-        random = new Random(context.getGameSeed());
+        random = new Random(context.getGameSeed().hashCode());
         mapName = GameMap.MAPS[context.getGameMap()];
 
-        map = mapParser.parse(mapName);
-        mapTextures = Textures.atlasFromFolder(Assets.MAP_DIR + mapName + "/");
-        world = new World(this, context.getGameSeed(), map.getWidth(), map.getHeight());
+        getLoader().add(() -> {
+            map = mapParser.parse(mapName);
+            snowActor.setEnabled(map.snowing());
+        });
+        getLoader().add(() -> mapTextures = Textures.atlasFromFolder(Assets.MAP_DIR + mapName + "/"));
 
-        GameMapGround ground = map.getGround();
-        GamePlatform platform = new GamePlatform(world, 0, ground.getY(), world.getWidth(), ground.getHeight(), ground.getHeight() * .85f, ground.getRealHeight(), mapTextures.findRegion(ground.getName())) {
+        getLoader().add(() -> {
+            world = new World(this, context.getGameSeed(), map.getWidth(), map.getHeight());
+            worldStage = new GameStage(getStage().getViewport(), getStage().getBatch(), this, world);
+            worldStage.init();
+            worldStage.addGameActors(world.getPhysicsActors());
+            addPlayer(me, world.getWidth() / 2);
+            getLoader().add(() -> {
+                synchronized (gameSession) {
+                    state = WAITING;
+                }
+            });
+        });
 
-            @Override
-            public void draw(Batch batch, float parentAlpha) {
-                batch.setColor(Color.WHITE);
-                super.draw(batch, parentAlpha);
-            }
-        };
-        world.getPhysicsActors().add(platform);
 
-        this.worldStage = new GameStage(getStage().getViewport(), getStage().getBatch(), this);
-        worldStage.init();
-        worldStage.addGameActors(world.getPhysicsActors());
-
-        addPlayer(me, world.getWidth() / 2);
-
-        status.setText("Connecting");
-        /*if (attachment.getIp() != null) {
-            session = new GameSession(attachment.getIp(), attachment.getPort(), attachment.getKey(), this);
-            session.connect();
-
-            // TODO Add handlers
-        } else {
-            gameStarted = true;
-            progressDialog.hide();
-        }*/
     }
 
-    private void loadedResponse(GameSession gameSession, Game.LoadedResponse message) {
-        if (message.getFound()) {
-            status.setText("Waiting for players");
-        } else {
-            session.disconnected();
+
+    public void joinResponse(GameSession session, Join.JoinResponsePacket message) {
+        System.out.println("Join response");
+        status.setText("Joining game");
+        gameSession.send(Game.JoinGame.newBuilder().setGameId(gameId).buildPartial());
+    }
+
+    private void joinGameResponse(GameSession gameSession, Game.JoinGameResponse message) {
+        if (!message.getFound()) {
+            this.gameSession.disconnected();
             screenHandler.showScreen(MenuScreen.class);
         }
+        System.out.println("Join game response");
+        status.setText("Waiting for players");
     }
 
- //   private void countdown(GameSession session, Game.Countdown countdown) {
-//        status.setText("Starting: " + countdown.getTime());
-//        if (countdown.getTime() <= 0) {
-//            progressDialog.hide();
-//            gameStarted = true;
-//        }
- //  }
+    private void countdown(GameSession session, Game.Countdown message) {
+        status.setText("Starting: " + message.getTime());
+        if (message.getTime() <= 0) {
+            progressDialog.hide();
+            state = GAME_STARTED;
+        }
+    }
 
-  //  private void gameReady(GameSession session, Game.GameReady message) {
-//        if (message.getPlayersCount() > 0) {
-//            PlayerProfile[] newPlayers = new PlayerProfile[message.getPlayersCount() - 1];
-//            System.out.println("PLAYERS: " + message.getPlayersCount());
-//            int arrIndex = 0;
-//            for (int i = 0; i < message.getPlayersCount(); i++) {
-//                Game.Player player = message.getPlayers(i);
-//                if (player.getProfileId() == game.getProfile().getProfileId()) {
-//                    game.getProfile().setPlayerIndex(player.getPlayerIndex());
-//                    continue;
-//                }
-//                GamePlayer existingPlayer = players.get(player.getPlayerIndex());
-//                PlayerProfile profile;
-//                if (existingPlayer == null || existingPlayer.getProfile().getProfileId() != player.getProfileId()) {
-//                    profile = new PlayerProfile(player);
-//                    profile.setName("Waiting");
-//                } else {
-//                    profile = existingPlayer.getProfile();
-//                }
-//                newPlayers[arrIndex++] = profile;
-//            }
-//            removePlayers();
-//            addPlayer(game.getProfile(), world.getWidth() / 2);
-//            for (int i = 0; i < newPlayers.length; i++) {
-//                PlayerProfile profile = newPlayers[i];
-//                addPlayer(profile, world.getWidth() / 2);
-//            }
-//        }
-  //  }
-
-    public Profile getProfile(String userId) {
-        for (int i = 0; i < players.size(); i++) {
-            Profile profile = players.get(i).getProfile();
-            if (profile.getUserId().equals(userId)) {
-                return profile;
+    private void gameReady(GameSession session, Game.GameReady message) {
+        if (message.getPlayersCount() == 0) {
+            return;
+        }
+        System.out.println("Game ready.");
+        if (message.getSendLoaded()) {
+            updateCounter++;
+        }
+        final int thisUpdate = updateCounter;
+        synchronized (gameSession) {
+            //wait for the map to load before handling players
+            //what if we receive another packet while waiting for this??
+            if (state == LOADING_MAP) {
+                getLoader().add(() -> {
+                    if (updateCounter != thisUpdate) {
+                        return;
+                    }
+                    gameReady(session, message);
+                });
+                return;
             }
         }
-        return null;
+        System.out.println("Doing it.");
+        for (int i = 0; i < message.getPlayersCount(); i++) {
+            Game.Player player = message.getPlayers(i);
+            if (player.getUserId().equals(me.getUserId())) {
+                me.setPlayerIndex(player.getPlayerIndex());
+                continue;
+            }
+            GamePlayer existingPlayer = players.get(player.getPlayerIndex());
+            Profile profile;
+            if (existingPlayer == null || !existingPlayer.getProfile().getUserId().equals(player.getUserId())) {
+                profile = new Profile();
+                profile.setUserId(player.getUserId());
+                profile.setDisplayName("Waiting");
+                profile.setPlayerIndex(player.getPlayerIndex());
+                addPlayer(profile, world.getWidth() / 2);
+            } else {
+                existingPlayer.getProfile().setPlayerIndex(player.getPlayerIndex());
+            }
+        }
+        //mark this update counter. if another player joins while we're loading this batch of players, defer the loaded message.
+        synchronized (updateLock) {
+            loadProfiles().observeOn(scheduler).subscribe(result -> {
+                synchronized (updateLock) {
+                    if (message.getSendLoaded() && updateCounter == thisUpdate) {
+                        sendLoaded();
+                    }
+                }
+            });
+        }
+    }
+
+    //wait for countdown after this is sent.
+    private void sendLoaded() {
+        gameSession.send(Game.Loaded.newBuilder().buildPartial());
+    }
+
+    public Observable loadProfiles() {
+        return Observable.just(true);
     }
 
     public void playerFinished(GamePlayer player) {
@@ -194,19 +240,18 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
         }
         player.setFinished(true);
         GamePlatform winningPlatform = winnerPlatforms[place];
+        player.setVisible(true);
         player.position.set(winningPlatform.hitbox.getX() + winningPlatform.hitbox.getWidth() / 2 - player.getWidth() / 2, winningPlatform.hitbox.getY() + winningPlatform.hitbox.getHeight() + player.getHeight() / 2);
         player.velocity.set(0, 0);
         player.velocityModifier.x = 0;
     }
 
-    @Override
-    public void onShow() {
-        //if (!session.established())
-        //    onDisconnect(); // TODO This should NOT be done here
-    }
 
     @Override
     public void render(float delta) {
+
+        getLoader().process();
+
         final Stage stage = getStage();
 
         Gdx.gl20.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -215,9 +260,7 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
             stage.getBatch().enableBlending();
         }
 
-        gameTime += delta;
-
-        if (gameStarted) {
+        if (state == GAME_STARTED) {
             GamePlayer player = getPlayer();
 
             if (player.getStun() <= 0 && !player.isFinished()) {
@@ -237,10 +280,11 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
         stage.draw();
 
         //if (gameStarted)
-        //    session.sendPosition(player.position.x, player.position.y, player.velocity.x, player.velocity.y);
+        //    gameSession.sendPosition(player.position.x, player.position.y, player.velocity.x, player.velocity.y);
 
-//        if (worldStage != null && getMap().snowing())
-//            game.getSnow().draw(game.getBatch(), 1, getPlayer().velocity.y);
+        if (worldStage != null && getPlayer() != null && getMap().snowing()) {
+            snowActor.draw(getStage().getBatch(), 1, getPlayer().velocity.y);
+        }
 
         if (Assets.DEBUG) {
             stage.getBatch().begin();
@@ -250,14 +294,15 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
 
     }
 
-    public GamePlayer addPlayer(Profile profile, float x) {
+    public void addPlayer(Profile profile, float x) {
         Fuzzle playerFuzzle = new Fuzzle(ui(), colorizer, profile, false);
         playerFuzzle.load(getLoader());
-        GamePlayer plr = new GamePlayer(ui(), world, playerFuzzle, profile, x, 96, 128, ui().getGameSkin().getFont("ingame-font"));
-        players.put(profile.getPlayerIndex(), plr);
-        worldStage.addGameActor(plr);
-        world.getPhysicsActors().add(plr);
-        return plr;
+        getLoader().add(() -> {
+            GamePlayer plr = new GamePlayer(ui(), world, playerFuzzle, profile, x, 96, 128, ui().getGameSkin().getFont("ingame-font"));
+            players.put(profile.getPlayerIndex(), plr);
+            worldStage.addGameActor(plr);
+            world.getPhysicsActors().add(plr);
+        });
     }
 
     public void removePlayers() {
@@ -276,23 +321,24 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
 
     @Override
     public void onConnect() {
-        status.setText("Authorizing");
+        authorize();
+    }
+
+    private void authorize() {
+        System.out.println("Authorizing");
+        gameSession.send(Join.JoinPacket.newBuilder()
+                .setUserId(me.getUserId())
+                .setServerSessionKey(context.getSessionKey())
+                .setVersion(1)
+                .buildPartial());
     }
 
     @Override
     public void onDisconnect() {
-        mapTextures.dispose();
+        if (mapTextures != null) {
+            mapTextures.dispose();
+        }
         screenHandler.showScreen(MenuScreen.class);
-    }
-
-    @Override
-    public void onTimeout() {
-        onDisconnect();
-    }
-
-    public void authenticated() {
-        status.setText("Joining game");
-        session.send(Game.Loaded.newBuilder().setGameId(gameId).buildPartial());
     }
 
     public TextureAtlas getMapTextures() {

@@ -41,6 +41,10 @@ public class FJDragDownBarTable extends DragDownBarTable {
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
 
+        if (profile == null) {
+            return;
+        }
+
         if (currentRanking != profile.getLevel()) {
             currentRanking = profile.getLevel();
             rankingLabel.setText(String.valueOf(currentRanking));

@@ -5,7 +5,5 @@ public interface GameSessionWatcher {
 	void onConnect();
 
 	void onDisconnect();
-	
-	void onTimeout();
 
 }

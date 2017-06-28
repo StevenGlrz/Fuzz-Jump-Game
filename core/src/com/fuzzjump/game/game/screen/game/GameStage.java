@@ -1,6 +1,7 @@
 package com.fuzzjump.game.game.screen.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,8 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.fuzzjump.game.game.map.GameMapGround;
 import com.fuzzjump.game.game.screen.GameScreen;
 import com.fuzzjump.game.game.screen.game.actors.CloudActor;
+import com.fuzzjump.game.game.screen.game.actors.GamePlatform;
 import com.fuzzjump.game.game.screen.game.actors.GamePlayer;
 import com.fuzzjump.game.game.map.GameMap;
 import com.fuzzjump.game.game.map.GameMapBackground;
@@ -27,6 +30,7 @@ public class GameStage extends Stage {
     private final Random random;
     private final GameMap map;
     private final TextureAtlas textures;
+    private final World world;
 
     private TextureRegion borderTexture;
 
@@ -35,7 +39,7 @@ public class GameStage extends Stage {
     private Group gameActors = new Group();
     private Group clouds = new Group();
 
-    public GameStage(Viewport viewport, Batch batch, GameScreen screen) {
+    public GameStage(Viewport viewport, Batch batch, GameScreen screen, World world) {
         super(new ScreenViewport(), batch);
         this.mainViewport = viewport;
         this.batch = batch;
@@ -43,6 +47,7 @@ public class GameStage extends Stage {
         this.textures = screen.getMapTextures();
         this.map = screen.getMap();
         this.random = screen.getRandom();
+        this.world = world;
     }
 
     public void init() {
@@ -77,6 +82,16 @@ public class GameStage extends Stage {
 
         addGameActor(winnersPlatform);
 
+        GameMapGround ground = map.getGround();
+        GamePlatform platform = new GamePlatform(world, 0, ground.getY(), world.getWidth(), ground.getHeight(), ground.getHeight() * .85f, ground.getRealHeight(), screen.getMapTextures().findRegion(ground.getName())) {
+
+            @Override
+            public void draw(Batch batch, float parentAlpha) {
+                batch.setColor(Color.WHITE);
+                super.draw(batch, parentAlpha);
+            }
+        };
+        world.getPhysicsActors().add(platform);
     }
 
     @Override
@@ -144,11 +159,14 @@ public class GameStage extends Stage {
 
     private void drawBorders() {
         GamePlayer player = screen.getPlayer();
-
-        if (player.getY() - getViewport().getWorldHeight() / 2 < map.getGround().getY()) {
+        float playerY = 0;
+        if (player != null) {
+            playerY = player.getY();
+        }
+        if (playerY - getViewport().getWorldHeight() / 2 < map.getGround().getY()) {
             //determine how many blocks to draw
             int xBlocks = (int) (1 + getViewport().getWorldWidth() / borderTexture.getRegionWidth()); //+ 1 to be gratuitous
-            int yBlocks = (int) (Math.abs(player.getY() - getViewport().getWorldHeight() / 2) + map.getGround().getY()) / borderTexture.getRegionHeight();
+            int yBlocks = (int) (Math.abs(playerY - getViewport().getWorldHeight() / 2) + map.getGround().getY()) / borderTexture.getRegionHeight();
 
             for (int x = 0; x < xBlocks + 2; x++) {
                 for (int y = 1; y < yBlocks + 2; y++) {

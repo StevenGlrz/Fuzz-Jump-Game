@@ -20,7 +20,7 @@ public class UnlockableColorizer {
     }
 
     public TextureRegion getColored(StageUITextures textures, UnlockableDefinition definition, int colorIndex, boolean hardref) {
-        Map<String, StageUITextures.TextureReferenceCounter> textureMap = textures.getTextures();
+        Map<String, StageUITextures.TextureReferenceCounter> textureMap = textures.getTexturesMap();
 
         String mapKey = "unlockable-" + definition.getCategory() + "-" + definition.getId() + "-" + colorIndex;
         if (textureMap.containsKey(mapKey) && textureMap.get(mapKey).getRegion().get() != null) {
