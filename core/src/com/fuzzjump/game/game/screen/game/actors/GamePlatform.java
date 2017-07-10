@@ -36,7 +36,7 @@ public class GamePlatform extends PhysicActor {
 
     @Override
 	public void hit(PhysicActor other) {
-        if (other instanceof GamePlayer) {
+        if (other instanceof GamePlayer && ((GamePlayer) other).velocity.y <= 0) {
             ((GamePlayer) other).velocity.y = 0;
             ((GamePlayer) other).hit = true;
         }

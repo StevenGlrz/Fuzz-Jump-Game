@@ -70,7 +70,7 @@ public class FuzzJumpApplication extends AndroidApplication {
             fuzzJump = new FuzzJump(
                     //TODO!!
                     new FuzzJumpParams("", "", 9),
-                    new PlatformModule(new AndroidGraphicsLoader(executor, Gdx.files.getExternalStoragePath()))
+                    new PlatformModule(new AndroidGraphicsLoader(Gdx.files.getExternalStoragePath()))
             );
             layout = new RelativeLayout(this);
 

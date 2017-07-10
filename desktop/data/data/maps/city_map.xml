@@ -6,7 +6,7 @@
         <layer parallaxY=".75">bg-city-sky</layer>
         <layer parallaxY=".15" height="1280" yOffset=".6">bg-city-bay</layer>
         <layer parallaxY=".25" height="1280" yOffset=".5">bg-city-BGbuildings1</layer>
-        <layer parallaxY=".5" height="704" yOffset="1.4">bg-city-BGbuildings2-B</layer>
+        <layer parallaxY=".5" height="704" yOffset="1.35">bg-city-BGbuildings2-B</layer>
         <layer parallaxY=".5" height="1280" yOffset=".8">bg-city-BGbuildings2-A</layer>
         <layer parallaxY=".75" height="978" yOffset=".9">bg-city-BGbuildings3</layer>
         <layer parallaxY="1" height="598" yOffset="1.075">bg-city-FGBuildings-B</layer>

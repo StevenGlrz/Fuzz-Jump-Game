@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.Scaling;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
@@ -170,9 +172,10 @@ public class WaitingUI extends StageUI {
         add(dropdownTable).expand().fill();
     }
 
-    public void update(List<Profile> players) {
+    public void update(IntMap<Profile> mapPlayers) {
+        Array<Profile> players = mapPlayers.values().toArray();
         for(int i = 0; i < WaitingScreen.MAX_PLAYERS; i++) {
-            Profile profile = i < players.size() ? players.get(i) : null;
+            Profile profile = i < players.size ? players.get(i) : null;
             playerSlots[i].setPlayer(profile);
             if (profile != null && profile == this.profile) {
                 readyButton.setText(profile.isReady() ? "Unready" : "Ready");
@@ -254,6 +257,7 @@ public class WaitingUI extends StageUI {
                 return;
             }
             if (newPlayer == player) {
+                fuzzle.load(stageScreen.getScreenLoader());
                 profileChanged();
                 return;
             }

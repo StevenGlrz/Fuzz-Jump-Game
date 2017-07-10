@@ -1,5 +1,6 @@
 package com.fuzzjump.api.profile;
 
+import com.fuzzjump.api.profile.model.ProfileDto;
 import com.fuzzjump.api.profile.model.SaveProfileRequest;
 import com.fuzzjump.api.profile.model.SaveProfileResponse;
 
@@ -8,7 +9,9 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.PUT;
+import retrofit2.http.Query;
 
 /**
  * Created by Steven Galarza on 6/27/2017.
@@ -23,13 +26,21 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    public Observable<SaveProfileResponse> requestProfileSave(SaveProfileRequest request) {
-        return restService.requestProfileSave(request);
+    public Observable<SaveProfileResponse> saveProfile(SaveProfileRequest request) {
+        return restService.saveProfile(request);
+    }
+
+    @Override
+    public Observable<ProfileDto[]> getProfiles(String[] userIds) {
+        return null;
     }
 
     private interface ProfileRestService {
 
+        @GET("profile")
+        Observable<ProfileDto[]> getProfiles(@Query("userIds") String[] userIds);
+
         @PUT("profile")
-        Observable<SaveProfileResponse> requestProfileSave(@Body SaveProfileRequest request);
+        Observable<SaveProfileResponse> saveProfile(@Body SaveProfileRequest request);
     }
 }

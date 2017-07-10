@@ -1,16 +1,20 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.fuzzjump.api.profile.IProfileService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.map.GameMap;
+import com.fuzzjump.game.game.map.builder.GameMapBuilder;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
@@ -19,6 +23,7 @@ import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.game.game.screen.game.actors.GamePlatform;
 import com.fuzzjump.game.game.screen.game.actors.GamePlayer;
 import com.fuzzjump.game.game.screen.ui.GameUI;
+import com.fuzzjump.game.game.screen.util.ProfileFetcher;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
@@ -26,6 +31,7 @@ import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.game.Game;
 import com.fuzzjump.server.common.messages.join.Join;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -47,6 +53,7 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
     private final FuzzContext context;
     private final UnlockableColorizer colorizer;
     private final GraphicsScheduler scheduler;
+    private final ProfileFetcher profileFetcher;
 
     private GameSession gameSession;
 
@@ -69,13 +76,28 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
     private int updateCounter;
 
     @Inject
-    public GameScreen(GameUI ui, Profile profile, FuzzContext context, UnlockableColorizer colorizer, GraphicsScheduler scheduler) {
+    public GameScreen(GameUI ui,
+                      Profile profile,
+                      FuzzContext context,
+                      UnlockableColorizer colorizer,
+                      IProfileService profileService,
+                      GraphicsScheduler scheduler) {
         super(ui);
         this.me = profile;
         this.context = context;
         this.colorizer = colorizer;
         this.scheduler = scheduler;
         this.random = new Random(context.getGameSeed().hashCode());
+        this.profileFetcher = new ProfileFetcher(profile, profileService, scheduler, this::getGamePlayerProfiles);
+    }
+
+    //MEH.
+    private Array<Profile> getGamePlayerProfiles() {
+        Array<Profile> profiles = new Array<>(players.size);
+        for(IntMap.Entry<GamePlayer> player : players) {
+            profiles.add(player.value.getProfile());
+        }
+        return profiles;
     }
 
     @Override
@@ -117,6 +139,9 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
 
         worldStage = new GameStage(getStage().getViewport(), getStage().getBatch(), this, world);
         worldStage.init();
+
+        new GameMapBuilder(ui().getMapTextures(), ui(), world, world.getRandom(), 1, map).build();
+
         worldStage.addGameActors(world.getPhysicsActors());
 
         addPlayer(me, world.getWidth() / 2);
@@ -228,7 +253,13 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
             GamePlayer player = getPlayer();
 
             if (player.getStun() <= 0 && !player.isFinished()) {
-                player.velocity.x = -Gdx.input.getAccelerometerX() * 200;
+                if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                    player.velocity.x = -10f * 200;
+                } else  if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                    player.velocity.x = 10f * 200;
+                } else {
+                    player.velocity.x = -Gdx.input.getAccelerometerX() * 200;
+                }
             }
 
             //Label heightLabel = ui().actor(Assets.GameUI.HEIGHT_LABEL);

@@ -252,7 +252,7 @@ public class MenuUI extends StageUI {
                 displayMessage("Saving profile", true);
                 fuzzle.load(getStageScreen().getScreenLoader());
                 profileService
-                        .requestProfileSave(new SaveProfileRequest(equipChanges, unlockableChanges))
+                        .saveProfile(new SaveProfileRequest(equipChanges, unlockableChanges))
                         .observeOn(scheduler)
                         .doFinally(() -> {
                             closeMessage();

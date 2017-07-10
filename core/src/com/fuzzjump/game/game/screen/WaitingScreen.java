@@ -7,25 +7,32 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.IntMap;
+import com.fuzzjump.api.profile.IProfileService;
+import com.fuzzjump.api.profile.model.ProfileDto;
 import com.fuzzjump.api.session.ISessionService;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
+import com.fuzzjump.game.game.screen.util.ProfileFetcher;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
-import com.steveadoo.server.common.packets.PacketProcessor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
 public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
 
@@ -33,8 +40,10 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private final FuzzJumpParams params;
     private final ISessionService sessionService;
+    private final IProfileService profileService;
     private final GraphicsScheduler scheduler;
     private final FuzzContext context;
+    private final ProfileFetcher profileFetcher;
 
     private final Stage stage;
 
@@ -50,12 +59,13 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private Label connectingMessage;
     private Table mapTable;
 
-    private final Profile profile;
+    private final Profile myProfile;
 
-    private List<Profile> players = new ArrayList<>();
+    private IntMap<Profile> players = new IntMap<>();
 
     private String matchmakingKey;
     private Join.JoinResponsePacket joinResponse;
+
 
     @Inject
     public WaitingScreen(Stage stage,
@@ -64,14 +74,17 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                          FuzzJumpParams params,
                          Profile profile,
                          ISessionService sessionService,
+                         IProfileService profileService,
                          GraphicsScheduler scheduler) {
         super(ui);
         this.stage = stage;
         this.context = context;
         this.params = params;
-        this.profile = profile;
+        this.myProfile = profile;
         this.sessionService = sessionService;
+        this.profileService = profileService;
         this.scheduler = scheduler;
+        this.profileFetcher = new ProfileFetcher(profile, profileService, scheduler, () -> players.values().toArray());
     }
 
     @Override
@@ -114,21 +127,26 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 cancel();
                 break;
             case Assets.WaitingUI.READY_BUTTON:
-                gameSession.send(readySetBuilder.setReady(!profile.isReady()).build());
+                if (gameSession == null) {
+                    return;
+                }
+                gameSession.send(readySetBuilder.setReady(!myProfile.isReady()).build());
                 break;
             case Assets.WaitingUI.MAP_BUTTON:
+                if (gameSession == null) {
+                    return;
+                }
                 gameSession.send(mapSlotSetBuilder.setMapId((int) actor.getUserObject()).build());
                 break;
         }
     }
 
     private void initPacketListeners() {
-        PacketProcessor packetProcessor = gameSession.getPacketProcessor();
-        packetProcessor.addListener(Join.JoinResponsePacket.class, this::joinResponse);
-        packetProcessor.addListener(Lobby.GameFound.class, this::gameFound);
-        packetProcessor.addListener(Lobby.LobbyState.class, this::lobbyUpdate);
-        packetProcessor.addListener(Lobby.TimeState.class, this::updateTime);
-        packetProcessor.addListener(Lobby.GameServerSetupData.class, this::gameServerFound);
+        gameSession.getPacketProcessor().addListener(Join.JoinResponsePacket.class, this::joinResponse)
+            .addListener(Lobby.GameFound.class, this::gameFound)
+            .addListener(Lobby.LobbyState.class, this::lobbyUpdate)
+            .addListener(Lobby.TimeState.class, this::updateTime)
+            .addListener(Lobby.GameServerSetupData.class, this::gameServerFound);
     }
 
     private void gameServerFound(GameSession sender, Lobby.GameServerSetupData message) {
@@ -164,10 +182,10 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
             players.clear();
             for (int i = 0; i < message.getPlayersCount(); i++) {
                 Lobby.Player player = message.getPlayers(i);
-                if (player.getUserId().equals(profile.getUserId())) {
-                    profile.setPlayerIndex(player.getPlayerIndex());
-                    profile.setReady(player.getReady());
-                    players.add(profile);
+                if (player.getUserId().equals(myProfile.getUserId())) {
+                    myProfile.setPlayerIndex(player.getPlayerIndex());
+                    myProfile.setReady(player.getReady());
+                    players.put(myProfile.getPlayerIndex(), myProfile);
                     continue;
                 }
                 Profile profile = findProfile(player);
@@ -178,29 +196,22 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                     profile.setReady(player.getReady());
                 }
                 profile.setReady(player.getReady());
-                players.add(profile);
+                players.put(profile.getPlayerIndex(), profile);
             }
             ui().update(players);
+            profileFetcher.fetchPlayerProfiles();
         }
         ui().setMapSlots(message.getMapSlotsList());
         int time = message.getTime().getTime();
         setTime(time);
-
         if (!mapTable.isVisible()) {
             mapTable.setVisible(true);
             connectingDialog.setVisible(false);
         }
-
     }
 
     private Profile findProfile(Lobby.Player player) {
-        for (int i = 0; i < players.size(); i++) {
-            Profile profile = players.get(i);
-            if (player.getPlayerIndex() == profile.getPlayerIndex()) {
-                return profile;
-            }
-        }
-        return null;
+        return players.get(player.getPlayerIndex());
     }
 
     private void gameFound(GameSession session, Lobby.GameFound message) {
@@ -230,11 +241,11 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void onConnect() {
-        connectingMessage.setText("Validating profile");
+        connectingMessage.setText("Validating myProfile");
 
-        System.out.println(matchmakingKey + ", " + profile.getUserId());
+        System.out.println(matchmakingKey + ", " + myProfile.getUserId());
         Join.JoinPacket joinPacket = Join.JoinPacket.newBuilder()
-                .setUserId(profile.getUserId())
+                .setUserId(myProfile.getUserId())
                 .setSessionKey(matchmakingKey)
                 .setVersion(1)
                 .build();
