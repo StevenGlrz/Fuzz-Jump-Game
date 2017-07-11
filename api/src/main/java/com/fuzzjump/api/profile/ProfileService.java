@@ -32,7 +32,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public Observable<ProfileDto[]> getProfiles(String[] userIds) {
-        return null;
+        return restService.getProfiles(userIds);
     }
 
     private interface ProfileRestService {
