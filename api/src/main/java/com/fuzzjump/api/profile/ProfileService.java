@@ -33,7 +33,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     public Observable<GetProfileResponse> getProfiles(String[] userIds) {
-        return getProfiles(userIds);
+        return restService.getProfiles(userIds);
     }
 
     private interface ProfileRestService {
