@@ -1,8 +1,11 @@
 package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.fuzzjump.api.invite.IInviteService;
+import com.fuzzjump.api.invite.model.Invite;
 import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.unlockable.UnlockablePurchase;
+import com.fuzzjump.api.unlockable.IUnlockableService;
 import com.fuzzjump.api.unlockable.UnlockableService;
 import com.fuzzjump.api.unlockable.model.UnlockablePurchaseRequest;
 import com.fuzzjump.api.unlockable.model.UnlockableResponse;
@@ -14,7 +17,11 @@ import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 import static com.fuzzjump.game.game.Assets.MenuUI.PUBLIC_GAME;
 import static com.fuzzjump.game.game.Assets.MenuUI.SELECT_BUY_BUTTON;
@@ -25,16 +32,24 @@ import static com.fuzzjump.game.game.Assets.MenuUI.SELECT_BUY_BUTTON;
 public class MenuScreen extends StageScreen<MenuUI> {
 
     private final Profile profile;
-    private final UnlockableService unlockableService;
+    private final IUnlockableService unlockableService;
+    private final IInviteService inviteService;
     private final GraphicsScheduler scheduler;
     private final FuzzPersistence persistence;
 
+    private boolean checkInvites;
+
     @Inject
-    public MenuScreen(MenuUI ui, Profile profile, UnlockableService unlockableService,
-                      GraphicsScheduler scheduler, FuzzPersistence persistence) {
+    public MenuScreen(MenuUI ui,
+                      Profile profile,
+                      IUnlockableService unlockableService,
+                      IInviteService inviteService,
+                      GraphicsScheduler scheduler,
+                      FuzzPersistence persistence) {
         super(ui);
         this.profile = profile;
         this.unlockableService = unlockableService;
+        this.inviteService = inviteService;
         this.scheduler = scheduler;
         this.persistence = persistence;
     }
@@ -46,7 +61,21 @@ public class MenuScreen extends StageScreen<MenuUI> {
 
     @Override
     public void onShow() {
+        checkInvites = true;
+        Observable.timer(2000, TimeUnit.MILLISECONDS)
+                .repeatUntil(() -> checkInvites)
+                .flatMap(ignored -> inviteService.getInvites())
+                .subscribe(invites -> ui().addInvites(invites.getBody()), err -> {
+                    //TODO log this.
+                });
+        ui().addInvites(new Invite[] {
+            new Invite()
+        });
+    }
 
+    @Override
+    public void onClose() {
+        checkInvites = false;
     }
 
     @Override

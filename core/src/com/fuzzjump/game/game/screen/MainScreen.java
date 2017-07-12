@@ -18,7 +18,12 @@ import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.google.gson.Gson;
 
+import java.util.concurrent.TimeUnit;
+import java.util.function.BooleanSupplier;
+
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
 
 public class MainScreen extends StageScreen<MainUI> {
 
@@ -30,7 +35,13 @@ public class MainScreen extends StageScreen<MainUI> {
     private final Gson gson;
 
     @Inject
-    public MainScreen(MainUI ui, IUserService userService, Profile profile, UnlockableRepository unlockables, Preferences preferences, GraphicsScheduler scheduler, Gson gson) {
+    public MainScreen(MainUI ui,
+                      IUserService userService,
+                      Profile profile,
+                      UnlockableRepository unlockables,
+                      Preferences preferences,
+                      GraphicsScheduler scheduler,
+                      Gson gson) {
         super(ui);
         this.userService = userService;
         this.profile = profile;
@@ -86,6 +97,7 @@ public class MainScreen extends StageScreen<MainUI> {
                 // Load and store profile data
                 profile.loadUser(user);
 
+                //TODO this probs shouldnt happen here.
                 // Acquire token from API and persist preferences
                 userService.retrieveToken(username, password).subscribe(e -> {
                     preferences.putString(Assets.PROFILE_DATA, gson.toJson(user));

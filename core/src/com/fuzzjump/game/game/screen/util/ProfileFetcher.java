@@ -52,12 +52,12 @@ public class ProfileFetcher {
             }
             waitingToFetch = false;
             return profileService.getProfiles(userIds.toArray(new String[0]));
-        }).observeOn(scheduler).subscribe(profiles -> {
+        }).observeOn(scheduler).subscribe(profileResponse -> {
             //another update is coming if the counts arent the same, so ignore the results of this.
             if (ourUpdateCount != updateCount) {
                 return;
             }
-            updatePlayerProfiles(profiles);
+            updatePlayerProfiles(profileResponse.getBody());
         });
 
     }

@@ -94,6 +94,9 @@ public class ScreenHandler {
                     if (screenChangeHandler != null) {
                         screenChangeHandler.changeScreen(screen);
                     }
+                    if (currentScreen != null) {
+                        currentScreen.onClose();
+                    }
                     currentScreen = screen;
                     //checkCache();
                 }

@@ -1,5 +1,6 @@
 package com.fuzzjump.api.profile;
 
+import com.fuzzjump.api.profile.model.GetProfileResponse;
 import com.fuzzjump.api.profile.model.ProfileDto;
 import com.fuzzjump.api.profile.model.SaveProfileRequest;
 import com.fuzzjump.api.profile.model.SaveProfileResponse;
@@ -31,14 +32,14 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    public Observable<ProfileDto[]> getProfiles(String[] userIds) {
-        return null;
+    public Observable<GetProfileResponse> getProfiles(String[] userIds) {
+        return getProfiles(userIds);
     }
 
     private interface ProfileRestService {
 
         @GET("profile")
-        Observable<ProfileDto[]> getProfiles(@Query("userIds") String[] userIds);
+        Observable<GetProfileResponse> getProfiles(@Query("userIds") String[] userIds);
 
         @PUT("profile")
         Observable<SaveProfileResponse> saveProfile(@Body SaveProfileRequest request);

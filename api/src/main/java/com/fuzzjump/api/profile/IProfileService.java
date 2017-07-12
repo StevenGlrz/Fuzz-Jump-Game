@@ -1,6 +1,7 @@
 package com.fuzzjump.api.profile;
 
 import com.fuzzjump.api.model.user.ApiProfile;
+import com.fuzzjump.api.profile.model.GetProfileResponse;
 import com.fuzzjump.api.profile.model.ProfileDto;
 import com.fuzzjump.api.profile.model.SaveProfileRequest;
 import com.fuzzjump.api.profile.model.SaveProfileResponse;
@@ -14,6 +15,6 @@ public interface IProfileService {
 
     Observable<SaveProfileResponse> saveProfile(SaveProfileRequest request);
 
-    Observable<ProfileDto[]> getProfiles(String[] userIds);
+    Observable<GetProfileResponse> getProfiles(String[] userIds);
 
 }

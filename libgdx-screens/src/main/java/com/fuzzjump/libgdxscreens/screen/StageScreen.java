@@ -81,6 +81,8 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
      */
     public abstract void onShow();
 
+    public void onClose() {}
+
     /**
      * Click management for actors on the screen
      * @param id The id of the actor.
@@ -131,4 +133,6 @@ public abstract class StageScreen<TUI extends StageUI> extends ScreenAdapter {
     public ScreenLoader getScreenLoader() {
         return loader;
     }
+
+
 }

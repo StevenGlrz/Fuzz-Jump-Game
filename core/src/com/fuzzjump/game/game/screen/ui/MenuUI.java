@@ -7,12 +7,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.api.friends.IFriendService;
+import com.fuzzjump.api.invite.model.GetInviteResponse;
+import com.fuzzjump.api.invite.model.Invite;
 import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.user.Equip;
 import com.fuzzjump.api.profile.IProfileService;
@@ -33,11 +36,15 @@ import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
+import java.awt.Menu;
+
 import javax.inject.Inject;
 
+import static com.fuzzjump.game.game.Assets.createCloseBtnStyle;
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
 import static com.fuzzjump.game.game.Assets.createDialogStyle;
 import static com.fuzzjump.game.game.Assets.createLeaderboardBtnStyle;
+import static com.fuzzjump.game.game.Assets.createPlayBtnStyle;
 import static com.fuzzjump.game.game.Assets.createPlayTBStyle;
 import static com.fuzzjump.game.game.Assets.createPlusTBStyle;
 import static com.fuzzjump.game.game.Assets.createSettingsBtnStyle;
@@ -69,6 +76,9 @@ public class MenuUI extends StageUI {
     private Button mMessageCloseBtn;
     private Dialog mProgressDialog;
     private Fuzzle fuzzle;
+
+    private Table inviteList;
+    private ScrollPane inviteScroller;
 
     @Inject
     public MenuUI(Textures textures, Skin skin, IProfileService profileService, IFriendService friendService,
@@ -128,6 +138,19 @@ public class MenuUI extends StageUI {
         loader.add(() -> {
             dropdownTable = new FJDragDownBarTable(this, profile);
             uiSwitcher = new ActorSwitcher();
+        });
+
+        loader.add(() -> {
+            inviteList = new Table();
+            inviteScroller = new ScrollPane(inviteList);
+            inviteScroller.setScrollingDisabled(true, false);
+            inviteScroller.layout();
+            Table holder = new Table();
+            Value padY = Value.percentHeight(.025f, holder);
+            Value padX = Value.percentWidth(.025f, holder);
+            holder.add(inviteScroller).pad(padY, padX, padY, padX).fill().expand().top();
+
+            dropdownTable.getDragDownTable().add(holder).expand().fill();
         });
 
         loader.add(() -> {
@@ -236,6 +259,16 @@ public class MenuUI extends StageUI {
         mProgressDialog.hide();
     }
 
+    public void addInvites(Invite[] invites) {
+        if (invites.length == 0) {
+            return;
+        }
+        Value inviteHeight = Value.percentHeight(.25f, inviteScroller);
+        for(int i = 0; i < invites.length; i++) {
+            inviteList.add(new InviteActor(invites[i])).expandX().fillX().height(inviteHeight).row();
+        }
+    }
+
     @Override
     public void backPressed() {
 
@@ -278,5 +311,33 @@ public class MenuUI extends StageUI {
 
     UnlockableColorizer getUnlockableColorizer() {
         return colorizer;
+    }
+
+    private class InviteActor extends Table {
+
+        private final Invite invite;
+
+        private Fuzzle fuzzle;
+        private Label label;
+
+        public InviteActor(Invite invite) {
+            this.invite = invite;
+            init();
+        }
+
+        private void init() {
+            Value fullHeight = Value.percentHeight(1f, this);
+            Value fuzzleSize = fullHeight;
+
+            fuzzle = new Fuzzle(MenuUI.this, getUnlockableColorizer());
+            label = new Label("Test!", MenuUI.this.getSkin(), "big");
+
+            ImageButton acceptButton = new ImageButton(createPlayBtnStyle(MenuUI.this));
+
+            add(fuzzle).width(fullHeight).expandY().fillY();
+            add(label).expandX().fillX().expandY().fillY();
+            add(acceptButton).width(fullHeight).expandY().fillY();
+        }
+
     }
 }
