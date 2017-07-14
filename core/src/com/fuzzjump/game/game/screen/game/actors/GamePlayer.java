@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.math.Rectangle;
 import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.game.game.screen.component.ColorDrawable;
+import com.fuzzjump.libgdxscreens.ColorDrawable;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.libgdxscreens.screen.StageUI;

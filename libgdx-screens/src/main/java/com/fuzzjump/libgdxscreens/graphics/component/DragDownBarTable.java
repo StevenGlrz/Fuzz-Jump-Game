@@ -1,12 +1,18 @@
 package com.fuzzjump.libgdxscreens.graphics.component;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.Scaling;
+import com.fuzzjump.libgdxscreens.ColorDrawable;
 
 public class DragDownBarTable extends Table {
 
@@ -47,12 +53,29 @@ public class DragDownBarTable extends Table {
         this(titleBarTable, dragDownTable, contentTable, dragDownDisabled, true, .25f, .50f);
     }
 
+    @SuppressWarnings("unchecked")
     protected void init() {
         add(titleBarTable).prefWidth(Value.percentWidth(1f, this)).prefHeight(Value.percentWidth(.154f, this));
         row();
-        add(contentTable).prefWidth(Value.percentWidth(1f, this)).prefHeight(Value.percentHeight(1, this)).expand();
+
+        final ColorDrawable drawable = new ColorDrawable(Color.BLACK);
+
+        Container overlayContainer = new Container(contentTable) {
+
+            @Override
+            public void draw(Batch batch, float alpha) {
+                super.draw(batch, alpha);
+                drawable.getColor().a = Math.max(0, 1f - (dragDownTable.getY() / getHeight()));
+                drawable.draw(batch, 0, 0, getWidth(), getHeight());
+            }
+
+        }.fill();
+
+        add(overlayContainer).prefWidth(Value.percentWidth(1f, this)).prefHeight(Value.percentHeight(1, this)).expand();
+
         addActor(dragDownTable);
         pack();
+
         dragDownTable.setY(getHeight());
         titleBarTable.addListener(new DragListener() {
 
@@ -96,8 +119,20 @@ public class DragDownBarTable extends Table {
             });
         }
 
-        titleBarTable.setZIndex(2);
-        dragDownTable.setZIndex(1);
+        contentTable.setTouchable(Touchable.enabled);
+        contentTable.addListener(new ClickListener() {
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (isDown()) {
+                    autoDrag(true);
+                }
+            }
+
+        });
+
+        titleBarTable.setZIndex(3);
+        dragDownTable.setZIndex(2);
         contentTable.setZIndex(0);
     }
 
@@ -115,6 +150,7 @@ public class DragDownBarTable extends Table {
         position = Math.max(position, getHeight() - dragDownTable.getHeight());
         dragDownTable.setY(position);
         titleBarTable.setY(position - titleBarTable.getHeight());
+        //tintImage.setVisible(isDown());
     }
 
     public void autoDrag(boolean tapped) {
@@ -131,6 +167,7 @@ public class DragDownBarTable extends Table {
             @Override
             public void run() {
                 autoDragging = false;
+                //tintImage.setVisible(isDown());
             }
         })));
     }

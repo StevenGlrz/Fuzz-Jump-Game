@@ -60,7 +60,7 @@ public class FJDragDownBarTable extends DragDownBarTable {
 
         setBackground(textures.getTextureRegionDrawable("uibackground"));
         titleBarTable.setBackground(textures.getTextureRegionDrawable(profile == null ? "toppanelnodrag" : "toppanel"));
-        dragDownTable.setBackground(new ColorDrawable(Color.valueOf("73BB44"), 1f, 1f));
+        dragDownTable.setBackground(new com.fuzzjump.libgdxscreens.ColorDrawable(Color.valueOf("73BB44"), 1f, 1f));
         if (profile == null) {
             titleBarTable.add(titleBarLabel = new Label("Welcome!", ui.getSkin(), "big")).padBottom(Value.percentHeight(.025f, titleBarTable));
         } else {

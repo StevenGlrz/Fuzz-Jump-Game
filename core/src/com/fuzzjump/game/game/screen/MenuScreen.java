@@ -67,6 +67,7 @@ public class MenuScreen extends StageScreen<MenuUI> {
                 .flatMap(ignored -> inviteService.getInvites())
                 .subscribe(invites -> ui().addInvites(invites.getBody()), err -> {
                     //TODO log this.
+                    System.out.println("Error fetching invites: " + err.getMessage());
                 });
         ui().addInvites(new Invite[] {
             new Invite()

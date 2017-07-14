@@ -25,7 +25,7 @@ import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
 import com.fuzzjump.game.game.screen.component.CategoryFrame;
-import com.fuzzjump.game.game.screen.component.ColorDrawable;
+import com.fuzzjump.libgdxscreens.ColorDrawable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
 import com.fuzzjump.game.game.screen.component.Fuzzle;
 import com.fuzzjump.game.util.Helper;

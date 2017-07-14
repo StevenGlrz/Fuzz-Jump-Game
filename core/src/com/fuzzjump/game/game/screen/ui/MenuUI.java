@@ -3,6 +3,7 @@ package com.fuzzjump.game.game.screen.ui;
 
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Container;
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -12,9 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.utils.Align;
 import com.fuzzjump.api.friends.IFriendService;
-import com.fuzzjump.api.invite.model.GetInviteResponse;
 import com.fuzzjump.api.invite.model.Invite;
 import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.user.Equip;
@@ -35,8 +36,6 @@ import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.Textures;
 import com.fuzzjump.libgdxscreens.screen.ScreenLoader;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
-
-import java.awt.Menu;
 
 import javax.inject.Inject;
 
@@ -77,7 +76,7 @@ public class MenuUI extends StageUI {
     private Dialog mProgressDialog;
     private Fuzzle fuzzle;
 
-    private Table inviteList;
+    private VerticalGroup inviteList;
     private ScrollPane inviteScroller;
 
     @Inject
@@ -141,14 +140,17 @@ public class MenuUI extends StageUI {
         });
 
         loader.add(() -> {
-            inviteList = new Table();
+            inviteList = new VerticalGroup();
+            inviteList.bottom();
             inviteScroller = new ScrollPane(inviteList);
             inviteScroller.setScrollingDisabled(true, false);
             inviteScroller.layout();
-            Table holder = new Table();
-            Value padY = Value.percentHeight(.025f, holder);
-            Value padX = Value.percentWidth(.025f, holder);
-            holder.add(inviteScroller).pad(padY, padX, padY, padX).fill().expand().top();
+
+            Value padY = Value.percentHeight(.025f, dropdownTable.getDragDownTable());
+            Value padX = Value.percentWidth(.025f, dropdownTable.getDragDownTable());
+
+            Container holder = new Container(inviteScroller);
+            holder.fill().pad(padY, padX, padY, padX);
 
             dropdownTable.getDragDownTable().add(holder).expand().fill();
         });
@@ -263,9 +265,10 @@ public class MenuUI extends StageUI {
         if (invites.length == 0) {
             return;
         }
-        Value inviteHeight = Value.percentHeight(.25f, inviteScroller);
+        Value inviteHeight = Value.percentHeight(.2f, inviteScroller);
+        Value inviteWidth = Value.percentWidth(1f, inviteScroller);
         for(int i = 0; i < invites.length; i++) {
-            inviteList.add(new InviteActor(invites[i])).expandX().fillX().height(inviteHeight).row();
+            inviteList.addActor(new InviteActor(invites[i], inviteWidth, inviteHeight));
         }
     }
 
@@ -283,6 +286,7 @@ public class MenuUI extends StageUI {
             appearance.stopTracking();
             if (equipChanges != null || unlockableChanges != null) {
                 displayMessage("Saving profile", true);
+                //TODO should be in screen.
                 fuzzle.load(getStageScreen().getScreenLoader());
                 profileService
                         .saveProfile(new SaveProfileRequest(equipChanges, unlockableChanges))
@@ -316,27 +320,58 @@ public class MenuUI extends StageUI {
     private class InviteActor extends Table {
 
         private final Invite invite;
+        private final Value width;
+        private final Value height;
 
         private Fuzzle fuzzle;
         private Label label;
 
-        public InviteActor(Invite invite) {
+        public InviteActor(Invite invite, Value width, Value height) {
             this.invite = invite;
+            this.width = width;
+            this.height = height;
             init();
         }
 
         private void init() {
-            Value fullHeight = Value.percentHeight(1f, this);
-            Value fuzzleSize = fullHeight;
+            setBackground(textures.getTextureRegionDrawable("ui-panel-character1"));
+
+            Value fullHeight = Value.percentHeight(.75f, this);
+            Value padTop = Value.percentHeight(.01f, this);
+            Value padSides = Value.percentWidth(.01f, this);
 
             fuzzle = new Fuzzle(MenuUI.this, getUnlockableColorizer());
-            label = new Label("Test!", MenuUI.this.getSkin(), "big");
+            label = new Label("Steveadoo invited you to a game.", MenuUI.this.getSkin(), "profile");
+            label.setWrap(true);
 
             ImageButton acceptButton = new ImageButton(createPlayBtnStyle(MenuUI.this));
+            ImageButton closeButton = new ImageButton(createCloseBtnStyle(MenuUI.this));
 
-            add(fuzzle).width(fullHeight).expandY().fillY();
-            add(label).expandX().fillX().expandY().fillY();
-            add(acceptButton).width(fullHeight).expandY().fillY();
+            defaults().height(fullHeight);
+            add(fuzzle).width(fullHeight).padLeft(padSides).padRight(padSides).expandY();
+            add(label).expandX().fillX().expandY();
+            add(closeButton).size(fullHeight).padRight(padSides).expandY();
+            add(acceptButton).size(fullHeight).padRight(padSides).expandY();
+        }
+
+        @Override
+        public float getHeight() {
+            return height.get(null);
+        }
+
+        @Override
+        public float getWidth() {
+            return width.get(null);
+        }
+
+        @Override
+        public float getPrefHeight() {
+            return height.get(null);
+        }
+
+        @Override
+        public float getPrefWidth() {
+            return width.get(null);
         }
 
     }
