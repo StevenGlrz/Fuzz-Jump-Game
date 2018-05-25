@@ -15,7 +15,7 @@ public class DesktopLauncher {
 
 		//config.addIcon("./icon.png", Files.FileType.Local);
 
-		FuzzJumpParams params = new FuzzJumpParams(System.getenv("FUZZ_API"), arg[0], Integer.parseInt(arg[1]));
+		FuzzJumpParams params = new FuzzJumpParams(arg[0], arg[1], Integer.parseInt(arg[2]));
 		FuzzJump fuzzJump = new FuzzJump(params, new PlatformModule(new DesktopGraphicsLoader("")));
 		new LwjglApplication(fuzzJump, config);
 	}

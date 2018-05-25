@@ -4,10 +4,10 @@ buildscript {
         mavenCentral()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.0'
-        classpath 'me.tatarka:gradle-retrolambda:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.1.2'
         classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.1'
         classpath 'org.multi-os-engine:moe-gradle:1.3.6'
     }
@@ -48,24 +48,25 @@ project(":desktop") {
 
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "org.apache.xmlgraphics:batik-transcoder:1.8"
-        compile "org.apache.xmlgraphics:batik-anim:1.8"
-        compile "org.apache.xmlgraphics:batik-awt-util:1.8"
-        compile "org.apache.xmlgraphics:batik-bridge:1.8"
-        compile "org.apache.xmlgraphics:batik-dom:1.8"
-        compile "org.apache.xmlgraphics:batik-gvt:1.8"
-        compile "org.apache.xmlgraphics:batik-svggen:1.8"
-        compile "org.apache.xmlgraphics:batik-util:1.8"
-        compile "org.apache.xmlgraphics:batik-xml:1.8"
-        compile "xml-apis:xml-apis:1.3.04"
-        compile "xml-apis:xml-apis-ext:1.3.04"
-        compile "org.apache.xmlgraphics:xmlgraphics-commons:2.1"
-        compile "org.apache.xmlgraphics:batik-codec:1.8"
-        compile "com.google.code.gson:gson:2.8.1"
+        implementation project(":libgdx-screens")
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        implementation "org.apache.xmlgraphics:batik-transcoder:1.8"
+        implementation "org.apache.xmlgraphics:batik-anim:1.8"
+        implementation "org.apache.xmlgraphics:batik-awt-util:1.8"
+        implementation "org.apache.xmlgraphics:batik-bridge:1.8"
+        implementation "org.apache.xmlgraphics:batik-dom:1.8"
+        implementation "org.apache.xmlgraphics:batik-gvt:1.8"
+        implementation "org.apache.xmlgraphics:batik-svggen:1.8"
+        implementation "org.apache.xmlgraphics:batik-util:1.8"
+        implementation "org.apache.xmlgraphics:batik-xml:1.8"
+        implementation "xml-apis:xml-apis:1.3.04"
+        implementation "xml-apis:xml-apis-ext:1.3.04"
+        implementation "org.apache.xmlgraphics:xmlgraphics-commons:2.1"
+        implementation "org.apache.xmlgraphics:batik-codec:1.8"
+        implementation "com.google.code.gson:gson:2.8.1"
     }
 }
 
@@ -83,14 +84,14 @@ project(":android") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
@@ -105,12 +106,12 @@ project(":ios") {
 
 
     dependencies {
-        compile project(":core")
-        compile "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
-        compile "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
-        compile "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
+        implementation project(":core")
+        implementation "com.mobidevelop.robovm:robovm-rt:$roboVMVersion"
+        implementation "com.mobidevelop.robovm:robovm-cocoatouch:$roboVMVersion"
+        implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
+        implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     }
 }
 
@@ -119,9 +120,9 @@ project(":core") {
 
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        compile fileTree(dir: 'libs', include: ['*.jar'])
+        implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+        implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
     }
 }
 
@@ -131,8 +132,8 @@ project(":ios-moe") {
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-moe:$gdxVersion"
+        implementation project(":core")
+        implementation "com.badlogicgames.gdx:gdx-backend-moe:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-ios"
     }
