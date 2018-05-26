@@ -4,6 +4,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'io.netty:netty-all:4.0.33.Final'
     implementation 'com.google.protobuf:protobuf-java:2.6.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.0.1'
+    implementation project(':api')
     implementation project(':server-base')
     implementation project(':server-common')
     implementation project(':fj-server-common')
