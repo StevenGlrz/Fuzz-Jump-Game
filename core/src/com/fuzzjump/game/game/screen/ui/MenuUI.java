@@ -130,7 +130,6 @@ public class MenuUI extends StageUI {
         this.settingsUI = new SettingsUI(this);
         this.friendsUI = new FriendsUI(this, scheduler, friendService);
 
-
         setFillParent(true);
 
         // Load our main elements. THIS SHOULD BE IN ORDER
