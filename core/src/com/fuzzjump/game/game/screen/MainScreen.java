@@ -18,12 +18,7 @@ import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 import com.google.gson.Gson;
 
-import java.util.concurrent.TimeUnit;
-import java.util.function.BooleanSupplier;
-
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
 
 public class MainScreen extends StageScreen<MainUI> {
 
@@ -110,6 +105,7 @@ public class MainScreen extends StageScreen<MainUI> {
                 screenHandler.showScreen(MenuScreen.class);
             }
         }, e -> {
+            e.printStackTrace();
             // TODO Close on error
         });
     }

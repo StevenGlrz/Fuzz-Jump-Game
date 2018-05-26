@@ -262,6 +262,7 @@ public class MenuUI extends StageUI {
     }
 
     public void addInvites(Invite[] invites) {
+        System.out.println(invites.length);
         if (invites.length == 0) {
             return;
         }
@@ -296,9 +297,12 @@ public class MenuUI extends StageUI {
                             persistence.saveProfile();
                         })
                         .subscribe(response -> {
+                            System.out.println("Save: " + response.isSuccess());
                             if (response.isSuccess()) {
                                 profile.loadProfile(response.getBody());
                             }
+                        }, err -> {
+                            err.printStackTrace();
                         });
             }
         }

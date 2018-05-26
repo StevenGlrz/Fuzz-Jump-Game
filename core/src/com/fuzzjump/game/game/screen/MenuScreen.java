@@ -2,11 +2,9 @@ package com.fuzzjump.game.game.screen;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.fuzzjump.api.invite.IInviteService;
-import com.fuzzjump.api.invite.model.Invite;
 import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.unlockable.UnlockablePurchase;
 import com.fuzzjump.api.unlockable.IUnlockableService;
-import com.fuzzjump.api.unlockable.UnlockableService;
 import com.fuzzjump.api.unlockable.model.UnlockablePurchaseRequest;
 import com.fuzzjump.api.unlockable.model.UnlockableResponse;
 import com.fuzzjump.game.game.Assets;
@@ -69,9 +67,6 @@ public class MenuScreen extends StageScreen<MenuUI> {
                     //TODO log this.
                     System.out.println("Error fetching invites: " + err.getMessage());
                 });
-        ui().addInvites(new Invite[] {
-            new Invite()
-        });
     }
 
     @Override

@@ -51,8 +51,8 @@ public class Appearance {
     }
 
     public void createUnlockables(Unlockable[] data) {
-        for (Unlockable unlockable : data) {
-            createUnlockable(unlockable);
+        for (int index = 0; index < data.length; index++) {
+            createUnlockable(data[index]);
         }
     }
 

@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
+import java.util.Random;
+
 /**
  * Created by Steven Galarza on 6/16/2017.
  */
@@ -17,7 +19,7 @@ public class Assets {
 
     public static final boolean DEBUG = false;
 
-    public static final String PREFERENCES_NAME = "FuzzJump";
+    public static final String PREFERENCES_NAME = "FuzzJump" + new Random().nextInt(100000);
 
     public static final String USER_TOKEN = "FuzzUserToken";
     public static final String PROFILE_DATA = "FuzzProfile";

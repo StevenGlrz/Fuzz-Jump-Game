@@ -1,15 +1,18 @@
 package com.fuzzjump.server.matchmaking.lobby;
 
 import com.fuzzjump.server.base.FuzzJumpSession;
-import com.fuzzjump.server.common.messages.lobby.Lobby;
 import com.fuzzjump.server.common.Maps;
+import com.fuzzjump.server.common.messages.lobby.Lobby;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ScheduledFuture;
 
 
 public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
+
+    private static final int LOBBY_WAIT_PERIOD = 8;
 
     private LobbySessionListener listener;
 
@@ -18,19 +21,19 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
     private Lobby.Player.Builder playerBuilder = Lobby.Player.newBuilder();
     private Lobby.TimeState.Builder timeStateBuilder = Lobby.TimeState.newBuilder();
 
-    private float remainingTime = 2;
-
     public ScheduledFuture<?> future;
+    private final long waitPeriodEnd;
 
     public LobbySession(String id, int maxPlayers) {
         super(id, maxPlayers);
         update = true;
         setMaps();
+        this.waitPeriodEnd = System.currentTimeMillis() + LOBBY_WAIT_PERIOD * 1000L;
     }
 
     private void setMaps() {
         Random random = new Random();
-        ArrayList<Integer> mapIds = new ArrayList<>();
+        List<Integer> mapIds = new ArrayList<>();
         for(int i = 0; i < Maps.MAP_CHOICE_COUNT; i++) {
             int id = 0;
             while(true) {
@@ -44,16 +47,11 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         }
     }
 
-    long lastTime = System.currentTimeMillis();
-
     @Override
     public boolean update() {
-        long time = System.currentTimeMillis() - lastTime;
-        lastTime = System.currentTimeMillis();
-        remainingTime -= time / 1000f;
+        int remainingTime = getRemainingTime();
         if (update) {
             update = false;
-            System.out.println("updating lobby");
             stateBuilder.clearPlayers();
             for (LobbyPlayer player : players) {
                 player.setSynced(false);
@@ -133,8 +131,8 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         return update;
     }
 
-    public float getRemainingTime() {
-        return remainingTime;
+    public int getRemainingTime() {
+        return (int) (waitPeriodEnd - System.currentTimeMillis()) / 1000;
     }
 
     public interface LobbySessionListener {

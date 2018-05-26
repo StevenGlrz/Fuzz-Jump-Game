@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.fuzzjump.api.profile.IProfileService;
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
@@ -14,6 +15,7 @@ import com.fuzzjump.game.game.map.GameMapParser;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.screen.core.ProfileFetcher;
 import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -75,6 +77,13 @@ public class FuzzJumpGameModule {
     public GameMapParser provideGameMapParser() {
         return new GameMapParser();
     }
+
+    @FuzzJumpScope
+    @Provides
+    public ProfileFetcher provideProfileFetcher(Profile profile, IProfileService profileService, GraphicsScheduler scheduler) {
+        return new ProfileFetcher(profile, profileService, scheduler);
+    }
+
 
     @FuzzJumpScope
     @Provides

@@ -9,14 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.IntMap;
 import com.fuzzjump.api.profile.IProfileService;
-import com.fuzzjump.api.profile.model.ProfileDto;
 import com.fuzzjump.api.session.ISessionService;
 import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.player.Profile;
+import com.fuzzjump.game.game.screen.core.ProfileFetcher;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
-import com.fuzzjump.game.game.screen.util.ProfileFetcher;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
@@ -24,15 +23,9 @@ import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.join.Join;
 import com.fuzzjump.server.common.messages.lobby.Lobby;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.disposables.Disposable;
 
 public class WaitingScreen extends StageScreen<WaitingUI> implements GameSessionWatcher {
 
@@ -66,7 +59,6 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private String matchmakingKey;
     private Join.JoinResponsePacket joinResponse;
 
-
     @Inject
     public WaitingScreen(Stage stage,
                          FuzzContext context,
@@ -75,7 +67,8 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                          Profile profile,
                          ISessionService sessionService,
                          IProfileService profileService,
-                         GraphicsScheduler scheduler) {
+                         GraphicsScheduler scheduler,
+                         ProfileFetcher profileFetcher) {
         super(ui);
         this.stage = stage;
         this.context = context;
@@ -84,7 +77,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
         this.sessionService = sessionService;
         this.profileService = profileService;
         this.scheduler = scheduler;
-        this.profileFetcher = new ProfileFetcher(profile, profileService, scheduler, () -> players.values().toArray());
+        this.profileFetcher = profileFetcher;
     }
 
     @Override
@@ -199,7 +192,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 players.put(profile.getPlayerIndex(), profile);
             }
             ui().update(players);
-            profileFetcher.fetchPlayerProfiles();
+            profileFetcher.fetchPlayerProfiles(() -> players.values().toArray(), () -> ui().update(players));
         }
         ui().setMapSlots(message.getMapSlotsList());
         int time = message.getTime().getTime();

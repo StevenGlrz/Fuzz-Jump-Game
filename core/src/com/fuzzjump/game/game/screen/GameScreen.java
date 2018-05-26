@@ -23,7 +23,7 @@ import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.game.game.screen.game.actors.GamePlatform;
 import com.fuzzjump.game.game.screen.game.actors.GamePlayer;
 import com.fuzzjump.game.game.screen.ui.GameUI;
-import com.fuzzjump.game.game.screen.util.ProfileFetcher;
+import com.fuzzjump.game.game.screen.core.ProfileFetcher;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
@@ -31,7 +31,6 @@ import com.fuzzjump.libgdxscreens.screen.StageScreen;
 import com.fuzzjump.server.common.messages.game.Game;
 import com.fuzzjump.server.common.messages.join.Join;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import javax.inject.Inject;
@@ -81,14 +80,15 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
                       FuzzContext context,
                       UnlockableColorizer colorizer,
                       IProfileService profileService,
-                      GraphicsScheduler scheduler) {
+                      GraphicsScheduler scheduler,
+                      ProfileFetcher profileFetcher) {
         super(ui);
         this.me = profile;
         this.context = context;
         this.colorizer = colorizer;
         this.scheduler = scheduler;
         this.random = new Random(context.getGameSeed().hashCode());
-        this.profileFetcher = new ProfileFetcher(profile, profileService, scheduler, this::getGamePlayerProfiles);
+        this.profileFetcher = profileFetcher;
     }
 
     //MEH.
