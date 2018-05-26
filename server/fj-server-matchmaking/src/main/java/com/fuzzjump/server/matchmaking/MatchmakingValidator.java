@@ -49,10 +49,7 @@ class MatchmakingValidator implements Validator {
         CompletableFuture<Boolean> future = new CompletableFuture<>();
         server.getApi().getSessionService().verify(packet.getUserId(), "MATCHMAKING", packet.getSessionKey())
                 .map(response -> response != null && response.getBody())
-                .onErrorReturn(err -> {
-                    err.printStackTrace();
-                    return false;
-                })
+                .onErrorReturn(err -> false)
                 .subscribe(validated -> {
                     player.getChannel().writeAndFlush(getJoinResponse(fjPlayer, validated));
                     future.complete(validated);
