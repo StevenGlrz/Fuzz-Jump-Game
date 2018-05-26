@@ -84,6 +84,7 @@ project(":android") {
     configurations { natives }
 
     dependencies {
+        implementation project(":libgdx-screens")
         implementation project(":core")
         implementation "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"

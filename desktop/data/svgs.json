@@ -500,7 +500,7 @@
     "filename": "data/svg/ui-star-icon.svg",
     "atlas": "ui-star-icon",
     "width": "screen_width:.25",
-    "height": "screen_width:.25",
+    "height": "asp",
     "type": "svg"
   },
   {
@@ -732,6 +732,20 @@
     "atlas": "winners-platform",
     "width": "absolute:983",
     "height": "absolute:652",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-special-corner-ingame.svg",
+    "atlas": "ui-special-corner-ingame",
+    "width": "screen_width:.25",
+    "height": "asp",
+    "type": "svg"
+  },
+  {
+    "filename": "data/svg/ui-corner-ingame.svg",
+    "atlas": "ui-corner-ingame",
+    "width": "screen_width:.50",
+    "height": "asp",
     "type": "svg"
   }
 ]
