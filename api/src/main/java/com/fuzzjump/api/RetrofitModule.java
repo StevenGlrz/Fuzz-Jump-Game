@@ -1,5 +1,6 @@
 package com.fuzzjump.api;
 
+import com.fuzzjump.api.util.HttpLoggingInterceptor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -41,7 +42,10 @@ public class RetrofitModule {
     @Provides
     @Singleton
     OkHttpClient okHttpClient(TokenInterceptor interceptor) {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
         return new OkHttpClient.Builder()
+                .addInterceptor(logging)
                 .addInterceptor(interceptor)
                 .build();
     }

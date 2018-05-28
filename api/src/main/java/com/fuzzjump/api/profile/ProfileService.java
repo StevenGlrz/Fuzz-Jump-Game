@@ -10,7 +10,7 @@ import io.reactivex.Observable;
 import retrofit2.Retrofit;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
@@ -40,7 +40,7 @@ public class ProfileService implements IProfileService {
         @GET("profile")
         Observable<GetProfileResponse> getProfiles(@Query("userIds") String[] userIds);
 
-        @POST("profile")
+        @PUT("profile")
         Observable<SaveProfileResponse> saveProfile(@Body SaveProfileRequest request);
     }
 }

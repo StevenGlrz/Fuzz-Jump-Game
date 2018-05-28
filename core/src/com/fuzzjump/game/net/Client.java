@@ -80,7 +80,7 @@ public class Client {
             while (!Thread.interrupted()) {
 
                 //pretty sure this does nothing
-                if (connected && !socket.isConnected())
+                if ((connected && !socket.isConnected()))
                     break;
 
                 //do this here rather than in send. key.interestOps will block if the selector is happening
@@ -88,10 +88,12 @@ public class Client {
                 checkWrite();
 
                 selector.select(selectorTimeout);
+                if (!selector.isOpen())
+                    continue;
 
                 Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
 
-                while (keys.hasNext()) {
+                while (keys.hasNext() && selector.isOpen()) {
                     SelectionKey key = keys.next();
                     keys.remove();
                     handleKey(key);

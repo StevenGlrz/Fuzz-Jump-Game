@@ -129,6 +129,8 @@ public class MenuScreen extends StageScreen<MenuUI> {
                     ui.displayMessage("Purchase failed", false);
                     break;
             }
+        } else {
+            ui.displayMessage("Purchase failed", false);
         }
     }
 

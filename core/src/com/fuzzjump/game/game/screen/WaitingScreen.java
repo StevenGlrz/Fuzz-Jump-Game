@@ -54,7 +54,15 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     private final Profile myProfile;
 
-    private IntMap<Profile> players = new IntMap<>();
+    /**
+     * Stores all the player profiles presented on screen.
+     */
+    private IntMap<Profile> playerProfiles = new IntMap<>(5);
+
+    /**
+     * Stores all the profiles we will see throughout our matchmaking session.
+     */
+    private IntMap<Profile> cachedPlayerProfiles = new IntMap<>(5);
 
     private String matchmakingKey;
     private Join.JoinResponsePacket joinResponse;
@@ -109,7 +117,6 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                     gameSession.connect();
                     initPacketListeners();
                 });
-
     }
 
     @Override
@@ -120,32 +127,29 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                 cancel();
                 break;
             case Assets.WaitingUI.READY_BUTTON:
-                if (gameSession == null) {
-                    return;
+                if (gameSession != null) {
+                    gameSession.send(readySetBuilder.setReady(!myProfile.isReady()).build());
                 }
-                gameSession.send(readySetBuilder.setReady(!myProfile.isReady()).build());
                 break;
             case Assets.WaitingUI.MAP_BUTTON:
-                if (gameSession == null) {
-                    return;
+                if (gameSession != null) {
+                    gameSession.send(mapSlotSetBuilder.setMapId((int) actor.getUserObject()).build());
                 }
-                gameSession.send(mapSlotSetBuilder.setMapId((int) actor.getUserObject()).build());
                 break;
         }
     }
 
     private void initPacketListeners() {
         gameSession.getPacketProcessor().addListener(Join.JoinResponsePacket.class, this::joinResponse)
-            .addListener(Lobby.GameFound.class, this::gameFound)
-            .addListener(Lobby.LobbyState.class, this::lobbyUpdate)
-            .addListener(Lobby.TimeState.class, this::updateTime)
-            .addListener(Lobby.GameServerSetupData.class, this::gameServerFound);
+                .addListener(Lobby.GameFound.class, this::gameFound)
+                .addListener(Lobby.LobbyState.class, this::lobbyUpdate)
+                .addListener(Lobby.TimeState.class, this::updateTime)
+                .addListener(Lobby.GameServerSetupData.class, this::gameServerFound);
     }
 
     private void gameServerFound(GameSession sender, Lobby.GameServerSetupData message) {
         gameSession.close(true);
         gameSession = null;
-        System.out.println("Game server details: " + message.toString());
         context.setGameId(message.getGameId());
         context.setGameMap(message.getMapId());
         context.setGameSeed(message.getSeed());
@@ -171,40 +175,42 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     }
 
     private void lobbyUpdate(GameSession session, Lobby.LobbyState message) {
-        if (message.getPlayersCount() > 0) {
-            players.clear();
-            for (int i = 0; i < message.getPlayersCount(); i++) {
-                Lobby.Player player = message.getPlayers(i);
-                if (player.getUserId().equals(myProfile.getUserId())) {
-                    myProfile.setPlayerIndex(player.getPlayerIndex());
-                    myProfile.setReady(player.getReady());
-                    players.put(myProfile.getPlayerIndex(), myProfile);
-                    continue;
-                }
-                Profile profile = findProfile(player);
-                if (profile == null || !profile.getUserId().equals(player.getUserId())) {
-                    profile = new Profile();
-                    profile.setPlayerIndex(player.getPlayerIndex());
-                    profile.setUserId(player.getUserId());
-                    profile.setReady(player.getReady());
-                }
-                profile.setReady(player.getReady());
-                players.put(profile.getPlayerIndex(), profile);
+        // update players
+        playerProfiles.clear();
+        for (int i = 0; i < message.getPlayersCount(); i++) {
+            Lobby.Player player = message.getPlayers(i);
+            if (player.getUserId().equals(myProfile.getUserId())) {
+                myProfile.setPlayerIndex(player.getPlayerIndex());
+                myProfile.setReady(player.getReady());
+
+                playerProfiles.put(myProfile.getPlayerIndex(), myProfile);
+                continue;
             }
-            ui().update(players);
-            profileFetcher.fetchPlayerProfiles(() -> players.values().toArray(), () -> ui().update(players));
+            Profile profile = cachedPlayerProfiles.get(player.getPlayerIndex());
+            if (profile == null || !profile.getUserId().equals(player.getUserId())) {
+                profile = new Profile();
+                profile.setPlayerIndex(player.getPlayerIndex());
+                profile.setUserId(player.getUserId());
+            }
+            profile.setReady(player.getReady());
+
+            playerProfiles.put(profile.getPlayerIndex(), profile);
+            cachedPlayerProfiles.put(profile.getPlayerIndex(), profile);
         }
+        ui().update(playerProfiles);
+        if (playerProfiles.size > 1) {
+            profileFetcher.fetchPlayerProfiles(() -> playerProfiles.values().toArray(), () -> ui().update(playerProfiles));
+        }
+
+        // update time
+        setTime(message.getTime().getTime());
+
+        // update map data
         ui().setMapSlots(message.getMapSlotsList());
-        int time = message.getTime().getTime();
-        setTime(time);
         if (!mapTable.isVisible()) {
             mapTable.setVisible(true);
             connectingDialog.setVisible(false);
         }
-    }
-
-    private Profile findProfile(Lobby.Player player) {
-        return players.get(player.getPlayerIndex());
     }
 
     private void gameFound(GameSession session, Lobby.GameFound message) {
@@ -234,15 +240,12 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
 
     @Override
     public void onConnect() {
-        connectingMessage.setText("Validating myProfile");
-
-        System.out.println(matchmakingKey + ", " + myProfile.getUserId());
-        Join.JoinPacket joinPacket = Join.JoinPacket.newBuilder()
+        connectingMessage.setText("Validating profile");
+        gameSession.send(Join.JoinPacket.newBuilder()
                 .setUserId(myProfile.getUserId())
                 .setSessionKey(matchmakingKey)
                 .setVersion(1)
-                .build();
-        gameSession.send(joinPacket);
+                .build());
     }
 
     @Override

@@ -56,9 +56,6 @@ public class Fuzzle extends Actor {
     }
 
     public void setProfile(Profile profile) {
-        if (profile == this.profile) {
-            return;
-        }
         this.profile = profile;
     }
 

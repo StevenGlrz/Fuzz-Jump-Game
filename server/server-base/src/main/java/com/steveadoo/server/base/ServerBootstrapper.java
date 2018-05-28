@@ -5,6 +5,7 @@ import com.steveadoo.server.base.net.GamePacketEncoder;
 import com.steveadoo.server.base.net.GameServerHandler;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutionException;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
@@ -31,7 +32,7 @@ public class ServerBootstrapper {
                 .childHandler(new ChannelInitializer<Channel>() {
 
                     @Override
-                    protected void initChannel(Channel ch) throws Exception {
+                    protected void initChannel(Channel ch) {
                         ChannelPipeline pipeline = ch.pipeline();
                         pipeline.addLast(new GamePacketDecoder());
                         pipeline.addLast(new GamePacketEncoder(server));
@@ -41,9 +42,13 @@ public class ServerBootstrapper {
                 })
                 .option(ChannelOption.TCP_NODELAY, true)
                 .option(ChannelOption.SO_KEEPALIVE, true);
-
-        System.out.println("Listening on port " + serverConfig.port);
-        bootstrap.bind(new InetSocketAddress(serverConfig.port));
+        try {
+            bootstrap.bind(new InetSocketAddress(serverConfig.port)).get();
+            System.out.println("Listening on port " + serverConfig.port);
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
         return bootstrap;
     }
 

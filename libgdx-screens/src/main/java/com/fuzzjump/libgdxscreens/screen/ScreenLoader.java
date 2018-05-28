@@ -24,16 +24,6 @@ public class ScreenLoader {
     private boolean skipNext;
 
     /**
-     * Total time taken to run a set of tasks
-     */
-    private long timeTaken;
-
-    /**
-     * The timestamp for tracking the time each tasks takes to execute
-     */
-    private long timeStamp;
-
-    /**
      * Processes loading tasks every other frame.
      * NOTE: This function is called on StageScreen#onPostRender by default
      */
@@ -47,8 +37,8 @@ public class ScreenLoader {
             return;
         }
         if (!skipNext) {
-            timeTaken = 0L;
-            timeStamp = System.currentTimeMillis();
+            long timeTaken = 0L;
+            long timeStamp = System.currentTimeMillis();
             Runnable loadTask;
 
             // 30 ms is enough for 1 frame

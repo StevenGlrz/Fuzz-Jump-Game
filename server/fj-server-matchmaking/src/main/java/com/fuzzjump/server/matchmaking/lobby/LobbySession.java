@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledFuture;
 
 public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
 
-    private static final int LOBBY_WAIT_PERIOD = 8;
+    private static final int LOBBY_WAIT_PERIOD = 60;
 
     private LobbySessionListener listener;
 
@@ -35,13 +35,9 @@ public class LobbySession extends FuzzJumpSession<LobbyPlayer> {
         Random random = new Random();
         List<Integer> mapIds = new ArrayList<>();
         for(int i = 0; i < Maps.MAP_CHOICE_COUNT; i++) {
-            int id = 0;
-            while(true) {
+            int id = random.nextInt(Maps.MAP_COUNT);
+            while (mapIds.contains(id)) {
                 id = random.nextInt(Maps.MAP_COUNT);
-                if (mapIds.contains(id))
-                    continue;
-                mapIds.add(id);
-                break;
             }
             stateBuilder.addMapSlots(mapSlotBuilder.setMapId(id).setVotes(0));
         }

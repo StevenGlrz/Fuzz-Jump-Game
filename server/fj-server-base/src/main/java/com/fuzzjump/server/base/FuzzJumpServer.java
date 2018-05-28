@@ -83,7 +83,7 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
         T fjPlayer = (T) player;
 
         if (fjPlayer.getUserId() == null ) {
-            disconnected(fjPlayer);
+            disconnected(player);
             return;
         }
 
@@ -100,16 +100,6 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
     }
 
     protected abstract void disconnected(T player);
-
-
-    public String[] generateKeys(int keyCount) {
-        String[] keys = new String[keyCount];
-        for(int i = 0; i < keyCount; i++) {
-            String key = generateKey();
-            keys[i] = key;
-        }
-        return keys;
-    }
 
     public String generateKey() {
         return new BigInteger(130, SECURE_RANDOM).toString(32);

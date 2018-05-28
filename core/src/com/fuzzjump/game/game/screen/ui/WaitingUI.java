@@ -119,6 +119,7 @@ public class WaitingUI extends StageUI {
             public float getPrefHeight() {
                 return Gdx.graphics.getWidth() * 0.5081829277777778f;
             }
+
             @Override
             public void result(Object obj) {
                 cancel();
@@ -174,7 +175,7 @@ public class WaitingUI extends StageUI {
 
     public void update(IntMap<Profile> mapPlayers) {
         Array<Profile> players = mapPlayers.values().toArray();
-        for(int i = 0; i < WaitingScreen.MAX_PLAYERS; i++) {
+        for (int i = 0; i < WaitingScreen.MAX_PLAYERS; i++) {
             Profile profile = i < players.size ? players.get(i) : null;
             playerSlots[i].setPlayer(profile);
             if (profile != null && profile == this.profile) {
@@ -240,7 +241,6 @@ public class WaitingUI extends StageUI {
                 public void clicked(InputEvent event, float x, float y) {
                     //show friends dialog
                 }
-
             });
 
             switcher.addWidget(addButton);
