@@ -46,14 +46,9 @@ public class ProfileFetcher {
             waitingToFetch = false;
             return profileService.getProfiles(userIds.toArray(new String[0]));
         }).observeOn(scheduler).subscribe(profileResponse -> {
-            System.out.println(":D");
-            //System.out.println(new Gson().toJson(profileResponse.getBody()).toString());
             updatePlayerProfiles(profileResponse.getBody(), profilesDelegate);
             onComplete.run();
-        }, e -> {
-            System.out.println("WTF");
-            e.printStackTrace();
-        });
+        }, Throwable::printStackTrace);
     }
 
     private void updatePlayerProfiles(ProfileDto[] profiles, ProfilesDelegate profilesDelegate) {

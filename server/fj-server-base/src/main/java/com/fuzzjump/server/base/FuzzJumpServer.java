@@ -83,7 +83,7 @@ public abstract class FuzzJumpServer<T extends FuzzJumpPlayer, E extends FuzzJum
         T fjPlayer = (T) player;
 
         if (fjPlayer.getUserId() == null ) {
-            disconnected(player);
+            disconnected(fjPlayer);
             return;
         }
 
