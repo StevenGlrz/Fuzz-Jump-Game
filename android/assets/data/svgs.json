@@ -359,15 +359,15 @@
   {
     "filename": "data/svg/ui-checkbox-unchecked.svg",
     "atlas": "ui-checkbox-unchecked",
-    "width": "screen_width:.25",
-    "height": "screen_width:.25",
+    "width": "screen_width:.1",
+    "height": "screen_width:.1",
     "type": "svg"
   },
   {
     "filename": "data/svg/ui-checkbox-checked.svg",
     "atlas": "ui-checkbox-checked",
-    "width": "screen_width:.25",
-    "height": "screen_width:.25",
+    "width": "screen_width:.1",
+    "height": "screen_width:.1",
     "type": "svg"
   },
   {

@@ -7,10 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
-
-import java.util.Random;
 
 /**
  * Created by Steven Galarza on 6/16/2017.
@@ -19,7 +18,7 @@ public class Assets {
 
     public static final boolean DEBUG = false;
 
-    public static final String PREFERENCES_NAME = "FuzzJump" + new Random().nextInt(100000);
+    public static final String PREFERENCES_NAME = "FuzzJump";
 
     public static final String USER_TOKEN = "FuzzUserToken";
     public static final String PROFILE_DATA = "FuzzProfile";
@@ -452,6 +451,12 @@ public class Assets {
     }
 
     public static CheckBox.CheckBoxStyle createCheckBoxStyle(StageUI ui) {
+        CheckBox.CheckBoxStyle style = new CheckBox.CheckBoxStyle(ui.getTextures().getTextureRegionDrawable(CHECKBOX_OFF),
+                ui.getTextures().getTextureRegionDrawable(CHECKBOX_ON), ui.getGameSkin().getFont(DEFAULT_FONT), ui.getGameSkin().getColor(FUZZ_YELLOW));
+        return style;
+    }
+
+    public static CheckBox.CheckBoxStyle createCheckBoxStyle(StageUI ui, Value width, Value height) {
         CheckBox.CheckBoxStyle style = new CheckBox.CheckBoxStyle(ui.getTextures().getTextureRegionDrawable(CHECKBOX_OFF),
                 ui.getTextures().getTextureRegionDrawable(CHECKBOX_ON), ui.getGameSkin().getFont(DEFAULT_FONT), ui.getGameSkin().getColor(FUZZ_YELLOW));
         return style;

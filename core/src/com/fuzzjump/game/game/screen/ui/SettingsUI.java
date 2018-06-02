@@ -13,10 +13,7 @@ import com.fuzzjump.libgdxscreens.screen.StageUI;
 import static com.fuzzjump.game.game.Assets.createCheckBoxStyle;
 import static com.fuzzjump.game.game.Assets.createDefaultTBStyle;
 
-/**
- * Kerpow Games, LLC
- * Created by stephen on 4/8/2015.
- */
+
 public class SettingsUI extends StageUI {
 
     private MenuUI parent;
@@ -30,7 +27,7 @@ public class SettingsUI extends StageUI {
 
     @Override
     public void init() {
-        Label soundLabel = new Label("Sound", getGameSkin(), "default");
+        Label soundLabel = new Label("Sound:", getGameSkin(), "default");
         CheckBox soundCheckbox = new CheckBox("", createCheckBoxStyle(this));
         //soundCheckbox.setChecked(game.playingSound());
         TextButton logoutButton = new TextButton("Logout", createDefaultTBStyle(this));
@@ -42,23 +39,19 @@ public class SettingsUI extends StageUI {
         Table container = new Table();
         container.setBackground(textures.getTextureRegionDrawable(Assets.UI_PANEL_WELCOME));
 
-        Value padSidesFirstRow = Value.percentWidth(.05f, container);
-        Value padSides = Value.percentWidth(.025f, container);
-
         Value padTopBottom = Value.percentHeight(.05f, container);
-        Value buttonHeight = Value.percentHeight(.175f, container);
-        Value checkboxSize = Value.percentHeight(.1f, container);
+        Value buttonHeight = Value.percentHeight(.15f, container);
+        Value buttonWidth = Value.percentWidth(.85f, container);
 
-        container.add(soundLabel).padLeft(padSidesFirstRow).left();
-        container.add(soundCheckbox).size(checkboxSize).padRight(padSidesFirstRow).right();
-        container.row();
-        container.add(logoutButton).height(buttonHeight).colspan(2).padLeft(padSides).padRight(padSides).padTop(padTopBottom).center();
-        container.row();
-        container.add(creditsButton).height(buttonHeight).colspan(2).padLeft(padSides).padRight(padSides).padTop(padTopBottom).center();
-        container.row();
-        container.add(backButton).height(buttonHeight).colspan(2).padLeft(padSides).padRight(padSides).padTop(padTopBottom).center();
+        container.add(soundLabel).left();
+        container.add(soundCheckbox).right();
 
-        add(container).padLeft(padOuterSides).padRight(padOuterSides).height(Value.percentHeight(.65f, this)).width(Value.percentWidth(.9f, this)).center().expand();
+        container.row();
+        container.add(logoutButton).size(buttonWidth, buttonHeight).colspan(2).padTop(padTopBottom).row();
+        container.add(creditsButton).size(buttonWidth, buttonHeight).colspan(2).padTop(padTopBottom).row();
+        container.add(backButton).size(buttonWidth, buttonHeight).colspan(2).padTop(padTopBottom);
+
+        add(container).height(Value.percentHeight(.7f, this)).padLeft(padOuterSides).padRight(padOuterSides).expand().center();
 
         setFillParent(true);
 
