@@ -56,10 +56,15 @@ public class SettingsUI extends StageUI {
         setFillParent(true);
 
         Helper.addClickAction(backButton, (e, x, y) -> backPressed());
+        Helper.addClickAction(logoutButton, (e, x, y) -> logout());
 
         register(Assets.MenuUI.SOUND_TOGGLE, soundCheckbox);
         register(Assets.MenuUI.LOGOUT_BUTTON, logoutButton);
         register(Assets.MenuUI.CREDITS_BUTTON, creditsButton);
+    }
+
+    private void logout() {
+        
     }
 
 

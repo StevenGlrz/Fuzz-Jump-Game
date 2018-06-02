@@ -79,32 +79,32 @@ public class MainScreen extends StageScreen<MainUI> {
         waitingDialog.setName("Registering");
         showDialog(waitingDialog, getStage());
 
-        userService.register(userField.getText()).observeOn(scheduler).subscribe(response -> {
-            if (response != null && response.isSuccess()) {
-                final ApiUser user = response.getBody();
+        userService.register(userField.getText()).observeOn(scheduler).switchMap(response -> {
+            final ApiUser user = response.getBody();
 
-                // Retrieve nd remove since we don't want to persist username and password
-                String username = user.getUsername();
-                String password = user.getPassword();
-                user.setUsername(null);
-                user.setPassword(null);
+            // Retrieve and remove since we don't want to persist username and password
+            String username = user.getUsername();
+            String password = user.getPassword();
+            user.setUsername(null);
+            user.setPassword(null);
 
-                // Load and store profile data
-                profile.loadUser(user);
+            // Load and store profile data
+            profile.loadUser(user);
 
-                //TODO this probs shouldnt happen here.
-                // Acquire token from API and persist preferences
-                userService.retrieveToken(username, password).subscribe(e -> {
-                    preferences.putString(Assets.PROFILE_DATA, gson.toJson(user));
-                    preferences.putString(Assets.USER_TOKEN, e.getAccessToken());
-                    preferences.flush();
-                });
+            // Store profile data.
+            // This doesn't persist unless our token retrieval was a success. We remove on error just in case.
+            preferences.putString(Assets.PROFILE_DATA, gson.toJson(user));
 
-                // UI process
-                waitingDialog.setName("Loading game");
-                screenHandler.showScreen(MenuScreen.class);
-            }
+            // UI process
+            waitingDialog.setName("Loading game");
+            screenHandler.showScreen(MenuScreen.class);
+
+            return userService.retrieveToken(username, password);
+        }).subscribe(tokenResponse -> {
+            preferences.putString(Assets.USER_TOKEN, tokenResponse.getAccessToken());
+            preferences.flush();
         }, e -> {
+            preferences.remove(Assets.PROFILE_DATA);
             e.printStackTrace();
             // TODO Close on error
         });
