@@ -11,11 +11,11 @@ import com.fuzzjump.api.profile.IProfileService;
 import com.fuzzjump.game.FuzzJump;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
-import com.fuzzjump.game.game.map.GameMapParser;
+import com.fuzzjump.game.game.map.GameMapParserService;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
-import com.fuzzjump.game.game.screen.core.ProfileFetcher;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepositoryService;
+import com.fuzzjump.game.game.screen.service.ProfileFetcherService;
 import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -62,8 +62,8 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
-    public UnlockableRepository provideUnlockableDefinitions() {
-        return new UnlockableRepository();
+    public UnlockableRepositoryService provideUnlockableDefinitions() {
+        return new UnlockableRepositoryService();
     }
 
     @FuzzJumpScope
@@ -74,20 +74,20 @@ public class FuzzJumpGameModule {
 
     @FuzzJumpScope
     @Provides
-    public GameMapParser provideGameMapParser() {
-        return new GameMapParser();
+    public GameMapParserService provideGameMapParser() {
+        return new GameMapParserService();
     }
 
     @FuzzJumpScope
     @Provides
-    public ProfileFetcher provideProfileFetcher(Profile profile, IProfileService profileService, GraphicsScheduler scheduler) {
-        return new ProfileFetcher(profile, profileService, scheduler);
+    public ProfileFetcherService provideProfileFetcher(Profile profile, IProfileService profileService, GraphicsScheduler scheduler) {
+        return new ProfileFetcherService(profile, profileService, scheduler);
     }
 
 
     @FuzzJumpScope
     @Provides
-    public UnlockableColorizer provideUnlockableColorizer(VectorGraphicsLoader graphicsLoader, UnlockableRepository definitions) {
+    public UnlockableColorizer provideUnlockableColorizer(VectorGraphicsLoader graphicsLoader, UnlockableRepositoryService definitions) {
         return new UnlockableColorizer(graphicsLoader, definitions);
     }
 

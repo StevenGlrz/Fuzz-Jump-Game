@@ -12,9 +12,9 @@ import java.util.Map;
 public class UnlockableColorizer {
 
     private final VectorGraphicsLoader vectorGraphicsLoader;
-    private final UnlockableRepository unlockableDefinitions;
+    private final UnlockableRepositoryService unlockableDefinitions;
 
-    public UnlockableColorizer(VectorGraphicsLoader vectorGraphicsLoader, UnlockableRepository unlockableDefinitions) {
+    public UnlockableColorizer(VectorGraphicsLoader vectorGraphicsLoader, UnlockableRepositoryService unlockableDefinitions) {
         this.vectorGraphicsLoader = vectorGraphicsLoader;
         this.unlockableDefinitions = unlockableDefinitions;
     }

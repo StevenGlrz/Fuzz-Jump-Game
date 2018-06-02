@@ -23,7 +23,7 @@ import com.fuzzjump.game.game.screen.game.World;
 import com.fuzzjump.game.game.screen.game.actors.GamePlatform;
 import com.fuzzjump.game.game.screen.game.actors.GamePlayer;
 import com.fuzzjump.game.game.screen.ui.GameUI;
-import com.fuzzjump.game.game.screen.core.ProfileFetcher;
+import com.fuzzjump.game.game.screen.service.ProfileFetcherService;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
 import com.fuzzjump.game.util.GraphicsScheduler;
@@ -52,7 +52,7 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
     private final FuzzContext context;
     private final UnlockableColorizer colorizer;
     private final GraphicsScheduler scheduler;
-    private final ProfileFetcher profileFetcher;
+    private final ProfileFetcherService profileFetcher;
 
     private GameSession gameSession;
 
@@ -81,7 +81,7 @@ public class GameScreen extends StageScreen<GameUI> implements GameSessionWatche
                       UnlockableColorizer colorizer,
                       IProfileService profileService,
                       GraphicsScheduler scheduler,
-                      ProfileFetcher profileFetcher) {
+                      ProfileFetcherService profileFetcher) {
         super(ui);
         this.me = profile;
         this.context = context;

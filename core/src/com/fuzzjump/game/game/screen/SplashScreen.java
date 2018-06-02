@@ -15,7 +15,7 @@ import com.fuzzjump.api.TokenInterceptor;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepositoryService;
 import com.fuzzjump.game.game.screen.ui.SplashUI;
 import com.fuzzjump.game.io.FuzzPersistence;
 import com.fuzzjump.libgdxscreens.Textures;
@@ -36,14 +36,14 @@ public class SplashScreen extends StageScreen<SplashUI> {
     private final Textures textures;
     private final Skin skin;
     private final Profile profile;
-    private final UnlockableRepository definitions;
+    private final UnlockableRepositoryService definitions;
     private final UnlockableColorizer colorizer;
     private final FuzzPersistence persistence;
     private final Gson gson;
     private final TokenInterceptor interceptor;
 
     @Inject
-    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer, FuzzPersistence persistence, Gson gson, TokenInterceptor interceptor) {
+    public SplashScreen(SplashUI ui, Textures textures, Skin skin, Profile profile, UnlockableRepositoryService definitions, UnlockableColorizer colorizer, FuzzPersistence persistence, Gson gson, TokenInterceptor interceptor) {
         super(ui);
         this.textures = textures;
         this.skin = skin;

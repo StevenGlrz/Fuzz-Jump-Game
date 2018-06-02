@@ -14,7 +14,7 @@ import com.fuzzjump.game.FuzzJumpParams;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.game.game.screen.core.ProfileFetcher;
+import com.fuzzjump.game.game.screen.service.ProfileFetcherService;
 import com.fuzzjump.game.game.screen.ui.WaitingUI;
 import com.fuzzjump.game.net.GameSession;
 import com.fuzzjump.game.net.GameSessionWatcher;
@@ -36,7 +36,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
     private final IProfileService profileService;
     private final GraphicsScheduler scheduler;
     private final FuzzContext context;
-    private final ProfileFetcher profileFetcher;
+    private final ProfileFetcherService profileFetcher;
 
     private final Stage stage;
 
@@ -76,7 +76,7 @@ public class WaitingScreen extends StageScreen<WaitingUI> implements GameSession
                          ISessionService sessionService,
                          IProfileService profileService,
                          GraphicsScheduler scheduler,
-                         ProfileFetcher profileFetcher) {
+                         ProfileFetcherService profileFetcher) {
         super(ui);
         this.stage = stage;
         this.context = context;

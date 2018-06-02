@@ -19,7 +19,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-public class UnlockableRepository {
+public class UnlockableRepositoryService {
 
     private static final String DEFINITIONS_PATH = "data/unlockable-definitions.xml";
     public static final int FUZZLE_COUNT = 6;
@@ -69,7 +69,7 @@ public class UnlockableRepository {
                 NodeList boundsNodes = entry.getElementsByTagName("bounds");
                 if (boundsNodes != null && boundsNodes.getLength() > 0) {
                     NodeList bounds = ((Element) boundsNodes.item(0)).getElementsByTagName("bound");
-                    Rectangle[] uBounds = new Rectangle[UnlockableRepository.FUZZLE_COUNT];
+                    Rectangle[] uBounds = new Rectangle[UnlockableRepositoryService.FUZZLE_COUNT];
                     for(int nodeIdx = 0; nodeIdx < bounds.getLength(); nodeIdx++) {
                         Element element = (Element) bounds.item(nodeIdx);
                         uBounds[Integer.parseInt(element.getAttribute("fuzzle"))] = createBound(element);

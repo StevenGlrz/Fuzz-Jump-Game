@@ -23,7 +23,7 @@ import com.fuzzjump.game.game.player.Appearance;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableDefinition;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepositoryService;
 import com.fuzzjump.game.game.screen.component.CategoryFrame;
 import com.fuzzjump.libgdxscreens.ColorDrawable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
@@ -43,7 +43,7 @@ public class CharacterSelectionUI extends StageUI {
 
     private final MenuUI parent;
     private final Profile profile;
-    private final UnlockableRepository definitions;
+    private final UnlockableRepositoryService definitions;
     private final UnlockableColorizer colorizer;
     private final ScreenLoader loader;
 
@@ -64,7 +64,7 @@ public class CharacterSelectionUI extends StageUI {
 
     private TextButton backButton;
 
-    public CharacterSelectionUI(MenuUI parent, UnlockableRepository definitions) {
+    public CharacterSelectionUI(MenuUI parent, UnlockableRepositoryService definitions) {
         super(parent.getTextures(), parent.getGameSkin());
         this.parent = parent;
         this.definitions = definitions;

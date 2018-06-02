@@ -1,4 +1,4 @@
-package com.fuzzjump.game.game.screen.core;
+package com.fuzzjump.game.game.screen.service;
 
 import com.badlogic.gdx.utils.Array;
 import com.fuzzjump.api.profile.IProfileService;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
-public class ProfileFetcher {
+public class ProfileFetcherService {
 
     private final Profile myProfile;
     private final IProfileService profileService;
@@ -23,7 +23,7 @@ public class ProfileFetcher {
 
     private boolean waitingToFetch = false;
 
-    public ProfileFetcher(Profile myProfile, IProfileService profileService, GraphicsScheduler scheduler) {
+    public ProfileFetcherService(Profile myProfile, IProfileService profileService, GraphicsScheduler scheduler) {
         this.myProfile = myProfile;
         this.profileService = profileService;
         this.scheduler = scheduler;

@@ -116,7 +116,7 @@ public class MenuScreen extends StageScreen<MenuUI> {
                     break;
                 case UnlockablePurchase.PURCHASE_SUCCESS:
                     Unlockable unlockable = purchase.getUnlockable();
-                    if (unlockable != null) { // Shouldn't be null, but you know ...
+                    if (unlockable != null) { // Shouldn't be null, but you know Java ...
                         purchaseSelection.setSelected(true);
                         purchaseSelection.setUnlockable(profile.getAppearance().createUnlockable(unlockable));
                         profile.setCoins(profile.getCoins() - purchaseSelection.getUnlockableDefinition().getCost());

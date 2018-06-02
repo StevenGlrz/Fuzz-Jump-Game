@@ -15,7 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
  *
  * @author Steven Galarza
  */
-public class GameMapParser {
+public class GameMapParserService {
 
 	public GameMap parse(String name) {
 		GameMap map = new GameMap();

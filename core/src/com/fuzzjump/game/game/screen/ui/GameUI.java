@@ -12,14 +12,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.Scaling;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.FuzzContext;
 import com.fuzzjump.game.game.map.GameMap;
-import com.fuzzjump.game.game.map.GameMapParser;
+import com.fuzzjump.game.game.map.GameMapParserService;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.screen.GameScreen;
@@ -38,7 +37,7 @@ import static com.fuzzjump.game.game.Assets.createDialogStyle;
 public class GameUI extends StageUI {
 
     private final FuzzContext context;
-    private final GameMapParser mapParser;
+    private final GameMapParserService mapParser;
     private final Profile me;
     private final UnlockableColorizer unlockableColorizer;
 
@@ -57,7 +56,7 @@ public class GameUI extends StageUI {
     private IntMap<Fuzzle> playerProgressSquares;
 
     @Inject
-    public GameUI(Textures textures, Skin skin, FuzzContext context, GameMapParser parser, Profile me, UnlockableColorizer unlockableColorizer) {
+    public GameUI(Textures textures, Skin skin, FuzzContext context, GameMapParserService parser, Profile me, UnlockableColorizer unlockableColorizer) {
         super(textures, skin);
         this.context = context;
         this.mapParser = parser;

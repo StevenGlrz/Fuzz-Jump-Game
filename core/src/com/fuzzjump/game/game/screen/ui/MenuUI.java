@@ -25,7 +25,7 @@ import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Appearance;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepositoryService;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
@@ -63,7 +63,7 @@ public class MenuUI extends StageUI {
     private FJDragDownBarTable dropdownTable;
 
     private final Profile profile;
-    private final UnlockableRepository definitions;
+    private final UnlockableRepositoryService definitions;
     private final UnlockableColorizer colorizer;
     private final IFriendService friendService;
     private final IProfileService profileService;
@@ -81,7 +81,7 @@ public class MenuUI extends StageUI {
 
     @Inject
     public MenuUI(Textures textures, Skin skin, IProfileService profileService, IFriendService friendService,
-                  Profile profile, UnlockableRepository definitions, UnlockableColorizer colorizer,
+                  Profile profile, UnlockableRepositoryService definitions, UnlockableColorizer colorizer,
                   GraphicsScheduler scheduler, FuzzPersistence persistence) {
         super(textures, skin);
         this.profileService = profileService;

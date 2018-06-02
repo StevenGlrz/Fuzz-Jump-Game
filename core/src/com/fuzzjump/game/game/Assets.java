@@ -118,6 +118,8 @@ public class Assets {
         public static final int CLOSE_BUTTON = 25;
         public static final int PROGRESS_IMAGE = 26;
         public static final int FRIEND_ADD_DIALOG = 27;
+
+        public static final int SETTINGS_BACK_BUTTON = 28;
     }
 
     public class WaitingUI {

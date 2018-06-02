@@ -11,7 +11,7 @@ import com.fuzzjump.api.model.user.ApiUser;
 import com.fuzzjump.api.user.IUserService;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Profile;
-import com.fuzzjump.game.game.player.unlockable.UnlockableRepository;
+import com.fuzzjump.game.game.player.unlockable.UnlockableRepositoryService;
 import com.fuzzjump.game.game.screen.ui.MainUI;
 import com.fuzzjump.game.util.GraphicsScheduler;
 import com.fuzzjump.libgdxscreens.screen.StageScreen;
@@ -24,7 +24,7 @@ public class MainScreen extends StageScreen<MainUI> {
 
     private final IUserService userService;
     private final Profile profile;
-    private final UnlockableRepository unlockables;
+    private final UnlockableRepositoryService unlockables;
     private final Preferences preferences;
     private final GraphicsScheduler scheduler;
     private final Gson gson;
@@ -33,7 +33,7 @@ public class MainScreen extends StageScreen<MainUI> {
     public MainScreen(MainUI ui,
                       IUserService userService,
                       Profile profile,
-                      UnlockableRepository unlockables,
+                      UnlockableRepositoryService unlockables,
                       Preferences preferences,
                       GraphicsScheduler scheduler,
                       Gson gson) {
