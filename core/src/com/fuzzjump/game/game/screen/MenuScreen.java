@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.fuzzjump.api.invite.IInviteService;
 import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.unlockable.UnlockablePurchase;
+import com.fuzzjump.api.profile.IProfileService;
+import com.fuzzjump.api.profile.model.SaveProfileRequest;
 import com.fuzzjump.api.unlockable.IUnlockableService;
 import com.fuzzjump.api.unlockable.model.UnlockablePurchaseRequest;
 import com.fuzzjump.api.unlockable.model.UnlockableResponse;
@@ -31,6 +33,7 @@ public class MenuScreen extends StageScreen<MenuUI> {
 
     private final Profile profile;
     private final IUnlockableService unlockableService;
+    private final IProfileService profileService;
     private final IInviteService inviteService;
     private final GraphicsScheduler scheduler;
     private final FuzzPersistence persistence;
@@ -41,12 +44,14 @@ public class MenuScreen extends StageScreen<MenuUI> {
     public MenuScreen(MenuUI ui,
                       Profile profile,
                       IUnlockableService unlockableService,
+                      IProfileService profileService,
                       IInviteService inviteService,
                       GraphicsScheduler scheduler,
                       FuzzPersistence persistence) {
         super(ui);
         this.profile = profile;
         this.unlockableService = unlockableService;
+        this.profileService = profileService;
         this.inviteService = inviteService;
         this.scheduler = scheduler;
         this.persistence = persistence;
@@ -132,6 +137,26 @@ public class MenuScreen extends StageScreen<MenuUI> {
         } else {
             ui.displayMessage("Purchase failed", false);
         }
+    }
+
+    public void saveProfile(SaveProfileRequest request) {
+        profileService
+                .saveProfile(request)
+                .observeOn(scheduler)
+                .doFinally(() -> {
+                    ui().closeMessage();
+                    persistence.saveProfile();
+                })
+                .subscribe(response -> {
+                    if (response.isSuccess()) {
+                        profile.loadProfile(response.getBody());
+                    }
+                }, Throwable::printStackTrace);
+    }
+
+    public void logout() {
+        persistence.clearProfile();
+        screenHandler.showScreen(MainScreen.class);
     }
 
 }

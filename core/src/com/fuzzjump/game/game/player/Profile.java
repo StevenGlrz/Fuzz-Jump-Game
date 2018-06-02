@@ -60,7 +60,7 @@ public class Profile {
     }
 
     // Not elegant, but sigh
-    public ApiUser save() {
+    public ApiUser toApiUser() {
         Equip[] equips = new Equip[Appearance.COUNT];
         for (int slot = 0; slot < Appearance.COUNT; slot++) {
             equips[slot] = new Equip(slot, appearance.getEquipId(slot));

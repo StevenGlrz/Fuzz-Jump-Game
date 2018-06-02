@@ -19,13 +19,13 @@ import com.fuzzjump.api.friends.IFriendService;
 import com.fuzzjump.api.invite.model.Invite;
 import com.fuzzjump.api.model.unlockable.Unlockable;
 import com.fuzzjump.api.model.user.Equip;
-import com.fuzzjump.api.profile.IProfileService;
 import com.fuzzjump.api.profile.model.SaveProfileRequest;
 import com.fuzzjump.game.game.Assets;
 import com.fuzzjump.game.game.player.Appearance;
 import com.fuzzjump.game.game.player.Profile;
 import com.fuzzjump.game.game.player.unlockable.UnlockableColorizer;
 import com.fuzzjump.game.game.player.unlockable.UnlockableRepositoryService;
+import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.game.screen.component.ActorSwitcher;
 import com.fuzzjump.game.game.screen.component.FJDragDownBarTable;
 import com.fuzzjump.game.game.screen.component.FuzzDialog;
@@ -66,7 +66,6 @@ public class MenuUI extends StageUI {
     private final UnlockableRepositoryService definitions;
     private final UnlockableColorizer colorizer;
     private final IFriendService friendService;
-    private final IProfileService profileService;
     private final GraphicsScheduler scheduler;
     private final FuzzPersistence persistence;
 
@@ -80,11 +79,10 @@ public class MenuUI extends StageUI {
     private ScrollPane inviteScroller;
 
     @Inject
-    public MenuUI(Textures textures, Skin skin, IProfileService profileService, IFriendService friendService,
+    public MenuUI(Textures textures, Skin skin, IFriendService friendService,
                   Profile profile, UnlockableRepositoryService definitions, UnlockableColorizer colorizer,
                   GraphicsScheduler scheduler, FuzzPersistence persistence) {
         super(textures, skin);
-        this.profileService = profileService;
         this.friendService = friendService;
         this.profile = profile;
         this.definitions = definitions;
@@ -287,20 +285,9 @@ public class MenuUI extends StageUI {
                 displayMessage("Saving profile", true);
                 //TODO should be in screen.
                 fuzzle.load(getStageScreen().getScreenLoader());
-                profileService
-                        .saveProfile(new SaveProfileRequest(equipChanges, unlockableChanges))
-                        .observeOn(scheduler)
-                        .doFinally(() -> {
-                            closeMessage();
-                            persistence.saveProfile();
-                        })
-                        .subscribe(response -> {
-                            if (response.isSuccess()) {
-                                profile.loadProfile(response.getBody());
-                            }
-                        }, err -> {
-                            err.printStackTrace();
-                        });
+
+                MenuScreen menuScreen = (MenuScreen) getStageScreen();
+                menuScreen.saveProfile(new SaveProfileRequest(equipChanges, unlockableChanges));
             }
         }
         uiSwitcher.setDisplayedChild(0);

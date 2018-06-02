@@ -40,11 +40,18 @@ public class FuzzPersistence {
     }
 
     public void saveProfile() {
-        final ApiUser user = profile.save();
+        final ApiUser user = profile.toApiUser();
 
         ioService.submit(() -> {
             preferences.putString(Assets.PROFILE_DATA, gson.toJson(user));
             preferences.flush();
         });
+    }
+
+    public void clearProfile() {
+        preferences.remove(Assets.PROFILE_DATA);
+        preferences.remove(Assets.USER_TOKEN);
+
+        preferences.flush();
     }
 }

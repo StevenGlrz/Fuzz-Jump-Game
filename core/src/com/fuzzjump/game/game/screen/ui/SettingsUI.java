@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.fuzzjump.game.game.Assets;
+import com.fuzzjump.game.game.screen.MenuScreen;
 import com.fuzzjump.game.util.Helper;
 import com.fuzzjump.libgdxscreens.screen.StageUI;
 
@@ -56,15 +57,14 @@ public class SettingsUI extends StageUI {
         setFillParent(true);
 
         Helper.addClickAction(backButton, (e, x, y) -> backPressed());
-        Helper.addClickAction(logoutButton, (e, x, y) -> logout());
+        Helper.addClickAction(logoutButton, (e, x, y) -> {
+            MenuScreen menuScreen = (MenuScreen) parent.getStageScreen();
+            menuScreen.logout();
+        });
 
         register(Assets.MenuUI.SOUND_TOGGLE, soundCheckbox);
         register(Assets.MenuUI.LOGOUT_BUTTON, logoutButton);
         register(Assets.MenuUI.CREDITS_BUTTON, creditsButton);
-    }
-
-    private void logout() {
-        
     }
 
 
