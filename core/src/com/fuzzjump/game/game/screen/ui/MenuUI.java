@@ -125,7 +125,7 @@ public class MenuUI extends StageUI {
 
         // Doesn't require background loading
         this.profileUI = new CharacterSelectionUI(this, definitions);
-        this.settingsUI = new SettingsUI(this);
+        this.settingsUI = new SettingsUI(this, persistence);
         this.friendsUI = new FriendsUI(this, scheduler, friendService);
 
         setFillParent(true);

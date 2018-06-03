@@ -158,5 +158,4 @@ public class MenuScreen extends StageScreen<MenuUI> {
         persistence.clearProfile();
         screenHandler.showScreen(MainScreen.class);
     }
-
 }

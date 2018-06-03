@@ -22,6 +22,7 @@ public class Assets {
 
     public static final String USER_TOKEN = "FuzzUserToken";
     public static final String PROFILE_DATA = "FuzzProfile";
+    public static final String SOUND_SETTING_PREFERENCE = "FuzzSoundSetting";
 
     // Resources
     public static final String ATLAS = "main.pack";

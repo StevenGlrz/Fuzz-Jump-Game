@@ -759,7 +759,7 @@ public class SVGAndroidRenderer
       // Retrieve the rendered content to which the mask is to be applied
       Bitmap  maskedContent = bitmapStack.pop();
       // Convert the mask bitmap to an alpha channel and multiply it to the content
-      // We will process the bitmaps in a row-wise fashion to toApiUser memory.
+      // We will process the bitmaps in a row-wise fashion to save memory.
       // It doesn't seem to be be significantly slower than doing it all at once.
       int    w = mask.getWidth();
       int    h = mask.getHeight();
@@ -3616,7 +3616,7 @@ public class SVGAndroidRenderer
    }
 
 
-   // The clip state push and pop methods only toApiUser the matrix.
+   // The clip state push and pop methods only save the matrix.
    // The normal push/pop toApiUser the clip region also which would
    // destroy the clip region we are trying to build.
    private void  clipStatePush()

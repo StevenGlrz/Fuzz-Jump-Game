@@ -42,6 +42,7 @@ public class FuzzPersistence {
     public void saveProfile() {
         final ApiUser user = profile.toApiUser();
 
+        // Do in the background for mobile device performance
         ioService.submit(() -> {
             preferences.putString(Assets.PROFILE_DATA, gson.toJson(user));
             preferences.flush();
@@ -53,5 +54,14 @@ public class FuzzPersistence {
         preferences.remove(Assets.USER_TOKEN);
 
         preferences.flush();
+    }
+
+    public void setSoundSetting(boolean soundSetting) {
+        preferences.putBoolean(Assets.SOUND_SETTING_PREFERENCE, soundSetting);
+        preferences.flush();
+    }
+
+    public boolean isSoundSettingSet() {
+        return preferences.getBoolean(Assets.SOUND_SETTING_PREFERENCE, false);
     }
 }
